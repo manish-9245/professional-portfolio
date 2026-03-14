@@ -1,0 +1,18 @@
+# MacOS
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Node/NPM
+node_modules/
+
+# Ignore the heavy source images directly,
+# so only the web-ready lightweight versions are tracked.
+image/source/*.jpg
+image/source/*.jpeg
+image/source/*.png
+
+# Except the original profile picture which is manually specified
+!image/source/profile.jpg

@@ -1,0 +1,100 @@
+[
+  {
+    "slug": "how-i-built-my-portfolio-website-and-achieved-a-perfect-lighthouse-score",
+    "title": "How I Built My Portfolio Website and Achieved a Perfect Lighthouse Score",
+    "date": "2026-03-15",
+    "displayDate": "Mar 15, 2026",
+    "description": "A deep dive into the architecture, tech stack, and best practices that helped my portfolio achieve a perfect 100/100/100/100 Lighthouse score."
+  },
+  {
+    "slug": "top-5-programming-languages-to-learn-in-2026",
+    "title": "Top 5 Programming Languages to learn in 2026",
+    "date": "2025-12-31",
+    "displayDate": "Dec 31, 2025",
+    "description": "I have a confession to make. For years, I was wrong."
+  },
+  {
+    "slug": "relational-database-management-system",
+    "title": "Relational Database Management System: An Engineering Deep-Dive",
+    "date": "2025-12-30",
+    "displayDate": "Dec 30, 2025",
+    "description": "Despite the meteoric rise of NoSQL, time-series, and vector databases in the last decade, the Relational Database Management System (RDBMS) remains the immutable backbone of global enterprise software..."
+  },
+  {
+    "slug": "textbook-for-excel-exam",
+    "title": "Textbook for Excel Exam",
+    "date": "2025-12-29",
+    "displayDate": "Dec 29, 2025",
+    "description": "In the world of data engineering and business intelligence, Microsoft Excel remains the ubiquitous \u201cfirst draft\u201d of data analysis. While Python, SQL, and Tableau dominate big data pipelines, Excel is..."
+  },
+  {
+    "slug": "how-i-built-an-ai-blogger-agent-using-n8n-and-jekyll",
+    "title": "How I built an AI blogger Agent using N8N and Jekyll",
+    "date": "2025-12-18",
+    "displayDate": "Dec 18, 2025",
+    "description": "As engineers, we often suffer from the \u201ccobbler\u2019s children\u201d syndrome. We build complex, scalable systems for clients and employers, yet our own personal portfolios and blogs gather dust. The friction..."
+  },
+  {
+    "slug": "how-i-built-an-ai-blogger-agent-using-n8ngithub-and-jekyll",
+    "title": "How I built an AI blogger Agent using N8N,Github and Jekyll",
+    "date": "2025-12-18",
+    "displayDate": "Dec 18, 2025",
+    "description": "In the current landscape of software engineering, \u201ccontent creation\u201d is often viewed as a secondary concern\u2014a distraction from shipping code. However, technical documentation and knowledge sharing are..."
+  },
+  {
+    "slug": "implementing-agentic-workflows-for-javatonodejs-migration",
+    "title": "Implementing Agentic Workflows for Java-to-Node.js Migration",
+    "date": "2025-12-18",
+    "displayDate": "Dec 18, 2025",
+    "description": "Legacy migration is the \u201cdark matter\u201d of software engineering: we know it makes up a massive portion of the enterprise universe, yet we struggle to observe it directly without getting sucked into a bl..."
+  },
+  {
+    "slug": "reactive-architecture-in-flutter-mastering-bloc-for-scalable-state-management",
+    "title": "Reactive Architecture in Flutter: Mastering BLoC for Scalable State Management",
+    "date": "2025-12-18",
+    "displayDate": "Dec 18, 2025",
+    "description": "When building scalable mobile applications, the ease of Flutter\u2019s setState is a siren song. It works beautifully for a counter app or a simple toggle, but as your application grows into an enterprise-..."
+  },
+  {
+    "slug": "beyond-get-and-set-architecting-resilient-distributed-caching-patterns-for-microservices",
+    "title": "Beyond GET and SET: Architecting Resilient Distributed Caching Patterns for Microservices",
+    "date": "2025-12-17",
+    "displayDate": "Dec 17, 2025",
+    "description": "In the infancy of a backend application, caching is often treated as a simple key-value store optimization\u2014a sprinkle of \u201cmagic dust\u201d to speed up slow SQL queries. Developers implement a basic client...."
+  },
+  {
+    "slug": "beyond-the-happy-path-architecting-faulttolerant-recurring-payments-with-razorpay",
+    "title": "Beyond the Happy Path: Architecting Fault-Tolerant Recurring Payments with Razorpay",
+    "date": "2025-12-17",
+    "displayDate": "Dec 17, 2025",
+    "description": "In the world of distributed systems, the \u201chappy path\u201d is a sedative. It lulls engineers into a false sense of security where networks never partition, latency is zero, and customers always have suffic..."
+  },
+  {
+    "slug": "building-a-virtual-data-analyst-architecting-agentic-ai-workflows-over-power-bi",
+    "title": "Building a Virtual Data Analyst: Architecting Agentic AI Workflows over Power BI",
+    "date": "2025-12-17",
+    "displayDate": "Dec 17, 2025",
+    "description": "In the rush to adopt Generative AI, organizations have flooded their backlogs with \u201cChat with your Data\u201d initiatives. Most of these projects follow a predictable, often disappointing, pattern: a text-..."
+  },
+  {
+    "slug": "escaping-the-if-isadmin-trap-implementing-scalable-rbac-and-abac-in-nodejs",
+    "title": "Escaping the if (isAdmin) Trap: Implementing Scalable RBAC and ABAC in Node.js",
+    "date": "2025-12-17",
+    "displayDate": "Dec 17, 2025",
+    "description": "We have all written it. The line of code that marks the beginning of the end for a scalable codebase:"
+  },
+  {
+    "slug": "java-concurrency-at-scale-migrating-from-thread-pools-to-virtual-threads",
+    "title": "Java Concurrency at Scale: Migrating from Thread Pools to Virtual Threads",
+    "date": "2025-12-17",
+    "displayDate": "Dec 17, 2025",
+    "description": "For the better part of two decades, Java concurrency has been a negotiation with the Operating System. We built high-throughput systems on the back of the \u201cOne-Thread-Per-Request\u201d model, eventually hi..."
+  },
+  {
+    "slug": "mastering-razorpay-webhooks-architecting-an-idempotent-eventdriven-ingestion-engine",
+    "title": "Mastering Razorpay Webhooks: Architecting an Idempotent, Event-Driven Ingestion Engine",
+    "date": "2025-12-17",
+    "displayDate": "Dec 17, 2025",
+    "description": "Integrating a payment gateway like Razorpay often starts with a false sense of security. The documentation shows a happy path: user pays, Razorpay calls your webhook, you update the database, and ship..."
+  }
+]

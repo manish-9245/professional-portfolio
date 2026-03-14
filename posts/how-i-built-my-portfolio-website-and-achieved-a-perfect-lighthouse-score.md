@@ -1,0 +1,87 @@
+---
+title: "How I Built My Portfolio Website and Achieved a Perfect Lighthouse Score"
+date: "2026-03-15"
+slug: "how-i-built-my-portfolio-website-and-achieved-a-perfect-lighthouse-score"
+description: "A deep dive into the architecture, tech stack, and best practices that helped my portfolio achieve a perfect 100/100/100/100 Lighthouse score."
+---
+
+![Anatomy of a Perfect Web Score](./image/optimized/1.webp)
+
+When it came time to rebuild my portfolio website, I had a single, slightly obsessive goal: **A perfect 100/100 in Performance, Accessibility, Best Practices, and SEO on Google Lighthouse.**
+
+![Google Lighthouse 100/100/100/100 Score Requirements](./image/optimized/score.webp)
+
+In an era where every website seems to ship megabytes of JavaScript just to render a static page, getting a perfect score requires unlearning a lot of modern web development habits. We are so accustomed to reaching for heavy frameworks for everything that we often forget how powerful and fast the native web platform is.
+
+Here is the in-depth breakdown of how I designed, built, and optimized this portfolio to achieve that elusive perfect score.
+
+## The Tech Stack: Radically Simple
+
+My first major decision was throwing out the Single Page Application (SPA) playbook. I didn't need React, Next.js, or Vue. This is a portfolio—a collection of text, images, and links. Shipping a virtual DOM and a massive JavaScript bundle to render static content is like using a sledgehammer to crack a nut.
+
+Instead, my stack looks like it came straight out of 2010 but is supercharged with modern browser capabilities:
+- **HTML5 & Semantic Markup:** Clean, structure-oriented raw HTML.
+- **Oat UI (\`@knadh/oat\`):** A genuinely fantastic, ultra-lightweight (~8KB) HTML+CSS semantic UI component library from Kailash Nadh. It forces best practices, requires zero build step or dependencies, and styles semantic tags right out of the box, reducing markup clutter to near zero.
+- **Vanilla CSS:** No Tailwind, no Bootstrap, no preprocessors. Just modern, modular CSS leveraging CSS Variables (Custom Properties), Grid, and Flexbox (`styles.css`) overlaid to extend Oat's elegant defaults.
+- **Vanilla JavaScript:** Just a lightweight script (`site.js`) to handle the bare minimum of interactivity.
+- **Python (Build-time pipeline):** A custom image optimization script (`optimize_images.py`) to handle asset compression automatically.
+
+## The Approach: Lean and Mean
+
+### 1. Ditching the Framework
+By dropping frameworks, I eliminated the main bottleneck for most websites: **JavaScript execution and parsing time.** The initial payload is incredibly small, and the browser can parse the HTML and CSS almost instantaneously. Time to Interactive (TTI) and First Contentful Paint (FCP) hover right around the ~100ms mark on fast networks.
+
+### 2. The Power of Oat UI
+![Optimizing Images with Python Build Pipeline](./image/optimized/3.webp)
+
+
+One of the core driving decisions behind the UI architecture was choosing **Oat UI** rather than reaching for something colossal like Bootstrap, Material UI, or even Tailwind. Oat sits at an astonishingly small ~8KB combined. Rather than flooding HTML with utility classes (`text-xl font-bold flex flex-col pt-4...`), Oat automatically styles standard semantic tags out of the box contextually. Because it respects standard HTML properties, using Oat essentially forced me to write better, more semantic HTML, inherently boosting my accessibility (a11y) score while maintaining clean markup.
+
+### 3. A Static-First Architecture
+The site consists of distinct static pages (`index.html`, `about.html`, `projects.html`, `blogs.html`). Content that needs to be dynamically fetched (like blog posts) relies on incredibly fast static JSON manifests (like `posts/index.json`) that are fetched asynchronously if needed, rather than blocking the main thread.
+
+## Handling States Without a Virtual DOM
+
+One of the biggest questions developers ask when moving away from React or Vue is: *"How do you handle state?"*
+
+The answer is surprisingly simple: **You don't need a massive state tree for a static site.** 
+
+For the small amount of state required (like a mobile navigation toggle, dark/light mode toggles, or filtering blog posts):
+- **DOM as the Source of Truth:** I store simple boolean states directly in the DOM using `data-*` attributes (`data-theme="dark"` or `aria-expanded="true"`). CSS naturally reacts to these attributes.
+- **Vanilla Event Listeners:** I attached isolated event listeners directly in `site.js`. Instead of re-rendering whole components when a state changes, I simply toggle CSS classes. It's imperative, yes, but for a site this small, it's highly performant and easy to reason about.
+
+## Overcoming Bottlenecks
+![Oat UI vs Utility CSS Architecture](./image/optimized/2.webp)
+
+
+A perfect Lighthouse score demands perfection in areas we usually gloss over. Here is how I solved the biggest bottlenecks:
+
+### Bottleneck #1: Unoptimized Images Tanking Performance
+High-resolution images are the nemesis of web performance. To fix this, I completely removed manual image management.
+* **The Fix:** I wrote a custom Python script (`optimize_images.py`) that processes everything in `image/source/`. It automatically compresses assets, converts them into next-gen formats (WebP and AVIF), and drops them into `image/optimized/`. 
+* **Implementation:** In the HTML, I use the `<picture>` tag to serve the AVIF/WebP formats to modern browsers, falling back to optimized JPEGs/PNGs for older ones. Every image includes `loading="lazy"`, `width`, and `height` attributes to prevent Cumulative Layout Shift (CLS).
+
+### Bottleneck #2: Render-Blocking Resources
+Lighthouse penalizes you heavily if your CSS or JS delays the first paint.
+* **The Fix:** My CSS (`styles.css`) is small enough that it loads almost instantly, but I still made sure to structure it so that the critical path is prioritized. The JavaScript (`site.js`) is loaded right at the bottom of the `<body>` tag or uses the `defer` attribute, meaning the browser never stops rendering the HTML to download or execute scripts.
+
+### Bottleneck #3: Accessibility (A11y)
+Getting 100 on Accessibility isn't about passing automated tests; it's about structuring content properly.
+* **The Fix:** I used strict semantic HTML. `nav` for navigation, `main` for the primary content, `article` for blog posts. I ensured a high contrast ratio for text and backgrounds. I added descriptive `aria-labels` to icon-only buttons and ensured the entire site could be navigated mapped perfectly via the keyboard (visible focus states are implemented via the `:focus-visible` pseudo-class).
+
+### Bottleneck #4: Technical SEO
+You can have a fast site that search engines don't understand. 
+* **The Fix:** I hand-crafted my `sitemap.xml`, an RSS feed (`feed.xml`), and a strict `robots.txt` file. Meta tags and Open Graph data are perfectly structured in the `<head>` of every `.html` document.
+
+## Best Practices I Walked Away With
+
+1. **Ship Less JavaScript.** The fastest code is the code you never send. Evaluate if you actually need a heavy framework before starting a project.
+2. **Optimize Assets at Build Time.** Never let your server or your user’s browser do the heavy lifting of image sizing formatting. Use scripts to automate it.
+3. **Respect the Browsers.** Modern browsers are incredibly fast document-rendering engines. If you give them semantic, simple markup, they will reward you with blazing speeds.
+4. **Lock Down Layout Shifts.** Always provide dimensions for media tags. Cumulative Layout Shift (CLS) is one of the hardest metrics to fix after the fact.
+
+## Conclusion
+
+Building this site taught me that achieving a perfect 100/100 Lighthouse score isn't a dark art. It's the result of strict discipline, respecting the browser's native capabilities, and treating performance and accessibility as foundational requirements rather than afterthoughts. I ended up with a codebase that is not only lightning-fast but also incredibly easy to maintain and scale.
+
+Sometimes, the best way forward is going back to basics.
