@@ -216,12 +216,70 @@
 
       .code-block-shell {
         position: relative;
+        margin: 1.2rem 0;
+        border: 1px solid
+          var(--o-border, color-mix(in srgb, currentColor 12%, transparent));
+        border-radius: 12px;
+        overflow: hidden;
+        background: color-mix(in srgb, var(--o-bg, canvas) 98%, transparent);
+      }
+
+      .code-window-bar {
+        height: 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.6rem;
+        padding: 0 0.7rem;
+        border-bottom: 1px solid
+          var(--o-border, color-mix(in srgb, currentColor 12%, transparent));
+        background: color-mix(in srgb, currentColor 5%, transparent);
+      }
+
+      .code-window-controls {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.38rem;
+      }
+
+      .code-window-dot {
+        width: 0.74rem;
+        height: 0.74rem;
+        border-radius: 999px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.52rem;
+        line-height: 1;
+        font-weight: 700;
+        opacity: 0.95;
+      }
+
+      .code-window-dot.close {
+        background: color-mix(in srgb, currentColor 22%, transparent);
+        color: color-mix(in srgb, currentColor 86%, transparent);
+      }
+
+      .code-window-dot.minimize {
+        background: color-mix(in srgb, currentColor 16%, transparent);
+        color: color-mix(in srgb, currentColor 82%, transparent);
+      }
+
+      .code-window-dot.maximize {
+        background: color-mix(in srgb, currentColor 12%, transparent);
+        color: color-mix(in srgb, currentColor 78%, transparent);
+      }
+
+      .code-block-shell pre {
+        margin: 0;
+        border: 0;
+        border-radius: 0;
       }
 
       .code-copy-button {
         position: absolute;
-        top: 0.75rem;
-        right: 0.75rem;
+        top: 0.3rem;
+        right: 0.5rem;
         z-index: 1;
         border: 1px solid
           var(--o-border, color-mix(in srgb, currentColor 15%, transparent));
@@ -235,7 +293,7 @@
         transition:
           transform 0.15s ease,
           opacity 0.15s ease;
-        opacity: 0.88;
+        opacity: 0.92;
       }
 
       .code-copy-button:hover {
@@ -761,6 +819,23 @@
           .replace(/\b\w/g, (m) => m.toUpperCase());
       }
 
+      function toAbsoluteUrl(value, baseUrl = window.location.href) {
+        if (!value) {
+          return "";
+        }
+
+        try {
+          return new URL(value, baseUrl).href;
+        } catch {
+          return value;
+        }
+      }
+
+      function extractFirstMarkdownImage(markdown = "") {
+        const imageMatch = markdown.match(/!\[[^\]]*\]\(([^)\s]+)(?:\s+"[^"]*")?\)/);
+        return imageMatch ? imageMatch[1].trim() : "";
+      }
+
       function readSessionJson(key) {
         try {
           const raw = sessionStorage.getItem(key);
@@ -1019,6 +1094,19 @@
           const wrapper = document.createElement("div");
           wrapper.className = "code-block-shell";
           pre.parentNode.insertBefore(wrapper, pre);
+
+          const toolbar = document.createElement("div");
+          toolbar.className = "code-window-bar";
+
+          const controls = document.createElement("div");
+          controls.className = "code-window-controls";
+          controls.innerHTML = `
+            <span class="code-window-dot close" aria-hidden="true">×</span>
+            <span class="code-window-dot minimize" aria-hidden="true">−</span>
+            <span class="code-window-dot maximize" aria-hidden="true">+</span>`;
+
+          toolbar.appendChild(controls);
+          wrapper.appendChild(toolbar);
           wrapper.appendChild(pre);
 
           const button = document.createElement("button");
@@ -1188,12 +1276,45 @@
         }
 
         const { meta, body } = parseFrontmatter(raw);
-        const title = meta.title || slug;
+        const indexedPost = Array.isArray(allPosts)
+          ? allPosts.find((post) => post && post.slug === slug)
+          : null;
+        const title =
+          (meta.title || indexedPost?.title || slugToTitle(slug) || slug).trim();
         const date = meta.date || "";
-        const desc = meta.description || "";
+        const desc = (
+          meta.description ||
+          indexedPost?.description ||
+          "Technical blog post by Manish Tiwari"
+        ).trim();
+        const socialTitle = (
+          meta.og_title ||
+          meta.ogTitle ||
+          meta["og:title"] ||
+          meta.twitter_title ||
+          meta.twitterTitle ||
+          meta["twitter:title"] ||
+          title
+        ).trim();
+        const socialDescription = (
+          meta.og_description ||
+          meta.ogDescription ||
+          meta["og:description"] ||
+          meta.twitter_description ||
+          meta.twitterDescription ||
+          meta["twitter:description"] ||
+          desc
+        ).trim();
         const pageUrl = `https://buildwithmanish.com/blog.html?post=${encodeURIComponent(slug)}`;
-        const pageImage =
-          "https://buildwithmanish.com/image/optimized/favicon-64.webp";
+        const imageFromFrontmatter =
+          meta.image || meta.ogImage || meta["og:image"] || "";
+        const imageFromBody = extractFirstMarkdownImage(body);
+        const pageImage = toAbsoluteUrl(
+          imageFromFrontmatter ||
+            imageFromBody ||
+            "https://buildwithmanish.com/image/optimized/favicon-64.webp",
+          pageUrl,
+        );
         const currentPost = {
           slug,
           title,
@@ -1209,24 +1330,18 @@
         document.getElementById("page-canonical").setAttribute("href", pageUrl);
         document
           .getElementById("og-title")
-          .setAttribute("content", `${title} · Manish Tiwari`);
+          .setAttribute("content", socialTitle);
         document
           .getElementById("og-desc")
-          .setAttribute(
-            "content",
-            desc || "Technical blog post by Manish Tiwari",
-          );
+          .setAttribute("content", socialDescription);
         document.getElementById("og-url").setAttribute("content", pageUrl);
         document.getElementById("og-image").setAttribute("content", pageImage);
         document
           .getElementById("tw-title")
-          .setAttribute("content", `${title} · Manish Tiwari`);
+          .setAttribute("content", socialTitle);
         document
           .getElementById("tw-desc")
-          .setAttribute(
-            "content",
-            desc || "Technical blog post by Manish Tiwari",
-          );
+          .setAttribute("content", socialDescription);
         document.getElementById("tw-image").setAttribute("content", pageImage);
 
         const schemaNode = document.getElementById("post-schema");

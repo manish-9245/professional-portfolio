@@ -2,6 +2,20 @@
   --surface-max: 1080px;
 }
 
+html[data-theme="light"] {
+  --o-bg: #ffffff;
+  --o-border: color-mix(in srgb, #111827 14%, transparent);
+  color: #111827;
+  color-scheme: light;
+}
+
+html[data-theme="dark"] {
+  --o-bg: #0f1115;
+  --o-border: color-mix(in srgb, #e5e7eb 18%, transparent);
+  color: #e5e7eb;
+  color-scheme: dark;
+}
+
 html {
   scrollbar-gutter: stable;
 }
@@ -13,6 +27,8 @@ html {
 body {
   margin: 0;
   min-height: 100vh;
+  background: var(--o-bg, canvas);
+  color: inherit;
 }
 
 body.modal-open {
@@ -166,6 +182,36 @@ nav a[aria-current="page"] {
   text-decoration: none;
   background: color-mix(in srgb, currentColor 14%, transparent);
   border-color: color-mix(in srgb, currentColor 20%, transparent);
+}
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  padding: 0.34rem 0.7rem;
+  text-decoration: none;
+  line-height: 1.1;
+  font-size: 0.92rem;
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  cursor: pointer;
+  transition: background-color 0.14s ease, border-color 0.14s ease;
+}
+
+.theme-toggle:hover {
+  background: color-mix(in srgb, currentColor 9%, transparent);
+}
+
+.theme-toggle:focus-visible {
+  outline: 2px solid color-mix(in srgb, currentColor 35%, transparent);
+  outline-offset: 2px;
+}
+
+.theme-toggle-mobile {
+  display: none;
 }
 
 .nav-cta {
@@ -467,7 +513,7 @@ body.is-navigating main {
   border-radius: 14px;
   padding: 0;
   overflow: hidden;
-  background: color-mix(in srgb, white 96%, currentColor 4%);
+  background: color-mix(in srgb, var(--o-bg, canvas) 96%, transparent);
 }
 
 .scheduler-modal::backdrop {
@@ -490,8 +536,8 @@ body.is-navigating main {
   width: 100%;
   min-height: 76vh;
   border: 0;
-  background: white;
-  color-scheme: light;
+  background: color-mix(in srgb, var(--o-bg, canvas) 98%, transparent);
+  color-scheme: light dark;
 }
 
 .footer-row {
@@ -1013,10 +1059,20 @@ body.is-navigating main {
     order: 1;
   }
 
-  .nav-toggle {
+  .theme-toggle-mobile {
     display: inline-flex;
     margin-left: auto;
     order: 2;
+  }
+
+  .theme-toggle-nav {
+    display: none;
+  }
+
+  .nav-toggle {
+    display: inline-flex;
+    margin-left: 0;
+    order: 3;
   }
 
   nav {

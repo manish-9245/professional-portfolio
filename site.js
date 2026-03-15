@@ -8,7 +8,87 @@ function normalizePath(pathname) {
   return lastSegment || "index.html";
 }
 
-const schedulerUrl = "https://cal.com/manishtiwari/?embed=true&theme=light";
+const THEME_STORAGE_KEY = "site-theme";
+
+function readStoredTheme() {
+  try {
+    const theme = window.localStorage.getItem(THEME_STORAGE_KEY);
+    if (theme === "light" || theme === "dark") {
+      return theme;
+    }
+  } catch {
+    // ignore storage failures
+  }
+  return null;
+}
+
+function getSystemPreferredTheme() {
+  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+}
+
+function getActiveTheme() {
+  const current = document.documentElement.getAttribute("data-theme");
+  if (current === "light" || current === "dark") {
+    return current;
+  }
+  return readStoredTheme() || getSystemPreferredTheme();
+}
+
+function persistTheme(theme) {
+  try {
+    window.localStorage.setItem(THEME_STORAGE_KEY, theme);
+  } catch {
+    // ignore storage failures
+  }
+}
+
+function updateThemeToggleUI() {
+  const theme = getActiveTheme();
+  const isDark = theme === "dark";
+  document.querySelectorAll("[data-theme-toggle]").forEach((button) => {
+    button.textContent = isDark ? "☀ Light" : "☾ Dark";
+    button.setAttribute("aria-label", isDark ? "Switch to light mode" : "Switch to dark mode");
+    button.setAttribute("aria-pressed", String(isDark));
+    button.setAttribute("title", isDark ? "Switch to light mode" : "Switch to dark mode");
+  });
+}
+
+function applyTheme(theme, options = {}) {
+  const { persist = false } = options;
+  const normalizedTheme = theme === "dark" ? "dark" : "light";
+  document.documentElement.setAttribute("data-theme", normalizedTheme);
+  document.documentElement.setAttribute("data-o-theme", normalizedTheme);
+
+  if (persist) {
+    persistTheme(normalizedTheme);
+  }
+
+  updateThemeToggleUI();
+}
+
+function initializeTheme() {
+  applyTheme(readStoredTheme() || getSystemPreferredTheme());
+
+  const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+  if (mediaQuery && !mediaQuery._themeBound) {
+    const onSystemThemeChange = () => {
+      if (!readStoredTheme()) {
+        applyTheme(getSystemPreferredTheme());
+      }
+    };
+
+    if (typeof mediaQuery.addEventListener === "function") {
+      mediaQuery.addEventListener("change", onSystemThemeChange);
+    } else if (typeof mediaQuery.addListener === "function") {
+      mediaQuery.addListener(onSystemThemeChange);
+    }
+    mediaQuery._themeBound = true;
+  }
+}
+
+function getSchedulerUrl() {
+  return `https://cal.com/manishtiwari/?embed=true&theme=${getActiveTheme()}`;
+}
 
 function getSchedulerModal() {
   return document.getElementById("scheduler-modal");
@@ -16,8 +96,11 @@ function getSchedulerModal() {
 
 function ensureSchedulerFrame() {
   const frame = document.querySelector("[data-scheduler-frame]");
-  if (frame && !frame.getAttribute("src")) {
-    frame.setAttribute("src", schedulerUrl);
+  if (frame) {
+    const nextSrc = getSchedulerUrl();
+    if (frame.getAttribute("src") !== nextSrc) {
+      frame.setAttribute("src", nextSrc);
+    }
   }
   return frame;
 }
@@ -122,6 +205,55 @@ function initializeMobileNavigation() {
   });
 
   toggle.dataset.bound = "true";
+}
+
+function initializeThemeToggle() {
+  const headerRow = document.querySelector(".header-row");
+  const navList = document.querySelector("header nav ul");
+  if (!headerRow || !navList) {
+    return;
+  }
+
+  let navToggle = navList.querySelector(".theme-toggle-nav[data-theme-toggle]");
+  if (!navToggle) {
+    const item = document.createElement("li");
+    navToggle = document.createElement("button");
+    navToggle.type = "button";
+    navToggle.className = "theme-toggle theme-toggle-nav";
+    navToggle.setAttribute("data-theme-toggle", "");
+    item.appendChild(navToggle);
+    navList.appendChild(item);
+  }
+
+  let mobileToggle = headerRow.querySelector(
+    ".theme-toggle-mobile[data-theme-toggle]",
+  );
+  if (!mobileToggle) {
+    mobileToggle = document.createElement("button");
+    mobileToggle.type = "button";
+    mobileToggle.className = "theme-toggle theme-toggle-mobile";
+    mobileToggle.setAttribute("data-theme-toggle", "");
+    mobileToggle.setAttribute("aria-label", "Toggle dark mode");
+    headerRow.insertBefore(mobileToggle, document.querySelector("header nav"));
+  }
+
+  const bindToggle = (toggle) => {
+    if (!toggle || toggle.dataset.bound === "true") {
+      return;
+    }
+
+    toggle.addEventListener("click", () => {
+      const nextTheme = getActiveTheme() === "dark" ? "light" : "dark";
+      applyTheme(nextTheme, { persist: true });
+      ensureSchedulerFrame();
+    });
+    toggle.dataset.bound = "true";
+  };
+
+  bindToggle(navToggle);
+  bindToggle(mobileToggle);
+
+  updateThemeToggleUI();
 }
 
 const BLOG_INDEX_CACHE_KEY = "blog-index-cache-v2";
@@ -450,6 +582,7 @@ function initializeProjectCarousels() {
 }
 
 function initializePageFeatures() {
+  initializeThemeToggle();
   initializeMobileNavigation();
   initializeBlogsPage();
   initializeProjectCarousels();
@@ -603,6 +736,7 @@ window.addEventListener("popstate", () => {
 });
 
 setActivePage();
+initializeTheme();
 initializePageFeatures();
 
 document.querySelectorAll("[data-year]").forEach((node) => {
