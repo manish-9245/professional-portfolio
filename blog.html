@@ -456,6 +456,14 @@
         text-wrap: balance;
       }
 
+      #blog-main {
+        min-height: 0;
+      }
+
+      #blog-main.is-loading {
+        min-height: clamp(1200px, 190vh, 2400px);
+      }
+
       /* Error / loading */
       .blog-loading,
       .blog-error {
@@ -595,6 +603,7 @@
       .related-posts {
         padding-top: 0.4rem;
         padding-bottom: 2.2rem;
+        min-height: 360px;
       }
 
       .related-posts h2 {
@@ -783,7 +792,7 @@
       </div>
     </header>
 
-    <main id="blog-main" data-router-view></main>
+    <main id="blog-main" data-router-view class="is-loading"></main>
 
     <footer class="site-footer">
       <div class="surface footer-row">
@@ -1333,7 +1342,7 @@
                     <span aria-hidden="true">•</span>
                     <span>${tags[0]}</span>
                   </p>
-                  <h3 class="related-title"><a href="./posts/${encodeURIComponent(post.slug)}.html">${post.title}</a></h3>
+                  <h3 class="related-title"><a href="./blog.html?post=${encodeURIComponent(post.slug)}">${post.title}</a></h3>
                   <p class="related-desc">${post.description || ""}</p>
                 </article>`;
               })
@@ -1412,17 +1421,20 @@
         const slug = params.get("post");
         const main = document.getElementById("blog-main");
         const postCacheKey = slug ? `blog-post-cache-v2:${slug}` : null;
+        const indexPromise = getBlogIndexForPage().catch(() => []);
+
+        if (main) {
+          main.classList.add("is-loading");
+        }
 
         if (!slug) {
           main.innerHTML = `<div class="blog-error"><p>No post specified.</p><p><a href="./blogs.html">← All blogs</a></p></div>`;
+          main.classList.remove("is-loading");
           return;
         }
 
         let raw;
-        let allPosts = [];
         try {
-          const indexPromise = getBlogIndexForPage().catch(() => []);
-
           const cached = postCacheKey
             ? sessionStorage.getItem(postCacheKey)
             : null;
@@ -1433,38 +1445,33 @@
             }
           }
 
-          const postPromise = raw
-            ? Promise.resolve(raw)
-            : fetch(`./posts/${slug}.md`).then(async (res) => {
-                if (!res.ok) throw new Error(res.status);
-                const text = await res.text();
-                if (postCacheKey) {
-                  try {
-                    sessionStorage.setItem(
-                      postCacheKey,
-                      JSON.stringify({ timestamp: Date.now(), body: text }),
-                    );
-                  } catch {
-                    // ignore storage failures
-                  }
-                }
-                return text;
-              });
-
-          [allPosts, raw] = await Promise.all([indexPromise, postPromise]);
+          if (!raw) {
+            const res = await fetch(`./posts/${slug}.md`);
+            if (!res.ok) throw new Error(res.status);
+            raw = await res.text();
+            if (postCacheKey) {
+              try {
+                sessionStorage.setItem(
+                  postCacheKey,
+                  JSON.stringify({ timestamp: Date.now(), body: raw }),
+                );
+              } catch {
+                // ignore storage failures
+              }
+            }
+          }
 
           if (!raw) {
             throw new Error("Post body unavailable");
           }
         } catch {
           main.innerHTML = `<div class="blog-error"><p>Post not found.</p><p><a href="./blogs.html">← All blogs</a></p></div>`;
+          main.classList.remove("is-loading");
           return;
         }
 
         const { meta, body } = parseFrontmatter(raw);
-        const indexedPost = Array.isArray(allPosts)
-          ? allPosts.find((post) => post && post.slug === slug)
-          : null;
+        const indexedPost = null;
         const title = (
           meta.title ||
           indexedPost?.title ||
@@ -1621,8 +1628,14 @@
         toc.innerHTML = buildToc(prose);
         initTocScroll(toc);
 
-        const relatedPosts = getRelatedPosts(currentPost, allPosts, 3);
-        renderRelatedPosts(relatedPosts);
+        indexPromise
+          .then((allPosts) => {
+            const relatedPosts = getRelatedPosts(currentPost, allPosts, 3);
+            renderRelatedPosts(relatedPosts);
+          })
+          .catch(() => {
+            renderRelatedPosts([]);
+          });
         renderShareActions({
           url: pageUrl,
           title: socialTitle,
@@ -1641,6 +1654,8 @@
           attributes: true,
           attributeFilter: ["data-theme"],
         });
+
+        main.classList.remove("is-loading");
       }
 
       loadPost();
