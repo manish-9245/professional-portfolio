@@ -96,7 +96,11 @@
         border-bottom: 1px solid
           var(--o-border, color-mix(in srgb, currentColor 15%, transparent));
         backdrop-filter: blur(8px);
-        background: color-mix(in srgb, var(--o-bg, transparent) 88%, transparent);
+        background: color-mix(
+          in srgb,
+          var(--o-bg, transparent) 88%,
+          transparent
+        );
       }
 
       .surface {
@@ -189,7 +193,7 @@
       rel="stylesheet"
       href="https://unpkg.com/@knadh/oat/oat.min.css"
       media="print"
-      onload="this.media='all'"
+      onload="this.media = 'all'"
     />
     <noscript>
       <link rel="stylesheet" href="https://unpkg.com/@knadh/oat/oat.min.css" />
@@ -199,7 +203,10 @@
       rel="preload"
       href="./styles.css"
       as="style"
-      onload="this.onload=null;this.rel='stylesheet'"
+      onload="
+        this.onload = null;
+        this.rel = 'stylesheet';
+      "
     />
     <noscript>
       <link rel="stylesheet" href="./styles.css" />

@@ -57,7 +57,7 @@
       rel="stylesheet"
       href="https://unpkg.com/@knadh/oat/oat.min.css"
       media="print"
-      onload="this.media='all'"
+      onload="this.media = 'all'"
     />
     <noscript>
       <link rel="stylesheet" href="https://unpkg.com/@knadh/oat/oat.min.css" />
@@ -67,7 +67,10 @@
       rel="preload"
       href="./styles.css"
       as="style"
-      onload="this.onload=null;this.rel='stylesheet'"
+      onload="
+        this.onload = null;
+        this.rel = 'stylesheet';
+      "
     />
     <noscript>
       <link rel="stylesheet" href="./styles.css" />
