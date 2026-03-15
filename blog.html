@@ -832,7 +832,9 @@
       }
 
       function extractFirstMarkdownImage(markdown = "") {
-        const imageMatch = markdown.match(/!\[[^\]]*\]\(([^)\s]+)(?:\s+"[^"]*")?\)/);
+        const imageMatch = markdown.match(
+          /!\[[^\]]*\]\(([^)\s]+)(?:\s+"[^"]*")?\)/,
+        );
         return imageMatch ? imageMatch[1].trim() : "";
       }
 
@@ -1279,8 +1281,12 @@
         const indexedPost = Array.isArray(allPosts)
           ? allPosts.find((post) => post && post.slug === slug)
           : null;
-        const title =
-          (meta.title || indexedPost?.title || slugToTitle(slug) || slug).trim();
+        const title = (
+          meta.title ||
+          indexedPost?.title ||
+          slugToTitle(slug) ||
+          slug
+        ).trim();
         const date = meta.date || "";
         const desc = (
           meta.description ||
