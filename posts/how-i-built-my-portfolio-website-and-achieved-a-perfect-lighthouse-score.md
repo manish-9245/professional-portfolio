@@ -9,6 +9,8 @@ description: "A deep dive into the architecture, tech stack, and best practices 
 
 When it came time to rebuild my portfolio website, I had a single, slightly obsessive goal: **A perfect 100/100 in Performance, Accessibility, Best Practices, and SEO on Google Lighthouse.**
 
+You can verify the result in this [PageSpeed Insights desktop report](https://pagespeed.web.dev/analysis/https-www-buildwithmanish-com-index-html/gfdlhz53me?form_factor=desktop).
+
 ![Google Lighthouse 100/100/100/100 Score Requirements](./image/optimized/score.webp)
 
 In an era where every website seems to ship megabytes of JavaScript just to render a static page, getting a perfect score requires unlearning a lot of modern web development habits. We are so accustomed to reaching for heavy frameworks for everything that we often forget how powerful and fast the native web platform is.
