@@ -390,6 +390,7 @@ body.is-navigating main {
 
 .project-thumb {
   width: 100%;
+  height: auto;
   aspect-ratio: 16 / 9;
   object-fit: cover;
   border-bottom: 1px solid var(--o-border, color-mix(in srgb, currentColor 15%, transparent));
@@ -775,6 +776,10 @@ body.is-navigating main {
   opacity: 0;
   transition: opacity 0.35s ease;
   pointer-events: none;
+}
+
+.hero-image {
+  height: auto;
 }
 
 .project-carousel-image.is-active {
