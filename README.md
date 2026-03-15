@@ -55,17 +55,27 @@ Because there is no Node.js build step, running this site locally is as simple a
    description: "A short description of this post for the SEO and card."
    ---
    ```
-3. Register the post in `posts/index.json` so the frontend knows it exists:
-   ```json
-   {
-     "slug": "my-new-post",
-     "title": "My New Post Title",
-     "date": "2026-04-01",
-     "displayDate": "Apr 1, 2026",
-     "description": "A short description of this post for the SEO and card."
-   }
+3. Run the content generator:
+   ```bash
+   node scripts/generate-blog-share-pages.mjs
    ```
-   *(Note: The search/filter functions explicitly use this JSON manifest. It ensures the UI doesn't have to download every single markdown file just to render the homepage card list).*
+   This command scans every markdown file in `posts/` and automatically updates:
+   - `posts/index.json` (for blog listings/search)
+   - `posts/<slug>.html` share pages (OG/Twitter metadata)
+   - `sitemap.xml` (including post permalink URLs)
+
+### Vercel deployment (markdown-only workflow)
+
+If you deploy on Vercel, you do **not** need to manually maintain `posts/<slug>.html` or `posts/index.json`.
+
+- The project includes `vercel.json` with `buildCommand: npm run build`
+- `npm run build` runs `node scripts/generate-blog-share-pages.mjs`
+- That means on every deploy, Vercel regenerates all blog metadata artifacts from markdown automatically
+
+Your authoring flow becomes:
+1. Create/update markdown in `posts/*.md`
+2. Push to GitHub
+3. Vercel builds and regenerates share pages + index + sitemap
 
 ## Image Optimization Pipeline
 

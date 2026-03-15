@@ -297,6 +297,7 @@ async function getBlogIndex() {
 function createBlogCard(post) {
   const slug = encodeURIComponent(post.slug);
   const tag = getBlogTag(post.title);
+  const href = `./posts/${slug}.html`;
 
   return `
     <article class="panel blog-card">
@@ -305,10 +306,10 @@ function createBlogCard(post) {
         <span class="blog-card-dot" aria-hidden="true">•</span>
         <span class="blog-chip">${tag}</span>
       </p>
-      <h2 class="blog-card-title"><a href="./blog.html?post=${slug}">${post.title}</a></h2>
+      <h2 class="blog-card-title"><a href="${href}">${post.title}</a></h2>
       <p class="blog-card-desc">${post.description}</p>
       <div class="actions-row">
-        <a href="./blog.html?post=${slug}">Read article →</a>
+        <a href="${href}">Read article →</a>
       </div>
     </article>`;
 }
@@ -316,6 +317,7 @@ function createBlogCard(post) {
 function createFeaturedBlogCard(post) {
   const slug = encodeURIComponent(post.slug);
   const tag = getBlogTag(post.title);
+  const href = `./posts/${slug}.html`;
 
   return `
     <article class="panel blog-card blog-card--featured">
@@ -326,10 +328,10 @@ function createFeaturedBlogCard(post) {
         <span class="blog-card-dot" aria-hidden="true">•</span>
         <span class="blog-chip">${tag}</span>
       </p>
-      <h2 class="blog-card-title"><a href="./blog.html?post=${slug}">${post.title}</a></h2>
+      <h2 class="blog-card-title"><a href="${href}">${post.title}</a></h2>
       <p class="blog-card-desc">${post.description}</p>
       <div class="actions-row">
-        <a href="./blog.html?post=${slug}">Read full article →</a>
+        <a href="${href}">Read full article →</a>
       </div>
     </article>`;
 }
@@ -446,6 +448,42 @@ function prefetchBlogPost(slug) {
     .catch(() => {
       // ignore prefetch failures
     });
+}
+
+function createHomepageBlogCard(post) {
+  const slug = encodeURIComponent(post.slug);
+  const tag = getBlogTag(post.title);
+  const href = `./posts/${slug}.html`;
+
+  return `
+    <a class="panel blog-card" href="${href}">
+      <span class="blog-tag">${tag}</span>
+      <h3 class="blog-title">${post.title}</h3>
+      <span class="muted blog-read">Read article &#8250;</span>
+    </a>`;
+}
+
+async function initializeHomepageRecentBlogs() {
+  const container = document.getElementById("home-recent-blogs");
+  if (!container || container.dataset.loaded === "true") {
+    return;
+  }
+
+  try {
+    const posts = await getBlogIndex();
+    const latestPosts = posts.slice(0, 3);
+
+    if (!latestPosts.length) {
+      container.innerHTML = '<article class="panel"><p class="muted">No posts available yet.</p></article>';
+      container.dataset.loaded = "true";
+      return;
+    }
+
+    container.innerHTML = latestPosts.map(createHomepageBlogCard).join("");
+    container.dataset.loaded = "true";
+  } catch {
+    container.innerHTML = '<article class="panel"><p class="muted">Could not load latest posts right now.</p></article>';
+  }
 }
 
 async function initializeBlogsPage() {
@@ -584,6 +622,7 @@ function initializeProjectCarousels() {
 function initializePageFeatures() {
   initializeThemeToggle();
   initializeMobileNavigation();
+  initializeHomepageRecentBlogs();
   initializeBlogsPage();
   initializeProjectCarousels();
 }

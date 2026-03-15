@@ -573,6 +573,46 @@
         grid-template-columns: repeat(3, minmax(0, 1fr));
       }
 
+      .blog-share {
+        padding-top: 0.2rem;
+        padding-bottom: 2rem;
+      }
+
+      .blog-share h2 {
+        margin: 0 0 0.9rem;
+        font-size: 1.1rem;
+      }
+
+      .blog-share-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.55rem;
+      }
+
+      .blog-share-link,
+      .blog-share-copy {
+        border: 1px solid
+          var(--o-border, color-mix(in srgb, currentColor 15%, transparent));
+        border-radius: 999px;
+        padding: 0.34rem 0.7rem;
+        font-size: 0.82rem;
+        line-height: 1.1;
+        text-decoration: none;
+        color: inherit;
+        background: color-mix(in srgb, var(--o-bg, canvas) 96%, transparent);
+      }
+
+      .blog-share-copy {
+        font: inherit;
+        cursor: pointer;
+      }
+
+      .blog-share-link:hover,
+      .blog-share-copy:hover {
+        border-color: color-mix(in srgb, currentColor 28%, transparent);
+        background: color-mix(in srgb, currentColor 8%, transparent);
+      }
+
       .related-card {
         border: 1px solid
           var(--o-border, color-mix(in srgb, currentColor 14%, transparent));
@@ -836,6 +876,10 @@
           /!\[[^\]]*\]\(([^)\s]+)(?:\s+"[^"]*")?\)/,
         );
         return imageMatch ? imageMatch[1].trim() : "";
+      }
+
+      function getPostPermalink(slug) {
+        return `https://buildwithmanish.com/posts/${encodeURIComponent(slug)}.html`;
       }
 
       function readSessionJson(key) {
@@ -1214,12 +1258,56 @@
                     <span aria-hidden="true">•</span>
                     <span>${tags[0]}</span>
                   </p>
-                  <h3 class="related-title"><a href="./blog.html?post=${encodeURIComponent(post.slug)}">${post.title}</a></h3>
+                  <h3 class="related-title"><a href="./posts/${encodeURIComponent(post.slug)}.html">${post.title}</a></h3>
                   <p class="related-desc">${post.description || ""}</p>
                 </article>`;
               })
               .join("")}
           </div>`;
+      }
+
+      function renderShareActions({ url, title, description }) {
+        const section = document.getElementById("blog-share");
+        if (!section) {
+          return;
+        }
+
+        const encodedUrl = encodeURIComponent(url);
+        const encodedTitle = encodeURIComponent(title || "");
+        const encodedDescription = encodeURIComponent(description || "");
+
+        section.innerHTML = `
+          <h2>Share this post</h2>
+          <div class="blog-share-actions">
+            <a class="blog-share-link" target="_blank" rel="noopener noreferrer" href="https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}">LinkedIn</a>
+            <a class="blog-share-link" target="_blank" rel="noopener noreferrer" href="https://x.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}">X</a>
+            <a class="blog-share-link" target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}">Facebook</a>
+            <a class="blog-share-link" target="_blank" rel="noopener noreferrer" href="https://api.whatsapp.com/send?text=${encodedTitle}%20${encodedUrl}">WhatsApp</a>
+            <a class="blog-share-link" target="_blank" rel="noopener noreferrer" href="https://t.me/share/url?url=${encodedUrl}&text=${encodedTitle}">Telegram</a>
+            <a class="blog-share-link" target="_blank" rel="noopener noreferrer" href="https://www.reddit.com/submit?url=${encodedUrl}&title=${encodedTitle}">Reddit</a>
+            <a class="blog-share-link" href="mailto:?subject=${encodedTitle}&body=${encodedDescription}%0A%0A${encodedUrl}">Email</a>
+            <button type="button" class="blog-share-copy" data-share-copy data-url="${url}">Copy link</button>
+          </div>`;
+
+        const copyButton = section.querySelector("[data-share-copy]");
+        if (copyButton && copyButton.dataset.bound !== "true") {
+          copyButton.addEventListener("click", async () => {
+            const linkToCopy = copyButton.getAttribute("data-url") || url;
+            try {
+              await copyText(linkToCopy);
+              copyButton.textContent = "Copied";
+              window.setTimeout(() => {
+                copyButton.textContent = "Copy link";
+              }, 1500);
+            } catch {
+              copyButton.textContent = "Failed";
+              window.setTimeout(() => {
+                copyButton.textContent = "Copy link";
+              }, 1500);
+            }
+          });
+          copyButton.dataset.bound = "true";
+        }
       }
 
       // ── Main ───────────────────────────────────────────────
@@ -1311,7 +1399,7 @@
           meta["twitter:description"] ||
           desc
         ).trim();
-        const pageUrl = `https://buildwithmanish.com/blog.html?post=${encodeURIComponent(slug)}`;
+        const pageUrl = getPostPermalink(slug);
         const imageFromFrontmatter =
           meta.image || meta.ogImage || meta["og:image"] || "";
         const imageFromBody = extractFirstMarkdownImage(body);
@@ -1412,6 +1500,7 @@
             </aside>
           </div>
           <section class="surface related-posts" id="related-posts" aria-label="Related blog posts"></section>
+          <section class="surface blog-share" id="blog-share" aria-label="Share this post"></section>
           <div class="surface" style="padding-top:0">
             <a href="./blogs.html">← Back to all blogs</a>
           </div>`;
@@ -1432,6 +1521,11 @@
 
         const relatedPosts = getRelatedPosts(currentPost, allPosts, 3);
         renderRelatedPosts(relatedPosts);
+        renderShareActions({
+          url: pageUrl,
+          title: socialTitle,
+          description: socialDescription,
+        });
 
         // Dark mode hljs stylesheet swap
         function syncHljs() {

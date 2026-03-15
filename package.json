@@ -1,0 +1,9 @@
+{
+  "name": "professional-portfolio",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/generate-blog-share-pages.mjs",
+    "generate:blogs": "node scripts/generate-blog-share-pages.mjs"
+  }
+}
