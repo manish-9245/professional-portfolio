@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
 
+Host: www.buildwithmanish.com
+Sitemap: https://www.buildwithmanish.com/sitemap.xml
 Sitemap: https://buildwithmanish.com/sitemap.xml
