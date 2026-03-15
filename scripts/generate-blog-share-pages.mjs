@@ -125,15 +125,27 @@ function renderPostHtml({
     <meta property="og:description" content="${escapeHtml(socialDescription)}" />
     <meta property="og:url" content="${pageUrl}" />
     <meta property="og:image" content="${escapeHtml(pageImage)}" />
+    <meta property="og:image:secure_url" content="${escapeHtml(pageImage)}" />
+    <meta property="og:image:alt" content="${escapeHtml(socialTitle)}" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="${escapeHtml(socialTitle)}" />
     <meta name="twitter:description" content="${escapeHtml(socialDescription)}" />
     <meta name="twitter:image" content="${escapeHtml(pageImage)}" />
-${publishedMeta}    <meta http-equiv="refresh" content="0; url=${targetUrl}" />
-    <script>window.location.replace('${targetUrl}');</script>
+    <meta name="twitter:image:alt" content="${escapeHtml(socialTitle)}" />
+${publishedMeta}    <script>
+      window.addEventListener('DOMContentLoaded', () => {
+        window.setTimeout(() => {
+          window.location.replace('${targetUrl}');
+        }, 60);
+      });
+    </script>
   </head>
   <body>
-    <p>Redirecting to <a href="${targetUrl}">the article</a>…</p>
+    <main>
+      <h1>${escapeHtml(title)}</h1>
+      <p>${escapeHtml(description)}</p>
+      <p><a href="${targetUrl}">Continue to the article</a></p>
+    </main>
   </body>
 </html>
 `;
