@@ -927,6 +927,11 @@ html[data-theme="dark"] .project-carousel-btn:hover {
   background: color-mix(in srgb, currentColor 11%, transparent);
 }
 
+/* Reserve space for dynamically injected blog cards — prevents CLS */
+#home-recent-blogs:empty {
+  min-height: 340px;
+}
+
 .blog-card {
   display: flex;
   flex-direction: column;
