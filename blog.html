@@ -429,6 +429,16 @@
         font-size: 0.82rem;
       }
 
+      .blog-view-counter {
+        margin-top: 0.3rem;
+      }
+
+      .blog-view-counter img {
+        display: block;
+        max-width: 100%;
+        height: auto;
+      }
+
       /* Post header */
       .blog-post-header {
         max-width: var(--surface-max);
@@ -931,6 +941,20 @@
 
       function getPostPermalink(slug) {
         return `https://buildwithmanish.com/posts/${encodeURIComponent(slug)}.html`;
+      }
+
+      function getViewCounterBadgeSrc(pageUrl) {
+        const endpoint = "https://hitscounter.dev/api/hit";
+        const params = new URLSearchParams({
+          url: pageUrl,
+          label: "blog views",
+          icon: "eye",
+          color: "#198754",
+          message: "",
+          style: "flat",
+          tz: "Indian/Christmas",
+        });
+        return `${endpoint}?${params.toString()}`;
       }
 
       function readSessionJson(key) {
@@ -1564,6 +1588,12 @@
               <section class="blog-meta-card" aria-label="Publication date">
                 <p class="blog-meta-label">Published</p>
                 <p class="blog-meta-value">${fmtDate(date)}</p>
+              </section>
+              <section class="blog-meta-card" aria-label="Blog views">
+                <p class="blog-meta-label">Views</p>
+                <div class="blog-view-counter">
+                  <img src="${getViewCounterBadgeSrc(pageUrl)}" alt="Blog views counter" loading="lazy" decoding="async" />
+                </div>
               </section>
               <section class="blog-meta-card" aria-label="Blog navigation">
                 <p class="blog-meta-label">Navigate</p>
