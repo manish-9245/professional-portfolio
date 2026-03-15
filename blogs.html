@@ -51,18 +51,7 @@
     </script>
     <link rel="stylesheet" href="./oat.min.css" />
     <script src="./oat.min.js" defer></script>
-    <link
-      rel="preload"
-      href="./styles.css"
-      as="style"
-      onload="
-        this.onload = null;
-        this.rel = 'stylesheet';
-      "
-    />
-    <noscript>
-      <link rel="stylesheet" href="./styles.css" />
-    </noscript>
+    <link rel="stylesheet" href="./styles.css" />
     <script src="./site.js" defer></script>
   </head>
   <body>
@@ -78,8 +67,24 @@
             decoding="async"
           />
         </a>
+        <button
+          type="button"
+          class="theme-toggle theme-toggle-mobile"
+          data-theme-toggle
+          aria-label="Toggle dark mode"
+        ></button>
+        <button
+          type="button"
+          class="nav-toggle"
+          data-nav-toggle
+          aria-controls="primary-nav-list"
+          aria-expanded="false"
+          aria-label="Toggle navigation menu"
+        >
+          <span></span><span></span><span></span>
+        </button>
         <nav aria-label="Primary">
-          <ul>
+          <ul id="primary-nav-list">
             <li><a href="./index.html" data-page="index.html">Home</a></li>
             <li><a href="./about.html" data-page="about.html">About</a></li>
             <li>
@@ -88,6 +93,14 @@
             <li><a href="./blogs.html" data-page="blogs.html">Blogs</a></li>
             <li>
               <a href="./contact.html" data-page="contact.html">Contact</a>
+            </li>
+            <li>
+              <button
+                type="button"
+                class="theme-toggle theme-toggle-nav"
+                data-theme-toggle
+                aria-label="Toggle dark mode"
+              ></button>
             </li>
             <li>
               <a
