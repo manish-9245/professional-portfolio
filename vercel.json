@@ -1,18 +1,4 @@
 {
   "buildCommand": "npm run build",
-  "outputDirectory": ".",
-  "redirects": [
-    {
-      "source": "/blog.html",
-      "has": [
-        {
-          "type": "query",
-          "key": "post",
-          "value": "(?<slug>[^&]+)"
-        }
-      ],
-      "destination": "/posts/:slug.html",
-      "permanent": false
-    }
-  ]
+  "outputDirectory": "."
 }
