@@ -2,12 +2,12 @@
 title: "How I built an AI blogger Agent using N8N,Github and Jekyll"
 date: "2025-12-18"
 slug: "how-i-built-an-ai-blogger-agent-using-n8ngithub-and-jekyll"
-description: "In the current landscape of software engineering, “content creation” is often viewed as a secondary concern—a distraction from shipping code. However, technical documentation and knowledge sharing are..."
+description: "In the current landscape of software engineering, “content creation” is often viewed as a secondary concern-a distraction from shipping code. However, technical documentation and knowledge sharing are..."
 ---
 
 ![Hero Image](https://blogs.buildwithmanish.com/assets/images/hero-how-i-built-an-ai-blogger-agent-using-n8ngithub-and-jekyll-0-2025-12-18-22032.png)
 
-In the current landscape of software engineering, “content creation” is often viewed as a secondary concern—a distraction from shipping code. However, technical documentation and knowledge sharing are critical components of system design. The problem isn’t the lack of knowledge; it’s the friction involved in the pipeline: ideation, drafting, asset creation, formatting, and deployment.
+In the current landscape of software engineering, “content creation” is often viewed as a secondary concern-a distraction from shipping code. However, technical documentation and knowledge sharing are critical components of system design. The problem isn’t the lack of knowledge; it’s the friction involved in the pipeline: ideation, drafting, asset creation, formatting, and deployment.
 
 I decided to solve this not by writing more, but by engineering a solution. I built an autonomous AI Agent that functions as a full-stack technical blogger. This isn’t a simple wrapper around ChatGPT that spits out generic text. This is a deterministic, multi-step pipeline that orchestrates planning, visual asset generation, code-aware writing, version control integration, and continuous deployment.
 
@@ -268,7 +268,7 @@ layout: null
       "title": "How I built an AI blogger Agent using N8N,Github and Jekyll",
       "url": "/deep-dive/n8n/ai-automation/jekyll/system-design/2025/12/18/how-i-built-an-ai-blogger-agent-using-n8ngithub-and-jekyll.html",
       "tags": "",
-      "content": "![Hero Image](https://blogs.buildwithmanish.com/assets/images/hero-how-i-built-an-ai-blogger-agent-using-n8ngithub-and-jekyll-0-2025-12-18-22032.png) In the current landscape of software engineering, &quot;content creation&quot; is often viewed as a secondary concern—a distraction from shipping code. However, technical documentation and knowledge sharing are critical components of system design. The problem isn&#39;t the lack of knowledge; it&#39;s the friction involved in the pipeline: ideation, drafting,..."
+      "content": "![Hero Image](https://blogs.buildwithmanish.com/assets/images/hero-how-i-built-an-ai-blogger-agent-using-n8ngithub-and-jekyll-0-2025-12-18-22032.png) In the current landscape of software engineering, &quot;content creation&quot; is often viewed as a secondary concern-a distraction from shipping code. However, technical documentation and knowledge sharing are critical components of system design. The problem isn&#39;t the lack of knowledge; it&#39;s the friction involved in the pipeline: ideation, drafting,..."
     } ,
   
     {
@@ -317,7 +317,7 @@ layout: null
       "title": "Beyond GET and SET: Architecting Resilient Distributed Caching Patterns for Microservices",
       "url": "/deep-dive/system-design/redis/distributed-systems/microservices/2025/12/17/beyond-get-and-set-architecting-resilient-distributed-caching-patterns-for-microservices.html",
       "tags": "",
-      "content": "Introduction In the infancy of a backend application, caching is often treated as a simple key-value store optimization—a sprinkle of “magic dust” to speed up slow SQL queries. Developers implement a basic client.get() and client.set(), push to production, and watch latencies drop. It feels victorious. However, as traffic scales and..."
+      "content": "Introduction In the infancy of a backend application, caching is often treated as a simple key-value store optimization-a sprinkle of “magic dust” to speed up slow SQL queries. Developers implement a basic client.get() and client.set(), push to production, and watch latencies drop. It feels victorious. However, as traffic scales and..."
     } 
   
 ]
@@ -349,7 +349,7 @@ Committing 7 images + 1 markdown file in rapid succession can trigger secondary 
 
 ## Conclusion: The ROI of Automation
 
-This system demonstrates the power of **Composite AI**—combining deterministic code (n8n/GitHub/Jekyll) with probabilistic AI (LLMs).
+This system demonstrates the power of **Composite AI**-combining deterministic code (n8n/GitHub/Jekyll) with probabilistic AI (LLMs).
 
 By decoupling the _Planner_ from the _Writer_ and managing assets programmatically, we achieve a level of consistency and quality that simple “Prompt-to-Blog” tools cannot match.
 

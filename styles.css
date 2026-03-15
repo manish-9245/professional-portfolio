@@ -1154,13 +1154,34 @@ html[data-theme="dark"] .project-carousel-btn:hover {
     display: none;
   }
 
+  .hero-stats-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.6rem;
+    align-items: stretch;
+  }
+
+  .hero-stat {
+    min-height: 4.5rem;
+    padding: 0.6rem 0.7rem;
+    border: 1px solid var(--o-border, color-mix(in srgb, currentColor 14%, transparent));
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--o-bg, transparent) 95%, transparent);
+    justify-content: center;
+  }
+
+  .hero-stat strong {
+    font-size: 1.05rem;
+  }
+
+  .hero-stat span {
+    font-size: 0.74rem;
+    line-height: 1.35;
+  }
+
   .contact-meta-row {
     gap: 0.35rem 0.5rem;
     font-size: 0.84rem;
-  }
-
-  .hero-stats-row {
-    gap: 0.6rem 1.5rem;
   }
 
   .scheduler-iframe {
@@ -1171,5 +1192,11 @@ html[data-theme="dark"] .project-carousel-btn:hover {
     aspect-ratio: auto;
     object-fit: contain;
     height: auto;
+  }
+}
+
+@media (max-width: 420px) {
+  .hero-stats-row {
+    grid-template-columns: 1fr;
   }
 }

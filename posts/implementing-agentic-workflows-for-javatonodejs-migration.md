@@ -11,7 +11,7 @@ Legacy migration is the “dark matter” of software engineering: we know it ma
 
 For the last decade, the migration of monolithic Java Spring Boot applications to microservices-based Node.js architectures (typically running on Kubernetes) has been a manual, high-friction endeavor. The “Strangler Fig” pattern is reliable, but slow.
 
-However, the emergence of **Agentic Workflows**—specifically Large Language Models (LLMs) integrated into a loop of reasoning, tool execution, and environment feedback—has fundamentally altered the economics of refactoring. We are no longer talking about “code translation” (a simple syntax swap). We are talking about **semantic migration** with self-healing capabilities.
+However, the emergence of **Agentic Workflows**-specifically Large Language Models (LLMs) integrated into a loop of reasoning, tool execution, and environment feedback-has fundamentally altered the economics of refactoring. We are no longer talking about “code translation” (a simple syntax swap). We are talking about **semantic migration** with self-healing capabilities.
 
 This post details the architecture and implementation of a specialized “Migration Agent” designed to convert strong-typed Spring Boot applications into idiomatic Node.js services (using NestJS as the target due to its structural parity with Spring). We will explore AST parsing, paradigm mapping, and the critical **Plan, Transpile, Verify** feedback loop.
 
@@ -108,7 +108,7 @@ The Planner does not write code. It analyzes the Java file and the AST metadata 
 
 ### The Transpiler (Paradigm Mapping)
 
-This is where the semantic translation happens. We are targeting **NestJS** because its architecture—Decorators, Modules, and Dependency Injection—maps 1:1 with Spring Boot.
+This is where the semantic translation happens. We are targeting **NestJS** because its architecture-Decorators, Modules, and Dependency Injection-maps 1:1 with Spring Boot.
 
 ![Comparison Chart](https://blogs.buildwithmanish.com/assets/images/comparison_chart-implementing-agentic-workflows-for-javatonodejs-migration-4-2025-12-18-63606.png)
 

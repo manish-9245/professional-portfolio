@@ -317,4 +317,4 @@ Migrating to Virtual Threads is the most significant shift in Java concurrency s
 
 However, it is not a magic bullet that fixes bad architecture. It exposes bottlenecks downstream (databases, external APIs) and requires disciplined management of shared state. By moving away from `synchronized` toward `ReentrantLock` and `StampedLock`, and by abandoning the concept of thread pooling for task execution, you can unlock the full potential of modern hardware.
 
-The era of the “One-Thread-Per-Request” is back—but this time, it scales.
+The era of the “One-Thread-Per-Request” is back-but this time, it scales.

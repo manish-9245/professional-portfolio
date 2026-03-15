@@ -17,7 +17,7 @@ Here is the in-depth breakdown of how I designed, built, and optimized this port
 
 ## The Tech Stack: Radically Simple
 
-My first major decision was throwing out the Single Page Application (SPA) playbook. I didn't need React, Next.js, or Vue. This is a portfolio—a collection of text, images, and links. Shipping a virtual DOM and a massive JavaScript bundle to render static content is like using a sledgehammer to crack a nut.
+My first major decision was throwing out the Single Page Application (SPA) playbook. I didn't need React, Next.js, or Vue. This is a portfolio-a collection of text, images, and links. Shipping a virtual DOM and a massive JavaScript bundle to render static content is like using a sledgehammer to crack a nut.
 
 Instead, my stack looks like it came straight out of 2010 but is supercharged with modern browser capabilities:
 - **HTML5 & Semantic Markup:** Clean, structure-oriented raw HTML.

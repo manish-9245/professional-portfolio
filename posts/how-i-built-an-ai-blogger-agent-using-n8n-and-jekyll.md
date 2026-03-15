@@ -331,9 +331,9 @@ Passing high-res base64 strings back to an LLM context is expensive and often ex
 
 ## Conclusion
 
-This project demonstrates that we have crossed a threshold in Generative AI. We are no longer limited to “chatbots” that answer questions. We can build **Agents**—systems that plan, execute, use tools (APIs), and persist their work.
+This project demonstrates that we have crossed a threshold in Generative AI. We are no longer limited to “chatbots” that answer questions. We can build **Agents**-systems that plan, execute, use tools (APIs), and persist their work.
 
-By combining the low-code orchestration of n8n with the raw power of Gemini and the stability of Jekyll, I’ve created a blogging engine that doesn’t just save time—it enforces a level of visual and structural consistency that is hard to maintain manually.
+By combining the low-code orchestration of n8n with the raw power of Gemini and the stability of Jekyll, I’ve created a blogging engine that doesn’t just save time-it enforces a level of visual and structural consistency that is hard to maintain manually.
 
 The next step for this agent is **Self-Correction**. I plan to implement a feedback loop where the agent reads the build logs from Railway. If a build fails (e.g., due to bad Liquid syntax), the agent will trigger a “Fix It” workflow to patch the markdown file automatically.
 

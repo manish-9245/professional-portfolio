@@ -23,7 +23,7 @@ The reality is that the “best” language depends entirely on your context:
 -   **Are you a working professional?** You need scalability and ecosystem support.
 -   **Are you pivoting from non-tech?** You need accessibility and rapid feedback loops.
 
-If I simply gave you a list—1, 2, 3, 4, 5—without this context, this article would be meaningless.
+If I simply gave you a list-1, 2, 3, 4, 5-without this context, this article would be meaningless.
 
 ## Why This Deep Dive Exists
 
@@ -147,7 +147,7 @@ At number two, we have TypeScript.
 
 JavaScript is loosely typed. This is great for prototyping but catastrophic for large-scale applications. A variable `user` can be an object today, a string tomorrow, and `undefined` on Friday evening production deploys.
 
-TypeScript introduces **Structural Typing**. Unlike Java’s nominal typing (where the name of the class matters), TypeScript cares about the _shape_ of the object. It compiles down to JavaScript, meaning it adds zero runtime overhead—all checks happen at build time.
+TypeScript introduces **Structural Typing**. Unlike Java’s nominal typing (where the name of the class matters), TypeScript cares about the _shape_ of the object. It compiles down to JavaScript, meaning it adds zero runtime overhead-all checks happen at build time.
 
 #### The Problem: “undefined is not a function”
 
@@ -305,7 +305,7 @@ Java runs on the Java Virtual Machine (JVM), a marvel of engineering. The Just-I
 
 **The Evolution:** Java isn’t stagnant. Recent versions introduced **Virtual Threads (Project Loom)**. Previously, one Java thread equaled one OS thread (expensive). Now, Java can handle millions of lightweight virtual threads, rivaling Go’s goroutines and Node.js’s event loop for throughput.
 
-**Code Example: Spring Boot 3 & Virtual Threads** This is what modern backend code looks like—declarative and highly scalable.
+**Code Example: Spring Boot 3 & Virtual Threads** This is what modern backend code looks like-declarative and highly scalable.
 
 ```
 package com.example.demo;
@@ -435,7 +435,7 @@ I will end this deep dive where I started. There is no “Best Language.”
 
 Real-world engineering limits your choices. Sometimes you join a company and _have_ to write Java. Sometimes you inherit a legacy codebase in PHP. That is the reality.
 
-However, if you have the luxury of time—if you are in your 20s, entering college, or looking to upskill—choose the tool that aligns with the problem you want to solve.
+However, if you have the luxury of time-if you are in your 20s, entering college, or looking to upskill-choose the tool that aligns with the problem you want to solve.
 
 I hope this technical breakdown gives you the clarity to navigate 2026. Code is just a tool; what matters is what you build with it.
 

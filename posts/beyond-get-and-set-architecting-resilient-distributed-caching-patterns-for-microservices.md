@@ -2,14 +2,14 @@
 title: "Beyond GET and SET: Architecting Resilient Distributed Caching Patterns for Microservices"
 date: "2025-12-17"
 slug: "beyond-get-and-set-architecting-resilient-distributed-caching-patterns-for-microservices"
-description: "In the infancy of a backend application, caching is often treated as a simple key-value store optimization—a sprinkle of “magic dust” to speed up slow SQL queries. Developers implement a basic client...."
+description: "In the infancy of a backend application, caching is often treated as a simple key-value store optimization-a sprinkle of “magic dust” to speed up slow SQL queries. Developers implement a basic client...."
 ---
 
 ![Hero Image - Abstract representation of distributed caching](https://blogs.buildwithmanish.com/assets/images/hero-beyond-get-and-set-architecting-resilient-distributed-caching-patterns-for-microservices-0-2025-12-17-15651.png)
 
 ## Introduction
 
-In the infancy of a backend application, caching is often treated as a simple key-value store optimization—a sprinkle of “magic dust” to speed up slow SQL queries. Developers implement a basic `client.get()` and `client.set()`, push to production, and watch latencies drop. It feels victorious.
+In the infancy of a backend application, caching is often treated as a simple key-value store optimization-a sprinkle of “magic dust” to speed up slow SQL queries. Developers implement a basic `client.get()` and `client.set()`, push to production, and watch latencies drop. It feels victorious.
 
 However, as traffic scales and the architecture fractures into microservices, this naive approach becomes a ticking time bomb. In distributed systems, a cache is not just a performance booster; it is a critical component of system stability. When used incorrectly, a cache becomes a source of non-deterministic bugs, data inconsistency, and catastrophic cascading failures.
 

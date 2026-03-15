@@ -9,7 +9,7 @@ description: "Despite the meteoric rise of NoSQL, time-series, and vector databa
 
 Despite the meteoric rise of NoSQL, time-series, and vector databases in the last decade, the Relational Database Management System (RDBMS) remains the immutable backbone of global enterprise software. Whether it’s financial ledgers, inventory management, or user identity systems, the relational model’s promise of ACID (Atomicity, Consistency, Isolation, Durability) compliance and mathematical rigor is irreplaceable.
 
-This article is not a high-level overview. We are going to deconstruct the RDBMS from the ground up—from the theoretical underpinnings of tuple calculus and storage architecture to the pragmatic realities of SQL optimization and schema normalization.
+This article is not a high-level overview. We are going to deconstruct the RDBMS from the ground up-from the theoretical underpinnings of tuple calculus and storage architecture to the pragmatic realities of SQL optimization and schema normalization.
 
 * * *
 
@@ -177,7 +177,7 @@ CREATE TABLE Employees (
 ```
 
 -   **Constraint Naming:** Always name your constraints (`fk_dept`). It makes debugging error logs significantly easier.
--   **Types:** `INT`, `VARCHAR`, `DECIMAL` (for money—never use FLOAT), `DATE`.
+-   **Types:** `INT`, `VARCHAR`, `DECIMAL` (for money-never use FLOAT), `DATE`.
 
 ### Altering and Dropping
 

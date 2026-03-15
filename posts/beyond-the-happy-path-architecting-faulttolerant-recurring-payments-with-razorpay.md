@@ -23,7 +23,7 @@ This article is not a “getting started” guide. We are diving deep into the a
 
 The most common misconception I see in backend implementations is treating the Razorpay subscription status as a binary: `active` or `cancelled`. The reality is nuanced. The lifecycle of a subscription involves critical intermediate states that dictate whether your system should retry a charge or revoke access.
 
-The two states that cause the most confusion—and revenue loss—are `pending` and `halted`.
+The two states that cause the most confusion-and revenue loss-are `pending` and `halted`.
 
 ### The Critical Distinction
 

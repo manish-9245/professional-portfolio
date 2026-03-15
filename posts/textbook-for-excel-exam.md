@@ -261,7 +261,7 @@ You will likely be given a raw dataset (e.g., Sales Data) and asked to perform s
 
 # Conclusion
 
-Passing the Basics of MS Excel exam requires moving beyond “guessing” which button to click. It requires understanding the object model—how cells relate to formulas, how ranges relate to charts, and how raw data flows into Pivot Tables.
+Passing the Basics of MS Excel exam requires moving beyond “guessing” which button to click. It requires understanding the object model-how cells relate to formulas, how ranges relate to charts, and how raw data flows into Pivot Tables.
 
 **Final Checklist for the Exam:**
 

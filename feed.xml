@@ -17,7 +17,7 @@
   <li><strong>Are you pivoting from non-tech?</strong> You need accessibility and rapid feedback loops.</li>
 </ul>
 
-<p>If I simply gave you a list—1, 2, 3, 4, 5—without this context, this article would be meaningless.</p>
+<p>If I simply gave you a list-1, 2, 3, 4, 5-without this context, this article would be meaningless.</p>
 
 <h2 id="why-this-deep-dive-exists">Why This Deep Dive Exists</h2>
 
@@ -143,7 +143,7 @@ Here is how simple it is to leverage State-of-the-Art (SOTA) AI, hiding massive 
 
 <p>JavaScript is loosely typed. This is great for prototyping but catastrophic for large-scale applications. A variable <code class="language-plaintext highlighter-rouge">user</code> can be an object today, a string tomorrow, and <code class="language-plaintext highlighter-rouge">undefined</code> on Friday evening production deploys.</p>
 
-<p>TypeScript introduces <strong>Structural Typing</strong>. Unlike Java’s nominal typing (where the name of the class matters), TypeScript cares about the <em>shape</em> of the object. It compiles down to JavaScript, meaning it adds zero runtime overhead—all checks happen at build time.</p>
+<p>TypeScript introduces <strong>Structural Typing</strong>. Unlike Java’s nominal typing (where the name of the class matters), TypeScript cares about the <em>shape</em> of the object. It compiles down to JavaScript, meaning it adds zero runtime overhead-all checks happen at build time.</p>
 
 <h4 id="the-problem-undefined-is-not-a-function">The Problem: “undefined is not a function”</h4>
 <p>In 2026, shipping code without type safety is considered professional negligence in top-tier tech companies.</p>
@@ -303,7 +303,7 @@ Notice how we use <code class="language-plaintext highlighter-rouge">std::unique
 Java isn’t stagnant. Recent versions introduced <strong>Virtual Threads (Project Loom)</strong>. Previously, one Java thread equaled one OS thread (expensive). Now, Java can handle millions of lightweight virtual threads, rivaling Go’s goroutines and Node.js’s event loop for throughput.</p>
 
 <p><strong>Code Example: Spring Boot 3 &amp; Virtual Threads</strong>
-This is what modern backend code looks like—declarative and highly scalable.</p>
+This is what modern backend code looks like-declarative and highly scalable.</p>
 
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">com.example.demo</span><span class="o">;</span>
 
@@ -434,7 +434,7 @@ This is what modern backend code looks like—declarative and highly scalable.</
 
 <p>Real-world engineering limits your choices. Sometimes you join a company and <em>have</em> to write Java. Sometimes you inherit a legacy codebase in PHP. That is the reality.</p>
 
-<p>However, if you have the luxury of time—if you are in your 20s, entering college, or looking to upskill—choose the tool that aligns with the problem you want to solve.</p>
+<p>However, if you have the luxury of time-if you are in your 20s, entering college, or looking to upskill-choose the tool that aligns with the problem you want to solve.</p>
 
 <p>I hope this technical breakdown gives you the clarity to navigate 2026. Code is just a tool; what matters is what you build with it.</p>
 
@@ -442,7 +442,7 @@ This is what modern backend code looks like—declarative and highly scalable.</
 
 <p>Despite the meteoric rise of NoSQL, time-series, and vector databases in the last decade, the Relational Database Management System (RDBMS) remains the immutable backbone of global enterprise software. Whether it’s financial ledgers, inventory management, or user identity systems, the relational model’s promise of ACID (Atomicity, Consistency, Isolation, Durability) compliance and mathematical rigor is irreplaceable.</p>
 
-<p>This article is not a high-level overview. We are going to deconstruct the RDBMS from the ground up—from the theoretical underpinnings of tuple calculus and storage architecture to the pragmatic realities of SQL optimization and schema normalization.</p>
+<p>This article is not a high-level overview. We are going to deconstruct the RDBMS from the ground up-from the theoretical underpinnings of tuple calculus and storage architecture to the pragmatic realities of SQL optimization and schema normalization.</p>
 
 <hr />
 
@@ -615,7 +615,7 @@ When decomposing tables, two properties must be preserved:</p>
 </code></pre></div></div>
 <ul>
   <li><strong>Constraint Naming:</strong> Always name your constraints (<code class="language-plaintext highlighter-rouge">fk_dept</code>). It makes debugging error logs significantly easier.</li>
-  <li><strong>Types:</strong> <code class="language-plaintext highlighter-rouge">INT</code>, <code class="language-plaintext highlighter-rouge">VARCHAR</code>, <code class="language-plaintext highlighter-rouge">DECIMAL</code> (for money—never use FLOAT), <code class="language-plaintext highlighter-rouge">DATE</code>.</li>
+  <li><strong>Types:</strong> <code class="language-plaintext highlighter-rouge">INT</code>, <code class="language-plaintext highlighter-rouge">VARCHAR</code>, <code class="language-plaintext highlighter-rouge">DECIMAL</code> (for money-never use FLOAT), <code class="language-plaintext highlighter-rouge">DATE</code>.</li>
 </ul>
 
 <h3 id="altering-and-dropping">Altering and Dropping</h3>
@@ -1066,7 +1066,7 @@ When decomposing tables, two properties must be preserved:</p>
 
 <h1 id="conclusion">Conclusion</h1>
 
-<p>Passing the Basics of MS Excel exam requires moving beyond “guessing” which button to click. It requires understanding the object model—how cells relate to formulas, how ranges relate to charts, and how raw data flows into Pivot Tables.</p>
+<p>Passing the Basics of MS Excel exam requires moving beyond “guessing” which button to click. It requires understanding the object model-how cells relate to formulas, how ranges relate to charts, and how raw data flows into Pivot Tables.</p>
 
 <p><strong>Final Checklist for the Exam:</strong></p>
 <ol>
@@ -1403,9 +1403,9 @@ We then fire a <code class="language-plaintext highlighter-rouge">PUT</code> req
 
 <h2 id="conclusion">Conclusion</h2>
 
-<p>This project demonstrates that we have crossed a threshold in Generative AI. We are no longer limited to “chatbots” that answer questions. We can build <strong>Agents</strong>—systems that plan, execute, use tools (APIs), and persist their work.</p>
+<p>This project demonstrates that we have crossed a threshold in Generative AI. We are no longer limited to “chatbots” that answer questions. We can build <strong>Agents</strong>-systems that plan, execute, use tools (APIs), and persist their work.</p>
 
-<p>By combining the low-code orchestration of n8n with the raw power of Gemini and the stability of Jekyll, I’ve created a blogging engine that doesn’t just save time—it enforces a level of visual and structural consistency that is hard to maintain manually.</p>
+<p>By combining the low-code orchestration of n8n with the raw power of Gemini and the stability of Jekyll, I’ve created a blogging engine that doesn’t just save time-it enforces a level of visual and structural consistency that is hard to maintain manually.</p>
 
 <p>The next step for this agent is <strong>Self-Correction</strong>. I plan to implement a feedback loop where the agent reads the build logs from Railway. If a build fails (e.g., due to bad Liquid syntax), the agent will trigger a “Fix It” workflow to patch the markdown file automatically.</p>
 
@@ -1414,7 +1414,7 @@ We then fire a <code class="language-plaintext highlighter-rouge">PUT</code> req
 <hr />
 <p><em>Note: All diagrams in this post were planned and generated by the agent itself as part of the workflow described above.</em></p>]]></content><author><name>Manish Tiwari</name></author><category term="deep-dive" /><category term="n8n" /><category term="generative-ai" /><category term="jekyll" /><category term="automation" /><summary type="html"><![CDATA[]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://blogs.buildwithmanish.com/assets/images/Blogs.png" /><media:content medium="image" url="https://blogs.buildwithmanish.com/assets/images/Blogs.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">How I built an AI blogger Agent using N8N,Github and Jekyll</title><link href="https://blogs.buildwithmanish.com/deep-dive/n8n/ai-automation/jekyll/system-design/2025/12/18/how-i-built-an-ai-blogger-agent-using-n8ngithub-and-jekyll.html" rel="alternate" type="text/html" title="How I built an AI blogger Agent using N8N,Github and Jekyll" /><published>2025-12-18T00:00:00+00:00</published><updated>2025-12-18T00:00:00+00:00</updated><id>https://blogs.buildwithmanish.com/deep-dive/n8n/ai-automation/jekyll/system-design/2025/12/18/how-i-built-an-ai-blogger-agent-using-n8ngithub-and-jekyll</id><content type="html" xml:base="https://blogs.buildwithmanish.com/deep-dive/n8n/ai-automation/jekyll/system-design/2025/12/18/how-i-built-an-ai-blogger-agent-using-n8ngithub-and-jekyll.html"><![CDATA[<p><img src="https://blogs.buildwithmanish.com/assets/images/hero-how-i-built-an-ai-blogger-agent-using-n8ngithub-and-jekyll-0-2025-12-18-22032.png" alt="Hero Image" /></p>
 
-<p>In the current landscape of software engineering, “content creation” is often viewed as a secondary concern—a distraction from shipping code. However, technical documentation and knowledge sharing are critical components of system design. The problem isn’t the lack of knowledge; it’s the friction involved in the pipeline: ideation, drafting, asset creation, formatting, and deployment.</p>
+<p>In the current landscape of software engineering, “content creation” is often viewed as a secondary concern-a distraction from shipping code. However, technical documentation and knowledge sharing are critical components of system design. The problem isn’t the lack of knowledge; it’s the friction involved in the pipeline: ideation, drafting, asset creation, formatting, and deployment.</p>
 
 <p>I decided to solve this not by writing more, but by engineering a solution. I built an autonomous AI Agent that functions as a full-stack technical blogger. This isn’t a simple wrapper around ChatGPT that spits out generic text. This is a deterministic, multi-step pipeline that orchestrates planning, visual asset generation, code-aware writing, version control integration, and continuous deployment.</p>
 
@@ -1683,7 +1683,7 @@ layout: null
       "title": "How I built an AI blogger Agent using N8N,Github and Jekyll",
       "url": "/deep-dive/n8n/ai-automation/jekyll/system-design/2025/12/18/how-i-built-an-ai-blogger-agent-using-n8ngithub-and-jekyll.html",
       "tags": "",
-      "content": "![Hero Image](https://blogs.buildwithmanish.com/assets/images/hero-how-i-built-an-ai-blogger-agent-using-n8ngithub-and-jekyll-0-2025-12-18-22032.png) In the current landscape of software engineering, &amp;quot;content creation&amp;quot; is often viewed as a secondary concern—a distraction from shipping code. However, technical documentation and knowledge sharing are critical components of system design. The problem isn&amp;#39;t the lack of knowledge; it&amp;#39;s the friction involved in the pipeline: ideation, drafting,..."
+      "content": "![Hero Image](https://blogs.buildwithmanish.com/assets/images/hero-how-i-built-an-ai-blogger-agent-using-n8ngithub-and-jekyll-0-2025-12-18-22032.png) In the current landscape of software engineering, &amp;quot;content creation&amp;quot; is often viewed as a secondary concern-a distraction from shipping code. However, technical documentation and knowledge sharing are critical components of system design. The problem isn&amp;#39;t the lack of knowledge; it&amp;#39;s the friction involved in the pipeline: ideation, drafting,..."
     } ,
   
     {
@@ -1732,7 +1732,7 @@ layout: null
       "title": "Beyond GET and SET: Architecting Resilient Distributed Caching Patterns for Microservices",
       "url": "/deep-dive/system-design/redis/distributed-systems/microservices/2025/12/17/beyond-get-and-set-architecting-resilient-distributed-caching-patterns-for-microservices.html",
       "tags": "",
-      "content": "Introduction In the infancy of a backend application, caching is often treated as a simple key-value store optimization—a sprinkle of “magic dust” to speed up slow SQL queries. Developers implement a basic client.get() and client.set(), push to production, and watch latencies drop. It feels victorious. However, as traffic scales and..."
+      "content": "Introduction In the infancy of a backend application, caching is often treated as a simple key-value store optimization-a sprinkle of “magic dust” to speed up slow SQL queries. Developers implement a basic client.get() and client.set(), push to production, and watch latencies drop. It feels victorious. However, as traffic scales and..."
     } 
   
 ]
@@ -1764,7 +1764,7 @@ layout: null
 
 <h2 id="conclusion-the-roi-of-automation">Conclusion: The ROI of Automation</h2>
 
-<p>This system demonstrates the power of <strong>Composite AI</strong>—combining deterministic code (n8n/GitHub/Jekyll) with probabilistic AI (LLMs).</p>
+<p>This system demonstrates the power of <strong>Composite AI</strong>-combining deterministic code (n8n/GitHub/Jekyll) with probabilistic AI (LLMs).</p>
 
 <p>By decoupling the <em>Planner</em> from the <em>Writer</em> and managing assets programmatically, we achieve a level of consistency and quality that simple “Prompt-to-Blog” tools cannot match.</p>
 
@@ -1786,7 +1786,7 @@ layout: null
 
 <p>For the last decade, the migration of monolithic Java Spring Boot applications to microservices-based Node.js architectures (typically running on Kubernetes) has been a manual, high-friction endeavor. The “Strangler Fig” pattern is reliable, but slow.</p>
 
-<p>However, the emergence of <strong>Agentic Workflows</strong>—specifically Large Language Models (LLMs) integrated into a loop of reasoning, tool execution, and environment feedback—has fundamentally altered the economics of refactoring. We are no longer talking about “code translation” (a simple syntax swap). We are talking about <strong>semantic migration</strong> with self-healing capabilities.</p>
+<p>However, the emergence of <strong>Agentic Workflows</strong>-specifically Large Language Models (LLMs) integrated into a loop of reasoning, tool execution, and environment feedback-has fundamentally altered the economics of refactoring. We are no longer talking about “code translation” (a simple syntax swap). We are talking about <strong>semantic migration</strong> with self-healing capabilities.</p>
 
 <p>This post details the architecture and implementation of a specialized “Migration Agent” designed to convert strong-typed Spring Boot applications into idiomatic Node.js services (using NestJS as the target due to its structural parity with Spring). We will explore AST parsing, paradigm mapping, and the critical <strong>Plan, Transpile, Verify</strong> feedback loop.</p>
 
@@ -1886,7 +1886,7 @@ layout: null
 
 <h3 id="the-transpiler-paradigm-mapping">The Transpiler (Paradigm Mapping)</h3>
 
-<p>This is where the semantic translation happens. We are targeting <strong>NestJS</strong> because its architecture—Decorators, Modules, and Dependency Injection—maps 1:1 with Spring Boot.</p>
+<p>This is where the semantic translation happens. We are targeting <strong>NestJS</strong> because its architecture-Decorators, Modules, and Dependency Injection-maps 1:1 with Spring Boot.</p>
 
 <p><img src="https://blogs.buildwithmanish.com/assets/images/comparison_chart-implementing-agentic-workflows-for-javatonodejs-migration-4-2025-12-18-63606.png" alt="Comparison Chart" /></p>
 
@@ -2527,7 +2527,7 @@ If the Agent simply translates the logic, it will crash because <code class="lan
 
 <h2 id="introduction">Introduction</h2>
 
-<p>In the infancy of a backend application, caching is often treated as a simple key-value store optimization—a sprinkle of “magic dust” to speed up slow SQL queries. Developers implement a basic <code class="language-plaintext highlighter-rouge">client.get()</code> and <code class="language-plaintext highlighter-rouge">client.set()</code>, push to production, and watch latencies drop. It feels victorious.</p>
+<p>In the infancy of a backend application, caching is often treated as a simple key-value store optimization-a sprinkle of “magic dust” to speed up slow SQL queries. Developers implement a basic <code class="language-plaintext highlighter-rouge">client.get()</code> and <code class="language-plaintext highlighter-rouge">client.set()</code>, push to production, and watch latencies drop. It feels victorious.</p>
 
 <p>However, as traffic scales and the architecture fractures into microservices, this naive approach becomes a ticking time bomb. In distributed systems, a cache is not just a performance booster; it is a critical component of system stability. When used incorrectly, a cache becomes a source of non-deterministic bugs, data inconsistency, and catastrophic cascading failures.</p>
 
@@ -2832,7 +2832,7 @@ We use Redis Pub/Sub as a notification channel.</p>
 
 <p>The most common misconception I see in backend implementations is treating the Razorpay subscription status as a binary: <code class="language-plaintext highlighter-rouge">active</code> or <code class="language-plaintext highlighter-rouge">cancelled</code>. The reality is nuanced. The lifecycle of a subscription involves critical intermediate states that dictate whether your system should retry a charge or revoke access.</p>
 
-<p>The two states that cause the most confusion—and revenue loss—are <code class="language-plaintext highlighter-rouge">pending</code> and <code class="language-plaintext highlighter-rouge">halted</code>.</p>
+<p>The two states that cause the most confusion-and revenue loss-are <code class="language-plaintext highlighter-rouge">pending</code> and <code class="language-plaintext highlighter-rouge">halted</code>.</p>
 
 <h3 id="the-critical-distinction">The Critical Distinction</h3>
 <ul>
@@ -3167,7 +3167,7 @@ We use Redis Pub/Sub as a notification channel.</p>
 
 <p>The failure stems from a fundamental architectural oversight: <strong>Enterprise business logic does not live in the raw database tables; it lives in the Semantic Model.</strong></p>
 
-<p>In the Microsoft ecosystem, that logic is encapsulated in Power BI datasets—specifically in DAX measures, calculated columns, and complex relationships. To build a true “Virtual Data Analyst,” we cannot simply ask an LLM to write SQL. We must architect an <strong>Agentic Workflow</strong> capable of interacting with the Power BI Service via XMLA endpoints and REST APIs, mimicking the cognitive processes of a human analyst: introspection, planning, execution, and synthesis.</p>
+<p>In the Microsoft ecosystem, that logic is encapsulated in Power BI datasets-specifically in DAX measures, calculated columns, and complex relationships. To build a true “Virtual Data Analyst,” we cannot simply ask an LLM to write SQL. We must architect an <strong>Agentic Workflow</strong> capable of interacting with the Power BI Service via XMLA endpoints and REST APIs, mimicking the cognitive processes of a human analyst: introspection, planning, execution, and synthesis.</p>
 
 <p>This deep dive explores how to build that architecture using Python, LangChain, and the Power BI REST API.</p>
 
@@ -3407,7 +3407,7 @@ Return ONLY the raw DAX query inside a code block.
   <p>“Review the data retrieved. Identify key trends, calculate the Year-over-Year growth percentage for the quarter, and summarize the findings in a professional paragraph suitable for a CEO.”</p>
 </blockquote>
 
-<p>This separation of concerns—Data Retrieval (DAX) vs. Insight Generation (Natural Language)—is vital for accuracy.</p>
+<p>This separation of concerns-Data Retrieval (DAX) vs. Insight Generation (Natural Language)-is vital for accuracy.</p>
 
 <p><img src="https://blogs.buildwithmanish.com/assets/images/comparison_chart-building-a-virtual-data-analyst-architecting-agentic-ai-workflows-over-power-bi-5-2025-12-17-36313.png" alt="Comparison Chart: Text-to-SQL vs Agentic PBI" /></p>
 
@@ -3445,7 +3445,7 @@ Return ONLY the raw DAX query inside a code block.
 <h2 id="conclusion">Conclusion</h2>
 <p>Building a Virtual Data Analyst is not about fine-tuning a model to write SQL. It is about respecting the Semantic Layer. By architecting an agent that can Introspect, Plan, and Execute against Power BI’s native logic, we bridge the gap between “Generative AI toy” and “Enterprise Decision Engine.”</p>
 
-<p>This approach ensures consistency. The number the chatbot gives the CEO is the exact same number the dashboard shows, because they are both generated by the same DAX engine. That—not just the ability to chat—is the holy grail of AI in Business Intelligence.</p>
+<p>This approach ensures consistency. The number the chatbot gives the CEO is the exact same number the dashboard shows, because they are both generated by the same DAX engine. That-not just the ability to chat-is the holy grail of AI in Business Intelligence.</p>
 
 <h3 id="next-steps-for-implementation">Next Steps for Implementation</h3>
 <ol>

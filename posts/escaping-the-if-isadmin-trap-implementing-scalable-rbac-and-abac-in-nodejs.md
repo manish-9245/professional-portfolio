@@ -179,7 +179,7 @@ export async function defineAbilityFor(user) {
 
 ### The Ownership Challenge (ABAC)
 
-The hardest part of authorization isn’t blocking access—it’s conditionally allowing it. The classic scenario: **“Editors can update any post, but Authors can only update their own posts.”**
+The hardest part of authorization isn’t blocking access-it’s conditionally allowing it. The classic scenario: **“Editors can update any post, but Authors can only update their own posts.”**
 
 If we rely solely on middleware checks _before_ the controller executes, we run into a problem: we often don’t have the resource loaded yet to check ownership.
 
