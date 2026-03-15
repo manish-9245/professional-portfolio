@@ -591,15 +591,26 @@
 
       .blog-share-link,
       .blog-share-copy {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
         border: 1px solid
           var(--o-border, color-mix(in srgb, currentColor 15%, transparent));
         border-radius: 999px;
-        padding: 0.34rem 0.7rem;
+        min-width: 2.5rem;
+        min-height: 2.5rem;
+        width: 2.5rem;
+        height: 2.5rem;
+        padding: 0;
         font-size: 0.82rem;
         line-height: 1.1;
         text-decoration: none;
         color: inherit;
         background: color-mix(in srgb, var(--o-bg, canvas) 96%, transparent);
+        transition:
+          border-color 0.15s ease,
+          background-color 0.15s ease,
+          transform 0.15s ease;
       }
 
       .blog-share-copy {
@@ -611,6 +622,21 @@
       .blog-share-copy:hover {
         border-color: color-mix(in srgb, currentColor 28%, transparent);
         background: color-mix(in srgb, currentColor 8%, transparent);
+        transform: translateY(-1px);
+      }
+
+      .blog-share-link:focus-visible,
+      .blog-share-copy:focus-visible {
+        outline: 2px solid color-mix(in srgb, currentColor 30%, transparent);
+        outline-offset: 2px;
+      }
+
+      .blog-share-icon {
+        width: 1rem;
+        height: 1rem;
+        display: block;
+        fill: currentColor;
+        flex-shrink: 0;
       }
 
       .related-card {
@@ -1276,17 +1302,28 @@
         const encodedTitle = encodeURIComponent(title || "");
         const encodedDescription = encodeURIComponent(description || "");
 
+        const icons = {
+          linkedin: '<svg class="blog-share-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.94 8.5H3.56V20h3.38V8.5zM5.25 3C4.14 3 3.2 3.94 3.2 5.05c0 1.1.9 2.05 2.01 2.05h.02c1.12 0 2.02-.95 2.02-2.05C7.25 3.94 6.36 3 5.25 3zM20.8 13.4c0-3.13-1.67-5.15-4.66-5.15-2.15 0-3.11 1.2-3.65 2.03V8.5H9.1c.04 1.17 0 11.5 0 11.5h3.38v-6.42c0-.34.03-.68.12-.92.27-.68.88-1.4 1.9-1.4 1.34 0 1.88 1.05 1.88 2.58V20h3.38v-6.6z"/></svg>',
+          x: '<svg class="blog-share-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 2H22l-6.77 7.74L23 22h-6.1l-4.78-6.24L6.66 22H3.55l7.24-8.27L1 2h6.25l4.32 5.7L18.9 2zm-1.07 18h1.69L6.33 3.9H4.52L17.83 20z"/></svg>',
+          facebook: '<svg class="blog-share-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 22v-8.2h2.77l.42-3.2H13.5V8.56c0-.93.27-1.56 1.64-1.56h1.75V4.14c-.3-.04-1.34-.14-2.55-.14-2.52 0-4.24 1.5-4.24 4.27v2.38H7.25v3.2h2.85V22h3.4z"/></svg>',
+          whatsapp: '<svg class="blog-share-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.52 3.48A11.86 11.86 0 0 0 12.06 0C5.57 0 .3 5.27.3 11.76c0 2.07.54 4.09 1.58 5.87L0 24l6.55-1.72a11.72 11.72 0 0 0 5.5 1.4h.01c6.49 0 11.76-5.27 11.76-11.76 0-3.14-1.22-6.09-3.3-8.44zM12.06 21.7h-.01a9.9 9.9 0 0 1-5.04-1.38l-.36-.21-3.89 1.02 1.04-3.79-.23-.39a9.9 9.9 0 0 1-1.51-5.2c0-5.47 4.45-9.92 9.92-9.92a9.84 9.84 0 0 1 7.03 2.91 9.84 9.84 0 0 1 2.89 7.01c0 5.47-4.45 9.92-9.92 9.92zm5.44-7.4c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.66.15-.2.3-.76.97-.94 1.17-.17.2-.35.22-.65.08-.3-.15-1.27-.47-2.41-1.49-.89-.8-1.49-1.79-1.66-2.09-.17-.3-.02-.46.13-.61.14-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.03-.52-.08-.15-.66-1.6-.9-2.2-.24-.58-.48-.5-.66-.5h-.56c-.2 0-.5.08-.76.37-.26.3-1 1-.1 2.43.9 1.42 2.58 3.5 6.23 4.9.87.38 1.56.6 2.09.77.88.28 1.68.24 2.32.15.71-.1 1.76-.72 2.01-1.42.25-.7.25-1.3.18-1.42-.07-.12-.27-.2-.56-.35z"/></svg>',
+          telegram: '<svg class="blog-share-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21.94 4.66c.15-.72-.26-1.01-.7-.85L2.98 10.9c-.69.28-.68.67-.13.84l4.68 1.46 1.8 5.62c.23.64.12.9.8.9.52 0 .75-.24 1.04-.53l2.5-2.43 5.2 3.84c.96.53 1.65.26 1.89-.89l3.18-14.99zM9.4 12.86l9.13-5.76c.46-.28.88-.13.53.18l-7.52 6.78-.3 3.3-1.84-4.5z"/></svg>',
+          reddit: '<svg class="blog-share-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.19 14.71c-.62.62-1.67.92-3.19.92-1.5 0-2.56-.3-3.18-.92a.75.75 0 1 1 1.06-1.06c.33.33 1.05.48 2.12.48 1.1 0 1.81-.15 2.14-.48a.75.75 0 1 1 1.05 1.06zM8.5 12.25a1.25 1.25 0 1 0 0-2.5 1.25 1.25 0 0 0 0 2.5zm7 0a1.25 1.25 0 1 0 0-2.5 1.25 1.25 0 0 0 0 2.5zM24 12c0 1.2-.67 2.25-1.64 2.8.03.2.04.4.04.6 0 3.31-3.76 6-8.4 6-4.63 0-8.39-2.69-8.39-6 0-.2.01-.4.04-.6A3.23 3.23 0 0 1 4 12c0-1.79 1.46-3.25 3.25-3.25.85 0 1.63.33 2.2.87 1.52-1 3.44-1.63 5.52-1.68l.94-4.45 3.06.65a2.33 2.33 0 1 1-.31 1.5l-2.07-.44-.72 3.41c2.03.08 3.92.7 5.41 1.68a3.22 3.22 0 0 1 2.18-.84C22.54 8.75 24 10.21 24 12z"/></svg>',
+          email: '<svg class="blog-share-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.75A1.75 1.75 0 0 1 4.75 5h14.5A1.75 1.75 0 0 1 21 6.75v10.5A1.75 1.75 0 0 1 19.25 19H4.75A1.75 1.75 0 0 1 3 17.25V6.75zm1.9.24 7.1 5.53 7.1-5.53H4.9zm14.6 10.01V8.2l-6.96 5.42a.9.9 0 0 1-1.08 0L4.5 8.2V17c0 .28.22.5.5.5h14c.28 0 .5-.22.5-.5z"/></svg>',
+          copy: '<svg class="blog-share-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 7a3 3 0 0 1 3-3h7a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3h-1v-1.5h1A1.5 1.5 0 0 0 19.5 15V7A1.5 1.5 0 0 0 18 5.5h-7A1.5 1.5 0 0 0 9.5 7v1H8V7zm-2 3A3 3 0 0 1 9 7h7a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H9a3 3 0 0 1-3-3v-8zm3-1.5A1.5 1.5 0 0 0 7.5 10v8A1.5 1.5 0 0 0 9 19.5h7a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 16 8.5H9z"/></svg>',
+        };
+
         section.innerHTML = `
           <h2>Share this post</h2>
           <div class="blog-share-actions">
-            <a class="blog-share-link" target="_blank" rel="noopener noreferrer" href="https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}">LinkedIn</a>
-            <a class="blog-share-link" target="_blank" rel="noopener noreferrer" href="https://x.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}">X</a>
-            <a class="blog-share-link" target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}">Facebook</a>
-            <a class="blog-share-link" target="_blank" rel="noopener noreferrer" href="https://api.whatsapp.com/send?text=${encodedTitle}%20${encodedUrl}">WhatsApp</a>
-            <a class="blog-share-link" target="_blank" rel="noopener noreferrer" href="https://t.me/share/url?url=${encodedUrl}&text=${encodedTitle}">Telegram</a>
-            <a class="blog-share-link" target="_blank" rel="noopener noreferrer" href="https://www.reddit.com/submit?url=${encodedUrl}&title=${encodedTitle}">Reddit</a>
-            <a class="blog-share-link" href="mailto:?subject=${encodedTitle}&body=${encodedDescription}%0A%0A${encodedUrl}">Email</a>
-            <button type="button" class="blog-share-copy" data-share-copy data-url="${url}">Copy link</button>
+            <a class="blog-share-link" aria-label="Share on LinkedIn" title="Share on LinkedIn" target="_blank" rel="noopener noreferrer" href="https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}">${icons.linkedin}</a>
+            <a class="blog-share-link" aria-label="Share on X" title="Share on X" target="_blank" rel="noopener noreferrer" href="https://x.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}">${icons.x}</a>
+            <a class="blog-share-link" aria-label="Share on Facebook" title="Share on Facebook" target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}">${icons.facebook}</a>
+            <a class="blog-share-link" aria-label="Share on WhatsApp" title="Share on WhatsApp" target="_blank" rel="noopener noreferrer" href="https://api.whatsapp.com/send?text=${encodedTitle}%20${encodedUrl}">${icons.whatsapp}</a>
+            <a class="blog-share-link" aria-label="Share on Telegram" title="Share on Telegram" target="_blank" rel="noopener noreferrer" href="https://t.me/share/url?url=${encodedUrl}&text=${encodedTitle}">${icons.telegram}</a>
+            <a class="blog-share-link" aria-label="Share on Reddit" title="Share on Reddit" target="_blank" rel="noopener noreferrer" href="https://www.reddit.com/submit?url=${encodedUrl}&title=${encodedTitle}">${icons.reddit}</a>
+            <a class="blog-share-link" aria-label="Share by email" title="Share by email" href="mailto:?subject=${encodedTitle}&body=${encodedDescription}%0A%0A${encodedUrl}">${icons.email}</a>
+            <button type="button" class="blog-share-copy" aria-label="Copy link" title="Copy link" data-share-copy data-url="${url}">${icons.copy}</button>
           </div>`;
 
         const copyButton = section.querySelector("[data-share-copy]");
@@ -1295,14 +1332,18 @@
             const linkToCopy = copyButton.getAttribute("data-url") || url;
             try {
               await copyText(linkToCopy);
-              copyButton.textContent = "Copied";
+              copyButton.setAttribute("title", "Copied");
+              copyButton.setAttribute("aria-label", "Copied");
               window.setTimeout(() => {
-                copyButton.textContent = "Copy link";
+                copyButton.setAttribute("title", "Copy link");
+                copyButton.setAttribute("aria-label", "Copy link");
               }, 1500);
             } catch {
-              copyButton.textContent = "Failed";
+              copyButton.setAttribute("title", "Failed to copy link");
+              copyButton.setAttribute("aria-label", "Failed to copy link");
               window.setTimeout(() => {
-                copyButton.textContent = "Copy link";
+                copyButton.setAttribute("title", "Copy link");
+                copyButton.setAttribute("aria-label", "Copy link");
               }, 1500);
             }
           });
