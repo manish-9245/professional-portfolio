@@ -85,9 +85,6 @@
       body {
         margin: 0;
         min-height: 100vh;
-        font-family: system-ui, sans-serif;
-        font-size: 1rem;
-        line-height: 1.5;
         background: var(--o-bg, canvas);
         color: inherit;
       }
@@ -120,40 +117,12 @@
         gap: 0.9rem;
       }
 
-      .brand {
-        display: inline-flex;
-        align-items: center;
-        text-decoration: none;
-      }
-
       .brand-logo {
         width: 2.4rem;
         height: 2.4rem;
         border-radius: 50%;
         object-fit: contain;
         display: block;
-      }
-
-      .nav-toggle {
-        display: none;
-      }
-
-      .theme-toggle {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 999px;
-        border: 1px solid transparent;
-        padding: 0.34rem 0.7rem;
-        line-height: 1.1;
-        font-size: 0.92rem;
-        font: inherit;
-        color: inherit;
-        background: transparent;
-      }
-
-      .theme-toggle-mobile {
-        display: none;
       }
 
       nav ul {
@@ -164,36 +133,6 @@
         flex-wrap: wrap;
         align-items: center;
         gap: 0.2rem;
-        border: 1px solid
-          var(--o-border, color-mix(in srgb, currentColor 15%, transparent));
-        border-radius: 999px;
-        background: color-mix(in srgb, var(--o-bg, transparent) 94%, transparent);
-      }
-
-      nav ul li {
-        display: flex;
-      }
-
-      nav ul a {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 999px;
-        border: 1px solid transparent;
-        padding: 0.34rem 0.7rem;
-        text-decoration: none;
-        line-height: 1.1;
-        font-size: 0.92rem;
-      }
-
-      .nav-cta {
-        border: 1px solid
-          var(--o-border, color-mix(in srgb, currentColor 15%, transparent));
-        border-radius: 999px;
-        padding: 0.34rem 0.8rem;
-        font-weight: 600;
-        text-decoration: none;
-        margin-left: 0.15rem;
       }
 
       main {
@@ -205,39 +144,6 @@
         gap: 1.6rem;
         grid-template-columns: 1.3fr 1fr;
         align-items: start;
-      }
-
-      .hero-title {
-        line-height: 1.15;
-        text-wrap: balance;
-      }
-
-      .hero-subtitle {
-        max-width: 62ch;
-      }
-
-      .availability-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        font-size: 0.85rem;
-        font-weight: 500;
-        opacity: 0.9;
-      }
-
-      .availability-dot {
-        width: 0.55rem;
-        height: 0.55rem;
-        border-radius: 999px;
-        background: #22c55e;
-        box-shadow: 0 0 0 2px color-mix(in srgb, #22c55e 30%, transparent);
-        flex-shrink: 0;
-      }
-
-      .cta-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.65rem;
       }
 
       .hero-content,
@@ -270,82 +176,6 @@
       }
 
       @media (max-width: 860px) {
-        .brand {
-          order: 1;
-        }
-
-        .theme-toggle-mobile {
-          display: inline-flex;
-          margin-left: auto;
-          order: 2;
-        }
-
-        .theme-toggle-nav {
-          display: none;
-        }
-
-        .nav-toggle {
-          display: inline-flex;
-          width: 2.5rem;
-          height: 2.5rem;
-          border-radius: 10px;
-          border: 1px solid color-mix(in srgb, currentColor 28%, transparent);
-          background: color-mix(in srgb, var(--o-bg, transparent) 88%, transparent);
-          color: inherit;
-          align-items: center;
-          justify-content: center;
-          gap: 0.22rem;
-          flex-direction: column;
-          padding: 0;
-          margin-left: 0;
-          order: 3;
-        }
-
-        .nav-toggle span {
-          width: 1.1rem;
-          height: 2px;
-          border-radius: 999px;
-          background: currentColor;
-          opacity: 0.95;
-        }
-
-        nav {
-          display: block;
-          width: 100%;
-          order: 3;
-          max-height: 0;
-          opacity: 0;
-          transform: translateY(-6px);
-          pointer-events: none;
-          overflow: hidden;
-        }
-
-        body.nav-open nav {
-          max-height: 340px;
-          opacity: 1;
-          transform: translateY(0);
-          pointer-events: auto;
-        }
-
-        nav ul {
-          width: 100%;
-          flex-direction: column;
-          align-items: stretch;
-          border-radius: 12px;
-          padding: 0.35rem;
-          gap: 0.25rem;
-        }
-
-        nav ul li {
-          width: 100%;
-        }
-
-        nav ul a {
-          width: 100%;
-          justify-content: flex-start;
-          padding: 0.52rem 0.7rem;
-        }
-
         .hero {
           grid-template-columns: 1fr;
         }
@@ -357,25 +187,9 @@
         }
       }
     </style>
-    <link rel="preload" href="./oat.min.css" as="style" />
-    <link rel="preload" href="./styles.css" as="style" />
-    <link
-      rel="stylesheet"
-      href="./oat.min.css"
-      media="print"
-      onload="this.media='all'"
-    />
-    <link
-      rel="stylesheet"
-      href="./styles.css"
-      media="print"
-      onload="this.media='all'"
-    />
-    <noscript>
-      <link rel="stylesheet" href="./oat.min.css" />
-      <link rel="stylesheet" href="./styles.css" />
-    </noscript>
+    <link rel="stylesheet" href="./oat.min.css" />
     <script src="./oat.min.js" defer></script>
+    <link rel="stylesheet" href="./styles.css" />
     <script src="./site.js" defer></script>
   </head>
   <body>
