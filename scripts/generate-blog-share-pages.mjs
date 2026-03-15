@@ -132,82 +132,11 @@ function renderPostHtml({
     <meta name="twitter:description" content="${escapeHtml(socialDescription)}" />
     <meta name="twitter:image" content="${escapeHtml(pageImage)}" />
     <meta name="twitter:image:alt" content="${escapeHtml(socialTitle)}" />
-${publishedMeta}    <style>
-      :root { color-scheme: light dark; }
-      body {
-        margin: 0;
-        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-        background: #0f1115;
-        color: #e5e7eb;
-        min-height: 100vh;
-        display: grid;
-        place-items: center;
-        padding: 24px;
-      }
-      .share-shell {
-        width: min(720px, 100%);
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        border-radius: 20px;
-        padding: 24px;
-        background: rgba(255, 255, 255, 0.03);
-        backdrop-filter: blur(10px);
-      }
-      .share-kicker {
-        margin: 0 0 10px;
-        font-size: 12px;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        opacity: 0.7;
-      }
-      h1 {
-        margin: 0 0 12px;
-        line-height: 1.2;
-        font-size: clamp(1.7rem, 4vw, 2.5rem);
-      }
-      p {
-        margin: 0;
-        line-height: 1.7;
-        opacity: 0.88;
-      }
-      .share-actions {
-        margin-top: 20px;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 12px;
-      }
-      .share-actions a {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 44px;
-        padding: 0 16px;
-        border-radius: 999px;
-        text-decoration: none;
-        color: inherit;
-        border: 1px solid rgba(255, 255, 255, 0.14);
-        background: rgba(255, 255, 255, 0.04);
-      }
-      .share-image {
-        width: 100%;
-        aspect-ratio: 16 / 9;
-        object-fit: cover;
-        border-radius: 16px;
-        margin-bottom: 18px;
-        background: rgba(255, 255, 255, 0.05);
-      }
-    </style>
+${publishedMeta}    <meta http-equiv="refresh" content="0; url=${targetUrl}" />
+    <script>window.location.replace('${targetUrl}');</script>
   </head>
   <body>
-    <main class="share-shell">
-      <img class="share-image" src="${escapeHtml(pageImage)}" alt="${escapeHtml(socialTitle)}" />
-      <p class="share-kicker">Blog post</p>
-      <h1>${escapeHtml(title)}</h1>
-      <p>${escapeHtml(description)}</p>
-      <div class="share-actions">
-        <a href="${targetUrl}">Read full article</a>
-        <a href="${BASE_URL}/blogs.html">All blogs</a>
-      </div>
-    </main>
+    <p>Redirecting to <a href="${targetUrl}">the article</a>…</p>
   </body>
 </html>
 `;
