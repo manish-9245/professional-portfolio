@@ -297,7 +297,7 @@ async function getBlogIndex() {
 function createBlogCard(post) {
   const slug = encodeURIComponent(post.slug);
   const tag = getBlogTag(post.title);
-  const href = `./posts/${slug}.html`;
+  const href = `./blog.html?post=${slug}`;
 
   return `
     <article class="panel blog-card">
@@ -317,7 +317,7 @@ function createBlogCard(post) {
 function createFeaturedBlogCard(post) {
   const slug = encodeURIComponent(post.slug);
   const tag = getBlogTag(post.title);
-  const href = `./posts/${slug}.html`;
+  const href = `./blog.html?post=${slug}`;
 
   return `
     <article class="panel blog-card blog-card--featured">
@@ -453,7 +453,7 @@ function prefetchBlogPost(slug) {
 function createHomepageBlogCard(post) {
   const slug = encodeURIComponent(post.slug);
   const tag = getBlogTag(post.title);
-  const href = `./posts/${slug}.html`;
+  const href = `./blog.html?post=${slug}`;
 
   return `
     <a class="panel blog-card" href="${href}">
