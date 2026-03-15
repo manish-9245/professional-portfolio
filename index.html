@@ -69,9 +69,141 @@
         ]
       }
     </script>
-    <link rel="stylesheet" href="https://unpkg.com/@knadh/oat/oat.min.css" />
+    <style>
+      :root {
+        --surface-max: 1080px;
+      }
+
+      html {
+        scrollbar-gutter: stable;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: var(--o-bg, canvas);
+        color: inherit;
+      }
+
+      .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        border-bottom: 1px solid
+          var(--o-border, color-mix(in srgb, currentColor 15%, transparent));
+        backdrop-filter: blur(8px);
+        background: color-mix(in srgb, var(--o-bg, transparent) 88%, transparent);
+      }
+
+      .surface {
+        max-width: var(--surface-max);
+        margin: 0 auto;
+        padding: 1.2rem 1rem;
+      }
+
+      .header-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.9rem;
+      }
+
+      .brand-logo {
+        width: 2.4rem;
+        height: 2.4rem;
+        border-radius: 50%;
+        object-fit: contain;
+        display: block;
+      }
+
+      nav ul {
+        margin: 0;
+        padding: 0.25rem;
+        list-style: none;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.2rem;
+      }
+
+      main {
+        padding-block: 2rem;
+      }
+
+      .hero {
+        display: grid;
+        gap: 1.6rem;
+        grid-template-columns: 1.3fr 1fr;
+        align-items: start;
+      }
+
+      .hero-content,
+      .hero-aside {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .hero-content {
+        gap: 1.1rem;
+      }
+
+      .hero-aside {
+        gap: 0.85rem;
+      }
+
+      .media-card,
+      .panel {
+        border: 1px solid
+          var(--o-border, color-mix(in srgb, currentColor 15%, transparent));
+        border-radius: 14px;
+        overflow: hidden;
+      }
+
+      .hero-image {
+        aspect-ratio: 4 / 5;
+        object-fit: cover;
+        width: 100%;
+        display: block;
+      }
+
+      @media (max-width: 860px) {
+        .hero {
+          grid-template-columns: 1fr;
+        }
+
+        .hero-image {
+          aspect-ratio: auto;
+          object-fit: contain;
+          height: auto;
+        }
+      }
+    </style>
+    <link rel="dns-prefetch" href="//unpkg.com" />
+    <link rel="preconnect" href="https://unpkg.com" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@knadh/oat/oat.min.css"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link rel="stylesheet" href="https://unpkg.com/@knadh/oat/oat.min.css" />
+    </noscript>
     <script src="https://unpkg.com/@knadh/oat/oat.min.js" defer></script>
-    <link rel="stylesheet" href="./styles.css" />
+    <link
+      rel="preload"
+      href="./styles.css"
+      as="style"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <noscript>
+      <link rel="stylesheet" href="./styles.css" />
+    </noscript>
     <script src="./site.js" defer></script>
   </head>
   <body>
