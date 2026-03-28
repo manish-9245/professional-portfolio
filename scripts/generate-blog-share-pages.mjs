@@ -134,7 +134,6 @@ function renderPostHtml({
     <meta name="twitter:image:alt" content="${escapeHtml(socialTitle)}" />
 ${publishedMeta}    <meta http-equiv="refresh" content="0; url=${targetUrl}" />
     <script>window.location.replace('${targetUrl}');</script>
-    <script src="https://www.noupe.com/embed/019d32c7e59c7cbc9d4ab869e79413089d7a.js"></script>
   </head>
   <body>
     <p>Redirecting to <a href="${targetUrl}">the article</a>…</p>
