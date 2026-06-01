@@ -5,5 +5,10 @@
   "scripts": {
     "build": "node scripts/generate-blog-share-pages.mjs",
     "generate:blogs": "node scripts/generate-blog-share-pages.mjs"
+  },
+  "devDependencies": {
+    "highlight.js": "^11.11.1",
+    "jsdom": "^29.1.1",
+    "marked": "^18.0.4"
   }
 }

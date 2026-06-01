@@ -3,68 +3,41 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title id="page-title">Blog · Manish Tiwari</title>
-    <meta
-      id="page-desc"
-      name="description"
-      content="Blog post by Manish Tiwari"
-    />
+    <title>How I built an AI blogger Agent using N8N,Github and Jekyll · Manish Tiwari</title>
+    <meta name="description" content="In the current landscape of software engineering, “content creation” is often viewed as a secondary concern-a distraction from shipping code. However, technical documentation and knowledge sharing are..." />
     <meta name="robots" content="index, follow" />
-    <link
-      id="page-canonical"
-      rel="canonical"
-      href="https://buildwithmanish.com/blog.html"
-    />
+    <link rel="canonical" href="https://buildwithmanish.com/posts/how-i-built-an-ai-blogger-agent-using-n8ngithub-and-jekyll.html" />
     <meta property="og:site_name" content="Manish Tiwari" />
     <meta id="og-type" property="og:type" content="article" />
-    <meta id="og-title" property="og:title" content="Blog · Manish Tiwari" />
-    <meta
-      id="og-desc"
-      property="og:description"
-      content="Blog post by Manish Tiwari"
-    />
-    <meta
-      id="og-url"
-      property="og:url"
-      content="https://buildwithmanish.com/blog.html"
-    />
-    <meta
-      id="og-image"
-      property="og:image"
-      content="https://buildwithmanish.com/image/optimized/aiblogs-20260314-175545.webp"
-    />
+    <meta property="og:title" content="How I built an AI blogger Agent using N8N,Github and Jekyll" />
+    <meta property="og:description" content="In the current landscape of software engineering, “content creation” is often viewed as a secondary concern-a distraction from shipping code. However, technical documentation and knowledge sharing are..." />
+    <meta property="og:url" content="https://buildwithmanish.com/posts/how-i-built-an-ai-blogger-agent-using-n8ngithub-and-jekyll.html" />
+    <meta property="og:image" content="https://blogs.buildwithmanish.com/assets/images/hero-how-i-built-an-ai-blogger-agent-using-n8ngithub-and-jekyll-0-2025-12-18-22032.png" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta id="tw-title" name="twitter:title" content="Blog · Manish Tiwari" />
-    <meta
-      id="tw-desc"
-      name="twitter:description"
-      content="Blog post by Manish Tiwari"
-    />
-    <meta
-      id="tw-image"
-      name="twitter:image"
-      content="https://buildwithmanish.com/image/optimized/aiblogs-20260314-175545.webp"
-    />
-    <script id="post-schema" type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "BlogPosting",
-        "headline": "Engineering Blog",
-        "author": {
-          "@type": "Person",
-          "name": "Manish Tiwari",
-          "url": "https://buildwithmanish.com/about.html"
-        },
-        "publisher": {
-          "@type": "Person",
-          "name": "Manish Tiwari"
-        },
-        "mainEntityOfPage": {
-          "@type": "WebPage",
-          "@id": "https://buildwithmanish.com/blog.html"
-        }
-      }
-    </script>
+    <meta name="twitter:title" content="How I built an AI blogger Agent using N8N,Github and Jekyll" />
+    <meta name="twitter:description" content="In the current landscape of software engineering, “content creation” is often viewed as a secondary concern-a distraction from shipping code. However, technical documentation and knowledge sharing are..." />
+    <meta name="twitter:image" content="https://blogs.buildwithmanish.com/assets/images/hero-how-i-built-an-ai-blogger-agent-using-n8ngithub-and-jekyll-0-2025-12-18-22032.png" />
+    <script id="post-schema" type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "How I built an AI blogger Agent using N8N,Github and Jekyll",
+  "description": "In the current landscape of software engineering, “content creation” is often viewed as a secondary concern-a distraction from shipping code. However, technical documentation and knowledge sharing are...",
+  "datePublished": "2025-12-18",
+  "author": {
+    "@type": "Person",
+    "name": "Manish Tiwari",
+    "url": "https://buildwithmanish.com/about.html"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Manish Tiwari"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://buildwithmanish.com/posts/how-i-built-an-ai-blogger-agent-using-n8ngithub-and-jekyll.html"
+  },
+  "image": "https://blogs.buildwithmanish.com/assets/images/hero-how-i-built-an-ai-blogger-agent-using-n8ngithub-and-jekyll-0-2025-12-18-22032.png"
+}</script>
     <link
       rel="icon"
       type="image/webp"
@@ -824,7 +797,345 @@
       </div>
     </header>
 
-    <main id="blog-main" data-router-view class="is-loading"></main>
+    <main data-router-view>
+    <header class="blog-post-header">
+      <p class="muted kicker">Blog</p>
+      <h1>How I built an AI blogger Agent using N8N,Github and Jekyll</h1>
+      <p class="muted">Dec 18, 2025</p>
+    </header>
+    <div class="blog-post-layout">
+      <nav class="blog-toc" id="blog-toc" aria-label="Table of contents"><p class="blog-toc-title">Contents</p><ol><li><a href="#the-core-philosophy-agents-vs-generators">The Core Philosophy: Agents vs. Generators</a></li><li><a href="#part-1-the-backend-orchestration-n8n-">Part 1: The Backend Orchestration (n8n)</a></li><li class="toc-h3"><a href="#1-the-trigger-and-state-management">1. The Trigger and State Management</a></li><li class="toc-h3"><a href="#2-the-planner-agent-gemini-pro-">2. The Planner Agent (Gemini Pro)</a></li><li class="toc-h3"><a href="#3-asset-generation-and-binary-handling">3. Asset Generation and Binary Handling</a></li><li class="toc-h3"><a href="#4-committing-assets-to-github">4. Committing Assets to GitHub</a></li><li class="toc-h3"><a href="#5-the-writer-agent-context-injection-">5. The Writer Agent (Context Injection)</a></li><li class="toc-h3"><a href="#6-final-commit-and-cleanup">6. Final Commit and Cleanup</a></li><li><a href="#part-2-the-frontend-jekyll-railway-">Part 2: The Frontend (Jekyll & Railway)</a></li><li class="toc-h3"><a href="#1-the-build-pipeline">1. The Build Pipeline</a></li><li class="toc-h3"><a href="#2-frontend-engineering-beyond-default-themes">2. Frontend Engineering: Beyond Default Themes</a></li><li><a href="#advanced-considerations-and-edge-cases">Advanced Considerations and Edge Cases</a></li><li class="toc-h3"><a href="#1-hallucination-control">1. Hallucination Control</a></li><li class="toc-h3"><a href="#2-markdown-sanitization">2. Markdown Sanitization</a></li><li class="toc-h3"><a href="#3-github-api-rate-limits">3. GitHub API Rate Limits</a></li><li><a href="#conclusion-the-roi-of-automation">Conclusion: The ROI of Automation</a></li><li class="toc-h3"><a href="#next-steps">Next Steps</a></li></ol></nav>
+      <article class="blog-prose" id="blog-prose"><p><img src="https://blogs.buildwithmanish.com/assets/images/hero-how-i-built-an-ai-blogger-agent-using-n8ngithub-and-jekyll-0-2025-12-18-22032.png" alt="Hero Image"></p>
+<p>In the current landscape of software engineering, “content creation” is often viewed as a secondary concern-a distraction from shipping code. However, technical documentation and knowledge sharing are critical components of system design. The problem isn’t the lack of knowledge; it’s the friction involved in the pipeline: ideation, drafting, asset creation, formatting, and deployment.</p>
+<p>I decided to solve this not by writing more, but by engineering a solution. I built an autonomous AI Agent that functions as a full-stack technical blogger. This isn’t a simple wrapper around ChatGPT that spits out generic text. This is a deterministic, multi-step pipeline that orchestrates planning, visual asset generation, code-aware writing, version control integration, and continuous deployment.</p>
+<p>This post creates a deep dive into the architecture of this system, specifically focusing on the orchestration layer (n8n), the storage/versioning layer (GitHub), and the presentation layer (Jekyll on Railway).</p>
+<p><img src="https://blogs.buildwithmanish.com/assets/images/architecture_diagram-how-i-built-an-ai-blogger-agent-using-n8ngithub-and-jekyll-1-2025-12-18-94439.png" alt="Architecture Diagram"></p>
+<h2 id="the-core-philosophy-agents-vs-generators">The Core Philosophy: Agents vs. Generators</h2>
+<p>Before looking at the code, we must distinguish between <strong>Generative AI</strong> and <strong>Agentic AI</strong>.</p>
+<ul>
+<li><strong>Generative AI</strong> is input-output. You give a prompt; you get text.</li>
+<li><strong>Agentic AI</strong> involves reasoning, planning, and tool usage.</li>
+</ul>
+<p>My goal was to build the latter. An agent that looks at a topic, <em>thinks</em> about what diagrams are needed to explain that topic, generates those diagrams using external tools, hosts them, and <em>then</em> writes the article referencing those specific assets.</p>
+<h2 id="part-1-the-backend-orchestration-n8n-">Part 1: The Backend Orchestration (n8n)</h2>
+<p>The brain of this operation is n8n. While I could have written this in Python using LangChain or Swarm, n8n provides a visual interface for flow control which is invaluable when debugging complex asynchronous chains involving file buffers and API calls.</p>
+<h3 id="1-the-trigger-and-state-management">1. The Trigger and State Management</h3>
+<p>The workflow is state-driven. We don’t want to regenerate old blogs, nor do we want to hallucinate topics. I use Google Sheets as a lightweight database.</p>
+<p><strong>The Data Structure:</strong></p>
+<ul>
+<li><p><code>Topic</code>: The technical subject (e.g., “Implementing Rate Limiting with Redis”).</p>
+</li>
+<li><table><tbody><tr><td><code class="language-plaintext highlighter-rouge">Status</code>: <code class="language-plaintext highlighter-rouge">Pending</code></td><td><code class="language-plaintext highlighter-rouge">Processing</code></td><td><code class="language-plaintext highlighter-rouge">Done</code>.</td></tr></tbody></table>
+</li>
+<li><p><code>Date</code>: Timestamp.</p>
+</li>
+</ul>
+<p>The n8n workflow begins with a <strong>Google Sheets Trigger</strong> that fetches rows where <code>Status == Pending</code>.</p>
+<pre><code class="hljs language-json" data-lang="json"><span class="hljs-comment">// Sample JSON Output from the Trigger Node</span>
+<span class="hljs-punctuation">[</span>
+  <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">"Topic"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Deep Dive into Kubernetes Networking"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"Status"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Pending"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"RowNumber"</span><span class="hljs-punctuation">:</span> <span class="hljs-number">4</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">]</span></code></pre><h3 id="2-the-planner-agent-gemini-pro-">2. The Planner Agent (Gemini Pro)</h3>
+<p>This is the most critical architectural decision. I do not ask the LLM to write the blog yet. If you ask an LLM to “write a blog with images,” it will hallucinate URLs (e.g., <code>![img](imgur.com/fake.png)</code>).</p>
+<p>Instead, I use a “Planner” node. I feed the topic to Gemini Pro with a system prompt designed to act as a Technical Art Director.</p>
+<p><strong>System Prompt Strategy:</strong></p>
+<blockquote>
+<p>“You are a Technical Art Director. Analyze the following topic. Outline a plan for 3-5 visual assets required to explain this concept. For each asset, provide a detailed image generation prompt and a specific filename.”</p>
+</blockquote>
+<p>The output is forced into a structured JSON format (using n8n’s JSON parser):</p>
+<pre><code class="hljs language-json" data-lang="json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">"assets"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+    <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">"type"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"architecture_diagram"</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">"filename"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"k8s-networking-flow.png"</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">"prompt"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"High contrast technical diagram, kubernetes pod communication, flat vector style..."</span>
+    <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">"type"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"hero_image"</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">"filename"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"k8s-hero.png"</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">"prompt"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Cyberpunk style container ship, digital ocean, isometric 3d render..."</span>
+    <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">}</span></code></pre><p><img src="https://blogs.buildwithmanish.com/assets/images/technical_diagram-how-i-built-an-ai-blogger-agent-using-n8ngithub-and-jekyll-2-2025-12-18-21121.png" alt="Technical Diagram"></p>
+<h3 id="3-asset-generation-and-binary-handling">3. Asset Generation and Binary Handling</h3>
+<p>Once the plan is generated, n8n iterates over the <code>assets</code> array. This is where we hit a common hurdle in low-code automation: <strong>Binary Data Handling</strong>.</p>
+<p>The workflow makes a call to an Image Generation API (e.g., OpenAI DALL-E 3 or Stability AI). The API returns a URL or a Base64 string. We cannot simply pass a URL to the writer; we need to own the asset to prevent link rot.</p>
+<p><strong>The Process:</strong></p>
+<ol>
+<li><strong>HTTP Request:</strong> Send prompt to Image Gen API.</li>
+<li><strong>Buffer Handling:</strong> Download the image to n8n’s memory.</li>
+<li><strong>Base64 Conversion:</strong> GitHub’s API requires file content to be Base64 encoded.</li>
+</ol>
+<pre><code class="hljs language-javascript" data-lang="javascript"><span class="hljs-comment">// n8n Function Node: Prepare for GitHub API</span>
+<span class="hljs-keyword">const</span> binaryData = items[<span class="hljs-number">0</span>].<span class="hljs-property">binary</span>.<span class="hljs-property">data</span>;
+<span class="hljs-keyword">const</span> base64String = binaryData.<span class="hljs-title function_">toString</span>(<span class="hljs-string">'base64'</span>);
+
+<span class="hljs-keyword">return</span> {
+  <span class="hljs-attr">json</span>: {
+    <span class="hljs-attr">path</span>: <span class="hljs-string">`assets/images/<span class="hljs-subst">${generatedFilename}</span>`</span>,
+    <span class="hljs-attr">message</span>: <span class="hljs-string">`chore: auto-add asset <span class="hljs-subst">${generatedFilename}</span>`</span>,
+    <span class="hljs-attr">content</span>: base64String,
+    <span class="hljs-attr">branch</span>: <span class="hljs-string">"main"</span>
+  }
+};</code></pre><p><img src="https://blogs.buildwithmanish.com/assets/images/concept_illustration-how-i-built-an-ai-blogger-agent-using-n8ngithub-and-jekyll-3-2025-12-18-85866.png" alt="Concept Illustration"></p>
+<h3 id="4-committing-assets-to-github">4. Committing Assets to GitHub</h3>
+<p>I interact directly with the GitHub REST API. This is cleaner than trying to use git commands inside a Docker container within n8n.</p>
+<p><strong>Endpoint:</strong> <code>PUT /repos/\{owner\}/\{repo\}/contents/\{path\}</code></p>
+<p>We loop through every generated image and commit it to the <code>assets/images/</code> directory in the repository. Crucially, after the commit is successful, we construct the <strong>public raw URL</strong> or the <strong>CDN URL</strong> for that image.</p>
+<p><strong>The Context Map:</strong> We aggregate the results into a context map that looks like this:</p>
+<pre><code class="hljs language-json" data-lang="json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">"hero"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"https://blogs.buildwithmanish.com/assets/images/k8s-hero.png"</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"diagram_1"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"https://blogs.buildwithmanish.com/assets/images/k8s-networking-flow.png"</span>
+<span class="hljs-punctuation">}</span></code></pre><h3 id="5-the-writer-agent-context-injection-">5. The Writer Agent (Context Injection)</h3>
+<p>Now, and only now, do we invoke the Writer Agent. We pass the original topic <em>and</em> the Context Map of valid image URLs.</p>
+<p><strong>The Prompt:</strong></p>
+<blockquote>
+<p>“Write a deep-dive technical blog post about . You MUST use the following image URLs in your markdown. Place the hero image after the front matter. Place the architecture diagram in the ‘Network Concepts’ section. Use strict Markdown syntax. Include Jekyll Front Matter.”</p>
+</blockquote>
+<p>This ensures the LLM writes the content <em>around</em> the images we actually possess, rather than making up images that don’t exist.</p>
+<p><img src="https://blogs.buildwithmanish.com/assets/images/code_flow-how-i-built-an-ai-blogger-agent-using-n8ngithub-and-jekyll-4-2025-12-18-33674.png" alt="Code Flow"></p>
+<h3 id="6-final-commit-and-cleanup">6. Final Commit and Cleanup</h3>
+<p>The final step in n8n is taking the Markdown output from the Writer Agent and committing it to the <code>_posts/</code> directory on GitHub. The filename is auto-generated based on the date and title (slugified), e.g., <code>2025-12-18-k8s-networking.md</code>.</p>
+<p>Finally, the Google Sheet row is updated from <code>Pending</code> to <code>Done</code>.</p>
+<hr>
+<h2 id="part-2-the-frontend-jekyll-railway-">Part 2: The Frontend (Jekyll &amp; Railway)</h2>
+<p>The backend handles the “Supply” side. The frontend handles the “Demand” side. I chose Jekyll because it transforms Markdown into static HTML. It is secure, fast, and requires zero database maintenance on the read path.</p>
+<h3 id="1-the-build-pipeline">1. The Build Pipeline</h3>
+<p>The deployment architecture is completely event-driven.</p>
+<ol>
+<li><strong>Event:</strong> n8n commits a new <code>.md</code> file to the <code>main</code> branch on GitHub.</li>
+<li><strong>Trigger:</strong> Railway (my hosting provider) detects the commit via Webhook.</li>
+<li><strong>Build:</strong> Railway pulls the repo and runs the Jekyll build command.</li>
+</ol>
+<p><img src="https://blogs.buildwithmanish.com/assets/images/architecture_diagram-how-i-built-an-ai-blogger-agent-using-n8ngithub-and-jekyll-5-2025-12-18-28554.png" alt="Architecture Diagram"></p>
+<p><strong>Railway Configuration (<code>railway.json</code> or Build Command):</strong></p>
+<pre><code class="hljs language-python" data-lang="python">bundle install &amp;&amp; bundle <span class="hljs-built_in">exec</span> jekyll build</code></pre><p>This generates the <code>_site</code> folder, which Railway serves via NGINX. The entire process from “Commit” to “Live URL” takes approximately 45 seconds.</p>
+<h3 id="2-frontend-engineering-beyond-default-themes">2. Frontend Engineering: Beyond Default Themes</h3>
+<p>While Jekyll themes exist, I built a custom frontend to support the specific requirements of a technical blog.</p>
+<h4>A. Multi-Tag Filtering</h4>
+<p>Technical posts often cross domains (e.g., “DevOps” and “AWS”). I implemented a filtering system using Vanilla JavaScript.</p>
+<p>In the Jekyll template (<code>home.html</code>), I generate data attributes:</p>
+<pre><code class="hljs language-html" data-lang="html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"post-card"</span> <span class="hljs-attr">data-tags</span>=<span class="hljs-string">"n8n, automation, ai"</span>&gt;</span>
+  <span class="hljs-comment">&lt;!-- Post Content --&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre><p>The JavaScript simply toggles visibility:</p>
+<pre><code class="hljs language-javascript" data-lang="javascript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">filterPosts</span>(<span class="hljs-params">selectedTag</span>) {
+  <span class="hljs-keyword">const</span> posts = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelectorAll</span>(<span class="hljs-string">'.post-card'</span>);
+  posts.<span class="hljs-title function_">forEach</span>(<span class="hljs-function"><span class="hljs-params">post</span> =&gt;</span> {
+    <span class="hljs-keyword">const</span> tags = post.<span class="hljs-title function_">getAttribute</span>(<span class="hljs-string">'data-tags'</span>).<span class="hljs-title function_">split</span>(<span class="hljs-string">', '</span>);
+    <span class="hljs-keyword">if</span> (tags.<span class="hljs-title function_">includes</span>(selectedTag) || selectedTag === <span class="hljs-string">'all'</span>) {
+      post.<span class="hljs-property">style</span>.<span class="hljs-property">display</span> = <span class="hljs-string">'block'</span>;
+    } <span class="hljs-keyword">else</span> {
+      post.<span class="hljs-property">style</span>.<span class="hljs-property">display</span> = <span class="hljs-string">'none'</span>;
+    }
+  });
+}</code></pre><h4>B. Image Lightbox</h4>
+<p>Since the AI generates detailed architecture diagrams, users need to zoom in. I implemented a lightbox feature that intercepts clicks on any image within the <code>.post-content</code> div.</p>
+<pre><code class="hljs language-javascript" data-lang="javascript"><span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelectorAll</span>(<span class="hljs-string">'.post-content img'</span>).<span class="hljs-title function_">forEach</span>(<span class="hljs-function"><span class="hljs-params">image</span> =&gt;</span> {
+  image.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">'click'</span>, <span class="hljs-function"><span class="hljs-params">e</span> =&gt;</span> {
+    <span class="hljs-keyword">const</span> src = e.<span class="hljs-property">target</span>.<span class="hljs-property">src</span>;
+    <span class="hljs-comment">// Logic to open modal overlay with this src</span>
+    <span class="hljs-title function_">openLightbox</span>(src);
+  });
+});</code></pre><h4>C. Search Functionality</h4>
+<p>For a static site, server-side search isn’t an option. I avoided heavy libraries like Algolia for this use case. Instead, I use a build-time generated JSON index.</p>
+<p>In <code>search.json</code> (a Liquid template):</p>
+<pre><code class="hljs language-javascript" data-lang="javascript">---
+<span class="hljs-attr">layout</span>: <span class="hljs-literal">null</span>
+---
+[
+  
+    {
+      <span class="hljs-string">"title"</span>: <span class="hljs-string">"Top 5 Programming Languages to learn in 2026"</span>,
+      <span class="hljs-string">"url"</span>: <span class="hljs-string">"/deep-dive/career-growth/software-engineering/system-design/tech-trends/2025/12/31/top-5-programming-languages-to-learn-in-2026.html"</span>,
+      <span class="hljs-string">"tags"</span>: <span class="hljs-string">""</span>,
+      <span class="hljs-string">"content"</span>: <span class="hljs-string">"![Top 5 Programming Languages Hero](https://blogs.buildwithmanish.com/assets/images/hero-top-5-programming-languages-to-learn-in-2026-0-2025-12-31-69086.png) # Introduction: The Confession of a Senior Engineer I have a confession to make. For years, I was wrong. I was wrong because I fell into the trap that many content creators and tech leads fall into: the trap of the linear roadmap. I used..."</span>
+    } ,
+  
+    {
+      <span class="hljs-string">"title"</span>: <span class="hljs-string">"Relational Database Management System: An Engineering Deep-Dive"</span>,
+      <span class="hljs-string">"url"</span>: <span class="hljs-string">"/deep-dive/database-systems/sql/data-modeling/backend-engineering/2025/12/30/relational-database-management-system.html"</span>,
+      <span class="hljs-string">"tags"</span>: <span class="hljs-string">""</span>,
+      <span class="hljs-string">"content"</span>: <span class="hljs-string">"![Relational Database Management System Hero](https://blogs.buildwithmanish.com/assets/images/hero-relational-database-management-system-0-2025-12-30-77512.png) Despite the meteoric rise of NoSQL, time-series, and vector databases in the last decade, the Relational Database Management System (RDBMS) remains the immutable backbone of global enterprise software. Whether it’s financial ledgers, inventory management, or user identity systems, the relational model&amp;#39;s promise of ACID (Atomicity,..."</span>
+    } ,
+  
+    {
+      <span class="hljs-string">"title"</span>: <span class="hljs-string">"Textbook for Excel Exam"</span>,
+      <span class="hljs-string">"url"</span>: <span class="hljs-string">"/deep-dive/excel-mastery/data-analysis/spreadsheet-engineering/certification/2025/12/29/textbook-for-excel-exam.html"</span>,
+      <span class="hljs-string">"tags"</span>: <span class="hljs-string">""</span>,
+      <span class="hljs-string">"content"</span>: <span class="hljs-string">"![Hero Image](https://blogs.buildwithmanish.com/assets/images/hero-textbook-for-excel-exam-0-2025-12-29-23091.png) # Introduction In the world of data engineering and business intelligence, Microsoft Excel remains the ubiquitous &amp;quot;first draft&amp;quot; of data analysis. While Python, SQL, and Tableau dominate big data pipelines, Excel is where the business world lives. It is effectively a functional programming environment coupled with a two-dimensional..."</span>
+    } ,
+  
+    {
+      <span class="hljs-string">"title"</span>: <span class="hljs-string">"Reactive Architecture in Flutter: Mastering BLoC for Scalable State Management"</span>,
+      <span class="hljs-string">"url"</span>: <span class="hljs-string">"/deep-dive/flutter/state-management/bloc/reactive-architecture/2025/12/18/reactive-architecture-in-flutter-mastering-bloc-for-scalable-state-management.html"</span>,
+      <span class="hljs-string">"tags"</span>: <span class="hljs-string">""</span>,
+      <span class="hljs-string">"content"</span>: <span class="hljs-string">"![Hero Image - Reactive Architecture](https://blogs.buildwithmanish.com/assets/images/hero-reactive-architecture-in-flutter-mastering-bloc-for-scalable-state-management-0-2025-12-18-12168.png) When building scalable mobile applications, the ease of Flutter’s `setState` is a siren song. It works beautifully for a counter app or a simple toggle, but as your application grows into an enterprise-grade solution, coupling business logic tightly with UI widgets creates a codebase that..."</span>
+    } ,
+  
+    {
+      <span class="hljs-string">"title"</span>: <span class="hljs-string">"Implementing Agentic Workflows for Java-to-Node.js Migration"</span>,
+      <span class="hljs-string">"url"</span>: <span class="hljs-string">"/deep-dive/generative-ai/legacy-migration/java-spring/nodejs-nestjs/2025/12/18/implementing-agentic-workflows-for-javatonodejs-migration.html"</span>,
+      <span class="hljs-string">"tags"</span>: <span class="hljs-string">""</span>,
+      <span class="hljs-string">"content"</span>: <span class="hljs-string">"![Hero Image](https://blogs.buildwithmanish.com/assets/images/hero-implementing-agentic-workflows-for-javatonodejs-migration-0-2025-12-18-75248.png) Legacy migration is the &amp;quot;dark matter&amp;quot; of software engineering: we know it makes up a massive portion of the enterprise universe, yet we struggle to observe it directly without getting sucked into a black hole of regression testing and lost business logic. For the last decade, the migration..."</span>
+    } ,
+  
+    {
+      <span class="hljs-string">"title"</span>: <span class="hljs-string">"How I built an AI blogger Agent using N8N,Github and Jekyll"</span>,
+      <span class="hljs-string">"url"</span>: <span class="hljs-string">"/deep-dive/n8n/ai-automation/jekyll/system-design/2025/12/18/how-i-built-an-ai-blogger-agent-using-n8ngithub-and-jekyll.html"</span>,
+      <span class="hljs-string">"tags"</span>: <span class="hljs-string">""</span>,
+      <span class="hljs-string">"content"</span>: <span class="hljs-string">"![Hero Image](https://blogs.buildwithmanish.com/assets/images/hero-how-i-built-an-ai-blogger-agent-using-n8ngithub-and-jekyll-0-2025-12-18-22032.png) In the current landscape of software engineering, &amp;quot;content creation&amp;quot; is often viewed as a secondary concern-a distraction from shipping code. However, technical documentation and knowledge sharing are critical components of system design. The problem isn&amp;#39;t the lack of knowledge; it&amp;#39;s the friction involved in the pipeline: ideation, drafting,..."</span>
+    } ,
+  
+    {
+      <span class="hljs-string">"title"</span>: <span class="hljs-string">"How I built an AI blogger Agent using N8N and Jekyll"</span>,
+      <span class="hljs-string">"url"</span>: <span class="hljs-string">"/deep-dive/n8n/generative-ai/jekyll/automation/2025/12/18/how-i-built-an-ai-blogger-agent-using-n8n-and-jekyll.html"</span>,
+      <span class="hljs-string">"tags"</span>: <span class="hljs-string">""</span>,
+      <span class="hljs-string">"content"</span>: <span class="hljs-string">"As engineers, we often suffer from the “cobbler’s children” syndrome. We build complex, scalable systems for clients and employers, yet our own personal portfolios and blogs gather dust. The friction of context-switching from coding to writing, finding assets, and managing deployments often kills the momentum before a post is even..."</span>
+    } ,
+  
+    {
+      <span class="hljs-string">"title"</span>: <span class="hljs-string">"Mastering Razorpay Webhooks: Architecting an Idempotent, Event-Driven Ingestion Engine"</span>,
+      <span class="hljs-string">"url"</span>: <span class="hljs-string">"/deep-dive/system-design/payments/event-driven-architecture/razorpay/2025/12/17/mastering-razorpay-webhooks-architecting-an-idempotent-eventdriven-ingestion-engine.html"</span>,
+      <span class="hljs-string">"tags"</span>: <span class="hljs-string">""</span>,
+      <span class="hljs-string">"content"</span>: <span class="hljs-string">"Introduction: The Deceptive Simplicity of Webhooks Integrating a payment gateway like Razorpay often starts with a false sense of security. The documentation shows a happy path: user pays, Razorpay calls your webhook, you update the database, and ship the product. In a development environment with one request per minute, this..."</span>
+    } ,
+  
+    {
+      <span class="hljs-string">"title"</span>: <span class="hljs-string">"Java Concurrency at Scale: Migrating from Thread Pools to Virtual Threads"</span>,
+      <span class="hljs-string">"url"</span>: <span class="hljs-string">"/deep-dive/java/concurrency/virtual-threads/software-architecture/2025/12/17/java-concurrency-at-scale-migrating-from-thread-pools-to-virtual-threads.html"</span>,
+      <span class="hljs-string">"tags"</span>: <span class="hljs-string">""</span>,
+      <span class="hljs-string">"content"</span>: <span class="hljs-string">"For the better part of two decades, Java concurrency has been a negotiation with the Operating System. We built high-throughput systems on the back of the “One-Thread-Per-Request” model, eventually hitting the hard ceiling of OS resource limits. We patched this with thread pools, and when that wasn’t enough, we twisted..."</span>
+    } ,
+  
+    {
+      <span class="hljs-string">"title"</span>: <span class="hljs-string">"Escaping the if (isAdmin) Trap: Implementing Scalable RBAC and ABAC in Node.js"</span>,
+      <span class="hljs-string">"url"</span>: <span class="hljs-string">"/deep-dive/nodejs/security/rbac/abac/system-design/2025/12/17/escaping-the-if-isadmin-trap-implementing-scalable-rbac-and-abac-in-nodejs.html"</span>,
+      <span class="hljs-string">"tags"</span>: <span class="hljs-string">""</span>,
+      <span class="hljs-string">"content"</span>: <span class="hljs-string">"We have all written it. The line of code that marks the beginning of the end for a scalable codebase: if (user.isAdmin || (user.role === &amp;#39;manager&amp;#39; &amp;amp;amp;&amp;amp;amp; resource.ownerId === user.id)) { // Allow logic } It starts innocently enough. A boolean flag here, a string check there. But as your..."</span>
+    } ,
+  
+    {
+      <span class="hljs-string">"title"</span>: <span class="hljs-string">"Building a Virtual Data Analyst: Architecting Agentic AI Workflows over Power BI"</span>,
+      <span class="hljs-string">"url"</span>: <span class="hljs-string">"/deep-dive/gen-ai/power-bi/agentic-workflows/python/2025/12/17/building-a-virtual-data-analyst-architecting-agentic-ai-workflows-over-power-bi.html"</span>,
+      <span class="hljs-string">"tags"</span>: <span class="hljs-string">""</span>,
+      <span class="hljs-string">"content"</span>: <span class="hljs-string">"In the rush to adopt Generative AI, organizations have flooded their backlogs with “Chat with your Data” initiatives. Most of these projects follow a predictable, often disappointing, pattern: a text-to-SQL layer slapped on top of a raw data warehouse. While this works for simple questions (“How many widgets did we..."</span>
+    } ,
+  
+    {
+      <span class="hljs-string">"title"</span>: <span class="hljs-string">"Beyond the Happy Path: Architecting Fault-Tolerant Recurring Payments with Razorpay"</span>,
+      <span class="hljs-string">"url"</span>: <span class="hljs-string">"/technical/deep-dive/2025/12/17/beyond-the-happy-path-architecting-faulttolerant-recurring-payments-with-razorpay.html"</span>,
+      <span class="hljs-string">"tags"</span>: <span class="hljs-string">""</span>,
+      <span class="hljs-string">"content"</span>: <span class="hljs-string">"The Illusion of the “Happy Path” In the world of distributed systems, the “happy path” is a sedative. It lulls engineers into a false sense of security where networks never partition, latency is zero, and customers always have sufficient funds in their bank accounts. When building one-off payment flows, you..."</span>
+    } ,
+  
+    {
+      <span class="hljs-string">"title"</span>: <span class="hljs-string">"Beyond GET and SET: Architecting Resilient Distributed Caching Patterns for Microservices"</span>,
+      <span class="hljs-string">"url"</span>: <span class="hljs-string">"/deep-dive/system-design/redis/distributed-systems/microservices/2025/12/17/beyond-get-and-set-architecting-resilient-distributed-caching-patterns-for-microservices.html"</span>,
+      <span class="hljs-string">"tags"</span>: <span class="hljs-string">""</span>,
+      <span class="hljs-string">"content"</span>: <span class="hljs-string">"Introduction In the infancy of a backend application, caching is often treated as a simple key-value store optimization-a sprinkle of “magic dust” to speed up slow SQL queries. Developers implement a basic client.get() and client.set(), push to production, and watch latencies drop. It feels victorious. However, as traffic scales and..."</span>
+    } 
+  
+]</code></pre><p>The frontend fetches this JSON on page load (or on first focus of the search bar) and performs a client-side filter. It’s incredibly fast for blogs with under 1,000 posts.</p>
+<h2 id="advanced-considerations-and-edge-cases">Advanced Considerations and Edge Cases</h2>
+<p>Building a “Happy Path” agent is easy. Building one that runs autonomously requires handling failure.</p>
+<h3 id="1-hallucination-control">1. Hallucination Control</h3>
+<p>Occasionally, the Image Gen API fails or returns a policy violation error.</p>
+<ul>
+<li><strong>Mitigation:</strong> The n8n workflow has error paths. If an image fails to generate, the workflow substitutes a generic “placeholder technical pattern” image from a pre-defined bucket. This ensures the blog post doesn’t break due to a missing asset.</li>
+</ul>
+<h3 id="2-markdown-sanitization">2. Markdown Sanitization</h3>
+<p>LLMs sometimes include conversational filler (“Here is your blog post…”) before the Front Matter.</p>
+<ul>
+<li><strong>Mitigation:</strong> I use a Regex extraction node in n8n to strip everything before the first <code>---</code> and after the last character of the content.</li>
+</ul>
+<h3 id="3-github-api-rate-limits">3. GitHub API Rate Limits</h3>
+<p>Committing 7 images + 1 markdown file in rapid succession can trigger secondary rate limits on GitHub if not careful.</p>
+<ul>
+<li><strong>Mitigation:</strong> I implemented a <code>Wait</code> node in n8n, introducing a 2-second delay between commit calls. This also prevents race conditions if multiple workflows trigger simultaneously (though n8n execution mode is set to strictly sequential for this workflow).</li>
+</ul>
+<h2 id="conclusion-the-roi-of-automation">Conclusion: The ROI of Automation</h2>
+<p>This system demonstrates the power of <strong>Composite AI</strong>-combining deterministic code (n8n/GitHub/Jekyll) with probabilistic AI (LLMs).</p>
+<p>By decoupling the <em>Planner</em> from the <em>Writer</em> and managing assets programmatically, we achieve a level of consistency and quality that simple “Prompt-to-Blog” tools cannot match.</p>
+<p>Here is a comparison of this architecture versus standard AI generation:</p>
+<p><img src="https://blogs.buildwithmanish.com/assets/images/comparison_chart-how-i-built-an-ai-blogger-agent-using-n8ngithub-and-jekyll-6-2025-12-18-18336.png" alt="Comparison Chart"></p>
+<p>The pipeline is now live. Every time I have an idea, I add a row to Google Sheets. My agent handles the rest, allowing me to focus on high-level architecture rather than CSS tweaks and file management.</p>
+<h3 id="next-steps">Next Steps</h3>
+<p>The next iteration of this agent will include:</p>
+<ol>
+<li><strong>SEO Optimization:</strong> An additional LLM step to analyze keywords and inject them into the metadata.</li>
+<li><strong>Social Media Broadcasting:</strong> Automatically generating LinkedIn and Twitter threads based on the final Markdown and scheduling them via n8n.</li>
+<li><strong>Interactive Components:</strong> Experimenting with generating Mermaid.js code instead of static images for diagrams, allowing for render-time interactivity.</li>
+</ol>
+</article>
+      <aside class="blog-meta-col">
+        <section class="blog-meta-card" aria-label="Author details">
+          <p class="blog-meta-label">Author</p>
+          <p class="blog-meta-value">Manish Tiwari</p>
+        </section>
+        <section class="blog-meta-card" aria-label="Publication date">
+          <p class="blog-meta-label">Published</p>
+          <p class="blog-meta-value">Dec 18, 2025</p>
+        </section>
+        <section class="blog-meta-card" aria-label="Blog views">
+          <p class="blog-meta-label">Views</p>
+          <div class="blog-view-counter">
+            <img src="https://komarev.com/ghpvc/?username=manish-9245&label=VIEWS&color=0e75b6&style=flat" alt="Blog views counter" loading="lazy" decoding="async" />
+          </div>
+        </section>
+        <section class="blog-meta-card" aria-label="Blog navigation">
+          <p class="blog-meta-label">Navigate</p>
+          <a class="blog-meta-link" href="/blogs.html">← All posts</a>
+        </section>
+      </aside>
+    </div>
+    <section class="surface related-posts" id="related-posts" aria-label="Related blog posts">
+        <h2>Related Posts</h2>
+        <div class="related-posts-grid">
+          
+            <article class="related-card">
+              <p class="related-meta">
+                <span>Dec 29, 2025</span>
+                <span class="blog-card-dot">•</span>
+                <span>AI</span>
+              </p>
+              <h3 class="related-title"><a href="/textbook-for-excel-exam.html">Textbook for Excel Exam</a></h3>
+              <p class="related-desc">In the world of data engineering and business intelligence, Microsoft Excel remains the ubiquitous “first draft” of data analysis. While Python, SQL, and Tableau dominate big data pipelines, Excel is...</p>
+            </article>
+          
+            <article class="related-card">
+              <p class="related-meta">
+                <span>Dec 18, 2025</span>
+                <span class="blog-card-dot">•</span>
+                <span>AI</span>
+              </p>
+              <h3 class="related-title"><a href="/how-i-built-an-ai-blogger-agent-using-n8n-and-jekyll.html">How I built an AI blogger Agent using N8N and Jekyll</a></h3>
+              <p class="related-desc">As engineers, we often suffer from the “cobbler’s children” syndrome. We build complex, scalable systems for clients and employers, yet our own personal portfolios and blogs gather dust. The friction...</p>
+            </article>
+          
+            <article class="related-card">
+              <p class="related-meta">
+                <span>Dec 17, 2025</span>
+                <span class="blog-card-dot">•</span>
+                <span>AI</span>
+              </p>
+              <h3 class="related-title"><a href="/building-a-virtual-data-analyst-architecting-agentic-ai-workflows-over-power-bi.html">Building a Virtual Data Analyst: Architecting Agentic AI Workflows over Power BI</a></h3>
+              <p class="related-desc">In the rush to adopt Generative AI, organizations have flooded their backlogs with “Chat with your Data” initiatives. Most of these projects follow a predictable, often disappointing, pattern: a text-...</p>
+            </article>
+          
+        </div></section>
+    <section class="surface blog-share" id="blog-share" aria-label="Share this post">
+      <h2>Share this post</h2>
+      <div class="blog-share-actions">
+        <a class="blog-share-link" aria-label="Share on LinkedIn" title="Share on LinkedIn" target="_blank" rel="noopener noreferrer" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fbuildwithmanish.com%2Fposts%2Fhow-i-built-an-ai-blogger-agent-using-n8ngithub-and-jekyll.html"><svg class="blog-share-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.94 8.5H3.56V20h3.38V8.5zM5.25 3C4.14 3 3.2 3.94 3.2 5.05c0 1.1.9 2.05 2.01 2.05h.02c1.12 0 2.02-.95 2.02-2.05C7.25 3.94 6.36 3 5.25 3zM20.8 13.4c0-3.13-1.67-5.15-4.66-5.15-2.15 0-3.11 1.2-3.65 2.03V8.5H9.1c.04 1.17 0 11.5 0 11.5h3.38v-6.42c0-.34.03-.68.12-.92.27-.68.88-1.4 1.9-1.4 1.34 0 1.88 1.05 1.88 2.58V20h3.38v-6.6z"/></svg></a>
+        <a class="blog-share-link" aria-label="Share on X" title="Share on X" target="_blank" rel="noopener noreferrer" href="https://x.com/intent/tweet?url=https%3A%2F%2Fbuildwithmanish.com%2Fposts%2Fhow-i-built-an-ai-blogger-agent-using-n8ngithub-and-jekyll.html&text=How%20I%20built%20an%20AI%20blogger%20Agent%20using%20N8N%2CGithub%20and%20Jekyll"><svg class="blog-share-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 2H22l-6.77 7.74L23 22h-6.1l-4.78-6.24L6.66 22H3.55l7.24-8.27L1 2h6.25l4.32 5.7L18.9 2zm-1.07 18h1.69L6.33 3.9H4.52L17.83 20z"/></svg></a>
+        <button type="button" class="blog-share-copy" aria-label="Copy link" title="Copy link" data-share-copy data-url="https://buildwithmanish.com/posts/how-i-built-an-ai-blogger-agent-using-n8ngithub-and-jekyll.html"><svg class="blog-share-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 7a3 3 0 0 1 3-3h7a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3h-1v-1.5h1A1.5 1.5 0 0 0 19.5 15V7A1.5 1.5 0 0 0 18 5.5h-7A1.5 1.5 0 0 0 9.5 7v1H8V7zm-2 3A3 3 0 0 1 9 7h7a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H9a3 3 0 0 1-3-3v-8zm3-1.5A1.5 1.5 0 0 0 7.5 10v8A1.5 1.5 0 0 0 9 19.5h7a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 16 8.5H9z"/></svg></button>
+      </div></section>
+    <div class="surface" style="padding-top:0">
+      <a href="/blogs.html">← Back to all blogs</a>
+    </div></main>
 
     <footer class="site-footer">
       <div class="surface footer-row">
@@ -1374,7 +1685,7 @@
                     <span aria-hidden="true">•</span>
                     <span>${tags[0]}</span>
                   </p>
-                  <h3 class="related-title"><a href="./blog.html?post=${encodeURIComponent(post.slug)}">${post.title}</a></h3>
+                  <h3 class="related-title"><a href="/blog.html?post=${encodeURIComponent(post.slug)}">${post.title}</a></h3>
                   <p class="related-desc">${post.description || ""}</p>
                 </article>`;
               })
@@ -1460,7 +1771,7 @@
         }
 
         if (!slug) {
-          main.innerHTML = `<div class="blog-error"><p>No post specified.</p><p><a href="./blogs.html">← All blogs</a></p></div>`;
+          main.innerHTML = `<div class="blog-error"><p>No post specified.</p><p><a href="/blogs.html">← All blogs</a></p></div>`;
           main.classList.remove("is-loading");
           return;
         }
@@ -1497,7 +1808,7 @@
             throw new Error("Post body unavailable");
           }
         } catch {
-          main.innerHTML = `<div class="blog-error"><p>Post not found.</p><p><a href="./blogs.html">← All blogs</a></p></div>`;
+          main.innerHTML = `<div class="blog-error"><p>Post not found.</p><p><a href="/blogs.html">← All blogs</a></p></div>`;
           main.classList.remove("is-loading");
           return;
         }
@@ -1690,7 +2001,7 @@
         main.classList.remove("is-loading");
       }
 
-      loadPost();
+      // Static Page: loadPost() disabled
     </script>
   </body>
 </html>

@@ -3,68 +3,41 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title id="page-title">Blog · Manish Tiwari</title>
-    <meta
-      id="page-desc"
-      name="description"
-      content="Blog post by Manish Tiwari"
-    />
+    <title>Java Concurrency at Scale: Migrating from Thread Pools to Virtual Threads · Manish Tiwari</title>
+    <meta name="description" content="For the better part of two decades, Java concurrency has been a negotiation with the Operating System. We built high-throughput systems on the back of the “One-Thread-Per-Request” model, eventually hi..." />
     <meta name="robots" content="index, follow" />
-    <link
-      id="page-canonical"
-      rel="canonical"
-      href="https://buildwithmanish.com/blog.html"
-    />
+    <link rel="canonical" href="https://buildwithmanish.com/posts/java-concurrency-at-scale-migrating-from-thread-pools-to-virtual-threads.html" />
     <meta property="og:site_name" content="Manish Tiwari" />
     <meta id="og-type" property="og:type" content="article" />
-    <meta id="og-title" property="og:title" content="Blog · Manish Tiwari" />
-    <meta
-      id="og-desc"
-      property="og:description"
-      content="Blog post by Manish Tiwari"
-    />
-    <meta
-      id="og-url"
-      property="og:url"
-      content="https://buildwithmanish.com/blog.html"
-    />
-    <meta
-      id="og-image"
-      property="og:image"
-      content="https://buildwithmanish.com/image/optimized/aiblogs-20260314-175545.webp"
-    />
+    <meta property="og:title" content="Java Concurrency at Scale: Migrating from Thread Pools to Virtual Threads" />
+    <meta property="og:description" content="For the better part of two decades, Java concurrency has been a negotiation with the Operating System. We built high-throughput systems on the back of the “One-Thread-Per-Request” model, eventually hi..." />
+    <meta property="og:url" content="https://buildwithmanish.com/posts/java-concurrency-at-scale-migrating-from-thread-pools-to-virtual-threads.html" />
+    <meta property="og:image" content="https://blogs.buildwithmanish.com/assets/images/hero-java-concurrency-at-scale-migrating-from-thread-pools-to-virtual-threads-0-2025-12-17-56188.png" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta id="tw-title" name="twitter:title" content="Blog · Manish Tiwari" />
-    <meta
-      id="tw-desc"
-      name="twitter:description"
-      content="Blog post by Manish Tiwari"
-    />
-    <meta
-      id="tw-image"
-      name="twitter:image"
-      content="https://buildwithmanish.com/image/optimized/aiblogs-20260314-175545.webp"
-    />
-    <script id="post-schema" type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "BlogPosting",
-        "headline": "Engineering Blog",
-        "author": {
-          "@type": "Person",
-          "name": "Manish Tiwari",
-          "url": "https://buildwithmanish.com/about.html"
-        },
-        "publisher": {
-          "@type": "Person",
-          "name": "Manish Tiwari"
-        },
-        "mainEntityOfPage": {
-          "@type": "WebPage",
-          "@id": "https://buildwithmanish.com/blog.html"
-        }
-      }
-    </script>
+    <meta name="twitter:title" content="Java Concurrency at Scale: Migrating from Thread Pools to Virtual Threads" />
+    <meta name="twitter:description" content="For the better part of two decades, Java concurrency has been a negotiation with the Operating System. We built high-throughput systems on the back of the “One-Thread-Per-Request” model, eventually hi..." />
+    <meta name="twitter:image" content="https://blogs.buildwithmanish.com/assets/images/hero-java-concurrency-at-scale-migrating-from-thread-pools-to-virtual-threads-0-2025-12-17-56188.png" />
+    <script id="post-schema" type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Java Concurrency at Scale: Migrating from Thread Pools to Virtual Threads",
+  "description": "For the better part of two decades, Java concurrency has been a negotiation with the Operating System. We built high-throughput systems on the back of the “One-Thread-Per-Request” model, eventually hi...",
+  "datePublished": "2025-12-17",
+  "author": {
+    "@type": "Person",
+    "name": "Manish Tiwari",
+    "url": "https://buildwithmanish.com/about.html"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Manish Tiwari"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://buildwithmanish.com/posts/java-concurrency-at-scale-migrating-from-thread-pools-to-virtual-threads.html"
+  },
+  "image": "https://blogs.buildwithmanish.com/assets/images/hero-java-concurrency-at-scale-migrating-from-thread-pools-to-virtual-threads-0-2025-12-17-56188.png"
+}</script>
     <link
       rel="icon"
       type="image/webp"
@@ -824,7 +797,297 @@
       </div>
     </header>
 
-    <main id="blog-main" data-router-view class="is-loading"></main>
+    <main data-router-view>
+    <header class="blog-post-header">
+      <p class="muted kicker">Blog</p>
+      <h1>Java Concurrency at Scale: Migrating from Thread Pools to Virtual Threads</h1>
+      <p class="muted">Dec 17, 2025</p>
+    </header>
+    <div class="blog-post-layout">
+      <nav class="blog-toc" id="blog-toc" aria-label="Table of contents"><p class="blog-toc-title">Contents</p><ol><li><a href="#the-evolution-from-os-wrappers-to-user-mode-threads">The Evolution: From OS Wrappers to User-Mode Threads</a></li><li class="toc-h3"><a href="#the-cost-of-platform-threads">The Cost of Platform Threads</a></li><li class="toc-h3"><a href="#the-virtual-thread-paradigm">The Virtual Thread Paradigm</a></li><li><a href="#blocking-i-o-the-secret-sauce">Blocking I/O: The Secret Sauce</a></li><li class="toc-h3"><a href="#code-comparison-the-throughput-test">Code Comparison: The Throughput Test</a></li><li><a href="#resource-efficiency-analysis">Resource Efficiency Analysis</a></li><li><a href="#refactoring-async-workflows-killing-the-completablefuture">Refactoring Async Workflows: Killing the CompletableFuture</a></li><li class="toc-h3"><a href="#scenario-the-aggregation-service">Scenario: The Aggregation Service</a></li><li><a href="#the-java-memory-model-jmm-happens-before">The Java Memory Model (JMM) & Happens-Before</a></li><li class="toc-h3"><a href="#the-happens-before-relationship">The Happens-Before Relationship</a></li><li class="toc-h3"><a href="#the-pitfall-thread-locals">The Pitfall: Thread-Locals</a></li><li><a href="#managing-shared-state-locking-and-pinning">Managing Shared State: Locking and Pinning</a></li><li class="toc-h3"><a href="#the-pinning-problem">The “Pinning” Problem</a></li><li class="toc-h3"><a href="#the-solution-reentrantlock-and-stampedlock">The Solution: ReentrantLock and StampedLock</a></li><li><a href="#migration-guide-from-pools-to-virtual">Migration Guide: From Pools to Virtual</a></li><li class="toc-h3"><a href="#step-1-dependency-audit">Step 1: Dependency Audit</a></li><li class="toc-h3"><a href="#step-2-stop-pooling-threads">Step 2: Stop Pooling Threads</a></li><li class="toc-h3"><a href="#step-3-bound-external-resources">Step 3: Bound External Resources</a></li><li class="toc-h3"><a href="#step-4-spring-boot-configuration">Step 4: Spring Boot Configuration</a></li><li class="toc-h3"><a href="#step-5-handling-pinning-in-logs">Step 5: Handling “Pinning” in Logs</a></li><li><a href="#conclusion">Conclusion</a></li></ol></nav>
+      <article class="blog-prose" id="blog-prose"><p><img src="https://blogs.buildwithmanish.com/assets/images/hero-java-concurrency-at-scale-migrating-from-thread-pools-to-virtual-threads-0-2025-12-17-56188.png" alt="Hero Image"></p>
+<p>For the better part of two decades, Java concurrency has been a negotiation with the Operating System. We built high-throughput systems on the back of the “One-Thread-Per-Request” model, eventually hitting the hard ceiling of OS resource limits. We patched this with thread pools, and when that wasn’t enough, we twisted our code into complex, reactive pretzels using asynchronous frameworks to squeeze every ounce of CPU out of blocking I/O.</p>
+<p>With the release of Project Loom and Virtual Threads (standardized in Java 21), the negotiation has changed. We no longer have to choose between the simplicity of synchronous code and the scalability of asynchronous non-blocking I/O. However, migrating to this paradigm isn’t just about changing an <code>ExecutorService</code>. It requires a fundamental shift in how we understand resource management, the Java Memory Model (JMM), and thread lifecycles.</p>
+<p>In this deep dive, we will move beyond the “Hello World” of Virtual Threads. We will dissect the architectural implications, refactor complex <code>CompletableFuture</code> chains, analyze the impact on the JMM, and provide a concrete guide for migrating high-load systems.</p>
+<p><img src="https://blogs.buildwithmanish.com/assets/images/technical_diagram-java-concurrency-at-scale-migrating-from-thread-pools-to-virtual-threads-1-2025-12-17-79478.png" alt="Technical Diagram: Context"></p>
+<h2 id="the-evolution-from-os-wrappers-to-user-mode-threads">The Evolution: From OS Wrappers to User-Mode Threads</h2>
+<p>To understand why Virtual Threads are revolutionary, we must acknowledge the cost of the Platform Thread. A traditional Java <code>Thread</code> is a thin wrapper around an OS kernel thread.</p>
+<h3 id="the-cost-of-platform-threads">The Cost of Platform Threads</h3>
+<ol>
+<li><strong>Stack Size:</strong> OS threads typically reserve ~1MB - 2MB of stack memory. Spawning 100,000 threads immediately demands ~200GB of RAM, regardless of actual usage.</li>
+<li><strong>Context Switching:</strong> Switching between kernel threads involves a round-trip to the OS scheduler. This context switch is computationally expensive (cache pollution, TLB flushes).</li>
+<li><strong>Scheduling Granularity:</strong> The OS scheduler is designed for general-purpose computing, not specifically for Java’s runtime behavior.</li>
+</ol>
+<h3 id="the-virtual-thread-paradigm">The Virtual Thread Paradigm</h3>
+<p>Virtual Threads are user-mode threads scheduled by the JVM, not the OS. They are mapped M:N onto Platform Threads (called “carrier threads”).</p>
+<ul>
+<li><strong>Footprint:</strong> A virtual thread’s stack lives in the Java heap and grows dynamically. It can be as small as a few hundred bytes.</li>
+<li><strong>Scheduling:</strong> The JVM handles the mounting and unmounting of virtual threads onto carrier threads. This operation is barely more expensive than a function call.</li>
+</ul>
+<p>This shift allows us to return to the “One-Thread-Per-Task” style without the resource penalty.</p>
+<h2 id="blocking-i-o-the-secret-sauce">Blocking I/O: The Secret Sauce</h2>
+<p>The magic of Virtual Threads lies in how they handle blocking operations. In the Platform Thread model, a blocking call (like reading from a Socket or a Database) halts the OS thread. The CPU core sits idle (or forces a context switch) while waiting for bytes to arrive.</p>
+<p>With Virtual Threads, the <code>java.util.concurrent</code> libraries have been rewritten. When a virtual thread performs a blocking I/O operation:</p>
+<ol>
+<li>The JVM detects the blocking call.</li>
+<li>It <strong>unmounts</strong> the virtual thread from the carrier thread.</li>
+<li>The virtual thread’s stack is parked in the heap.</li>
+<li>The carrier thread is arguably instantly free to execute another virtual thread.</li>
+<li>When the I/O completes, the OS signals the JVM (usually via epoll/kqueue), and the virtual thread is rescheduled (mounted) onto an available carrier.</li>
+</ol>
+<p><img src="https://blogs.buildwithmanish.com/assets/images/technical_diagram-java-concurrency-at-scale-migrating-from-thread-pools-to-virtual-threads-2-2025-12-17-83684.png" alt="Technical Diagram: Blocking IO"></p>
+<h3 id="code-comparison-the-throughput-test">Code Comparison: The Throughput Test</h3>
+<p>Let’s look at a scenario simulating a high-latency network call.</p>
+<p><strong>Traditional Thread Pool Approach:</strong></p>
+<pre><code class="hljs language-java" data-lang="java"><span class="hljs-keyword">import</span> java.util.concurrent.Executors;
+<span class="hljs-keyword">import</span> java.util.concurrent.TimeUnit;
+
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">PlatformThreadServer</span> {
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> {
+        <span class="hljs-comment">// Limited by OS resources. </span>
+        <span class="hljs-comment">// 10,000 threads might crash a smaller container.</span>
+        <span class="hljs-keyword">try</span> (<span class="hljs-type">var</span> <span class="hljs-variable">executor</span> <span class="hljs-operator">=</span> Executors.newFixedThreadPool(<span class="hljs-number">200</span>)) { 
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10_000</span>; i++) {
+                executor.submit(() -&gt; {
+                    <span class="hljs-keyword">try</span> {
+                        <span class="hljs-comment">// Simulating 500ms Database Latency</span>
+                        TimeUnit.MILLISECONDS.sleep(<span class="hljs-number">500</span>); 
+                        System.out.println(<span class="hljs-string">"Task completed by: "</span> + Thread.currentThread());
+                    } <span class="hljs-keyword">catch</span> (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    }
+                });
+            }
+        }
+    }
+}</code></pre><p>In the code above, we cap the pool at 200. If 10,000 requests come in, 9,800 are queued. Latency spikes.</p>
+<p><strong>Virtual Thread Approach:</strong></p>
+<pre><code class="hljs language-java" data-lang="java"><span class="hljs-keyword">import</span> java.util.concurrent.Executors;
+<span class="hljs-keyword">import</span> java.util.concurrent.TimeUnit;
+
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">VirtualThreadServer</span> {
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> {
+        <span class="hljs-comment">// No pool limits needed. Creates a new virtual thread per task.</span>
+        <span class="hljs-keyword">try</span> (<span class="hljs-type">var</span> <span class="hljs-variable">executor</span> <span class="hljs-operator">=</span> Executors.newVirtualThreadPerTaskExecutor()) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">1_000_000</span>; i++) { <span class="hljs-comment">// Scale to 1 Million</span>
+                executor.submit(() -&gt; {
+                    <span class="hljs-keyword">try</span> {
+                        <span class="hljs-comment">// The Carrier Thread is released during this sleep</span>
+                        TimeUnit.MILLISECONDS.sleep(<span class="hljs-number">500</span>); 
+                        <span class="hljs-comment">// Note: toString() will show the virtual thread and carrier</span>
+                    } <span class="hljs-keyword">catch</span> (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    }
+                });
+            }
+        }
+    }
+}</code></pre><p>Here, we can submit <strong>1 million tasks</strong>. The JVM will likely use only as many carrier threads as there are CPU cores (e.g., 12 threads on a 12-core machine). The throughput is vastly superior because the threads are not holding onto OS resources while waiting.</p>
+<h2 id="resource-efficiency-analysis">Resource Efficiency Analysis</h2>
+<p>The implications for hardware utilization are massive. Under the traditional model, scaling meant adding more RAM to support thread stacks. With Virtual Threads, scaling is bound primarily by CPU cycles and Heap space for application data.</p>
+<p><img src="https://blogs.buildwithmanish.com/assets/images/comparison_chart-java-concurrency-at-scale-migrating-from-thread-pools-to-virtual-threads-3-2025-12-17-51563.png" alt="Comparison Chart: Efficiency"></p>
+<p>This changes capacity planning. In a microservices architecture, services that are I/O bound (like API Gateways or BFFs) can see a footprint reduction of 50-80% while handling higher concurrency.</p>
+<h2 id="refactoring-async-workflows-killing-the-completablefuture">Refactoring Async Workflows: Killing the <code>CompletableFuture</code></h2>
+<p>Between Java 8 and Java 21, the industry adopted <code>CompletableFuture</code> and Reactive frameworks (RxJava, Reactor) to bypass the thread-per-request limitations. While effective, this introduced:</p>
+<ol>
+<li><strong>Cognitive Load:</strong> “Callback Hell” or complex chaining.</li>
+<li><strong>Loss of Context:</strong> Stack traces become useless because the exception happens in a different thread than the caller.</li>
+<li><strong>Debugging Difficulties:</strong> You can’t step-debug easily through a reactive chain.</li>
+</ol>
+<p>Virtual Threads allow us to write <strong>imperative, synchronous-looking code</strong> that runs asynchronously under the hood.</p>
+<p><img src="https://blogs.buildwithmanish.com/assets/images/code_flow-java-concurrency-at-scale-migrating-from-thread-pools-to-virtual-threads-4-2025-12-17-30442.png" alt="Code Flow: Refactoring"></p>
+<h3 id="scenario-the-aggregation-service">Scenario: The Aggregation Service</h3>
+<p>Imagine an endpoint that fetches User details, then fetches their Orders, and essentially their Loyalty points, combining them all.</p>
+<p><strong>The CompletableFuture Nightmare:</strong></p>
+<pre><code class="hljs language-typescript" data-lang="typescript"><span class="hljs-keyword">public</span> <span class="hljs-title class_">CompletableFuture</span>&lt;<span class="hljs-title class_">UserDashboard</span>&gt; <span class="hljs-title function_">getDashboardAsync</span>(<span class="hljs-params"><span class="hljs-title class_">String</span> userId</span>) {
+    <span class="hljs-keyword">return</span> <span class="hljs-title function_">getUser</span>(userId)
+        .<span class="hljs-title function_">thenCompose</span>(user -&gt; 
+            <span class="hljs-title function_">getOrders</span>(user.<span class="hljs-title function_">getId</span>())
+                .<span class="hljs-title function_">thenCombine</span>(<span class="hljs-title function_">getLoyalty</span>(user.<span class="hljs-title function_">getId</span>()), (orders, loyalty) -&gt; {
+                    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">UserDashboard</span>(user, orders, loyalty);
+                })
+        ).<span class="hljs-title function_">exceptionally</span>(ex -&gt; {
+            log.<span class="hljs-title function_">error</span>(<span class="hljs-string">"Async chain failed"</span>, ex);
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">UserDashboard</span>(); <span class="hljs-comment">// Fallback</span>
+        });
+}</code></pre><p>This code is brittle. If <code>getUser</code> fails, the stack trace won’t easily tell you <em>where</em> the request originated.</p>
+<p><strong>The Virtual Thread Refactor (Structured Concurrency):</strong></p>
+<p>We can revert to a clean, sequential style. For parallel execution (fetching orders and loyalty simultaneously), we use the new <code>StructuredTaskScope</code> (preview in 21, maturing in later versions) or standard ExecutorServices.</p>
+<pre><code class="hljs language-java" data-lang="java"><span class="hljs-comment">// Using standard Executors with Virtual Threads</span>
+<span class="hljs-keyword">public</span> UserDashboard <span class="hljs-title function_">getDashboardVirtual</span><span class="hljs-params">(String userId)</span> <span class="hljs-keyword">throws</span> ExecutionException, InterruptedException {
+    <span class="hljs-keyword">try</span> (<span class="hljs-type">var</span> <span class="hljs-variable">executor</span> <span class="hljs-operator">=</span> Executors.newVirtualThreadPerTaskExecutor()) {
+        <span class="hljs-comment">// 1. Fetch User (Sequential)</span>
+        <span class="hljs-type">User</span> <span class="hljs-variable">user</span> <span class="hljs-operator">=</span> getUser(userId); <span class="hljs-comment">// Blocking, but cheap!</span>
+        
+        <span class="hljs-comment">// 2. Fetch Orders and Loyalty (Parallel)</span>
+        <span class="hljs-type">var</span> <span class="hljs-variable">ordersFuture</span> <span class="hljs-operator">=</span> executor.submit(() -&gt; getOrders(user.getId()));
+        <span class="hljs-type">var</span> <span class="hljs-variable">loyaltyFuture</span> <span class="hljs-operator">=</span> executor.submit(() -&gt; getLoyalty(user.getId()));
+        
+        <span class="hljs-comment">// 3. Aggregate</span>
+        <span class="hljs-comment">// The .get() calls block the virtual thread, releasing the carrier.</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">UserDashboard</span>(user, ordersFuture.get(), loyaltyFuture.get());
+    }
+}</code></pre><p>This code is readable, debuggable, and performs just as well (if not better) than the reactive version. The stack trace upon exception will show the exact line number in <code>getDashboardVirtual</code>.</p>
+<h2 id="the-java-memory-model-jmm-happens-before">The Java Memory Model (JMM) &amp; Happens-Before</h2>
+<p>One common misconception is that Virtual Threads change the Java Memory Model. They do not. The rules of <strong>visibility</strong>, <strong>atomicity</strong>, and <strong>ordering</strong> remain identical. However, the <em>implications</em> of shared state change because you now have millions of threads potentially contending for resources.</p>
+<p><img src="https://blogs.buildwithmanish.com/assets/images/concept_illustration-java-concurrency-at-scale-migrating-from-thread-pools-to-virtual-threads-5-2025-12-17-84457.png" alt="Concept Illustration: JMM"></p>
+<h3 id="the-happens-before-relationship">The Happens-Before Relationship</h3>
+<p>Just like platform threads:</p>
+<ol>
+<li>Actions in a thread prior to <code>Thread.start()</code> happen-before any actions in the started thread.</li>
+<li>Actions in a thread happen-before <code>Thread.join()</code> returns.</li>
+<li>Writing a volatile variable happens-before reading it.</li>
+</ol>
+<h3 id="the-pitfall-thread-locals">The Pitfall: Thread-Locals</h3>
+<p>In the era of thread pools, <code>ThreadLocal</code> was often used as a request-scoped cache (e.g., holding a Transaction Context or User ID).</p>
+<ul>
+<li><strong>Old World:</strong> 200 Threads = 200 ThreadLocal maps. Manageable.</li>
+<li><strong>New World:</strong> 1,000,000 Virtual Threads = 1,000,000 ThreadLocal maps. <strong>Heap Exhaustion.</strong></li>
+</ul>
+<p><strong>Migration Tip:</strong> Avoid <code>ThreadLocal</code> with Virtual Threads. Use explicit parameter passing or specialized <code>ScopedValue</code> (JEP 429) designed for this exact purpose.</p>
+<h2 id="managing-shared-state-locking-and-pinning">Managing Shared State: Locking and Pinning</h2>
+<p>This is the most critical technical nuance in the migration.</p>
+<h3 id="the-pinning-problem">The “Pinning” Problem</h3>
+<p>A virtual thread is “pinned” to its carrier thread if:</p>
+<ol>
+<li>It executes a <code>synchronized</code> block or method.</li>
+<li>It executes a native method (JNI).</li>
+</ol>
+<p>When pinned, if the virtual thread performs a blocking operation, <strong>it blocks the underlying carrier thread</strong>. This reintroduces the scalability bottleneck.</p>
+<h3 id="the-solution-reentrantlock-and-stampedlock">The Solution: ReentrantLock and StampedLock</h3>
+<p>To avoid pinning, replace <code>synchronized</code> blocks with <code>ReentrantLock</code> where possible, as the JDK’s virtual thread scheduler is aware of <code>j.u.c</code> locks and can unmount threads waiting on them.</p>
+<p>For high-concurrency read-heavy scenarios, <code>StampedLock</code> offers optimistic locking, which is significantly faster and aligns well with the high volume of virtual threads.</p>
+<p><img src="https://blogs.buildwithmanish.com/assets/images/technical_diagram-java-concurrency-at-scale-migrating-from-thread-pools-to-virtual-threads-6-2025-12-17-43250.png" alt="Technical Diagram: Locking"></p>
+<p><strong>High-Performance Counter Example:</strong></p>
+<pre><code class="hljs language-java" data-lang="java"><span class="hljs-keyword">import</span> java.util.concurrent.locks.StampedLock;
+
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">HighThroughputState</span> {
+    <span class="hljs-keyword">private</span> <span class="hljs-type">double</span> x, y;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">StampedLock</span> <span class="hljs-variable">sl</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StampedLock</span>();
+
+    <span class="hljs-comment">// Optimistic Read - Excellent for high concurrency virtual threads</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">double</span> <span class="hljs-title function_">distanceFromOrigin</span><span class="hljs-params">()</span> {
+        <span class="hljs-type">long</span> <span class="hljs-variable">stamp</span> <span class="hljs-operator">=</span> sl.tryOptimisticRead();
+        <span class="hljs-type">double</span> <span class="hljs-variable">currentX</span> <span class="hljs-operator">=</span> x, currentY = y;
+        
+        <span class="hljs-comment">// Check if a write occurred while we were reading</span>
+        <span class="hljs-keyword">if</span> (!sl.validate(stamp)) {
+            <span class="hljs-comment">// Fallback to read lock</span>
+            stamp = sl.readLock();
+            <span class="hljs-keyword">try</span> {
+                currentX = x;
+                currentY = y;
+            } <span class="hljs-keyword">finally</span> {
+                sl.unlockRead(stamp);
+            }
+        }
+        <span class="hljs-keyword">return</span> Math.sqrt(currentX * currentX + currentY * currentY);
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">move</span><span class="hljs-params">(<span class="hljs-type">double</span> deltaX, <span class="hljs-type">double</span> deltaY)</span> {
+        <span class="hljs-type">long</span> <span class="hljs-variable">stamp</span> <span class="hljs-operator">=</span> sl.writeLock();
+        <span class="hljs-keyword">try</span> {
+            x += deltaX;
+            y += deltaY;
+        } <span class="hljs-keyword">finally</span> {
+            sl.unlockWrite(stamp);
+        }
+    }
+}</code></pre><p>By using <code>StampedLock</code>, we avoid <code>synchronized</code> (preventing pinning) and reduce contention overhead compared to standard <code>ReentrantReadWriteLock</code>.</p>
+<h2 id="migration-guide-from-pools-to-virtual">Migration Guide: From Pools to Virtual</h2>
+<p>Migrating a legacy application requires a strategic approach. You cannot simply flip a switch if you rely heavily on <code>synchronized</code> or thread-local caches.</p>
+<p><img src="https://blogs.buildwithmanish.com/assets/images/architecture_diagram-java-concurrency-at-scale-migrating-from-thread-pools-to-virtual-threads-7-2025-12-17-50150.png" alt="Architecture Diagram: Migration"></p>
+<h3 id="step-1-dependency-audit">Step 1: Dependency Audit</h3>
+<p>Identify libraries that synchronize on I/O. Older JDBC drivers or XML parsers might do this. Upgrade dependencies to versions that declare “Virtual Thread Friendliness” (usually by replacing synchronized with ReentrantLock).</p>
+<h3 id="step-2-stop-pooling-threads">Step 2: Stop Pooling Threads</h3>
+<p><strong>Anti-Pattern:</strong></p>
+<pre><code class="hljs language-java" data-lang="java"><span class="hljs-comment">// DON'T DO THIS</span>
+<span class="hljs-type">ExecutorService</span> <span class="hljs-variable">pool</span> <span class="hljs-operator">=</span> Executors.newFixedThreadPool(<span class="hljs-number">100</span>, Thread.ofVirtual().factory());</code></pre><p>Pooling virtual threads defeats their purpose. They are disposable. Always use:</p>
+<pre><code class="hljs language-java" data-lang="java"><span class="hljs-type">ExecutorService</span> <span class="hljs-variable">executor</span> <span class="hljs-operator">=</span> Executors.newVirtualThreadPerTaskExecutor();</code></pre><h3 id="step-3-bound-external-resources">Step 3: Bound External Resources</h3>
+<p>While you can create infinite threads, you cannot create infinite Database Connections.</p>
+<ul>
+<li><strong>Keep the Connection Pool:</strong> HikariCP or similar DB pools are still mandatory.</li>
+<li><strong>Mechanism:</strong> When 10,000 virtual threads ask for a connection, 9,900 will park efficiently. The bottleneck moves from the <em>Server CPU</em> to the <em>Database</em>. This is desired behavior; the application server is no longer the weak link.</li>
+</ul>
+<h3 id="step-4-spring-boot-configuration">Step 4: Spring Boot Configuration</h3>
+<p>If you are on Spring Boot 3.2+, enabling virtual threads is configuration-driven:</p>
+<pre><code class="hljs language-yaml" data-lang="yaml"><span class="hljs-attr">spring:</span>
+  <span class="hljs-attr">threads:</span>
+    <span class="hljs-attr">virtual:</span>
+      <span class="hljs-attr">enabled:</span> <span class="hljs-literal">true</span></code></pre><p>This automatically configures Tomcat/Jetty to use a virtual thread executor for incoming HTTP requests.</p>
+<h3 id="step-5-handling-pinning-in-logs">Step 5: Handling “Pinning” in Logs</h3>
+<p>Run your application with <code>-Djdk.tracePinnedThreads=full</code>. This will print stack traces whenever a virtual thread blocks while pinned. Refactor these hotspots specifically.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>Migrating to Virtual Threads is the most significant shift in Java concurrency since Java 5. It allows us to build high-throughput applications that are easier to write, read, and debug.</p>
+<p>However, it is not a magic bullet that fixes bad architecture. It exposes bottlenecks downstream (databases, external APIs) and requires disciplined management of shared state. By moving away from <code>synchronized</code> toward <code>ReentrantLock</code> and <code>StampedLock</code>, and by abandoning the concept of thread pooling for task execution, you can unlock the full potential of modern hardware.</p>
+<p>The era of the “One-Thread-Per-Request” is back-but this time, it scales.</p>
+</article>
+      <aside class="blog-meta-col">
+        <section class="blog-meta-card" aria-label="Author details">
+          <p class="blog-meta-label">Author</p>
+          <p class="blog-meta-value">Manish Tiwari</p>
+        </section>
+        <section class="blog-meta-card" aria-label="Publication date">
+          <p class="blog-meta-label">Published</p>
+          <p class="blog-meta-value">Dec 17, 2025</p>
+        </section>
+        <section class="blog-meta-card" aria-label="Blog views">
+          <p class="blog-meta-label">Views</p>
+          <div class="blog-view-counter">
+            <img src="https://komarev.com/ghpvc/?username=manish-9245&label=VIEWS&color=0e75b6&style=flat" alt="Blog views counter" loading="lazy" decoding="async" />
+          </div>
+        </section>
+        <section class="blog-meta-card" aria-label="Blog navigation">
+          <p class="blog-meta-label">Navigate</p>
+          <a class="blog-meta-link" href="/blogs.html">← All posts</a>
+        </section>
+      </aside>
+    </div>
+    <section class="surface related-posts" id="related-posts" aria-label="Related blog posts">
+        <h2>Related Posts</h2>
+        <div class="related-posts-grid">
+          
+            <article class="related-card">
+              <p class="related-meta">
+                <span>Dec 17, 2025</span>
+                <span class="blog-card-dot">•</span>
+                <span>Data</span>
+              </p>
+              <h3 class="related-title"><a href="/mastering-razorpay-webhooks-architecting-an-idempotent-eventdriven-ingestion-engine.html">Mastering Razorpay Webhooks: Architecting an Idempotent, Event-Driven Ingestion Engine</a></h3>
+              <p class="related-desc">Integrating a payment gateway like Razorpay often starts with a false sense of security. The documentation shows a happy path: user pays, Razorpay calls your webhook, you update the database, and ship...</p>
+            </article>
+          
+            <article class="related-card">
+              <p class="related-meta">
+                <span>Mar 15, 2026</span>
+                <span class="blog-card-dot">•</span>
+                <span>Frontend</span>
+              </p>
+              <h3 class="related-title"><a href="/how-i-built-my-portfolio-website-and-achieved-a-perfect-lighthouse-score.html">How I Built My Portfolio Website and Achieved a Perfect Lighthouse Score</a></h3>
+              <p class="related-desc">A deep dive into the architecture, tech stack, and best practices that helped my portfolio achieve a perfect 100/100/100/100 Lighthouse score.</p>
+            </article>
+          
+            <article class="related-card">
+              <p class="related-meta">
+                <span>Dec 29, 2025</span>
+                <span class="blog-card-dot">•</span>
+                <span>AI</span>
+              </p>
+              <h3 class="related-title"><a href="/textbook-for-excel-exam.html">Textbook for Excel Exam</a></h3>
+              <p class="related-desc">In the world of data engineering and business intelligence, Microsoft Excel remains the ubiquitous “first draft” of data analysis. While Python, SQL, and Tableau dominate big data pipelines, Excel is...</p>
+            </article>
+          
+        </div></section>
+    <section class="surface blog-share" id="blog-share" aria-label="Share this post">
+      <h2>Share this post</h2>
+      <div class="blog-share-actions">
+        <a class="blog-share-link" aria-label="Share on LinkedIn" title="Share on LinkedIn" target="_blank" rel="noopener noreferrer" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fbuildwithmanish.com%2Fposts%2Fjava-concurrency-at-scale-migrating-from-thread-pools-to-virtual-threads.html"><svg class="blog-share-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.94 8.5H3.56V20h3.38V8.5zM5.25 3C4.14 3 3.2 3.94 3.2 5.05c0 1.1.9 2.05 2.01 2.05h.02c1.12 0 2.02-.95 2.02-2.05C7.25 3.94 6.36 3 5.25 3zM20.8 13.4c0-3.13-1.67-5.15-4.66-5.15-2.15 0-3.11 1.2-3.65 2.03V8.5H9.1c.04 1.17 0 11.5 0 11.5h3.38v-6.42c0-.34.03-.68.12-.92.27-.68.88-1.4 1.9-1.4 1.34 0 1.88 1.05 1.88 2.58V20h3.38v-6.6z"/></svg></a>
+        <a class="blog-share-link" aria-label="Share on X" title="Share on X" target="_blank" rel="noopener noreferrer" href="https://x.com/intent/tweet?url=https%3A%2F%2Fbuildwithmanish.com%2Fposts%2Fjava-concurrency-at-scale-migrating-from-thread-pools-to-virtual-threads.html&text=Java%20Concurrency%20at%20Scale%3A%20Migrating%20from%20Thread%20Pools%20to%20Virtual%20Threads"><svg class="blog-share-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 2H22l-6.77 7.74L23 22h-6.1l-4.78-6.24L6.66 22H3.55l7.24-8.27L1 2h6.25l4.32 5.7L18.9 2zm-1.07 18h1.69L6.33 3.9H4.52L17.83 20z"/></svg></a>
+        <button type="button" class="blog-share-copy" aria-label="Copy link" title="Copy link" data-share-copy data-url="https://buildwithmanish.com/posts/java-concurrency-at-scale-migrating-from-thread-pools-to-virtual-threads.html"><svg class="blog-share-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 7a3 3 0 0 1 3-3h7a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3h-1v-1.5h1A1.5 1.5 0 0 0 19.5 15V7A1.5 1.5 0 0 0 18 5.5h-7A1.5 1.5 0 0 0 9.5 7v1H8V7zm-2 3A3 3 0 0 1 9 7h7a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H9a3 3 0 0 1-3-3v-8zm3-1.5A1.5 1.5 0 0 0 7.5 10v8A1.5 1.5 0 0 0 9 19.5h7a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 16 8.5H9z"/></svg></button>
+      </div></section>
+    <div class="surface" style="padding-top:0">
+      <a href="/blogs.html">← Back to all blogs</a>
+    </div></main>
 
     <footer class="site-footer">
       <div class="surface footer-row">
@@ -1374,7 +1637,7 @@
                     <span aria-hidden="true">•</span>
                     <span>${tags[0]}</span>
                   </p>
-                  <h3 class="related-title"><a href="./blog.html?post=${encodeURIComponent(post.slug)}">${post.title}</a></h3>
+                  <h3 class="related-title"><a href="/blog.html?post=${encodeURIComponent(post.slug)}">${post.title}</a></h3>
                   <p class="related-desc">${post.description || ""}</p>
                 </article>`;
               })
@@ -1460,7 +1723,7 @@
         }
 
         if (!slug) {
-          main.innerHTML = `<div class="blog-error"><p>No post specified.</p><p><a href="./blogs.html">← All blogs</a></p></div>`;
+          main.innerHTML = `<div class="blog-error"><p>No post specified.</p><p><a href="/blogs.html">← All blogs</a></p></div>`;
           main.classList.remove("is-loading");
           return;
         }
@@ -1497,7 +1760,7 @@
             throw new Error("Post body unavailable");
           }
         } catch {
-          main.innerHTML = `<div class="blog-error"><p>Post not found.</p><p><a href="./blogs.html">← All blogs</a></p></div>`;
+          main.innerHTML = `<div class="blog-error"><p>Post not found.</p><p><a href="/blogs.html">← All blogs</a></p></div>`;
           main.classList.remove("is-loading");
           return;
         }
@@ -1690,7 +1953,7 @@
         main.classList.remove("is-loading");
       }
 
-      loadPost();
+      // Static Page: loadPost() disabled
     </script>
   </body>
 </html>

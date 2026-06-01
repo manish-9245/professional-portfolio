@@ -1,0 +1,492 @@
+{
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/oat.min.js": {
+    "mtime": 1780288491.6772618,
+    "ast_hash": "67eeeca34766dd575a41baf462ad53a5",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/vercel.json": {
+    "mtime": 1780288491.6815577,
+    "ast_hash": "089654ccf06fde16173d7ab47f381682",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/package.json": {
+    "mtime": 1780290231.9442413,
+    "ast_hash": "521cd7455d7284701210d534e62b86b8",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/site.js": {
+    "mtime": 1780291240.8168676,
+    "ast_hash": "2c1ed277763c1712317dde062ded9be8",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/posts/index.json": {
+    "mtime": 1780293208.4189749,
+    "ast_hash": "ad3daec4b682717557d57b5525e489f1",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/scripts/generate-blog-share-pages.mjs": {
+    "mtime": 1780291227.1738052,
+    "ast_hash": "ea19e3fd890b1bc804beec251dbb1ecd",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/blog.html": {
+    "mtime": 1780292611.9951122,
+    "ast_hash": "31a31f21ce24034d78cb4680f1b5b8ca",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/index.html": {
+    "mtime": 1780293188.6155362,
+    "ast_hash": "e84280646aa00aeed9b045cf426d9ed7",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/about.html": {
+    "mtime": 1780292647.489615,
+    "ast_hash": "bdd2a0c5c3640abaf21038e688728f67",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/contact.html": {
+    "mtime": 1780292611.9937694,
+    "ast_hash": "e3ff8463aa3084c759b0813130495bb0",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/projects.html": {
+    "mtime": 1780293188.61631,
+    "ast_hash": "4ff0e2cc481a978a2ebcf1debdab3cac",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/README.md": {
+    "mtime": 1780288491.665814,
+    "ast_hash": "f620b152d303ed320b6306fd6b083bcb",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/robots.txt": {
+    "mtime": 1780288491.6807833,
+    "ast_hash": "8a9ee9c3e7277d993ea46c06bdc11859",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/blogs.html": {
+    "mtime": 1780292611.9932957,
+    "ast_hash": "13d9cbfb41d034565e756a395192bffc",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/posts/how-i-built-an-ai-blogger-agent-using-n8n-and-jekyll.html": {
+    "mtime": 1780293208.2355492,
+    "ast_hash": "bd8dcd89d6ed90c75b362f22c5ef7bd4",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/posts/beyond-get-and-set-architecting-resilient-distributed-caching-patterns-for-microservices.html": {
+    "mtime": 1780293208.1341586,
+    "ast_hash": "e94cc57df1f3893b533f2e2e124e5409",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/posts/relational-database-management-system.html": {
+    "mtime": 1780293208.3744879,
+    "ast_hash": "d52c3a22242f9c0a8f55fd80084c8789",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/posts/how-i-built-an-ai-blogger-agent-using-n8ngithub-and-jekyll.html": {
+    "mtime": 1780293208.2633708,
+    "ast_hash": "efd517b458990beed1a1f383bed01680",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/posts/implementing-agentic-workflows-for-javatonodejs-migration.md": {
+    "mtime": 1780288491.6794946,
+    "ast_hash": "b3ca053a475c63719e1569a1e611a315",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/posts/reactive-architecture-in-flutter-mastering-bloc-for-scalable-state-management.md": {
+    "mtime": 1780288491.680051,
+    "ast_hash": "b69920ed9e71ffb14c5f237cdd2a3011",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/posts/beyond-the-happy-path-architecting-faulttolerant-recurring-payments-with-razorpay.html": {
+    "mtime": 1780293208.158669,
+    "ast_hash": "6d8955a11f0702303df5c9d2bf9c8b22",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/posts/beyond-get-and-set-architecting-resilient-distributed-caching-patterns-for-microservices.md": {
+    "mtime": 1780288491.677561,
+    "ast_hash": "ee77c864b9d1ec5eb41bd5646ac0d9ba",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/posts/reactive-architecture-in-flutter-mastering-bloc-for-scalable-state-management.html": {
+    "mtime": 1780293208.360091,
+    "ast_hash": "485b1c27f4183b6300c445d1afb29343",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/posts/escaping-the-if-isadmin-trap-implementing-scalable-rbac-and-abac-in-nodejs.html": {
+    "mtime": 1780293208.2107363,
+    "ast_hash": "42472637d9470798a055083a333ca483",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/posts/how-i-built-an-ai-blogger-agent-using-n8ngithub-and-jekyll.md": {
+    "mtime": 1780288491.678718,
+    "ast_hash": "397d7f7e1bdf3a8aaba2a2ea4dafce76",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/posts/how-i-built-an-ai-blogger-agent-using-n8n-and-jekyll.md": {
+    "mtime": 1780288491.678165,
+    "ast_hash": "17a5bd30628fc1cbce2f552833b16a91",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/posts/beyond-the-happy-path-architecting-faulttolerant-recurring-payments-with-razorpay.md": {
+    "mtime": 1780288491.677713,
+    "ast_hash": "03f83d91ec9ac4e56bd5667d62abf5a9",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/posts/mastering-razorpay-webhooks-architecting-an-idempotent-eventdriven-ingestion-engine.md": {
+    "mtime": 1780288491.6799216,
+    "ast_hash": "dc7917c7721a23bd74b5e16d7c220921",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/posts/building-a-virtual-data-analyst-architecting-agentic-ai-workflows-over-power-bi.html": {
+    "mtime": 1780293208.1797724,
+    "ast_hash": "9bb259b1a6973c6fde468ec75faae7a0",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/posts/java-concurrency-at-scale-migrating-from-thread-pools-to-virtual-threads.md": {
+    "mtime": 1780288491.679787,
+    "ast_hash": "432007d8a76586ddad4c5886bc49bc11",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/posts/building-a-virtual-data-analyst-architecting-agentic-ai-workflows-over-power-bi.md": {
+    "mtime": 1780288491.67787,
+    "ast_hash": "23bf8754ab8d4edabbfb39b526bf57ed",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/posts/textbook-for-excel-exam.html": {
+    "mtime": 1780293208.3896306,
+    "ast_hash": "ef841446abdd21a78764ee4385ad6a8c",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/posts/mastering-razorpay-webhooks-architecting-an-idempotent-eventdriven-ingestion-engine.html": {
+    "mtime": 1780293208.3375533,
+    "ast_hash": "cdfc8ec8dcb0411fa0e53a80ebd4e6fd",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/posts/implementing-agentic-workflows-for-javatonodejs-migration.html": {
+    "mtime": 1780293208.293344,
+    "ast_hash": "5577570dd0bd09442946784f6f4c7f12",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/posts/top-5-programming-languages-to-learn-in-2026.md": {
+    "mtime": 1780288491.6804707,
+    "ast_hash": "727b32e69403c32ad21bea9169d7be55",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/posts/java-concurrency-at-scale-migrating-from-thread-pools-to-virtual-threads.html": {
+    "mtime": 1780293208.3136833,
+    "ast_hash": "d6777606138c4e52b973a07fc9cd64bf",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/posts/how-i-built-my-portfolio-website-and-achieved-a-perfect-lighthouse-score.md": {
+    "mtime": 1780288491.679018,
+    "ast_hash": "780a12c79a61248b05b6668bd159af6f",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/posts/how-i-built-my-portfolio-website-and-achieved-a-perfect-lighthouse-score.html": {
+    "mtime": 1780293208.2753105,
+    "ast_hash": "c797354faae577a9f536a57b1af18942",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/posts/textbook-for-excel-exam.md": {
+    "mtime": 1780288491.680337,
+    "ast_hash": "a7b574f417fac9972ffbe6711d586c7a",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/posts/top-5-programming-languages-to-learn-in-2026.html": {
+    "mtime": 1780293208.4182365,
+    "ast_hash": "c0bec9d14a0192ed3e48a8c0c375393e",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/posts/escaping-the-if-isadmin-trap-implementing-scalable-rbac-and-abac-in-nodejs.md": {
+    "mtime": 1780288491.6780026,
+    "ast_hash": "1b9802a9df765e57ce65719d29c8bc6b",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/posts/relational-database-management-system.md": {
+    "mtime": 1780288491.6801906,
+    "ast_hash": "f887ef169ecb493217e951194dd954f0",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/image/source/profile.jpg": {
+    "mtime": 1780288491.676834,
+    "ast_hash": "1e30344cd381e8765844d149214a8cb7",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/image/optimized/aiblogs-20260314-175617-700.webp": {
+    "mtime": 1780288491.6692433,
+    "ast_hash": "24a1f4bd3afae003841c1c5fd62c65f6",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/image/optimized/project-collabcode-320.webp": {
+    "mtime": 1780288491.6750498,
+    "ast_hash": "fd844038bf6f8b4c11492806d0757d0f",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/image/optimized/about-drumming.webp": {
+    "mtime": 1780292751.5938277,
+    "ast_hash": "b5be482e438c59ee88d430963e97eeac",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/image/optimized/aiblogs-20260314-175945-700.webp": {
+    "mtime": 1780288491.6708364,
+    "ast_hash": "506a6ce24905f7b0433b384cc80e2617",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/image/optimized/hero-profile.webp": {
+    "mtime": 1780292899.3028524,
+    "ast_hash": "6f4133109f1b7dce1318d491f77935cd",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/image/optimized/aiblogs-20260314-175545.webp": {
+    "mtime": 1780288491.6689274,
+    "ast_hash": "e0d06b5454c179a7b9a1f5096d090219",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/image/optimized/aiblogs-20260314-175800.webp": {
+    "mtime": 1780288491.6705768,
+    "ast_hash": "2e05cbd51382b1a8080f348f5f012e6c",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/image/optimized/aiblogs-20260314-180155.webp": {
+    "mtime": 1780288491.6722448,
+    "ast_hash": "a19ac9fcde47b81fc3a473ab37f41dc3",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/image/optimized/project-codesnip.webp": {
+    "mtime": 1780288491.6749618,
+    "ast_hash": "3c57f39046116d77f4d2eaa27c763c1e",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/image/optimized/aiblogs-20260314-175945.webp": {
+    "mtime": 1780288491.670979,
+    "ast_hash": "3a7f0e2cd864ddca7913fc7900fbb1f0",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/image/optimized/aiblogs-20260314-180032-700.webp": {
+    "mtime": 1780288491.6716356,
+    "ast_hash": "9b3ab5b08da4beed4b3f73ec9a61d133",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/image/optimized/aiblogs-20260314-175617.webp": {
+    "mtime": 1780288491.6693816,
+    "ast_hash": "8783d9a495090ecb6b967978cb414af8",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/image/optimized/brand-logo.webp": {
+    "mtime": 1780288491.6736336,
+    "ast_hash": "e2b56572fe49b31962218f715cc87c30",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/image/optimized/aiblogs-20260314-175643-700.webp": {
+    "mtime": 1780288491.669626,
+    "ast_hash": "c8d0fb2f2d543b315d5345a135d1bf75",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/image/optimized/aiblogs-20260314-180224-320.webp": {
+    "mtime": 1780288491.6723664,
+    "ast_hash": "795633163dd3c1d69f9497be96854abb",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/image/optimized/aiblogs-20260314-181149-320.webp": {
+    "mtime": 1780288491.6731813,
+    "ast_hash": "f76d40c5aa432f230bd274bc8f8135ae",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/image/optimized/aiblogs-20260314-175643-320.webp": {
+    "mtime": 1780288491.6694832,
+    "ast_hash": "68fe2c23a76d03afb07fe4c69831ceed",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/image/optimized/aiblogs-20260314-180224-700.webp": {
+    "mtime": 1780288491.6725125,
+    "ast_hash": "e82e419b8991e45d2de3dcb0da4269d7",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/image/optimized/hero-profile.png": {
+    "mtime": 1780292899.1934414,
+    "ast_hash": "42d24e72d43b62dd19dc19c7c9770675",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/image/optimized/project-orbit-320.webp": {
+    "mtime": 1780288491.6752903,
+    "ast_hash": "87f8b4900b98a311f2c32b9551bccbb6",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/image/optimized/aiblogs-20260314-181149-700.webp": {
+    "mtime": 1780288491.6732976,
+    "ast_hash": "6741235a88aed0a9598226729a5ad20b",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/image/optimized/aiblogs-20260314-181149.webp": {
+    "mtime": 1780288491.6735046,
+    "ast_hash": "87eb6016355d2c8fccdbd4d6ecc0fff2",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/image/optimized/3.webp": {
+    "mtime": 1780288491.6684415,
+    "ast_hash": "6e2b7dc83b6a0347862de1bbd5c0833d",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/image/optimized/aiblogs-20260314-180032-320.webp": {
+    "mtime": 1780288491.6714947,
+    "ast_hash": "ddff16ca7d4188dd2083fb59ec22a4f9",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/image/optimized/2.webp": {
+    "mtime": 1780288491.6682217,
+    "ast_hash": "6da7ce03e6d93b859f2c2ea74ec9d913",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/image/optimized/project-collabcode.webp": {
+    "mtime": 1780288491.675181,
+    "ast_hash": "9927558088f451178f29bda956ece7a8",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/image/optimized/project-programmerskool.webp": {
+    "mtime": 1780288491.6757236,
+    "ast_hash": "8bf3220c4bc64b91d7680905961c060e",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/image/optimized/aiblogs-20260314-175617-320.webp": {
+    "mtime": 1780288491.6690674,
+    "ast_hash": "f5d9abc670872f80cdc9f638682bdf8a",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/image/optimized/aiblogs-20260314-175945-320.webp": {
+    "mtime": 1780288491.6706834,
+    "ast_hash": "a3aeab91b610245a0780e1a0381cb615",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/image/optimized/project-ppp.webp": {
+    "mtime": 1780288491.675581,
+    "ast_hash": "8b7806cd9becf4a329339c40aa866bd0",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/image/optimized/aiblogs-20260314-180009-320.webp": {
+    "mtime": 1780288491.671115,
+    "ast_hash": "9df74e7bb952ea1c8127f9f5ee30d9be",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/image/optimized/profile-logo.webp": {
+    "mtime": 1780288491.674794,
+    "ast_hash": "35be6580ace139a85dc2432318825310",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/image/optimized/aiblogs-20260314-181126.webp": {
+    "mtime": 1780288491.6730456,
+    "ast_hash": "5f01b08ac9aba978ad0621570458a8db",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/image/optimized/1.webp": {
+    "mtime": 1780288491.667972,
+    "ast_hash": "b0b642cb25b3477c8c792a71cf28b351",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/image/optimized/aiblogs-20260314-181126-700.webp": {
+    "mtime": 1780288491.6729105,
+    "ast_hash": "33c8c1a0212963fa68ab742308067193",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/image/optimized/favicon-64.webp": {
+    "mtime": 1780288491.6737473,
+    "ast_hash": "b983427b5f9b804705c5398e30ab9eab",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/image/optimized/aiblogs-20260314-175717-700.webp": {
+    "mtime": 1780288491.6700854,
+    "ast_hash": "a61e77f6378d8d492e6269d048d1a309",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/image/optimized/about-drumming.png": {
+    "mtime": 1780292751.493588,
+    "ast_hash": "92f2d60f40d9e61e6bdac7feb31ee181",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/image/optimized/hero-profile-360.webp": {
+    "mtime": 1780292899.4187768,
+    "ast_hash": "897bb2312609b945dd7edca329c92dd6",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/image/optimized/aiblogs-20260314-175800-320.webp": {
+    "mtime": 1780288491.670306,
+    "ast_hash": "1cd20aa2e900e31ec8cca8b5786ea72d",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/image/optimized/aiblogs-20260314-175717.webp": {
+    "mtime": 1780288491.6702166,
+    "ast_hash": "76d40809b9ebe3e5a1ca5f75c716743f",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/image/optimized/score.webp": {
+    "mtime": 1780288491.6758456,
+    "ast_hash": "6dc5db27c3b98e82be0f2da998b1ecc1",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/image/optimized/aiblogs-20260314-180155-320.webp": {
+    "mtime": 1780288491.6719155,
+    "ast_hash": "107356b5177d83012d9b0f49cfbc15d6",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/image/optimized/aiblogs-20260314-175545-700.webp": {
+    "mtime": 1780288491.6687603,
+    "ast_hash": "014f22c9173bb89bce896c4bd242c7bf",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/image/optimized/aiblogs-20260314-180009.webp": {
+    "mtime": 1780288491.6714008,
+    "ast_hash": "4a2f819cfae908c63f7620227002adb4",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/image/optimized/aiblogs-20260314-180224.webp": {
+    "mtime": 1780288491.672675,
+    "ast_hash": "af3828f92858dba8923baa8f2911f967",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/image/optimized/aiblogs-20260314-180155-700.webp": {
+    "mtime": 1780288491.672043,
+    "ast_hash": "b105465acf031acaea8209e92d76049e",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/image/optimized/aiblogs-20260314-175545-320.webp": {
+    "mtime": 1780288491.66863,
+    "ast_hash": "cd3c40c9778d0ad8e8bde4d1901974e9",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/image/optimized/project-orbit.webp": {
+    "mtime": 1780288491.6754296,
+    "ast_hash": "4bdd868a445dcc43ed3da2ba91dc6545",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/image/optimized/aiblogs-20260314-181126-320.webp": {
+    "mtime": 1780288491.6727998,
+    "ast_hash": "57eaa895f35736374438f4197fba8592",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/image/optimized/aiblogs-20260314-175717-320.webp": {
+    "mtime": 1780288491.6699705,
+    "ast_hash": "74d89cd492cbdbd5d60cd370445440d3",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/image/optimized/aiblogs-20260314-175800-700.webp": {
+    "mtime": 1780288491.6704328,
+    "ast_hash": "21b6b54caa7709de0da971cbc38891da",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/image/optimized/aiblogs-20260314-175643.webp": {
+    "mtime": 1780288491.6698031,
+    "ast_hash": "388f856b221b5a32303636e2d37dbd36",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/image/optimized/aiblogs-20260314-180009-700.webp": {
+    "mtime": 1780288491.6712632,
+    "ast_hash": "44e3db13dd8183d4fe8f7fb07280037d",
+    "semantic_hash": ""
+  },
+  "/Users/manishtiwari/Documents/GitHub/professional-portfolio/image/optimized/aiblogs-20260314-180032.webp": {
+    "mtime": 1780288491.6717923,
+    "ast_hash": "c5d33d932e366556e0e542dd9c246279",
+    "semantic_hash": ""
+  }
+}

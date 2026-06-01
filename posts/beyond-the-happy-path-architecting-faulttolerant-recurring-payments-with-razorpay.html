@@ -3,68 +3,41 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title id="page-title">Blog · Manish Tiwari</title>
-    <meta
-      id="page-desc"
-      name="description"
-      content="Blog post by Manish Tiwari"
-    />
+    <title>Beyond the Happy Path: Architecting Fault-Tolerant Recurring Payments with Razorpay · Manish Tiwari</title>
+    <meta name="description" content="In the world of distributed systems, the “happy path” is a sedative. It lulls engineers into a false sense of security where networks never partition, latency is zero, and customers always have suffic..." />
     <meta name="robots" content="index, follow" />
-    <link
-      id="page-canonical"
-      rel="canonical"
-      href="https://buildwithmanish.com/blog.html"
-    />
+    <link rel="canonical" href="https://buildwithmanish.com/posts/beyond-the-happy-path-architecting-faulttolerant-recurring-payments-with-razorpay.html" />
     <meta property="og:site_name" content="Manish Tiwari" />
     <meta id="og-type" property="og:type" content="article" />
-    <meta id="og-title" property="og:title" content="Blog · Manish Tiwari" />
-    <meta
-      id="og-desc"
-      property="og:description"
-      content="Blog post by Manish Tiwari"
-    />
-    <meta
-      id="og-url"
-      property="og:url"
-      content="https://buildwithmanish.com/blog.html"
-    />
-    <meta
-      id="og-image"
-      property="og:image"
-      content="https://buildwithmanish.com/image/optimized/aiblogs-20260314-175545.webp"
-    />
+    <meta property="og:title" content="Beyond the Happy Path: Architecting Fault-Tolerant Recurring Payments with Razorpay" />
+    <meta property="og:description" content="In the world of distributed systems, the “happy path” is a sedative. It lulls engineers into a false sense of security where networks never partition, latency is zero, and customers always have suffic..." />
+    <meta property="og:url" content="https://buildwithmanish.com/posts/beyond-the-happy-path-architecting-faulttolerant-recurring-payments-with-razorpay.html" />
+    <meta property="og:image" content="https://blogs.buildwithmanish.com/assets/images/hero-beyond-the-happy-path-architecting-faulttolerant-recurring-payments-with-razorpay-0-2025-12-17-80735.png" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta id="tw-title" name="twitter:title" content="Blog · Manish Tiwari" />
-    <meta
-      id="tw-desc"
-      name="twitter:description"
-      content="Blog post by Manish Tiwari"
-    />
-    <meta
-      id="tw-image"
-      name="twitter:image"
-      content="https://buildwithmanish.com/image/optimized/aiblogs-20260314-175545.webp"
-    />
-    <script id="post-schema" type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "BlogPosting",
-        "headline": "Engineering Blog",
-        "author": {
-          "@type": "Person",
-          "name": "Manish Tiwari",
-          "url": "https://buildwithmanish.com/about.html"
-        },
-        "publisher": {
-          "@type": "Person",
-          "name": "Manish Tiwari"
-        },
-        "mainEntityOfPage": {
-          "@type": "WebPage",
-          "@id": "https://buildwithmanish.com/blog.html"
-        }
-      }
-    </script>
+    <meta name="twitter:title" content="Beyond the Happy Path: Architecting Fault-Tolerant Recurring Payments with Razorpay" />
+    <meta name="twitter:description" content="In the world of distributed systems, the “happy path” is a sedative. It lulls engineers into a false sense of security where networks never partition, latency is zero, and customers always have suffic..." />
+    <meta name="twitter:image" content="https://blogs.buildwithmanish.com/assets/images/hero-beyond-the-happy-path-architecting-faulttolerant-recurring-payments-with-razorpay-0-2025-12-17-80735.png" />
+    <script id="post-schema" type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Beyond the Happy Path: Architecting Fault-Tolerant Recurring Payments with Razorpay",
+  "description": "In the world of distributed systems, the “happy path” is a sedative. It lulls engineers into a false sense of security where networks never partition, latency is zero, and customers always have suffic...",
+  "datePublished": "2025-12-17",
+  "author": {
+    "@type": "Person",
+    "name": "Manish Tiwari",
+    "url": "https://buildwithmanish.com/about.html"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Manish Tiwari"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://buildwithmanish.com/posts/beyond-the-happy-path-architecting-faulttolerant-recurring-payments-with-razorpay.html"
+  },
+  "image": "https://blogs.buildwithmanish.com/assets/images/hero-beyond-the-happy-path-architecting-faulttolerant-recurring-payments-with-razorpay-0-2025-12-17-80735.png"
+}</script>
     <link
       rel="icon"
       type="image/webp"
@@ -824,7 +797,339 @@
       </div>
     </header>
 
-    <main id="blog-main" data-router-view class="is-loading"></main>
+    <main data-router-view>
+    <header class="blog-post-header">
+      <p class="muted kicker">Blog</p>
+      <h1>Beyond the Happy Path: Architecting Fault-Tolerant Recurring Payments with Razorpay</h1>
+      <p class="muted">Dec 17, 2025</p>
+    </header>
+    <div class="blog-post-layout">
+      <nav class="blog-toc" id="blog-toc" aria-label="Table of contents"><p class="blog-toc-title">Contents</p><ol><li><a href="#the-illusion-of-the-happy-path-">The Illusion of the “Happy Path”</a></li><li><a href="#1-the-subscription-state-machine-purgatory-vs-death">1. The Subscription State Machine: Purgatory vs. Death</a></li><li class="toc-h3"><a href="#the-critical-distinction">The Critical Distinction</a></li><li class="toc-h3"><a href="#the-rescue-operation-reviving-halted-subscriptions">The “Rescue” Operation: Reviving Halted Subscriptions</a></li><li><a href="#2-webhook-architecture-idempotency">2. Webhook Architecture & Idempotency</a></li><li class="toc-h3"><a href="#the-challenges">The Challenges</a></li><li class="toc-h3"><a href="#security-hmac-verification">Security: HMAC Verification</a></li><li class="toc-h3"><a href="#idempotency-handling-duplicates">Idempotency: Handling Duplicates</a></li><li><a href="#3-handling-upgrades-downgrades-proration-">3. Handling Upgrades & Downgrades (Proration)</a></li><li class="toc-h3"><a href="#schedule_change_at-the-lever-of-control">schedule_change_at: The Lever of Control</a></li><li class="toc-h3"><a href="#the-proration-flow">The Proration Flow</a></li><li><a href="#4-resiliency-patterns-the-dunning-process">4. Resiliency Patterns: The “Dunning” Process</a></li><li class="toc-h3"><a href="#the-grace-period-architecture">The Grace Period Architecture</a></li><li class="toc-h3"><a href="#configuration">Configuration</a></li><li><a href="#5-system-architecture-scaling">5. System Architecture & Scaling</a></li><li class="toc-h3"><a href="#the-recommended-stack">The Recommended Stack</a></li><li><a href="#conclusion">Conclusion</a></li></ol></nav>
+      <article class="blog-prose" id="blog-prose"><p><img src="https://blogs.buildwithmanish.com/assets/images/hero-beyond-the-happy-path-architecting-faulttolerant-recurring-payments-with-razorpay-0-2025-12-17-80735.png" alt="Hero Image"></p>
+<h2 id="the-illusion-of-the-happy-path-">The Illusion of the “Happy Path”</h2>
+<p>In the world of distributed systems, the “happy path” is a sedative. It lulls engineers into a false sense of security where networks never partition, latency is zero, and customers always have sufficient funds in their bank accounts. When building one-off payment flows, you might get away with a simple request-response model. But in the domain of <strong>recurring payments and subscriptions</strong>, the happy path is the exception, not the rule.</p>
+<p>A subscription system is a long-running process. It is a temporal contract between your architecture and a user’s financial state. Over a 12-month period, cards expire, banks flag transactions as fraudulent, webhooks get dropped, and users change their minds.</p>
+<p>If you are architecting a subscription engine on top of Razorpay for a high-scale FinTech or SaaS product, treating payment failure as an edge case is a catastrophic design flaw. It must be a core state of your system.</p>
+<p>This article is not a “getting started” guide. We are diving deep into the architectural patterns required to build a fault-tolerant, resilient subscription system. We will cover state machine recovery, idempotent webhook ingestion, complex proration logic, and the “Dunning” architecture that prevents involuntary churn.</p>
+<hr>
+<h2 id="1-the-subscription-state-machine-purgatory-vs-death">1. The Subscription State Machine: Purgatory vs. Death</h2>
+<p>The most common misconception I see in backend implementations is treating the Razorpay subscription status as a binary: <code>active</code> or <code>cancelled</code>. The reality is nuanced. The lifecycle of a subscription involves critical intermediate states that dictate whether your system should retry a charge or revoke access.</p>
+<p>The two states that cause the most confusion-and revenue loss-are <code>pending</code> and <code>halted</code>.</p>
+<h3 id="the-critical-distinction">The Critical Distinction</h3>
+<ul>
+<li><strong>Active:</strong> The happy path. Payment was successful, access is granted.</li>
+<li><strong>Pending (Purgatory):</strong> Razorpay attempted a charge, but it failed (e.g., insufficient funds). Crucially, <strong>retries are active</strong>. Razorpay’s internal scheduler will attempt to charge the card again based on your retry configuration (usually T+1, T+3 days).<ul>
+<li><em>Your Action:</em> Do <strong>not</strong> cancel access immediately. This is often a temporary glitch.</li>
+</ul>
+</li>
+<li><strong>Halted (The Cliff):</strong> All retry attempts have been exhausted. Razorpay has stopped trying to charge the card.<ul>
+<li><em>Your Action:</em> This is where most implementations fail. They treat <code>halted</code> as <code>cancelled</code>.</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://blogs.buildwithmanish.com/assets/images/technical_diagram-beyond-the-happy-path-architecting-faulttolerant-recurring-payments-with-razorpay-1-2025-12-17-10252.png" alt="Subscription State Machine Diagram"></p>
+<h3 id="the-rescue-operation-reviving-halted-subscriptions">The “Rescue” Operation: Reviving Halted Subscriptions</h3>
+<p>When a subscription hits the <code>halted</code> state, the intuitive UI flow is to ask the user to “Update Payment Method.” However, purely updating the card doesn’t always immediately trigger a charge or move the state back to <code>active</code> instantly.</p>
+<p>A superior architectural pattern is to <strong>programmatically rescue</strong> the subscription using the Invoice API.</p>
+<p>Instead of creating a new subscription (which breaks historical data and metrics), you can issue an ad-hoc invoice linked to the subscription. When this invoice is paid, Razorpay automatically transitions the subscription from <code>halted</code> back to <code>active</code>.</p>
+<p><strong>The Implementation Strategy:</strong></p>
+<ol>
+<li>Listen for the <code>subscription.halted</code> webhook.</li>
+<li>In your frontend, present a “Pay Outstanding Balance” flow.</li>
+<li>Backend generates a manual invoice for the pending amount.</li>
+<li>User pays the invoice -&gt; Subscription auto-heals.</li>
+</ol>
+<pre><code class="hljs language-python" data-lang="python"><span class="hljs-keyword">import</span> razorpay
+<span class="hljs-keyword">from</span> my_app.exceptions <span class="hljs-keyword">import</span> PaymentError
+
+client = razorpay.Client(auth=(<span class="hljs-string">"KEY_ID"</span>, <span class="hljs-string">"KEY_SECRET"</span>))
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">rescue_halted_subscription</span>(<span class="hljs-params">subscription_id: <span class="hljs-built_in">str</span>, user_id: <span class="hljs-built_in">str</span></span>):
+    <span class="hljs-string">"""
+    Rescues a halted subscription by creating a manual invoice
+    for the failed billing cycle.
+    """</span>
+    <span class="hljs-keyword">try</span>:
+        <span class="hljs-comment"># 1. Fetch Subscription to get details</span>
+        sub = client.subscription.fetch(subscription_id)
+        
+        <span class="hljs-keyword">if</span> sub[<span class="hljs-string">'status'</span>] != <span class="hljs-string">'halted'</span>:
+            <span class="hljs-keyword">raise</span> PaymentError(<span class="hljs-string">"Subscription is not in halted state."</span>)
+
+        <span class="hljs-comment"># 2. Identify the unpaid amount (usually the plan amount)</span>
+        <span class="hljs-comment"># In a real scenario, calculate strictly based on outstanding cycles</span>
+        amount_due = sub[<span class="hljs-string">'plan_details'</span>][<span class="hljs-string">'amount'</span>] 
+        
+        <span class="hljs-comment"># 3. Create an Invoice linked to this subscription</span>
+        <span class="hljs-comment"># This tells Razorpay: "If this is paid, fix the sub."</span>
+        invoice_payload = {
+            <span class="hljs-string">"type"</span>: <span class="hljs-string">"invoice"</span>,
+            <span class="hljs-string">"customer_id"</span>: sub[<span class="hljs-string">'customer_id'</span>],
+            <span class="hljs-string">"line_items"</span>: [
+                {
+                    <span class="hljs-string">"name"</span>: <span class="hljs-string">"Outstanding Balance Recovery"</span>,
+                    <span class="hljs-string">"description"</span>: <span class="hljs-string">"Payment for failed renewal"</span>,
+                    <span class="hljs-string">"amount"</span>: amount_due,
+                    <span class="hljs-string">"currency"</span>: <span class="hljs-string">"INR"</span>
+                }
+            ],
+            <span class="hljs-string">"subscription_id"</span>: subscription_id, <span class="hljs-comment"># CRITICAL LINK</span>
+            <span class="hljs-string">"sms_notify"</span>: <span class="hljs-number">1</span>,
+            <span class="hljs-string">"email_notify"</span>: <span class="hljs-number">1</span>
+        }
+        
+        invoice = client.invoice.create(invoice_payload)
+        <span class="hljs-keyword">return</span> invoice <span class="hljs-comment"># Return invoice URL to frontend</span>
+
+    <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:
+        <span class="hljs-comment"># Log critical failure</span>
+        <span class="hljs-keyword">raise</span> PaymentError(<span class="hljs-string">f"Failed to create rescue invoice: <span class="hljs-subst">{<span class="hljs-built_in">str</span>(e)}</span>"</span>)</code></pre><p>By linking the <code>subscription_id</code> in the invoice creation, you maintain the continuity of the subscription entity, preserving the <code>billing_cycle</code> count and lifetime value (LTV) data.</p>
+<hr>
+<h2 id="2-webhook-architecture-idempotency">2. Webhook Architecture &amp; Idempotency</h2>
+<p>Webhooks are the heartbeat of a subscription system. However, webhooks are asynchronous, unreliable, and prone to duplication. If your architecture assumes that webhooks arrive exactly once and in the correct order, you will eventually double-credit a user or disable an account that just paid.</p>
+<h3 id="the-challenges">The Challenges</h3>
+<ol>
+<li><strong>Out-of-Order Delivery:</strong> You might receive <code>subscription.charged</code> before <code>subscription.pending</code>.</li>
+<li><strong>Duplication:</strong> Razorpay (and most gateways) operates on an “at-least-once” delivery guarantee. If your server times out or responds with a 500 error, they will send the event again.</li>
+<li><strong>Security:</strong> An attacker could spoof a webhook to grant themselves free access.</li>
+</ol>
+<p><img src="https://blogs.buildwithmanish.com/assets/images/architecture_diagram-beyond-the-happy-path-architecting-faulttolerant-recurring-payments-with-razorpay-2-2025-12-17-98043.png" alt="Webhook Architecture Diagram"></p>
+<h3 id="security-hmac-verification">Security: HMAC Verification</h3>
+<p>Before looking at the payload, you <strong>must</strong> verify the signature. This is not optional. It prevents Man-in-the-Middle attacks and spoofing.</p>
+<pre><code class="hljs language-python" data-lang="python"><span class="hljs-keyword">import</span> hmac
+<span class="hljs-keyword">import</span> hashlib
+<span class="hljs-keyword">import</span> json
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">verify_webhook_signature</span>(<span class="hljs-params">request_body: <span class="hljs-built_in">bytes</span>, signature: <span class="hljs-built_in">str</span>, secret: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">bool</span>:
+    <span class="hljs-string">"""
+    Verifies the X-Razorpay-Signature header.
+    
+    Args:
+        request_body: Raw bytes of the POST body
+        signature: The hex string from X-Razorpay-Signature header
+        secret: Your webhook secret configured in Dashboard
+    """</span>
+    generated_signature = hmac.new(
+        key=<span class="hljs-built_in">bytes</span>(secret, <span class="hljs-string">'utf-8'</span>),
+        msg=request_body,
+        digestmod=hashlib.sha256
+    ).hexdigest()
+    
+    <span class="hljs-comment"># hmac.compare_digest prevents timing attacks</span>
+    <span class="hljs-keyword">return</span> hmac.compare_digest(generated_signature, signature)</code></pre><h3 id="idempotency-handling-duplicates">Idempotency: Handling Duplicates</h3>
+<p>Idempotency ensures that processing the same event multiple times yields the same result as processing it once.</p>
+<p><strong>The Anti-Pattern:</strong> checking your database for <code>if transaction_exists: return</code>. <strong>The Better Pattern:</strong> Using a distributed lock (Redis) combined with an Event Log.</p>
+<p>You should use the <code>x-razorpay-event-id</code> header or the <code>payload.id</code> to uniquely identify the event.</p>
+<p><img src="https://blogs.buildwithmanish.com/assets/images/code_flow-beyond-the-happy-path-architecting-faulttolerant-recurring-payments-with-razorpay-3-2025-12-17-65241.png" alt="Code Flow Diagram"></p>
+<p><strong>Implementation with Redis (Python/Pseudo-code):</strong></p>
+<pre><code class="hljs language-python" data-lang="python"><span class="hljs-keyword">import</span> redis
+<span class="hljs-keyword">from</span> django.db <span class="hljs-keyword">import</span> transaction
+
+r = redis.Redis(host=<span class="hljs-string">'localhost'</span>, port=<span class="hljs-number">6379</span>, db=<span class="hljs-number">0</span>)
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">process_webhook</span>(<span class="hljs-params">event_id, payload</span>):
+    <span class="hljs-comment"># 1. Atomic Check via Redis</span>
+    <span class="hljs-comment"># SETNX sets the key only if it doesn't exist. </span>
+    <span class="hljs-comment"># We set an expiry (TTL) of 24 hours to prevent infinite growth.</span>
+    is_new_event = r.<span class="hljs-built_in">set</span>(<span class="hljs-string">f"webhook_event:<span class="hljs-subst">{event_id}</span>"</span>, <span class="hljs-string">"processing"</span>, ex=<span class="hljs-number">86400</span>, nx=<span class="hljs-literal">True</span>)
+    
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> is_new_event:
+        <span class="hljs-comment"># We have seen this event. Return 200 to stop Razorpay retries.</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-number">200</span>, <span class="hljs-string">"Event already processed"</span>
+
+    <span class="hljs-keyword">try</span>:
+        <span class="hljs-comment"># 2. Database Transaction</span>
+        <span class="hljs-keyword">with</span> transaction.atomic():
+            <span class="hljs-comment"># ... process business logic (provision access, record payment) ...</span>
+            <span class="hljs-keyword">pass</span>
+            
+        <span class="hljs-comment"># 3. Mark as success in Redis (Optional, for debugging)</span>
+        r.<span class="hljs-built_in">set</span>(<span class="hljs-string">f"webhook_event:<span class="hljs-subst">{event_id}</span>"</span>, <span class="hljs-string">"success"</span>, xx=<span class="hljs-literal">True</span>)
+        <span class="hljs-keyword">return</span> <span class="hljs-number">200</span>, <span class="hljs-string">"OK"</span>
+
+    <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:
+        <span class="hljs-comment"># 4. Critical: If processing fails, DELETE the key so we can retry</span>
+        r.delete(<span class="hljs-string">f"webhook_event:<span class="hljs-subst">{event_id}</span>"</span>)
+        <span class="hljs-keyword">raise</span> e <span class="hljs-comment"># Let the server 500 so Razorpay retries</span></code></pre><p>This logic ensures that even if two requests with the same ID hit your servers in parallel (race condition), only one will acquire the Redis lock and process the logic.</p>
+<hr>
+<h2 id="3-handling-upgrades-downgrades-proration-">3. Handling Upgrades &amp; Downgrades (Proration)</h2>
+<p>Moving a user from a “Basic” plan (₹500/mo) to a “Pro” plan (₹1000/mo) in the middle of a billing cycle is mathematically complex. You cannot simply switch the <code>plan_id</code>. You must account for the money already paid for the unused days of the Basic plan.</p>
+<h3 id="schedule_change_at-the-lever-of-control"><code>schedule_change_at</code>: The Lever of Control</h3>
+<p>Razorpay provides the <code>schedule_change_at</code> parameter in the subscription update API. You have two choices:</p>
+<ol>
+<li><strong><code>cycle_end</code>:</strong> The upgrade happens when the current month finishes. Easy logic, but delayed revenue and user gratification.</li>
+<li><strong><code>now</code>:</strong> The upgrade happens immediately. This triggers <strong>Proration</strong>.</li>
+</ol>
+<p><img src="https://blogs.buildwithmanish.com/assets/images/comparison_chart-beyond-the-happy-path-architecting-faulttolerant-recurring-payments-with-razorpay-4-2025-12-17-40674.png" alt="Comparison Chart"></p>
+<h3 id="the-proration-flow">The Proration Flow</h3>
+<p>When you update a subscription with <code>schedule_change_at="now"</code> and <code>proration_behavior="create_prorations"</code>, Razorpay does the following:</p>
+<ol>
+<li>Calculates the unused amount of the current plan (Credits).</li>
+<li>Calculates the cost of the new plan for the remaining days of the cycle (Debits).</li>
+<li>Creates an immediate invoice for the difference: <code>(New Plan Cost) - (Old Plan Unused Credit)</code>.</li>
+</ol>
+<p><strong>Architectural Warning:</strong> Your local database must stay in sync with this logic. Do not try to calculate proration yourself. Rely on the webhook <code>subscription.charged</code> that results from the upgrade to update your local “Plan Tier” field.</p>
+<p><strong>Code Example: Performing an Immediate Upgrade</strong></p>
+<pre><code class="hljs language-python" data-lang="python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">upgrade_subscription</span>(<span class="hljs-params">sub_id: <span class="hljs-built_in">str</span>, new_plan_id: <span class="hljs-built_in">str</span></span>):
+    <span class="hljs-keyword">try</span>:
+        <span class="hljs-comment"># Razorpay handles the math (credits/debits)</span>
+        resp = client.subscription.edit(sub_id, {
+            <span class="hljs-string">"plan_id"</span>: new_plan_id,
+            <span class="hljs-string">"schedule_change_at"</span>: <span class="hljs-string">"now"</span>, 
+            <span class="hljs-string">"proration_behavior"</span>: <span class="hljs-string">"create_prorations"</span>,
+            <span class="hljs-string">"quantity"</span>: <span class="hljs-number">1</span>
+        })
+        
+        <span class="hljs-comment"># <span class="hljs-doctag">NOTE:</span> Do NOT update user access to 'Pro' here immediately.</span>
+        <span class="hljs-comment"># Wait for the successful payment webhook (subscription.charged)</span>
+        <span class="hljs-comment"># generated by this change. </span>
+        <span class="hljs-comment"># If the proration charge fails, the user stays on the old plan.</span>
+        
+        <span class="hljs-keyword">return</span> resp
+    <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:
+        <span class="hljs-comment"># Handle scenarios like "Upgrade not possible on halted sub"</span>
+        handle_error(e)</code></pre><p><strong>Key Takeaway:</strong> Never update user permissions synchronously during an upgrade request. The proration charge might fail (card declined). Always drive permission updates via webhooks.</p>
+<hr>
+<h2 id="4-resiliency-patterns-the-dunning-process">4. Resiliency Patterns: The “Dunning” Process</h2>
+<p>Dunning is the process of communicating with customers to ensure the collection of accounts receivable. In SaaS, it means “How do we handle failed renewal charges without losing the customer?”</p>
+<p>A naive implementation listens for <code>subscription.charged</code> (failed) and immediately sets <code>user.is_active = False</code>. This leads to high involuntary churn. A user’s card might fail due to a bank server timeout, and you’ve just locked them out of their account.</p>
+<h3 id="the-grace-period-architecture">The Grace Period Architecture</h3>
+<p>You need to decouple <strong>Payment Status</strong> from <strong>Access Status</strong>.</p>
+<ol>
+<li><strong>Payment Status:</strong> Tracks the Razorpay state (<code>active</code>, <code>pending</code>, <code>halted</code>).</li>
+<li><strong>Access Status:</strong> Tracks whether the user can use the app (<code>granted</code>, <code>revoked</code>).</li>
+</ol>
+<p>When a payment fails (<code>subscription.pending</code>), the user enters a <strong>Grace Period</strong>.</p>
+<p><img src="https://blogs.buildwithmanish.com/assets/images/technical_diagram-beyond-the-happy-path-architecting-faulttolerant-recurring-payments-with-razorpay-5-2025-12-17-33473.png" alt="Technical Diagram - Dunning"></p>
+<p><strong>The Logic Flow:</strong></p>
+<ol>
+<li><strong>T+0 (Due Date):</strong> Razorpay attempts charge. Fails.<ul>
+<li>Webhook: <code>subscription.pending</code>.</li>
+<li>System Action: Send email “Payment Failed”. <strong>Keep access active.</strong></li>
+</ul>
+</li>
+<li><strong>T+1 to T+3:</strong> Razorpay auto-retries.<ul>
+<li>If Success (<code>subscription.charged</code>): Send “Thank You” email. Extend validity.</li>
+<li>If Fail: Do nothing. Keep access active.</li>
+</ul>
+</li>
+<li><strong>T+5 (Max Retries Exhausted):</strong> Razorpay gives up.<ul>
+<li>Webhook: <code>subscription.halted</code>.</li>
+<li>System Action: <strong>Enter Grace Period (Internal).</strong> Give them 48 more hours to fix it manually.</li>
+</ul>
+</li>
+<li><strong>T+7 (Hard Cutoff):</strong><ul>
+<li>Cron Job checks <code>subscription.halted</code> + <code>grace_period_expired</code>.</li>
+<li>System Action: Revoke Access.</li>
+</ul>
+</li>
+</ol>
+<h3 id="configuration">Configuration</h3>
+<p>In your Database, your Subscription model should look something like this:</p>
+<pre><code class="hljs language-python" data-lang="python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Subscription</span>(models.Model):
+    razorpay_id = models.CharField(max_length=<span class="hljs-number">50</span>)
+    status = models.CharField(choices=[<span class="hljs-string">'active'</span>, <span class="hljs-string">'pending'</span>, <span class="hljs-string">'halted'</span>, <span class="hljs-string">'cancelled'</span>])
+    current_period_end = models.DateTimeField()
+    
+    <span class="hljs-comment"># The field that actually controls login/feature access</span>
+    access_valid_until = models.DateTimeField() 
+    
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">handle_payment_failure</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-string">"""
+        Called on subscription.pending.
+        We don't revoke access yet, but we might flag the UI.
+        """</span>
+        <span class="hljs-variable language_">self</span>.ui_warning_flag = <span class="hljs-literal">True</span>
+        <span class="hljs-variable language_">self</span>.save()
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">handle_halted</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-string">"""
+        Called on subscription.halted.
+        Set a hard stop date, perhaps 2 days from now.
+        """</span>
+        <span class="hljs-variable language_">self</span>.access_valid_until = datetime.now() + timedelta(days=<span class="hljs-number">2</span>)
+        <span class="hljs-variable language_">self</span>.save()</code></pre><p>This decoupled architecture ensures that temporary banking glitches do not result in a degraded user experience.</p>
+<hr>
+<h2 id="5-system-architecture-scaling">5. System Architecture &amp; Scaling</h2>
+<p>To tie this all together, your backend architecture needs to be robust. You cannot rely on a single monolithic web server to handle user traffic and webhook processing simultaneously.</p>
+<p><img src="https://blogs.buildwithmanish.com/assets/images/architecture_diagram-beyond-the-happy-path-architecting-faulttolerant-recurring-payments-with-razorpay-6-2025-12-17-68307.png" alt="Architecture Diagram"></p>
+<h3 id="the-recommended-stack">The Recommended Stack</h3>
+<ol>
+<li><strong>Webhook Ingestion Layer:</strong> A lightweight API endpoint that does nothing but signature verification and pushing the payload to a Message Queue (SQS, RabbitMQ, Kafka). This ensures you respond <code>200 OK</code> to Razorpay instantly (under 2 seconds is the requirement).</li>
+<li><strong>Worker Fleet:</strong> Asynchronous workers consume events from the queue. This is where the heavy lifting happens (Database writes, Email triggers, Redis locking).</li>
+<li><strong>Reconciliation Cron:</strong> Even with the best webhook architecture, events get dropped. Run a nightly cron job that fetches all <code>active</code> local subscriptions and compares their state with the Razorpay API. If a mismatch is found (Local: <code>active</code>, Remote: <code>halted</code>), auto-correct the local state.</li>
+</ol>
+<h2 id="conclusion">Conclusion</h2>
+<p>Building a recurring payment system is 20% integrating APIs and 80% handling failure states. The difference between a junior and senior implementation lies in how the system behaves when things go wrong.</p>
+<p>By implementing a robust State Machine that understands the difference between <code>pending</code> and <code>halted</code>, securing your webhooks with HMAC and Redis-based idempotency, and architecting a compassionate Dunning process, you turn payment failures from a churn event into a recovery opportunity.</p>
+<p>The goal isn’t just to process payments; it’s to build a system that maintains trust with your users, even when their bank declines the card.</p>
+</article>
+      <aside class="blog-meta-col">
+        <section class="blog-meta-card" aria-label="Author details">
+          <p class="blog-meta-label">Author</p>
+          <p class="blog-meta-value">Manish Tiwari</p>
+        </section>
+        <section class="blog-meta-card" aria-label="Publication date">
+          <p class="blog-meta-label">Published</p>
+          <p class="blog-meta-value">Dec 17, 2025</p>
+        </section>
+        <section class="blog-meta-card" aria-label="Blog views">
+          <p class="blog-meta-label">Views</p>
+          <div class="blog-view-counter">
+            <img src="https://komarev.com/ghpvc/?username=manish-9245&label=VIEWS&color=0e75b6&style=flat" alt="Blog views counter" loading="lazy" decoding="async" />
+          </div>
+        </section>
+        <section class="blog-meta-card" aria-label="Blog navigation">
+          <p class="blog-meta-label">Navigate</p>
+          <a class="blog-meta-link" href="/blogs.html">← All posts</a>
+        </section>
+      </aside>
+    </div>
+    <section class="surface related-posts" id="related-posts" aria-label="Related blog posts">
+        <h2>Related Posts</h2>
+        <div class="related-posts-grid">
+          
+            <article class="related-card">
+              <p class="related-meta">
+                <span>Dec 17, 2025</span>
+                <span class="blog-card-dot">•</span>
+                <span>Cloud</span>
+              </p>
+              <h3 class="related-title"><a href="/beyond-get-and-set-architecting-resilient-distributed-caching-patterns-for-microservices.html">Beyond GET and SET: Architecting Resilient Distributed Caching Patterns for Microservices</a></h3>
+              <p class="related-desc">In the infancy of a backend application, caching is often treated as a simple key-value store optimization-a sprinkle of “magic dust” to speed up slow SQL queries. Developers implement a basic client....</p>
+            </article>
+          
+            <article class="related-card">
+              <p class="related-meta">
+                <span>Dec 18, 2025</span>
+                <span class="blog-card-dot">•</span>
+                <span>AI</span>
+              </p>
+              <h3 class="related-title"><a href="/implementing-agentic-workflows-for-javatonodejs-migration.html">Implementing Agentic Workflows for Java-to-Node.js Migration</a></h3>
+              <p class="related-desc">Legacy migration is the “dark matter” of software engineering: we know it makes up a massive portion of the enterprise universe, yet we struggle to observe it directly without getting sucked into a bl...</p>
+            </article>
+          
+            <article class="related-card">
+              <p class="related-meta">
+                <span>Dec 17, 2025</span>
+                <span class="blog-card-dot">•</span>
+                <span>Backend</span>
+              </p>
+              <h3 class="related-title"><a href="/escaping-the-if-isadmin-trap-implementing-scalable-rbac-and-abac-in-nodejs.html">Escaping the if (isAdmin) Trap: Implementing Scalable RBAC and ABAC in Node.js</a></h3>
+              <p class="related-desc">We have all written it. The line of code that marks the beginning of the end for a scalable codebase:</p>
+            </article>
+          
+        </div></section>
+    <section class="surface blog-share" id="blog-share" aria-label="Share this post">
+      <h2>Share this post</h2>
+      <div class="blog-share-actions">
+        <a class="blog-share-link" aria-label="Share on LinkedIn" title="Share on LinkedIn" target="_blank" rel="noopener noreferrer" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fbuildwithmanish.com%2Fposts%2Fbeyond-the-happy-path-architecting-faulttolerant-recurring-payments-with-razorpay.html"><svg class="blog-share-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.94 8.5H3.56V20h3.38V8.5zM5.25 3C4.14 3 3.2 3.94 3.2 5.05c0 1.1.9 2.05 2.01 2.05h.02c1.12 0 2.02-.95 2.02-2.05C7.25 3.94 6.36 3 5.25 3zM20.8 13.4c0-3.13-1.67-5.15-4.66-5.15-2.15 0-3.11 1.2-3.65 2.03V8.5H9.1c.04 1.17 0 11.5 0 11.5h3.38v-6.42c0-.34.03-.68.12-.92.27-.68.88-1.4 1.9-1.4 1.34 0 1.88 1.05 1.88 2.58V20h3.38v-6.6z"/></svg></a>
+        <a class="blog-share-link" aria-label="Share on X" title="Share on X" target="_blank" rel="noopener noreferrer" href="https://x.com/intent/tweet?url=https%3A%2F%2Fbuildwithmanish.com%2Fposts%2Fbeyond-the-happy-path-architecting-faulttolerant-recurring-payments-with-razorpay.html&text=Beyond%20the%20Happy%20Path%3A%20Architecting%20Fault-Tolerant%20Recurring%20Payments%20with%20Razorpay"><svg class="blog-share-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 2H22l-6.77 7.74L23 22h-6.1l-4.78-6.24L6.66 22H3.55l7.24-8.27L1 2h6.25l4.32 5.7L18.9 2zm-1.07 18h1.69L6.33 3.9H4.52L17.83 20z"/></svg></a>
+        <button type="button" class="blog-share-copy" aria-label="Copy link" title="Copy link" data-share-copy data-url="https://buildwithmanish.com/posts/beyond-the-happy-path-architecting-faulttolerant-recurring-payments-with-razorpay.html"><svg class="blog-share-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 7a3 3 0 0 1 3-3h7a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3h-1v-1.5h1A1.5 1.5 0 0 0 19.5 15V7A1.5 1.5 0 0 0 18 5.5h-7A1.5 1.5 0 0 0 9.5 7v1H8V7zm-2 3A3 3 0 0 1 9 7h7a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H9a3 3 0 0 1-3-3v-8zm3-1.5A1.5 1.5 0 0 0 7.5 10v8A1.5 1.5 0 0 0 9 19.5h7a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 16 8.5H9z"/></svg></button>
+      </div></section>
+    <div class="surface" style="padding-top:0">
+      <a href="/blogs.html">← Back to all blogs</a>
+    </div></main>
 
     <footer class="site-footer">
       <div class="surface footer-row">
@@ -1374,7 +1679,7 @@
                     <span aria-hidden="true">•</span>
                     <span>${tags[0]}</span>
                   </p>
-                  <h3 class="related-title"><a href="./blog.html?post=${encodeURIComponent(post.slug)}">${post.title}</a></h3>
+                  <h3 class="related-title"><a href="/blog.html?post=${encodeURIComponent(post.slug)}">${post.title}</a></h3>
                   <p class="related-desc">${post.description || ""}</p>
                 </article>`;
               })
@@ -1460,7 +1765,7 @@
         }
 
         if (!slug) {
-          main.innerHTML = `<div class="blog-error"><p>No post specified.</p><p><a href="./blogs.html">← All blogs</a></p></div>`;
+          main.innerHTML = `<div class="blog-error"><p>No post specified.</p><p><a href="/blogs.html">← All blogs</a></p></div>`;
           main.classList.remove("is-loading");
           return;
         }
@@ -1497,7 +1802,7 @@
             throw new Error("Post body unavailable");
           }
         } catch {
-          main.innerHTML = `<div class="blog-error"><p>Post not found.</p><p><a href="./blogs.html">← All blogs</a></p></div>`;
+          main.innerHTML = `<div class="blog-error"><p>Post not found.</p><p><a href="/blogs.html">← All blogs</a></p></div>`;
           main.classList.remove("is-loading");
           return;
         }
@@ -1690,7 +1995,7 @@
         main.classList.remove("is-loading");
       }
 
-      loadPost();
+      // Static Page: loadPost() disabled
     </script>
   </body>
 </html>

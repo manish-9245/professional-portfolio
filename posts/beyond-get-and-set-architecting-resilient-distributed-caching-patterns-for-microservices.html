@@ -3,68 +3,41 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title id="page-title">Blog · Manish Tiwari</title>
-    <meta
-      id="page-desc"
-      name="description"
-      content="Blog post by Manish Tiwari"
-    />
+    <title>Beyond GET and SET: Architecting Resilient Distributed Caching Patterns for Microservices · Manish Tiwari</title>
+    <meta name="description" content="In the infancy of a backend application, caching is often treated as a simple key-value store optimization-a sprinkle of “magic dust” to speed up slow SQL queries. Developers implement a basic client...." />
     <meta name="robots" content="index, follow" />
-    <link
-      id="page-canonical"
-      rel="canonical"
-      href="https://buildwithmanish.com/blog.html"
-    />
+    <link rel="canonical" href="https://buildwithmanish.com/posts/beyond-get-and-set-architecting-resilient-distributed-caching-patterns-for-microservices.html" />
     <meta property="og:site_name" content="Manish Tiwari" />
     <meta id="og-type" property="og:type" content="article" />
-    <meta id="og-title" property="og:title" content="Blog · Manish Tiwari" />
-    <meta
-      id="og-desc"
-      property="og:description"
-      content="Blog post by Manish Tiwari"
-    />
-    <meta
-      id="og-url"
-      property="og:url"
-      content="https://buildwithmanish.com/blog.html"
-    />
-    <meta
-      id="og-image"
-      property="og:image"
-      content="https://buildwithmanish.com/image/optimized/aiblogs-20260314-175545.webp"
-    />
+    <meta property="og:title" content="Beyond GET and SET: Architecting Resilient Distributed Caching Patterns for Microservices" />
+    <meta property="og:description" content="In the infancy of a backend application, caching is often treated as a simple key-value store optimization-a sprinkle of “magic dust” to speed up slow SQL queries. Developers implement a basic client...." />
+    <meta property="og:url" content="https://buildwithmanish.com/posts/beyond-get-and-set-architecting-resilient-distributed-caching-patterns-for-microservices.html" />
+    <meta property="og:image" content="https://blogs.buildwithmanish.com/assets/images/hero-beyond-get-and-set-architecting-resilient-distributed-caching-patterns-for-microservices-0-2025-12-17-15651.png" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta id="tw-title" name="twitter:title" content="Blog · Manish Tiwari" />
-    <meta
-      id="tw-desc"
-      name="twitter:description"
-      content="Blog post by Manish Tiwari"
-    />
-    <meta
-      id="tw-image"
-      name="twitter:image"
-      content="https://buildwithmanish.com/image/optimized/aiblogs-20260314-175545.webp"
-    />
-    <script id="post-schema" type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "BlogPosting",
-        "headline": "Engineering Blog",
-        "author": {
-          "@type": "Person",
-          "name": "Manish Tiwari",
-          "url": "https://buildwithmanish.com/about.html"
-        },
-        "publisher": {
-          "@type": "Person",
-          "name": "Manish Tiwari"
-        },
-        "mainEntityOfPage": {
-          "@type": "WebPage",
-          "@id": "https://buildwithmanish.com/blog.html"
-        }
-      }
-    </script>
+    <meta name="twitter:title" content="Beyond GET and SET: Architecting Resilient Distributed Caching Patterns for Microservices" />
+    <meta name="twitter:description" content="In the infancy of a backend application, caching is often treated as a simple key-value store optimization-a sprinkle of “magic dust” to speed up slow SQL queries. Developers implement a basic client...." />
+    <meta name="twitter:image" content="https://blogs.buildwithmanish.com/assets/images/hero-beyond-get-and-set-architecting-resilient-distributed-caching-patterns-for-microservices-0-2025-12-17-15651.png" />
+    <script id="post-schema" type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Beyond GET and SET: Architecting Resilient Distributed Caching Patterns for Microservices",
+  "description": "In the infancy of a backend application, caching is often treated as a simple key-value store optimization-a sprinkle of “magic dust” to speed up slow SQL queries. Developers implement a basic client....",
+  "datePublished": "2025-12-17",
+  "author": {
+    "@type": "Person",
+    "name": "Manish Tiwari",
+    "url": "https://buildwithmanish.com/about.html"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Manish Tiwari"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://buildwithmanish.com/posts/beyond-get-and-set-architecting-resilient-distributed-caching-patterns-for-microservices.html"
+  },
+  "image": "https://blogs.buildwithmanish.com/assets/images/hero-beyond-get-and-set-architecting-resilient-distributed-caching-patterns-for-microservices-0-2025-12-17-15651.png"
+}</script>
     <link
       rel="icon"
       type="image/webp"
@@ -824,7 +797,287 @@
       </div>
     </header>
 
-    <main id="blog-main" data-router-view class="is-loading"></main>
+    <main data-router-view>
+    <header class="blog-post-header">
+      <p class="muted kicker">Blog</p>
+      <h1>Beyond GET and SET: Architecting Resilient Distributed Caching Patterns for Microservices</h1>
+      <p class="muted">Dec 17, 2025</p>
+    </header>
+    <div class="blog-post-layout">
+      <nav class="blog-toc" id="blog-toc" aria-label="Table of contents"><p class="blog-toc-title">Contents</p><ol><li><a href="#introduction">Introduction</a></li><li><a href="#caching-topologies-patterns">Caching Topologies & Patterns</a></li><li class="toc-h3"><a href="#1-cache-aside-lazy-loading-">1. Cache-Aside (Lazy Loading)</a></li><li class="toc-h3"><a href="#2-read-through-write-through">2. Read-Through / Write-Through</a></li><li class="toc-h3"><a href="#3-write-back-write-behind-">3. Write-Back (Write-Behind)</a></li><li><a href="#architecture-sidecar-vs-centralized-cluster">Architecture: Sidecar vs. Centralized Cluster</a></li><li class="toc-h3"><a href="#the-centralized-cluster-redis-memcached-">The Centralized Cluster (Redis/Memcached)</a></li><li class="toc-h3"><a href="#the-sidecar-topology">The Sidecar Topology</a></li><li><a href="#the-big-three-reliability-failures">The “Big Three” Reliability Failures</a></li><li class="toc-h3"><a href="#1-cache-avalanche">1. Cache Avalanche</a></li><li class="toc-h3"><a href="#2-cache-penetration">2. Cache Penetration</a></li><li class="toc-h3"><a href="#3-cache-breakdown-thundering-herd-">3. Cache Breakdown (Thundering Herd)</a></li><li><a href="#consistency-vs-availability-the-hard-truths">Consistency vs. Availability: The Hard Truths</a></li><li class="toc-h3"><a href="#the-double-delete-strategy">The “Double Delete” Strategy</a></li><li><a href="#advanced-sharding-consistent-hashing">Advanced Sharding: Consistent Hashing</a></li><li><a href="#multi-level-caching-l1-l2-architecture">Multi-Level Caching (L1/L2) Architecture</a></li><li class="toc-h3"><a href="#the-synchronization-problem">The Synchronization Problem</a></li><li><a href="#conclusion">Conclusion</a></li></ol></nav>
+      <article class="blog-prose" id="blog-prose"><p><img src="https://blogs.buildwithmanish.com/assets/images/hero-beyond-get-and-set-architecting-resilient-distributed-caching-patterns-for-microservices-0-2025-12-17-15651.png" alt="Hero Image - Abstract representation of distributed caching"></p>
+<h2 id="introduction">Introduction</h2>
+<p>In the infancy of a backend application, caching is often treated as a simple key-value store optimization-a sprinkle of “magic dust” to speed up slow SQL queries. Developers implement a basic <code>client.get()</code> and <code>client.set()</code>, push to production, and watch latencies drop. It feels victorious.</p>
+<p>However, as traffic scales and the architecture fractures into microservices, this naive approach becomes a ticking time bomb. In distributed systems, a cache is not just a performance booster; it is a critical component of system stability. When used incorrectly, a cache becomes a source of non-deterministic bugs, data inconsistency, and catastrophic cascading failures.</p>
+<p>The difference between a junior implementation and a senior architect’s design lies in how the system behaves when things go wrong. What happens when the cache cluster nodes flap? What happens when a marketing push expires 10 million keys at the exact same second? How do you maintain read-your-own-write consistency across distributed nodes?</p>
+<p>This post dives deep into the architecture of resilient caching. We will move beyond simple storage and explore robust topologies, mitigation strategies for reliability failures, and advanced sharding techniques.</p>
+<hr>
+<h2 id="caching-topologies-patterns">Caching Topologies &amp; Patterns</h2>
+<p>Choosing the right caching pattern dictates how your application interacts with the data store. There is no “one size fits all”; the choice depends heavily on your read/write ratio and consistency requirements.</p>
+<p><img src="https://blogs.buildwithmanish.com/assets/images/comparison_chart-beyond-get-and-set-architecting-resilient-distributed-caching-patterns-for-microservices-1-2025-12-17-28518.png" alt="Comparison Chart of Caching Patterns"></p>
+<h3 id="1-cache-aside-lazy-loading-">1. Cache-Aside (Lazy Loading)</h3>
+<p>This is the most common pattern in distributed systems. The application code (the side) is responsible for orchestrating the data flow.</p>
+<ul>
+<li><strong>Flow:</strong> The app checks the cache. If it hits, return data. If it misses, the app queries the database, updates the cache, and returns the data.</li>
+<li><strong>Pros:</strong> Resilient to cache failure (the DB is the source of truth); data model in cache can differ from DB.</li>
+<li><strong>Cons:</strong> “Stale data” window between DB update and cache expiry; logic clutter in application code.</li>
+</ul>
+<h3 id="2-read-through-write-through">2. Read-Through / Write-Through</h3>
+<p>Here, the application treats the cache as the main data store. The cache itself is responsible for fetching data from the DB or writing to it.</p>
+<ul>
+<li><strong>Read-Through:</strong> On a miss, the cache loader fetches from the DB, caches it, and returns it.</li>
+<li><strong>Write-Through:</strong> Data is written to the cache, which synchronously writes to the DB.</li>
+<li><strong>Pros:</strong> Application logic is cleaner (DRY); strong consistency for reads (since cache is always updated on write).</li>
+<li><strong>Cons:</strong> Higher write latency (two writes must succeed); requires a cache provider that supports custom loader logic (e.g., RedisGears or specific framework abstractions).</li>
+</ul>
+<h3 id="3-write-back-write-behind-">3. Write-Back (Write-Behind)</h3>
+<p>The application writes to the cache, and the cache acknowledges immediately. The cache then asynchronously flushes the data to the DB.</p>
+<ul>
+<li><strong>Pros:</strong> Incredible write performance; absorbs massive write spikes (e.g., IoT sensor data, clickstreams).</li>
+<li><strong>Cons:</strong> <strong>Data Loss Risk.</strong> If the cache crashes before flushing, data is gone forever.</li>
+<li><strong>Use Case:</strong> Analytics counters, non-critical user interaction logs.</li>
+</ul>
+<hr>
+<h2 id="architecture-sidecar-vs-centralized-cluster">Architecture: Sidecar vs. Centralized Cluster</h2>
+<p>Where does the cache live relative to your microservices?</p>
+<p><img src="https://blogs.buildwithmanish.com/assets/images/architecture_diagram-beyond-get-and-set-architecting-resilient-distributed-caching-patterns-for-microservices-2-2025-12-17-9807.png" alt="Architecture Diagram: Sidecar vs Centralized"></p>
+<h3 id="the-centralized-cluster-redis-memcached-">The Centralized Cluster (Redis/Memcached)</h3>
+<p>The traditional approach. A dedicated fleet of Redis nodes serves all microservices.</p>
+<ul>
+<li><strong>Pros:</strong> Shared state across all service instances; independent scaling of compute (app) and memory (cache).</li>
+<li><strong>Cons:</strong> Network latency (serialization + wire time); potential for “Noisy Neighbor” issues if multiple services share the same cluster.</li>
+</ul>
+<h3 id="the-sidecar-topology">The Sidecar Topology</h3>
+<p>With the rise of Service Meshes (Istio, Linkerd) and Dapr, the sidecar pattern places a cache instance (like a small Redis process or Envoy filter) on the same network namespace or pod as the application container.</p>
+<ul>
+<li><strong>Pros:</strong> Sub-millisecond latency (loopback interface); isolation (Service A’s cache load doesn’t affect Service B).</li>
+<li><strong>Cons:</strong> Cache fragmentation (low hit rates if requests are load-balanced randomly across pods); difficult to maintain consistency across sidecars; memory overhead per pod.</li>
+</ul>
+<p><strong>Verdict:</strong> Use a <strong>Centralized Cluster</strong> for shared entity data (User Profiles, Product Catalog). Use <strong>Sidecars</strong> for ephemeral, service-specific configuration or highly transient session state where consistency is less critical than raw speed.</p>
+<hr>
+<h2 id="the-big-three-reliability-failures">The “Big Three” Reliability Failures</h2>
+<p>In high-throughput systems, the way your cache handles expiry and misses determines whether your database survives peak load. We must architecturally defend against the “Big Three.”</p>
+<p><img src="https://blogs.buildwithmanish.com/assets/images/concept_illustration-beyond-get-and-set-architecting-resilient-distributed-caching-patterns-for-microservices-3-2025-12-17-14034.png" alt="Concept Illustration of Cache Failures"></p>
+<h3 id="1-cache-avalanche">1. Cache Avalanche</h3>
+<p><strong>The Scenario:</strong> You cache 10,000 product details, all with a TTL of 60 minutes. At 12:00 PM, you deploy. At 1:00 PM, all 10,000 keys expire simultaneously. Your database is instantly hammered by thousands of reconstruction queries.</p>
+<p><strong>The Solution: TTL Jitter.</strong> Never use a hardcoded TTL. Always add a random variance.</p>
+<pre><code class="hljs language-python" data-lang="python"><span class="hljs-keyword">import</span> random
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">set_product_cache</span>(<span class="hljs-params">product_id, data</span>):
+    base_ttl = <span class="hljs-number">3600</span>  <span class="hljs-comment"># 60 minutes</span>
+    <span class="hljs-comment"># Add +/- 10% jitter</span>
+    jitter = random.randint(-<span class="hljs-number">360</span>, <span class="hljs-number">360</span>) 
+    final_ttl = base_ttl + jitter
+    
+    redis_client.setex(<span class="hljs-string">f"product:<span class="hljs-subst">{product_id}</span>"</span>, final_ttl, data)</code></pre><p>By spreading the expiry, you smooth out the re-computation load on the database, turning a spike into a manageable curve.</p>
+<h3 id="2-cache-penetration">2. Cache Penetration</h3>
+<p><strong>The Scenario:</strong> A malicious actor (or a buggy crawler) requests IDs that do not exist in your database (e.g., <code>id=-1</code> or UUIDs that aren’t real). The cache misses, the DB is queried, returns nothing, and nothing is cached. The attack continues, effectively DoS-ing your database.</p>
+<p><strong>The Solution: Bloom Filters and Null Caching.</strong></p>
+<p><strong>Strategy A: Cache Nulls.</strong> If the DB returns nothing, cache a “Null Object” with a short TTL (e.g., 5 minutes).</p>
+<pre><code class="hljs language-python" data-lang="python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_user</span>(<span class="hljs-params">user_id</span>):
+    cache_key = <span class="hljs-string">f"user:<span class="hljs-subst">{user_id}</span>"</span>
+    data = redis_client.get(cache_key)
+    
+    <span class="hljs-keyword">if</span> data == <span class="hljs-string">"NULL"</span>:
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>  <span class="hljs-comment"># Hit on a known non-existent key</span>
+    <span class="hljs-keyword">if</span> data:
+        <span class="hljs-keyword">return</span> deserialize(data)
+        
+    <span class="hljs-comment"># DB Lookup</span>
+    user = db.find_user(user_id)
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> user:
+        <span class="hljs-comment"># Cache the negative result for a short time</span>
+        redis_client.setex(cache_key, <span class="hljs-number">300</span>, <span class="hljs-string">"NULL"</span>)
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
+        
+    redis_client.setex(cache_key, <span class="hljs-number">3600</span>, serialize(user))
+    <span class="hljs-keyword">return</span> user</code></pre><p><strong>Strategy B: Bloom Filters.</strong> Before even hitting Redis, check a Bloom Filter (a probabilistic data structure). If the Bloom Filter says the key <em>definitely doesn’t exist</em>, reject the request immediately.</p>
+<h3 id="3-cache-breakdown-thundering-herd-">3. Cache Breakdown (Thundering Herd)</h3>
+<p><strong>The Scenario:</strong> A single key (e.g., “Homepage_Top_News”) is extremely hot (10k req/sec). The key expires. Instantly, 10,000 requests hit the cache, miss, and <em>all 10,000</em> rush to the database to calculate the same value.</p>
+<p><strong>The Solution: Mutex Locking (Check-Lock-Check).</strong> Only allow ONE thread/process to rebuild the cache. Everyone else waits or receives stale data.</p>
+<p><img src="https://blogs.buildwithmanish.com/assets/images/code_flow-beyond-get-and-set-architecting-resilient-distributed-caching-patterns-for-microservices-4-2025-12-17-78837.png" alt="Code Flow Diagram for Thundering Herd"></p>
+<pre><code class="hljs language-python" data-lang="python"><span class="hljs-keyword">import</span> time
+<span class="hljs-keyword">import</span> uuid
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">get_hot_key</span>(<span class="hljs-params">key</span>):
+    value = redis_client.get(key)
+    <span class="hljs-keyword">if</span> value:
+        <span class="hljs-keyword">return</span> value
+
+    <span class="hljs-comment"># Key missed. Acquire distributed lock.</span>
+    lock_key = <span class="hljs-string">f"lock:<span class="hljs-subst">{key}</span>"</span>
+    token = <span class="hljs-built_in">str</span>(uuid.uuid4())
+    
+    <span class="hljs-comment"># Try to acquire lock with 10s timeout to prevent deadlocks</span>
+    <span class="hljs-keyword">if</span> redis_client.<span class="hljs-built_in">set</span>(lock_key, token, nx=<span class="hljs-literal">True</span>, ex=<span class="hljs-number">10</span>):
+        <span class="hljs-keyword">try</span>:
+            <span class="hljs-comment"># Recheck cache just in case another thread finished </span>
+            <span class="hljs-comment"># while we were waiting for the lock</span>
+            value = redis_client.get(key)
+            <span class="hljs-keyword">if</span> value:
+                <span class="hljs-keyword">return</span> value
+            
+            <span class="hljs-comment"># I am the chosen one. Query DB.</span>
+            value = db_query(key)
+            redis_client.setex(key, <span class="hljs-number">3600</span>, value)
+            <span class="hljs-keyword">return</span> value
+        <span class="hljs-keyword">finally</span>:
+            <span class="hljs-comment"># Release lock safely using Lua script (omitted for brevity)</span>
+            <span class="hljs-keyword">if</span> redis_client.get(lock_key) == token:
+                redis_client.delete(lock_key)
+    <span class="hljs-keyword">else</span>:
+        <span class="hljs-comment"># Failed to get lock. Sleep and retry (or return stale if architecture allows)</span>
+        time.sleep(<span class="hljs-number">0.1</span>)
+        <span class="hljs-keyword">return</span> get_hot_key(key)</code></pre><hr>
+<h2 id="consistency-vs-availability-the-hard-truths">Consistency vs. Availability: The Hard Truths</h2>
+<p>There are only two hard things in Computer Science: cache invalidation and naming things. In microservices, Strong Consistency with caching is essentially impossible without sacrificing Availability (CAP theorem).</p>
+<p><img src="https://blogs.buildwithmanish.com/assets/images/technical_diagram-beyond-get-and-set-architecting-resilient-distributed-caching-patterns-for-microservices-5-2025-12-17-57893.png" alt="Technical Diagram: Consistency Models"></p>
+<h3 id="the-double-delete-strategy">The “Double Delete” Strategy</h3>
+<p>When updating data, you have two choices: update the cache or delete the cache. <strong>Deleting is safer</strong> because updating implies you know the exact final state, which might be complex due to serialization.</p>
+<p>However, a simple <code>db.update(); cache.delete();</code> is flawed.</p>
+<ol>
+<li>Thread A updates DB.</li>
+<li>Thread A deletes Cache.</li>
+<li>Thread B reads DB (which might still be returning old data due to replication lag).</li>
+<li>Thread B repopulates Cache with <em>old</em> data.</li>
+<li>Cache is now permanently stale.</li>
+</ol>
+<p><strong>Solution: Delayed Double Delete.</strong></p>
+<ol>
+<li>Delete Cache.</li>
+<li>Update Database.</li>
+<li>Sleep (Wait for DB replication lag, e.g., 500ms).</li>
+<li>Delete Cache <em>Again</em>.</li>
+</ol>
+<p>This ensures that any read that occurred during the race condition is flushed out.</p>
+<hr>
+<h2 id="advanced-sharding-consistent-hashing">Advanced Sharding: Consistent Hashing</h2>
+<p>When you scale Redis beyond a single node, you need to shard keys. The naive approach is Modulo Hashing: <code>Node = hash(key) % N</code> (where N is number of nodes).</p>
+<p><strong>The Problem:</strong> If you add a node (N becomes N+1), the result of the modulo changes for almost <em>every key</em>. 100% of your cache is invalidated instantly. This is a cache apocalypse.</p>
+<p><strong>The Solution: Consistent Hashing (Ring Topology).</strong> Imagine a circle (Ring) representing the hash space (0 to 2^32).</p>
+<ol>
+<li>Place your Server Nodes at points on the ring based on <code>hash(ServerIP)</code>.</li>
+<li>Place your Keys on the ring based on <code>hash(Key)</code>.</li>
+<li>To find the node for a key, move <em>clockwise</em> on the ring until you hit a server.</li>
+</ol>
+<p><img src="https://blogs.buildwithmanish.com/assets/images/technical_diagram-beyond-get-and-set-architecting-resilient-distributed-caching-patterns-for-microservices-6-2025-12-17-4281.png" alt="Technical Diagram: Consistent Hashing Ring"></p>
+<p><strong>Virtual Nodes:</strong> If you have few nodes, the distribution on the ring might be uneven (Node A gets 80% of data). We create “Virtual Nodes.” Node A exists on the ring as <code>NodeA_1</code>, <code>NodeA_2</code>… <code>NodeA_100</code>. This statistically ensures uniform distribution.</p>
+<p>When a node is added or removed, only the keys falling into that specific segment of the ring are affected (roughly <code>1/N</code> of the keys). This allows elastic scaling without flushing the cache.</p>
+<hr>
+<h2 id="multi-level-caching-l1-l2-architecture">Multi-Level Caching (L1/L2) Architecture</h2>
+<p>For extreme performance requirements, a single remote Redis call (1-2ms) is too slow. You need microseconds. This leads to <strong>L1/L2 Caching</strong>.</p>
+<ul>
+<li><strong>L1 (Local):</strong> In-memory cache inside the application process (e.g., Caffeine for Java, Ristretto for Go, LRU dictionary for Python). Zero network latency.</li>
+<li><strong>L2 (Remote):</strong> Redis Cluster. Shared state.</li>
+</ul>
+<p><img src="https://blogs.buildwithmanish.com/assets/images/architecture_diagram-beyond-get-and-set-architecting-resilient-distributed-caching-patterns-for-microservices-7-2025-12-17-79471.png" alt="Architecture Diagram: Multi-Level Caching"></p>
+<h3 id="the-synchronization-problem">The Synchronization Problem</h3>
+<p>If Instance A updates a user in DB and invalidates its L1 and the shared L2, Instance B still has the old user in <em>its</em> L1.</p>
+<p><strong>The Solution: Pub/Sub Invalidation.</strong> We use Redis Pub/Sub as a notification channel.</p>
+<ol>
+<li><strong>Read Path:</strong> Check L1 -&gt; Check L2 -&gt; Check DB -&gt; Populate L2 -&gt; Populate L1.</li>
+<li><strong>Write Path:</strong><ul>
+<li>Update DB.</li>
+<li>Delete L2 Key.</li>
+<li>Publish message to Redis Channel <code>cache-invalidation</code>: <code>\{"key": "user:123"\}</code>.</li>
+<li>All service instances subscribe to this channel. Upon receiving the message, they evict <code>user:123</code> from their local L1.</li>
+</ul>
+</li>
+</ol>
+<p><strong>Implementation Logic (Pseudo-code):</strong></p>
+<pre><code class="hljs language-css" data-lang="css"># Application Startup
+def start_subscriber():
+    pubsub = redis_client.<span class="hljs-built_in">pubsub</span>()
+    pubsub.<span class="hljs-built_in">subscribe</span>(<span class="hljs-string">'cache-invalidation'</span>)
+    for message in pubsub.<span class="hljs-built_in">listen</span>():
+        if message[<span class="hljs-string">'type'</span>] == <span class="hljs-string">'message'</span>:
+            key_to_delete = message[<span class="hljs-string">'data'</span>]
+            local_cache.<span class="hljs-built_in">invalidate</span>(key_to_delete)
+
+# Write Operation
+def <span class="hljs-built_in">update_data</span>(key, value):
+    db.<span class="hljs-built_in">update</span>(key, value)
+    redis_client.<span class="hljs-built_in">delete</span>(key) # Clear L2
+    # Notify all L1s to clear
+    redis_client.<span class="hljs-built_in">publish</span>(<span class="hljs-string">'cache-invalidation'</span>, key)</code></pre><p>This architecture provides the speed of local memory with the consistency controls of a distributed system.</p>
+<hr>
+<h2 id="conclusion">Conclusion</h2>
+<p>Architecting distributed caching is an exercise in managing failure modes. It requires shifting your mindset from “Caching is a storage feature” to “Caching is a distributed systems problem.”</p>
+<p>To build resilient systems:</p>
+<ol>
+<li><strong>Assume failure:</strong> Design for the empty cache scenario (Avalanche protection).</li>
+<li><strong>Defend the DB:</strong> Use Bloom filters and locking to prevent Thundering Herds.</li>
+<li><strong>Respect Physics:</strong> Understand that strong consistency across distributed nodes incurs a latency penalty.</li>
+<li><strong>Layer intelligently:</strong> Use L1/L2 caching when network hops become the bottleneck, but automate the invalidation.</li>
+</ol>
+<p>The goal isn’t just a high cache hit ratio; it’s a system that degrades gracefully, scales elastically, and remains consistent enough for the business logic to hold true.</p>
+</article>
+      <aside class="blog-meta-col">
+        <section class="blog-meta-card" aria-label="Author details">
+          <p class="blog-meta-label">Author</p>
+          <p class="blog-meta-value">Manish Tiwari</p>
+        </section>
+        <section class="blog-meta-card" aria-label="Publication date">
+          <p class="blog-meta-label">Published</p>
+          <p class="blog-meta-value">Dec 17, 2025</p>
+        </section>
+        <section class="blog-meta-card" aria-label="Blog views">
+          <p class="blog-meta-label">Views</p>
+          <div class="blog-view-counter">
+            <img src="https://komarev.com/ghpvc/?username=manish-9245&label=VIEWS&color=0e75b6&style=flat" alt="Blog views counter" loading="lazy" decoding="async" />
+          </div>
+        </section>
+        <section class="blog-meta-card" aria-label="Blog navigation">
+          <p class="blog-meta-label">Navigate</p>
+          <a class="blog-meta-link" href="/blogs.html">← All posts</a>
+        </section>
+      </aside>
+    </div>
+    <section class="surface related-posts" id="related-posts" aria-label="Related blog posts">
+        <h2>Related Posts</h2>
+        <div class="related-posts-grid">
+          
+            <article class="related-card">
+              <p class="related-meta">
+                <span>Dec 17, 2025</span>
+                <span class="blog-card-dot">•</span>
+                <span>Cloud</span>
+              </p>
+              <h3 class="related-title"><a href="/beyond-the-happy-path-architecting-faulttolerant-recurring-payments-with-razorpay.html">Beyond the Happy Path: Architecting Fault-Tolerant Recurring Payments with Razorpay</a></h3>
+              <p class="related-desc">In the world of distributed systems, the “happy path” is a sedative. It lulls engineers into a false sense of security where networks never partition, latency is zero, and customers always have suffic...</p>
+            </article>
+          
+            <article class="related-card">
+              <p class="related-meta">
+                <span>Dec 17, 2025</span>
+                <span class="blog-card-dot">•</span>
+                <span>Data</span>
+              </p>
+              <h3 class="related-title"><a href="/mastering-razorpay-webhooks-architecting-an-idempotent-eventdriven-ingestion-engine.html">Mastering Razorpay Webhooks: Architecting an Idempotent, Event-Driven Ingestion Engine</a></h3>
+              <p class="related-desc">Integrating a payment gateway like Razorpay often starts with a false sense of security. The documentation shows a happy path: user pays, Razorpay calls your webhook, you update the database, and ship...</p>
+            </article>
+          
+            <article class="related-card">
+              <p class="related-meta">
+                <span>Dec 30, 2025</span>
+                <span class="blog-card-dot">•</span>
+                <span>AI</span>
+              </p>
+              <h3 class="related-title"><a href="/relational-database-management-system.html">Relational Database Management System: An Engineering Deep-Dive</a></h3>
+              <p class="related-desc">Despite the meteoric rise of NoSQL, time-series, and vector databases in the last decade, the Relational Database Management System (RDBMS) remains the immutable backbone of global enterprise software...</p>
+            </article>
+          
+        </div></section>
+    <section class="surface blog-share" id="blog-share" aria-label="Share this post">
+      <h2>Share this post</h2>
+      <div class="blog-share-actions">
+        <a class="blog-share-link" aria-label="Share on LinkedIn" title="Share on LinkedIn" target="_blank" rel="noopener noreferrer" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fbuildwithmanish.com%2Fposts%2Fbeyond-get-and-set-architecting-resilient-distributed-caching-patterns-for-microservices.html"><svg class="blog-share-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.94 8.5H3.56V20h3.38V8.5zM5.25 3C4.14 3 3.2 3.94 3.2 5.05c0 1.1.9 2.05 2.01 2.05h.02c1.12 0 2.02-.95 2.02-2.05C7.25 3.94 6.36 3 5.25 3zM20.8 13.4c0-3.13-1.67-5.15-4.66-5.15-2.15 0-3.11 1.2-3.65 2.03V8.5H9.1c.04 1.17 0 11.5 0 11.5h3.38v-6.42c0-.34.03-.68.12-.92.27-.68.88-1.4 1.9-1.4 1.34 0 1.88 1.05 1.88 2.58V20h3.38v-6.6z"/></svg></a>
+        <a class="blog-share-link" aria-label="Share on X" title="Share on X" target="_blank" rel="noopener noreferrer" href="https://x.com/intent/tweet?url=https%3A%2F%2Fbuildwithmanish.com%2Fposts%2Fbeyond-get-and-set-architecting-resilient-distributed-caching-patterns-for-microservices.html&text=Beyond%20GET%20and%20SET%3A%20Architecting%20Resilient%20Distributed%20Caching%20Patterns%20for%20Microservices"><svg class="blog-share-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 2H22l-6.77 7.74L23 22h-6.1l-4.78-6.24L6.66 22H3.55l7.24-8.27L1 2h6.25l4.32 5.7L18.9 2zm-1.07 18h1.69L6.33 3.9H4.52L17.83 20z"/></svg></a>
+        <button type="button" class="blog-share-copy" aria-label="Copy link" title="Copy link" data-share-copy data-url="https://buildwithmanish.com/posts/beyond-get-and-set-architecting-resilient-distributed-caching-patterns-for-microservices.html"><svg class="blog-share-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 7a3 3 0 0 1 3-3h7a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3h-1v-1.5h1A1.5 1.5 0 0 0 19.5 15V7A1.5 1.5 0 0 0 18 5.5h-7A1.5 1.5 0 0 0 9.5 7v1H8V7zm-2 3A3 3 0 0 1 9 7h7a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H9a3 3 0 0 1-3-3v-8zm3-1.5A1.5 1.5 0 0 0 7.5 10v8A1.5 1.5 0 0 0 9 19.5h7a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 16 8.5H9z"/></svg></button>
+      </div></section>
+    <div class="surface" style="padding-top:0">
+      <a href="/blogs.html">← Back to all blogs</a>
+    </div></main>
 
     <footer class="site-footer">
       <div class="surface footer-row">
@@ -1374,7 +1627,7 @@
                     <span aria-hidden="true">•</span>
                     <span>${tags[0]}</span>
                   </p>
-                  <h3 class="related-title"><a href="./blog.html?post=${encodeURIComponent(post.slug)}">${post.title}</a></h3>
+                  <h3 class="related-title"><a href="/blog.html?post=${encodeURIComponent(post.slug)}">${post.title}</a></h3>
                   <p class="related-desc">${post.description || ""}</p>
                 </article>`;
               })
@@ -1460,7 +1713,7 @@
         }
 
         if (!slug) {
-          main.innerHTML = `<div class="blog-error"><p>No post specified.</p><p><a href="./blogs.html">← All blogs</a></p></div>`;
+          main.innerHTML = `<div class="blog-error"><p>No post specified.</p><p><a href="/blogs.html">← All blogs</a></p></div>`;
           main.classList.remove("is-loading");
           return;
         }
@@ -1497,7 +1750,7 @@
             throw new Error("Post body unavailable");
           }
         } catch {
-          main.innerHTML = `<div class="blog-error"><p>Post not found.</p><p><a href="./blogs.html">← All blogs</a></p></div>`;
+          main.innerHTML = `<div class="blog-error"><p>Post not found.</p><p><a href="/blogs.html">← All blogs</a></p></div>`;
           main.classList.remove("is-loading");
           return;
         }
@@ -1690,7 +1943,7 @@
         main.classList.remove("is-loading");
       }
 
-      loadPost();
+      // Static Page: loadPost() disabled
     </script>
   </body>
 </html>

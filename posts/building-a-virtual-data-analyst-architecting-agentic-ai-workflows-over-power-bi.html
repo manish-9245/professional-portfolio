@@ -3,68 +3,41 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title id="page-title">Blog · Manish Tiwari</title>
-    <meta
-      id="page-desc"
-      name="description"
-      content="Blog post by Manish Tiwari"
-    />
+    <title>Building a Virtual Data Analyst: Architecting Agentic AI Workflows over Power BI · Manish Tiwari</title>
+    <meta name="description" content="In the rush to adopt Generative AI, organizations have flooded their backlogs with “Chat with your Data” initiatives. Most of these projects follow a predictable, often disappointing, pattern: a text-..." />
     <meta name="robots" content="index, follow" />
-    <link
-      id="page-canonical"
-      rel="canonical"
-      href="https://buildwithmanish.com/blog.html"
-    />
+    <link rel="canonical" href="https://buildwithmanish.com/posts/building-a-virtual-data-analyst-architecting-agentic-ai-workflows-over-power-bi.html" />
     <meta property="og:site_name" content="Manish Tiwari" />
     <meta id="og-type" property="og:type" content="article" />
-    <meta id="og-title" property="og:title" content="Blog · Manish Tiwari" />
-    <meta
-      id="og-desc"
-      property="og:description"
-      content="Blog post by Manish Tiwari"
-    />
-    <meta
-      id="og-url"
-      property="og:url"
-      content="https://buildwithmanish.com/blog.html"
-    />
-    <meta
-      id="og-image"
-      property="og:image"
-      content="https://buildwithmanish.com/image/optimized/aiblogs-20260314-175545.webp"
-    />
+    <meta property="og:title" content="Building a Virtual Data Analyst: Architecting Agentic AI Workflows over Power BI" />
+    <meta property="og:description" content="In the rush to adopt Generative AI, organizations have flooded their backlogs with “Chat with your Data” initiatives. Most of these projects follow a predictable, often disappointing, pattern: a text-..." />
+    <meta property="og:url" content="https://buildwithmanish.com/posts/building-a-virtual-data-analyst-architecting-agentic-ai-workflows-over-power-bi.html" />
+    <meta property="og:image" content="https://blogs.buildwithmanish.com/assets/images/hero-building-a-virtual-data-analyst-architecting-agentic-ai-workflows-over-power-bi-0-2025-12-17-46659.png" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta id="tw-title" name="twitter:title" content="Blog · Manish Tiwari" />
-    <meta
-      id="tw-desc"
-      name="twitter:description"
-      content="Blog post by Manish Tiwari"
-    />
-    <meta
-      id="tw-image"
-      name="twitter:image"
-      content="https://buildwithmanish.com/image/optimized/aiblogs-20260314-175545.webp"
-    />
-    <script id="post-schema" type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "BlogPosting",
-        "headline": "Engineering Blog",
-        "author": {
-          "@type": "Person",
-          "name": "Manish Tiwari",
-          "url": "https://buildwithmanish.com/about.html"
-        },
-        "publisher": {
-          "@type": "Person",
-          "name": "Manish Tiwari"
-        },
-        "mainEntityOfPage": {
-          "@type": "WebPage",
-          "@id": "https://buildwithmanish.com/blog.html"
-        }
-      }
-    </script>
+    <meta name="twitter:title" content="Building a Virtual Data Analyst: Architecting Agentic AI Workflows over Power BI" />
+    <meta name="twitter:description" content="In the rush to adopt Generative AI, organizations have flooded their backlogs with “Chat with your Data” initiatives. Most of these projects follow a predictable, often disappointing, pattern: a text-..." />
+    <meta name="twitter:image" content="https://blogs.buildwithmanish.com/assets/images/hero-building-a-virtual-data-analyst-architecting-agentic-ai-workflows-over-power-bi-0-2025-12-17-46659.png" />
+    <script id="post-schema" type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Building a Virtual Data Analyst: Architecting Agentic AI Workflows over Power BI",
+  "description": "In the rush to adopt Generative AI, organizations have flooded their backlogs with “Chat with your Data” initiatives. Most of these projects follow a predictable, often disappointing, pattern: a text-...",
+  "datePublished": "2025-12-17",
+  "author": {
+    "@type": "Person",
+    "name": "Manish Tiwari",
+    "url": "https://buildwithmanish.com/about.html"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Manish Tiwari"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://buildwithmanish.com/posts/building-a-virtual-data-analyst-architecting-agentic-ai-workflows-over-power-bi.html"
+  },
+  "image": "https://blogs.buildwithmanish.com/assets/images/hero-building-a-virtual-data-analyst-architecting-agentic-ai-workflows-over-power-bi-0-2025-12-17-46659.png"
+}</script>
     <link
       rel="icon"
       type="image/webp"
@@ -824,7 +797,321 @@
       </div>
     </header>
 
-    <main id="blog-main" data-router-view class="is-loading"></main>
+    <main data-router-view>
+    <header class="blog-post-header">
+      <p class="muted kicker">Blog</p>
+      <h1>Building a Virtual Data Analyst: Architecting Agentic AI Workflows over Power BI</h1>
+      <p class="muted">Dec 17, 2025</p>
+    </header>
+    <div class="blog-post-layout">
+      <nav class="blog-toc" id="blog-toc" aria-label="Table of contents"><p class="blog-toc-title">Contents</p><ol><li><a href="#the-core-problem-why-text-to-sql-fails-power-bi">The Core Problem: Why Text-to-SQL Fails Power BI</a></li><li><a href="#architectural-pattern-the-plan-and-execute-agent">Architectural Pattern: The Plan-and-Execute Agent</a></li><li class="toc-h3"><a href="#the-component-stack">The Component Stack</a></li><li><a href="#phase-1-introspection-the-metadata-layer-">Phase 1: Introspection (The Metadata Layer)</a></li><li class="toc-h3"><a href="#implementation-the-schema-fetcher">Implementation: The Schema Fetcher</a></li><li><a href="#phase-2-dynamic-dax-generation-strategies">Phase 2: Dynamic DAX Generation Strategies</a></li><li class="toc-h3"><a href="#the-prompt-strategy">The Prompt Strategy</a></li><li class="toc-h3"><a href="#handling-hallucinations-via-self-correction">Handling “Hallucinations” via Self-Correction</a></li><li><a href="#phase-3-the-execution-layer-python-langchain-">Phase 3: The Execution Layer (Python & LangChain)</a></li><li class="toc-h3"><a href="#the-agent-definition">The Agent Definition</a></li><li><a href="#phase-4-synthesis-and-narrative-generation">Phase 4: Synthesis and Narrative Generation</a></li><li><a href="#advanced-scenarios-and-edge-cases">Advanced Scenarios and Edge Cases</a></li><li class="toc-h3"><a href="#1-handling-large-result-sets">1. Handling Large Result Sets</a></li><li class="toc-h3"><a href="#2-row-level-security-rls-">2. Row Level Security (RLS)</a></li><li class="toc-h3"><a href="#3-measures-with-dependencies">3. Measures with Dependencies</a></li><li><a href="#performance-considerations">Performance Considerations</a></li><li><a href="#conclusion">Conclusion</a></li><li class="toc-h3"><a href="#next-steps-for-implementation">Next Steps for Implementation</a></li></ol></nav>
+      <article class="blog-prose" id="blog-prose"><p><img src="https://blogs.buildwithmanish.com/assets/images/hero-building-a-virtual-data-analyst-architecting-agentic-ai-workflows-over-power-bi-0-2025-12-17-46659.png" alt="Building a Virtual Data Analyst"></p>
+<p>In the rush to adopt Generative AI, organizations have flooded their backlogs with “Chat with your Data” initiatives. Most of these projects follow a predictable, often disappointing, pattern: a text-to-SQL layer slapped on top of a raw data warehouse. While this works for simple questions (“How many widgets did we sell?”), it fails catastrophic when applied to enterprise analytical questions (“Why is Q4 margin degrading despite higher volume?”).</p>
+<p>The failure stems from a fundamental architectural oversight: <strong>Enterprise business logic does not live in the raw database tables; it lives in the Semantic Model.</strong></p>
+<p>In the Microsoft ecosystem, that logic is encapsulated in Power BI datasets-specifically in DAX measures, calculated columns, and complex relationships. To build a true “Virtual Data Analyst,” we cannot simply ask an LLM to write SQL. We must architect an <strong>Agentic Workflow</strong> capable of interacting with the Power BI Service via XMLA endpoints and REST APIs, mimicking the cognitive processes of a human analyst: introspection, planning, execution, and synthesis.</p>
+<p>This deep dive explores how to build that architecture using Python, LangChain, and the Power BI REST API.</p>
+<p><img src="https://blogs.buildwithmanish.com/assets/images/architecture_diagram-building-a-virtual-data-analyst-architecting-agentic-ai-workflows-over-power-bi-1-2025-12-17-87202.png" alt="Architecture Diagram"></p>
+<h2 id="the-core-problem-why-text-to-sql-fails-power-bi">The Core Problem: Why Text-to-SQL Fails Power BI</h2>
+<p>Before writing code, we must understand the semantic gap. A raw SQL database contains <code>Sales_Amount</code> and <code>Cost_Amount</code>. However, the concept of <code>Gross Margin %</code> isn’t a column; it’s a DAX measure defined as:</p>
+<pre><code class="hljs language-text" data-lang="">Gross Margin % = DIVIDE([Total Sales] - [Total Cost], [Total Sales], 0)</code></pre><p>Furthermore, this measure might rely on Time Intelligence functions (<code>SAMEPERIODLASTYEAR</code>) or complex filter contexts (<code>CALCULATE</code>).</p>
+<p>If you point a standard Text-to-SQL agent at the underlying SQL database, it will hallucinate the math, ignore the verified logic defined in Power BI, and return numbers that don’t match your executive dashboard. To fix this, our agent must speak <strong>DAX</strong> (Data Analysis Expressions) and query the <strong>Semantic Model</strong> directly.</p>
+<h2 id="architectural-pattern-the-plan-and-execute-agent">Architectural Pattern: The Plan-and-Execute Agent</h2>
+<p>We will move beyond simple RAG (Retrieval Augmented Generation) to a “Plan-and-Execute” agentic pattern. A human analyst doesn’t just run a query immediately. They:</p>
+<ol>
+<li><strong>Introspect:</strong> Look at the data model to see what fields and measures exist.</li>
+<li><strong>Plan:</strong> Break the business question into logical steps.</li>
+<li><strong>Execute:</strong> Write and run the query.</li>
+<li><strong>Verify/Refine:</strong> Check if the results make sense.</li>
+<li><strong>Synthesize:</strong> Write the email/report.</li>
+</ol>
+<p>Our AI agent will replicate this loop.</p>
+<h3 id="the-component-stack">The Component Stack</h3>
+<ol>
+<li><strong>Orchestrator:</strong> LangChain or LangGraph (Python).</li>
+<li><strong>LLM:</strong> GPT-4o or Claude 3.5 Sonnet (Models with high coding capability are essential for DAX).</li>
+<li><strong>Interface Layer:</strong> Power BI REST API (<code>executeQueries</code> endpoint) or XMLA endpoint via <code>pythonnet</code>/<code>pyadomd</code>.</li>
+<li><strong>Tools:</strong> Custom Python functions for Schema Introspection and DAX Execution.</li>
+</ol>
+<p><img src="https://blogs.buildwithmanish.com/assets/images/code_flow-building-a-virtual-data-analyst-architecting-agentic-ai-workflows-over-power-bi-2-2025-12-17-20014.png" alt="Code Flow Diagram"></p>
+<h2 id="phase-1-introspection-the-metadata-layer-">Phase 1: Introspection (The Metadata Layer)</h2>
+<p>An LLM cannot query a dataset it cannot see. We need a tool that allows the agent to read the “map” of the data. We use Dynamic Management Views (DMVs) over the XMLA endpoint or the Power BI REST API to fetch metadata.</p>
+<p>We need to extract:</p>
+<ul>
+<li>Table Names</li>
+<li>Column Names</li>
+<li><strong>Measure Names and their DAX Expressions</strong> (Crucial for context)</li>
+<li>Relationships</li>
+</ul>
+<h3 id="implementation-the-schema-fetcher">Implementation: The Schema Fetcher</h3>
+<p>Here is how we implement a robust schema fetcher using the Power BI REST API. This tool will be available to our Agent.</p>
+<pre><code class="hljs language-python" data-lang="python"><span class="hljs-keyword">import</span> requests
+<span class="hljs-keyword">import</span> json
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">PowerBIMetadataService</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, tenant_id, client_id, client_secret, workspace_id, dataset_id</span>):
+        <span class="hljs-variable language_">self</span>.base_url = <span class="hljs-string">"https://api.powerbi.com/v1.0/myorg"</span>
+        <span class="hljs-variable language_">self</span>.workspace_id = workspace_id
+        <span class="hljs-variable language_">self</span>.dataset_id = dataset_id
+        <span class="hljs-variable language_">self</span>.token = <span class="hljs-variable language_">self</span>._get_aad_token(tenant_id, client_id, client_secret)
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">_get_aad_token</span>(<span class="hljs-params">self, tenant_id, client_id, client_secret</span>):
+        url = <span class="hljs-string">f"https://login.microsoftonline.com/<span class="hljs-subst">{tenant_id}</span>/oauth2/v2.0/token"</span>
+        payload = {
+            <span class="hljs-string">'grant_type'</span>: <span class="hljs-string">'client_credentials'</span>,
+            <span class="hljs-string">'client_id'</span>: client_id,
+            <span class="hljs-string">'client_secret'</span>: client_secret,
+            <span class="hljs-string">'scope'</span>: <span class="hljs-string">'https://analysis.windows.net/powerbi/api/.default'</span>
+        }
+        response = requests.post(url, data=payload)
+        <span class="hljs-keyword">return</span> response.json().get(<span class="hljs-string">'access_token'</span>)
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_semantic_schema</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-string">"""
+        Executes a DAX query to retrieve DMVs (Dynamic Management Views)
+        simulating schema introspection.
+        """</span>
+        <span class="hljs-comment"># Query to get Tables and Columns</span>
+        dax_query = <span class="hljs-string">"""
+        EVALUATE
+        SELECTCOLUMNS(
+            INFO.COLUMNS,
+            "Table", [TableID],
+            "Column", [ExplicitName],
+            "Description", [Description]
+        )
+        """</span>
+        
+        <span class="hljs-comment"># Query to get Measures (The most important part)</span>
+        measures_query = <span class="hljs-string">"""
+        EVALUATE
+        SELECTCOLUMNS(
+            INFO.MEASURES,
+            "Table", [TableID],
+            "Measure", [Name],
+            "Expression", [Expression]
+        )
+        """</span>
+        
+        columns = <span class="hljs-variable language_">self</span>.execute_dax(dax_query)
+        measures = <span class="hljs-variable language_">self</span>.execute_dax(measures_query)
+        
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>._format_schema_for_llm(columns, measures)
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">execute_dax</span>(<span class="hljs-params">self, dax_query</span>):
+        url = <span class="hljs-string">f"<span class="hljs-subst">{self.base_url}</span>/groups/<span class="hljs-subst">{self.workspace_id}</span>/datasets/<span class="hljs-subst">{self.dataset_id}</span>/executeQueries"</span>
+        headers = {
+            <span class="hljs-string">"Authorization"</span>: <span class="hljs-string">f"Bearer <span class="hljs-subst">{self.token}</span>"</span>,
+            <span class="hljs-string">"Content-Type"</span>: <span class="hljs-string">"application/json"</span>
+        }
+        payload = {
+            <span class="hljs-string">"queries"</span>: [{<span class="hljs-string">"query"</span>: dax_query}],
+            <span class="hljs-string">"serializerSettings"</span>: {<span class="hljs-string">"incudeNulls"</span>: <span class="hljs-literal">True</span>}
+        }
+        
+        response = requests.post(url, headers=headers, json=payload)
+        <span class="hljs-keyword">return</span> response.json()
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">_format_schema_for_llm</span>(<span class="hljs-params">self, columns_raw, measures_raw</span>):
+        <span class="hljs-comment"># Helper to convert raw JSON to a compact text string</span>
+        <span class="hljs-comment"># enabling the LLM to ingest the schema without blowing up the context window.</span>
+        schema_summary = <span class="hljs-string">"DATASET SCHEMA:\n"</span>
+        <span class="hljs-comment"># ... transformation logic ...</span>
+        <span class="hljs-keyword">return</span> schema_summary</code></pre><p><img src="https://blogs.buildwithmanish.com/assets/images/concept_illustration-building-a-virtual-data-analyst-architecting-agentic-ai-workflows-over-power-bi-3-2025-12-17-24503.png" alt="Concept Illustration: Introspection"></p>
+<h2 id="phase-2-dynamic-dax-generation-strategies">Phase 2: Dynamic DAX Generation Strategies</h2>
+<p>The hardest part of this workflow is preventing DAX syntax errors. DAX is unforgiving; a missing bracket or an invalid relationship reference breaks the query.</p>
+<p>To mitigate this, we employ <strong>Constraint-Based Prompt Engineering</strong> and <strong>Few-Shot Learning</strong>.</p>
+<h3 id="the-prompt-strategy">The Prompt Strategy</h3>
+<p>We don’t just ask the model to “Write DAX.” We provide a strict template.</p>
+<p><strong>System Prompt Template:</strong></p>
+<pre><code class="hljs language-sql" data-lang="sql">You <span class="hljs-keyword">are</span> an expert Power BI Architect <span class="hljs-keyword">and</span> DAX developer. 
+Your goal <span class="hljs-keyword">is</span> <span class="hljs-keyword">to</span> answer business questions <span class="hljs-keyword">by</span> generating valid DAX queries.
+
+RULES:
+<span class="hljs-number">1.</span> ALWAYS <span class="hljs-keyword">begin</span> <span class="hljs-keyword">by</span> <span class="hljs-keyword">using</span> the `get_schema` tool <span class="hljs-keyword">to</span> understand the dataset.
+<span class="hljs-number">2.</span> Never invent columns <span class="hljs-keyword">or</span> measures. <span class="hljs-keyword">Only</span> use what <span class="hljs-keyword">exists</span> <span class="hljs-keyword">in</span> the schema.
+<span class="hljs-number">3.</span> Use SUMMARIZECOLUMNS <span class="hljs-keyword">for</span> querying data. Do <span class="hljs-keyword">not</span> use SUMMARIZE.
+<span class="hljs-number">4.</span> <span class="hljs-keyword">When</span> filtering, remember that text fields <span class="hljs-keyword">are</span> <span class="hljs-keyword">case</span><span class="hljs-operator">-</span><span class="hljs-keyword">sensitive</span> <span class="hljs-keyword">in</span> Power BI depending <span class="hljs-keyword">on</span> collation.
+<span class="hljs-number">5.</span> If the <span class="hljs-keyword">user</span> asks <span class="hljs-keyword">for</span> a comparison (e.g., <span class="hljs-keyword">Year</span> <span class="hljs-keyword">over</span> <span class="hljs-keyword">Year</span>), look <span class="hljs-keyword">for</span> existing <span class="hljs-type">Time</span> Intelligence measures first. 
+   If <span class="hljs-keyword">none</span> exist, construct them <span class="hljs-keyword">using</span> CALCULATE <span class="hljs-keyword">and</span> SAMEPERIODLASTYEAR.
+
+OUTPUT FORMAT:
+<span class="hljs-keyword">Return</span> <span class="hljs-keyword">ONLY</span> the raw DAX query inside a code block.</code></pre><h3 id="handling-hallucinations-via-self-correction">Handling “Hallucinations” via Self-Correction</h3>
+<p>In an agentic loop, if the generated DAX fails execution, the error message from the Power BI API (e.g., “Column ‘Rev’ does not exist”) is captured and fed back to the LLM.</p>
+<p><strong>The Correction Loop:</strong></p>
+<ol>
+<li>Agent generates DAX.</li>
+<li>Tool executes DAX.</li>
+<li><strong>Error:</strong> <code>Query (1, 4) The column 'Sales'[Rev] was not found.</code></li>
+<li>Agent receives error.</li>
+<li>Agent Thought: “Ah, I used ‘Rev’ but the schema says ‘Revenue’. I will rewrite the query.”</li>
+<li>Agent generates corrected DAX.</li>
+</ol>
+<p><img src="https://blogs.buildwithmanish.com/assets/images/technical_diagram-building-a-virtual-data-analyst-architecting-agentic-ai-workflows-over-power-bi-4-2025-12-17-10764.png" alt="Technical Diagram: Execution Loop"></p>
+<h2 id="phase-3-the-execution-layer-python-langchain-">Phase 3: The Execution Layer (Python &amp; LangChain)</h2>
+<p>Now we combine the tools into a LangChain Agent. We utilize the <code>OpenAIFunctionsAgent</code> or a <code>LangGraph</code> state machine for more control.</p>
+<h3 id="the-agent-definition">The Agent Definition</h3>
+<pre><code class="hljs language-python" data-lang="python"><span class="hljs-keyword">from</span> langchain.agents <span class="hljs-keyword">import</span> AgentExecutor, create_openai_tools_agent
+<span class="hljs-keyword">from</span> langchain_openai <span class="hljs-keyword">import</span> ChatOpenAI
+<span class="hljs-keyword">from</span> langchain_core.prompts <span class="hljs-keyword">import</span> ChatPromptTemplate, MessagesPlaceholder
+<span class="hljs-keyword">from</span> langchain.tools <span class="hljs-keyword">import</span> tool
+
+<span class="hljs-comment"># Initialize Service</span>
+pbi_service = PowerBIMetadataService(...)
+
+<span class="hljs-meta">@tool</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">get_dataset_schema</span>(<span class="hljs-params">dummy_arg: <span class="hljs-built_in">str</span> = <span class="hljs-string">"ignore"</span></span>):
+    <span class="hljs-string">"""
+    Retrieves the table names, columns, and measures from the Power BI dataset.
+    Always call this FIRST to understand what data is available.
+    """</span>
+    <span class="hljs-keyword">return</span> pbi_service.get_semantic_schema()
+
+<span class="hljs-meta">@tool</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">execute_dax_query</span>(<span class="hljs-params">dax_query: <span class="hljs-built_in">str</span></span>):
+    <span class="hljs-string">"""
+    Executes a DAX query against the Power BI dataset and returns the results as JSON.
+    Use SUMMARIZECOLUMNS for best performance.
+    """</span>
+    <span class="hljs-keyword">try</span>:
+        result = pbi_service.execute_dax(dax_query)
+        <span class="hljs-comment"># Parse the 'results' key from Power BI API response</span>
+        rows = result[<span class="hljs-string">'results'</span>][<span class="hljs-number">0</span>][<span class="hljs-string">'tables'</span>][<span class="hljs-number">0</span>][<span class="hljs-string">'rows'</span>]
+        <span class="hljs-keyword">return</span> json.dumps(rows)
+    <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:
+        <span class="hljs-keyword">return</span> <span class="hljs-string">f"DAX Execution Error: <span class="hljs-subst">{<span class="hljs-built_in">str</span>(e)}</span>"</span>
+
+<span class="hljs-comment"># Setup Agent</span>
+llm = ChatOpenAI(model=<span class="hljs-string">"gpt-4-turbo"</span>, temperature=<span class="hljs-number">0</span>)
+tools = [get_dataset_schema, execute_dax_query]
+
+prompt = ChatPromptTemplate.from_messages([
+    (<span class="hljs-string">"system"</span>, <span class="hljs-string">"You are a specialized Data Analyst Agent for Power BI..."</span>),
+    (<span class="hljs-string">"user"</span>, <span class="hljs-string">"{input}"</span>),
+    MessagesPlaceholder(variable_name=<span class="hljs-string">"agent_scratchpad"</span>),
+])
+
+agent = create_openai_tools_agent(llm, tools, prompt)
+agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=<span class="hljs-literal">True</span>, handle_parsing_errors=<span class="hljs-literal">True</span>)
+
+<span class="hljs-comment"># Execution</span>
+response = agent_executor.invoke({
+    <span class="hljs-string">"input"</span>: <span class="hljs-string">"Analyze the sales trend for Q4 2024 specifically for the 'Enterprise' segment. Compare it to the previous year."</span>
+})</code></pre><h2 id="phase-4-synthesis-and-narrative-generation">Phase 4: Synthesis and Narrative Generation</h2>
+<p>The output of <code>execute_dax_query</code> is a raw JSON array. While accurate, it is not a “response.” The final step in the agentic workflow is <strong>Synthesis</strong>.</p>
+<p>Once the agent has the data in its context, it switches roles from “Data Engineer” to “Strategy Consultant.”</p>
+<p><strong>Data Context:</strong></p>
+<pre><code class="hljs language-json" data-lang="json"><span class="hljs-punctuation">[</span>
+  <span class="hljs-punctuation">{</span><span class="hljs-attr">"Month"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Oct 2024"</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">"Sales"</span><span class="hljs-punctuation">:</span> <span class="hljs-number">150000</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">"Sales_LY"</span><span class="hljs-punctuation">:</span> <span class="hljs-number">140000</span><span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-punctuation">{</span><span class="hljs-attr">"Month"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Nov 2024"</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">"Sales"</span><span class="hljs-punctuation">:</span> <span class="hljs-number">160000</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">"Sales_LY"</span><span class="hljs-punctuation">:</span> <span class="hljs-number">155000</span><span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-punctuation">{</span><span class="hljs-attr">"Month"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Dec 2024"</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">"Sales"</span><span class="hljs-punctuation">:</span> <span class="hljs-number">200000</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">"Sales_LY"</span><span class="hljs-punctuation">:</span> <span class="hljs-number">180000</span><span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">]</span></code></pre><p><strong>Synthesis Prompt:</strong></p>
+<blockquote>
+<p>“Review the data retrieved. Identify key trends, calculate the Year-over-Year growth percentage for the quarter, and summarize the findings in a professional paragraph suitable for a CEO.”</p>
+</blockquote>
+<p>This separation of concerns-Data Retrieval (DAX) vs. Insight Generation (Natural Language)-is vital for accuracy.</p>
+<p><img src="https://blogs.buildwithmanish.com/assets/images/comparison_chart-building-a-virtual-data-analyst-architecting-agentic-ai-workflows-over-power-bi-5-2025-12-17-36313.png" alt="Comparison Chart: Text-to-SQL vs Agentic PBI"></p>
+<h2 id="advanced-scenarios-and-edge-cases">Advanced Scenarios and Edge Cases</h2>
+<h3 id="1-handling-large-result-sets">1. Handling Large Result Sets</h3>
+<p>The Power BI <code>executeQueries</code> REST API has a row limit (typically 100k rows) and the LLM has a context window.</p>
+<ul>
+<li><strong>Solution:</strong> The agent must be instructed to <strong>aggregate</strong> data in DAX. Never request <code>SELECT *</code>. The prompt should enforce usage of <code>SUMMARIZECOLUMNS</code> grouped by high-level dimensions (Date, Region, Category) rather than individual transaction IDs.</li>
+</ul>
+<h3 id="2-row-level-security-rls-">2. Row Level Security (RLS)</h3>
+<p>One of the massive benefits of using the Power BI API over direct SQL access is that <strong>RLS is preserved</strong>. When the Service Principal (or the user represented by an explicit <code>EffectiveIdentity</code> in the API call) queries the dataset, Power BI automatically filters the data.</p>
+<ul>
+<li><strong>Implementation:</strong> In the <code>executeQueries</code> payload, inject the <code>impersonatedUserName</code> property if you are building a user-facing chatbot to ensure they only see their specific data.</li>
+</ul>
+<h3 id="3-measures-with-dependencies">3. Measures with Dependencies</h3>
+<p>Complex measures often depend on other hidden measures.</p>
+<ul>
+<li><strong>Solution:</strong> In the Introspection phase, we query <code>INFO.MEASURES</code> including the <code>Expression</code> column. We can feed these expressions into the LLM context (using RAG) so it understands that <code>[Net Profit]</code> is actually <code>[Gross Profit] - [Opex]</code>. This allows the LLM to explain <em>why</em> a number changed, not just <em>what</em> the number is.</li>
+</ul>
+<h2 id="performance-considerations">Performance Considerations</h2>
+<p>XMLA vs REST API:</p>
+<ul>
+<li><strong>REST API (<code>executeQueries</code>):</strong> Easier to set up, works over standard HTTP, standard JSON output. Good for light-to-medium workloads.</li>
+<li><strong>XMLA Endpoint:</strong> Requires Premium/Fabric capacity. Allows connection via <code>ADOMD.NET</code> (wrapped in Python). Much faster for large data retrieval and supports more complex DAX operations.</li>
+</ul>
+<p>For a production-grade Virtual Analyst, I recommend using the <strong>XMLA endpoint</strong> via the <code>pythonnet</code> library to load the Microsoft Analysis Services client libraries. It provides a more robust, stateful connection compared to the stateless REST API.</p>
+<p><img src="https://blogs.buildwithmanish.com/assets/images/concept_illustration-building-a-virtual-data-analyst-architecting-agentic-ai-workflows-over-power-bi-6-2025-12-17-50317.png" alt="Concept Illustration: Final Workflow"></p>
+<h2 id="conclusion">Conclusion</h2>
+<p>Building a Virtual Data Analyst is not about fine-tuning a model to write SQL. It is about respecting the Semantic Layer. By architecting an agent that can Introspect, Plan, and Execute against Power BI’s native logic, we bridge the gap between “Generative AI toy” and “Enterprise Decision Engine.”</p>
+<p>This approach ensures consistency. The number the chatbot gives the CEO is the exact same number the dashboard shows, because they are both generated by the same DAX engine. That-not just the ability to chat-is the holy grail of AI in Business Intelligence.</p>
+<h3 id="next-steps-for-implementation">Next Steps for Implementation</h3>
+<ol>
+<li><strong>Enable XMLA Read/Write</strong> in your Power BI Premium Capacity settings.</li>
+<li><strong>Create a Service Principal</strong> in Azure Entra ID and grant it access to your Workspace.</li>
+<li><strong>Start Small:</strong> Pick a dataset with a clean schema and well-named measures.</li>
+<li><strong>Iterate on Prompts:</strong> The system prompt is your new code base. Version control it and test it against edge cases.</li>
+</ol>
+<p>The future of BI isn’t just dashboards; it’s intelligent agents that can read those dashboards for you.</p>
+</article>
+      <aside class="blog-meta-col">
+        <section class="blog-meta-card" aria-label="Author details">
+          <p class="blog-meta-label">Author</p>
+          <p class="blog-meta-value">Manish Tiwari</p>
+        </section>
+        <section class="blog-meta-card" aria-label="Publication date">
+          <p class="blog-meta-label">Published</p>
+          <p class="blog-meta-value">Dec 17, 2025</p>
+        </section>
+        <section class="blog-meta-card" aria-label="Blog views">
+          <p class="blog-meta-label">Views</p>
+          <div class="blog-view-counter">
+            <img src="https://komarev.com/ghpvc/?username=manish-9245&label=VIEWS&color=0e75b6&style=flat" alt="Blog views counter" loading="lazy" decoding="async" />
+          </div>
+        </section>
+        <section class="blog-meta-card" aria-label="Blog navigation">
+          <p class="blog-meta-label">Navigate</p>
+          <a class="blog-meta-link" href="/blogs.html">← All posts</a>
+        </section>
+      </aside>
+    </div>
+    <section class="surface related-posts" id="related-posts" aria-label="Related blog posts">
+        <h2>Related Posts</h2>
+        <div class="related-posts-grid">
+          
+            <article class="related-card">
+              <p class="related-meta">
+                <span>Dec 29, 2025</span>
+                <span class="blog-card-dot">•</span>
+                <span>AI</span>
+              </p>
+              <h3 class="related-title"><a href="/textbook-for-excel-exam.html">Textbook for Excel Exam</a></h3>
+              <p class="related-desc">In the world of data engineering and business intelligence, Microsoft Excel remains the ubiquitous “first draft” of data analysis. While Python, SQL, and Tableau dominate big data pipelines, Excel is...</p>
+            </article>
+          
+            <article class="related-card">
+              <p class="related-meta">
+                <span>Dec 30, 2025</span>
+                <span class="blog-card-dot">•</span>
+                <span>AI</span>
+              </p>
+              <h3 class="related-title"><a href="/relational-database-management-system.html">Relational Database Management System: An Engineering Deep-Dive</a></h3>
+              <p class="related-desc">Despite the meteoric rise of NoSQL, time-series, and vector databases in the last decade, the Relational Database Management System (RDBMS) remains the immutable backbone of global enterprise software...</p>
+            </article>
+          
+            <article class="related-card">
+              <p class="related-meta">
+                <span>Dec 18, 2025</span>
+                <span class="blog-card-dot">•</span>
+                <span>AI</span>
+              </p>
+              <h3 class="related-title"><a href="/how-i-built-an-ai-blogger-agent-using-n8n-and-jekyll.html">How I built an AI blogger Agent using N8N and Jekyll</a></h3>
+              <p class="related-desc">As engineers, we often suffer from the “cobbler’s children” syndrome. We build complex, scalable systems for clients and employers, yet our own personal portfolios and blogs gather dust. The friction...</p>
+            </article>
+          
+        </div></section>
+    <section class="surface blog-share" id="blog-share" aria-label="Share this post">
+      <h2>Share this post</h2>
+      <div class="blog-share-actions">
+        <a class="blog-share-link" aria-label="Share on LinkedIn" title="Share on LinkedIn" target="_blank" rel="noopener noreferrer" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fbuildwithmanish.com%2Fposts%2Fbuilding-a-virtual-data-analyst-architecting-agentic-ai-workflows-over-power-bi.html"><svg class="blog-share-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.94 8.5H3.56V20h3.38V8.5zM5.25 3C4.14 3 3.2 3.94 3.2 5.05c0 1.1.9 2.05 2.01 2.05h.02c1.12 0 2.02-.95 2.02-2.05C7.25 3.94 6.36 3 5.25 3zM20.8 13.4c0-3.13-1.67-5.15-4.66-5.15-2.15 0-3.11 1.2-3.65 2.03V8.5H9.1c.04 1.17 0 11.5 0 11.5h3.38v-6.42c0-.34.03-.68.12-.92.27-.68.88-1.4 1.9-1.4 1.34 0 1.88 1.05 1.88 2.58V20h3.38v-6.6z"/></svg></a>
+        <a class="blog-share-link" aria-label="Share on X" title="Share on X" target="_blank" rel="noopener noreferrer" href="https://x.com/intent/tweet?url=https%3A%2F%2Fbuildwithmanish.com%2Fposts%2Fbuilding-a-virtual-data-analyst-architecting-agentic-ai-workflows-over-power-bi.html&text=Building%20a%20Virtual%20Data%20Analyst%3A%20Architecting%20Agentic%20AI%20Workflows%20over%20Power%20BI"><svg class="blog-share-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 2H22l-6.77 7.74L23 22h-6.1l-4.78-6.24L6.66 22H3.55l7.24-8.27L1 2h6.25l4.32 5.7L18.9 2zm-1.07 18h1.69L6.33 3.9H4.52L17.83 20z"/></svg></a>
+        <button type="button" class="blog-share-copy" aria-label="Copy link" title="Copy link" data-share-copy data-url="https://buildwithmanish.com/posts/building-a-virtual-data-analyst-architecting-agentic-ai-workflows-over-power-bi.html"><svg class="blog-share-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 7a3 3 0 0 1 3-3h7a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3h-1v-1.5h1A1.5 1.5 0 0 0 19.5 15V7A1.5 1.5 0 0 0 18 5.5h-7A1.5 1.5 0 0 0 9.5 7v1H8V7zm-2 3A3 3 0 0 1 9 7h7a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H9a3 3 0 0 1-3-3v-8zm3-1.5A1.5 1.5 0 0 0 7.5 10v8A1.5 1.5 0 0 0 9 19.5h7a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 16 8.5H9z"/></svg></button>
+      </div></section>
+    <div class="surface" style="padding-top:0">
+      <a href="/blogs.html">← Back to all blogs</a>
+    </div></main>
 
     <footer class="site-footer">
       <div class="surface footer-row">
@@ -1374,7 +1661,7 @@
                     <span aria-hidden="true">•</span>
                     <span>${tags[0]}</span>
                   </p>
-                  <h3 class="related-title"><a href="./blog.html?post=${encodeURIComponent(post.slug)}">${post.title}</a></h3>
+                  <h3 class="related-title"><a href="/blog.html?post=${encodeURIComponent(post.slug)}">${post.title}</a></h3>
                   <p class="related-desc">${post.description || ""}</p>
                 </article>`;
               })
@@ -1460,7 +1747,7 @@
         }
 
         if (!slug) {
-          main.innerHTML = `<div class="blog-error"><p>No post specified.</p><p><a href="./blogs.html">← All blogs</a></p></div>`;
+          main.innerHTML = `<div class="blog-error"><p>No post specified.</p><p><a href="/blogs.html">← All blogs</a></p></div>`;
           main.classList.remove("is-loading");
           return;
         }
@@ -1497,7 +1784,7 @@
             throw new Error("Post body unavailable");
           }
         } catch {
-          main.innerHTML = `<div class="blog-error"><p>Post not found.</p><p><a href="./blogs.html">← All blogs</a></p></div>`;
+          main.innerHTML = `<div class="blog-error"><p>Post not found.</p><p><a href="/blogs.html">← All blogs</a></p></div>`;
           main.classList.remove("is-loading");
           return;
         }
@@ -1690,7 +1977,7 @@
         main.classList.remove("is-loading");
       }
 
-      loadPost();
+      // Static Page: loadPost() disabled
     </script>
   </body>
 </html>

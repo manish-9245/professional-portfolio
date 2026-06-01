@@ -3,68 +3,41 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title id="page-title">Blog · Manish Tiwari</title>
-    <meta
-      id="page-desc"
-      name="description"
-      content="Blog post by Manish Tiwari"
-    />
+    <title>Mastering Razorpay Webhooks: Architecting an Idempotent, Event-Driven Ingestion Engine · Manish Tiwari</title>
+    <meta name="description" content="Integrating a payment gateway like Razorpay often starts with a false sense of security. The documentation shows a happy path: user pays, Razorpay calls your webhook, you update the database, and ship..." />
     <meta name="robots" content="index, follow" />
-    <link
-      id="page-canonical"
-      rel="canonical"
-      href="https://buildwithmanish.com/blog.html"
-    />
+    <link rel="canonical" href="https://buildwithmanish.com/posts/mastering-razorpay-webhooks-architecting-an-idempotent-eventdriven-ingestion-engine.html" />
     <meta property="og:site_name" content="Manish Tiwari" />
     <meta id="og-type" property="og:type" content="article" />
-    <meta id="og-title" property="og:title" content="Blog · Manish Tiwari" />
-    <meta
-      id="og-desc"
-      property="og:description"
-      content="Blog post by Manish Tiwari"
-    />
-    <meta
-      id="og-url"
-      property="og:url"
-      content="https://buildwithmanish.com/blog.html"
-    />
-    <meta
-      id="og-image"
-      property="og:image"
-      content="https://buildwithmanish.com/image/optimized/aiblogs-20260314-175545.webp"
-    />
+    <meta property="og:title" content="Mastering Razorpay Webhooks: Architecting an Idempotent, Event-Driven Ingestion Engine" />
+    <meta property="og:description" content="Integrating a payment gateway like Razorpay often starts with a false sense of security. The documentation shows a happy path: user pays, Razorpay calls your webhook, you update the database, and ship..." />
+    <meta property="og:url" content="https://buildwithmanish.com/posts/mastering-razorpay-webhooks-architecting-an-idempotent-eventdriven-ingestion-engine.html" />
+    <meta property="og:image" content="https://blogs.buildwithmanish.com/assets/images/hero-mastering-razorpay-webhooks-architecting-an-idempotent-eventdriven-ingestion-engine-0-2025-12-17-91067.png" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta id="tw-title" name="twitter:title" content="Blog · Manish Tiwari" />
-    <meta
-      id="tw-desc"
-      name="twitter:description"
-      content="Blog post by Manish Tiwari"
-    />
-    <meta
-      id="tw-image"
-      name="twitter:image"
-      content="https://buildwithmanish.com/image/optimized/aiblogs-20260314-175545.webp"
-    />
-    <script id="post-schema" type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "BlogPosting",
-        "headline": "Engineering Blog",
-        "author": {
-          "@type": "Person",
-          "name": "Manish Tiwari",
-          "url": "https://buildwithmanish.com/about.html"
-        },
-        "publisher": {
-          "@type": "Person",
-          "name": "Manish Tiwari"
-        },
-        "mainEntityOfPage": {
-          "@type": "WebPage",
-          "@id": "https://buildwithmanish.com/blog.html"
-        }
-      }
-    </script>
+    <meta name="twitter:title" content="Mastering Razorpay Webhooks: Architecting an Idempotent, Event-Driven Ingestion Engine" />
+    <meta name="twitter:description" content="Integrating a payment gateway like Razorpay often starts with a false sense of security. The documentation shows a happy path: user pays, Razorpay calls your webhook, you update the database, and ship..." />
+    <meta name="twitter:image" content="https://blogs.buildwithmanish.com/assets/images/hero-mastering-razorpay-webhooks-architecting-an-idempotent-eventdriven-ingestion-engine-0-2025-12-17-91067.png" />
+    <script id="post-schema" type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Mastering Razorpay Webhooks: Architecting an Idempotent, Event-Driven Ingestion Engine",
+  "description": "Integrating a payment gateway like Razorpay often starts with a false sense of security. The documentation shows a happy path: user pays, Razorpay calls your webhook, you update the database, and ship...",
+  "datePublished": "2025-12-17",
+  "author": {
+    "@type": "Person",
+    "name": "Manish Tiwari",
+    "url": "https://buildwithmanish.com/about.html"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Manish Tiwari"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://buildwithmanish.com/posts/mastering-razorpay-webhooks-architecting-an-idempotent-eventdriven-ingestion-engine.html"
+  },
+  "image": "https://blogs.buildwithmanish.com/assets/images/hero-mastering-razorpay-webhooks-architecting-an-idempotent-eventdriven-ingestion-engine-0-2025-12-17-91067.png"
+}</script>
     <link
       rel="icon"
       type="image/webp"
@@ -824,7 +797,330 @@
       </div>
     </header>
 
-    <main id="blog-main" data-router-view class="is-loading"></main>
+    <main data-router-view>
+    <header class="blog-post-header">
+      <p class="muted kicker">Blog</p>
+      <h1>Mastering Razorpay Webhooks: Architecting an Idempotent, Event-Driven Ingestion Engine</h1>
+      <p class="muted">Dec 17, 2025</p>
+    </header>
+    <div class="blog-post-layout">
+      <nav class="blog-toc" id="blog-toc" aria-label="Table of contents"><p class="blog-toc-title">Contents</p><ol><li><a href="#introduction-the-deceptive-simplicity-of-webhooks">Introduction: The Deceptive Simplicity of Webhooks</a></li><li><a href="#pillar-1-the-accept-then-process-pattern-async-architecture-">Pillar 1: The “Accept-Then-Process” Pattern (Async Architecture)</a></li><li class="toc-h3"><a href="#the-bottleneck-the-fatal-mistake-of-synchronous-processing">The Bottleneck: The Fatal Mistake of Synchronous Processing</a></li><li class="toc-h3"><a href="#the-strategy-ingress-as-a-buffer">The Strategy: Ingress as a Buffer</a></li><li><a href="#pillar-2-idempotency-deduplication">Pillar 2: Idempotency & Deduplication</a></li><li class="toc-h3"><a href="#the-x-razorpay-event-id">The X-Razorpay-Event-Id</a></li><li class="toc-h3"><a href="#implementation-the-redis-guard">Implementation: The Redis Guard</a></li><li><a href="#pillar-3-storage-implementation-the-raw-log-">Pillar 3: Storage Implementation (The Raw Log)</a></li><li class="toc-h3"><a href="#database-schema-postgresql-">Database Schema (PostgreSQL)</a></li><li><a href="#pillar-4-handling-sequencing-race-conditions-the-out-of-order-problem-">Pillar 4: Handling Sequencing & Race Conditions (The “Out-of-Order” Problem)</a></li><li class="toc-h3"><a href="#solution-1-the-state-machine-guard">Solution 1: The State Machine Guard</a></li><li class="toc-h3"><a href="#solution-2-fetch-on-sync-the-source-of-truth-">Solution 2: Fetch-on-Sync (The Source of Truth)</a></li><li><a href="#pillar-5-reconciliation-the-safety-net-">Pillar 5: Reconciliation (The Safety Net)</a></li><li class="toc-h3"><a href="#the-cron-job">The Cron Job</a></li><li><a href="#conclusion">Conclusion</a></li></ol></nav>
+      <article class="blog-prose" id="blog-prose"><p><img src="https://blogs.buildwithmanish.com/assets/images/hero-mastering-razorpay-webhooks-architecting-an-idempotent-eventdriven-ingestion-engine-0-2025-12-17-91067.png" alt="Hero Image"></p>
+<h2 id="introduction-the-deceptive-simplicity-of-webhooks">Introduction: The Deceptive Simplicity of Webhooks</h2>
+<p>Integrating a payment gateway like Razorpay often starts with a false sense of security. The documentation shows a happy path: user pays, Razorpay calls your webhook, you update the database, and ship the product. In a development environment with one request per minute, this works flawlessly.</p>
+<p>In production, however, this naive approach is a ticking time bomb.</p>
+<p>At scale, the internet is hostile. Networks are flaky, servers restart, and 3rd party APIs experience latency. To ensure reliability, Razorpay (like Stripe and others) operates on an <strong>“at-least-once”</strong> delivery guarantee. This means they will send you the same webhook multiple times until you acknowledge it with a <code>200 OK</code>. Furthermore, there is no guarantee of <strong>sequencing</strong>. You might receive a <code>payment.captured</code> event <em>before</em> the <code>payment.authorized</code> event for the same transaction.</p>
+<p>If your backend treats every incoming webhook as a command to immediately execute business logic (e.g., “Add Credits to Wallet”), you are architecting a system that will inevitably double-credit users, corrupt data states, and fail under load.</p>
+<p>This deep dive explores how to architect a production-grade, event-driven ingestion engine for Razorpay webhooks. We will move beyond simple handlers to a robust system capable of handling duplicates, out-of-order delivery, and high concurrency.</p>
+<p><img src="https://blogs.buildwithmanish.com/assets/images/comparison_chart-mastering-razorpay-webhooks-architecting-an-idempotent-eventdriven-ingestion-engine-1-2025-12-17-20468.png" alt="Comparison Chart"></p>
+<hr>
+<h2 id="pillar-1-the-accept-then-process-pattern-async-architecture-">Pillar 1: The “Accept-Then-Process” Pattern (Async Architecture)</h2>
+<h3 id="the-bottleneck-the-fatal-mistake-of-synchronous-processing">The Bottleneck: The Fatal Mistake of Synchronous Processing</h3>
+<p>The most common anti-pattern in webhook integration is performing business logic inside the HTTP request handler.</p>
+<p>Imagine your webhook endpoint looks like this:</p>
+<ol>
+<li>Receive Request.</li>
+<li>Verify Signature.</li>
+<li>Query Database.</li>
+<li>Call internal “Provisioning Service” (gRPC/HTTP).</li>
+<li>Send Email Receipt (SMTP).</li>
+<li>Return <code>200 OK</code> to Razorpay.</li>
+</ol>
+<p><strong>Why this fails:</strong></p>
+<ul>
+<li><strong>Timeouts:</strong> Razorpay has a strict timeout (usually 5-10 seconds). If your SMTP server lags or your database locks, the request times out. Razorpay marks the delivery as failed and retries.</li>
+<li><strong>Cascading Retries:</strong> Because the first request “failed” (timed out), Razorpay sends it again. Your server might have actually completed the provisioning but failed to respond in time. Now, the retry triggers the provisioning <em>again</em>.</li>
+<li><strong>Coupling:</strong> Your ingress is now tightly coupled to the availability of your email service and internal microservices.</li>
+</ul>
+<h3 id="the-strategy-ingress-as-a-buffer">The Strategy: Ingress as a Buffer</h3>
+<p>To solve this, we decouple <strong>Ingestion</strong> from <strong>Processing</strong>. The webhook endpoint should have zero knowledge of business logic. Its Single Responsibility is to verify the message and persist it safely.</p>
+<p>The flow changes to:</p>
+<ol>
+<li><strong>API Layer:</strong> Verify Signature -&gt; Persist Payload to <code>webhook_logs</code> -&gt; Push Event ID to Queue (SQS/RabbitMQ/Redis) -&gt; Return <code>200 OK</code>.</li>
+<li><strong>Worker Layer:</strong> Consume ID -&gt; Load Payload -&gt; Execute Business Logic -&gt; Update Status.</li>
+</ol>
+<p><img src="https://blogs.buildwithmanish.com/assets/images/architecture_diagram-mastering-razorpay-webhooks-architecting-an-idempotent-eventdriven-ingestion-engine-2-2025-12-17-66691.png" alt="Architecture Diagram"></p>
+<hr>
+<h2 id="pillar-2-idempotency-deduplication">Pillar 2: Idempotency &amp; Deduplication</h2>
+<p>Razorpay explicitly states that during network fluctuations, they may send the same webhook event multiple times. If your server processes the same <code>payment.captured</code> event twice, you might trigger duplicate fulfillment.</p>
+<h3 id="the-x-razorpay-event-id">The <code>X-Razorpay-Event-Id</code></h3>
+<p>Every webhook request contains a header: <code>X-Razorpay-Event-Id</code>. This is a UUID generated by Razorpay that uniquely identifies a specific <em>event occurrence</em>. Even if Razorpay retries the delivery 10 times, this ID remains constant.</p>
+<p><strong>Do not use the <code>payment_id</code> for deduplication</strong> at the ingress layer. A single payment ID will have multiple events (<code>authorized</code>, <code>captured</code>, <code>failed</code>). The Event ID is your unique constraints key.</p>
+<h3 id="implementation-the-redis-guard">Implementation: The Redis Guard</h3>
+<p>To handle high concurrency (e.g., “Retry Storms” where two identical requests arrive milliseconds apart), a database unique constraint might be too slow or result in lock contention. A Redis-based distributed lock or a simple key check is preferred at the API gateway level.</p>
+<pre><code class="hljs language-python" data-lang="python"><span class="hljs-keyword">import</span> redis
+<span class="hljs-keyword">import</span> hmac
+<span class="hljs-keyword">import</span> hashlib
+<span class="hljs-keyword">from</span> fastapi <span class="hljs-keyword">import</span> Request, HTTPException
+
+r = redis.Redis(host=<span class="hljs-string">'localhost'</span>, port=<span class="hljs-number">6379</span>, db=<span class="hljs-number">0</span>)
+
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">razorpay_webhook_ingress</span>(<span class="hljs-params">request: Request</span>):
+    <span class="hljs-comment"># 1. Extract Headers</span>
+    signature = request.headers.get(<span class="hljs-string">'X-Razorpay-Signature'</span>)
+    event_id = request.headers.get(<span class="hljs-string">'X-Razorpay-Event-Id'</span>)
+    payload_body = <span class="hljs-keyword">await</span> request.body()
+    
+    <span class="hljs-comment"># 2. Security: Verify Signature (HMAC SHA256)</span>
+    <span class="hljs-comment"># ALWAYS do this first. CPU is cheaper than DB connections.</span>
+    secret = <span class="hljs-string">b"YOUR_WEBHOOK_SECRET"</span>
+    generated_signature = hmac.new(secret, payload_body, hashlib.sha256).hexdigest()
+    
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> hmac.compare_digest(generated_signature, signature):
+        <span class="hljs-keyword">raise</span> HTTPException(status_code=<span class="hljs-number">400</span>, detail=<span class="hljs-string">"Invalid Signature"</span>)
+
+    <span class="hljs-comment"># 3. Idempotency Check (Redis SETNX)</span>
+    <span class="hljs-comment"># Key format: webhook:event_id</span>
+    <span class="hljs-comment"># TTL: 24 hours (Razorpay retries usually happen within hours)</span>
+    cache_key = <span class="hljs-string">f"webhook:<span class="hljs-subst">{event_id}</span>"</span>
+    
+    <span class="hljs-comment"># setnx returns True if key was set, False if it already existed</span>
+    is_new = r.setnx(cache_key, <span class="hljs-string">"received"</span>) 
+    
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> is_new:
+        <span class="hljs-comment"># We have already received this event ID.</span>
+        <span class="hljs-comment"># Immediately return 200 OK to stop Razorpay from retrying.</span>
+        <span class="hljs-comment"># Do NOT process it again.</span>
+        <span class="hljs-keyword">return</span> {<span class="hljs-string">"status"</span>: <span class="hljs-string">"ok"</span>, <span class="hljs-string">"message"</span>: <span class="hljs-string">"Duplicate event ignored"</span>}
+    
+    <span class="hljs-comment"># Set expiration for the key</span>
+    r.expire(cache_key, <span class="hljs-number">86400</span>) 
+
+    <span class="hljs-comment"># 4. Proceed to Persistence (See Pillar 3)</span>
+    <span class="hljs-keyword">await</span> persist_to_db(event_id, payload_body)
+    
+    <span class="hljs-keyword">return</span> {<span class="hljs-string">"status"</span>: <span class="hljs-string">"ok"</span>}</code></pre><p><img src="https://blogs.buildwithmanish.com/assets/images/technical_diagram-mastering-razorpay-webhooks-architecting-an-idempotent-eventdriven-ingestion-engine-3-2025-12-17-38261.png" alt="Technical Diagram"></p>
+<hr>
+<h2 id="pillar-3-storage-implementation-the-raw-log-">Pillar 3: Storage Implementation (The Raw Log)</h2>
+<p>Before any processing happens, the raw payload must be saved. This provides an audit trail and allows for re-playing events if your worker logic contains bugs.</p>
+<p>We need a table specifically for ingestion, separate from your <code>payments</code> or <code>orders</code> tables.</p>
+<h3 id="database-schema-postgresql-">Database Schema (PostgreSQL)</h3>
+<pre><code class="hljs language-sql" data-lang="sql"><span class="hljs-keyword">CREATE</span> TYPE processing_status <span class="hljs-keyword">AS</span> ENUM (<span class="hljs-string">'PENDING'</span>, <span class="hljs-string">'PROCESSING'</span>, <span class="hljs-string">'COMPLETED'</span>, <span class="hljs-string">'FAILED'</span>, <span class="hljs-string">'IGNORED'</span>);
+
+<span class="hljs-keyword">CREATE TABLE</span> razorpay_event_logs (
+    id BIGSERIAL <span class="hljs-keyword">PRIMARY KEY</span>,
+    
+    <span class="hljs-comment">-- The Holy Grail of Idempotency</span>
+    razorpay_event_id <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">255</span>) <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">UNIQUE</span>, 
+    
+    <span class="hljs-comment">-- "authorized", "captured", "failed"</span>
+    event_type <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">50</span>) <span class="hljs-keyword">NOT NULL</span>, 
+    
+    <span class="hljs-comment">-- Flexible storage for evolving API schemas</span>
+    payload JSONB <span class="hljs-keyword">NOT NULL</span>, 
+    
+    <span class="hljs-comment">-- Tracking lifecycle</span>
+    status processing_status <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-string">'PENDING'</span>,
+    
+    <span class="hljs-comment">-- For diagnostics</span>
+    error_message TEXT,
+    retry_count <span class="hljs-type">INT</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-number">0</span>,
+    
+    created_at <span class="hljs-type">TIMESTAMP</span> <span class="hljs-keyword">WITH</span> <span class="hljs-type">TIME</span> ZONE <span class="hljs-keyword">DEFAULT</span> NOW(),
+    updated_at <span class="hljs-type">TIMESTAMP</span> <span class="hljs-keyword">WITH</span> <span class="hljs-type">TIME</span> ZONE <span class="hljs-keyword">DEFAULT</span> NOW()
+);
+
+<span class="hljs-comment">-- Index for querying by entity (e.g. find all logs for order_123)</span>
+<span class="hljs-keyword">CREATE</span> INDEX idx_rpay_payload_entity <span class="hljs-keyword">ON</span> razorpay_event_logs ((payload<span class="hljs-operator">-</span><span class="hljs-operator">&gt;</span><span class="hljs-string">'payload'</span><span class="hljs-operator">-</span><span class="hljs-operator">&gt;</span><span class="hljs-string">'payment'</span><span class="hljs-operator">-</span><span class="hljs-operator">&gt;</span><span class="hljs-string">'entity'</span><span class="hljs-operator">-</span><span class="hljs-operator">&gt;&gt;</span><span class="hljs-string">'order_id'</span>));</code></pre><p><strong>Key Decisions:</strong></p>
+<ul>
+<li><strong><code>razorpay_event_id</code> Unique Index:</strong> This is the hard stop at the database level. If Redis fails or is flushed, the database ensures integrity.</li>
+<li><strong><code>JSONB</code> Payload:</strong> Razorpay adds fields to their webhooks occasionally. Using a rigid schema here effectively breaks your integration when they update their API. Always store the raw JSON.</li>
+<li><strong>Status Enum:</strong> We track the lifecycle of the <em>event processing</em>, not the payment itself.</li>
+</ul>
+<hr>
+<h2 id="pillar-4-handling-sequencing-race-conditions-the-out-of-order-problem-">Pillar 4: Handling Sequencing &amp; Race Conditions (The “Out-of-Order” Problem)</h2>
+<p>This is the most complex challenge.</p>
+<p><strong>Scenario:</strong></p>
+<ol>
+<li>User completes payment.</li>
+<li>Razorpay emits <code>payment.authorized</code>.</li>
+<li>Razorpay emits <code>payment.captured</code>.</li>
+<li><strong>Network anomaly:</strong> Your server receives <code>payment.captured</code> (Event B) at 10:00:01.</li>
+<li>Your server receives <code>payment.authorized</code> (Event A) at 10:00:05.</li>
+</ol>
+<p>If you blindly process these events, you might move your local order state from <code>CAPTURED</code> back to <code>AUTHORIZED</code>, or trigger a “New Payment” workflow twice.</p>
+<p><img src="https://blogs.buildwithmanish.com/assets/images/concept_illustration-mastering-razorpay-webhooks-architecting-an-idempotent-eventdriven-ingestion-engine-4-2025-12-17-46035.png" alt="Concept Illustration"></p>
+<p>We have two primary strategies to handle this.</p>
+<h3 id="solution-1-the-state-machine-guard">Solution 1: The State Machine Guard</h3>
+<p>This approach relies on a strict definition of valid state transitions in your application logic. You must check the <em>current</em> state of the Order/Payment in your database before applying the webhook update.</p>
+<p><strong>The Logic:</strong></p>
+<ul>
+<li><code>CREATED</code> -&gt; <code>AUTHORIZED</code> (Valid)</li>
+<li><code>AUTHORIZED</code> -&gt; <code>CAPTURED</code> (Valid)</li>
+<li><code>CAPTURED</code> -&gt; <code>AUTHORIZED</code> (<strong>INVALID</strong> - Ignore)</li>
+</ul>
+<pre><code class="hljs language-python" data-lang="python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">process_webhook_event</span>(<span class="hljs-params">event_type, payment_id, payload</span>):
+    <span class="hljs-comment"># Lock the row to prevent race conditions during the check</span>
+    order = db.query(Order).with_for_update().filter_by(payment_id=payment_id).first()
+    
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> order:
+        <span class="hljs-comment"># Handle case where webhook arrives before your system created the order record</span>
+        <span class="hljs-comment"># (Rare, but possible if Order creation is async)</span>
+        <span class="hljs-keyword">return</span> handle_orphan_payment(payload)
+
+    <span class="hljs-keyword">if</span> event_type == <span class="hljs-string">"payment.authorized"</span>:
+        <span class="hljs-keyword">if</span> order.status <span class="hljs-keyword">in</span> [<span class="hljs-string">"CAPTURED"</span>, <span class="hljs-string">"COMPLETED"</span>]:
+            logger.info(<span class="hljs-string">f"Skipping authorized event for <span class="hljs-subst">{payment_id}</span>; state is already <span class="hljs-subst">{order.status}</span>"</span>)
+            <span class="hljs-keyword">return</span> <span class="hljs-comment"># No-op</span>
+        
+        order.status = <span class="hljs-string">"AUTHORIZED"</span>
+        order.authorized_at = now()
+        
+    <span class="hljs-keyword">elif</span> event_type == <span class="hljs-string">"payment.captured"</span>:
+        <span class="hljs-comment"># Capture is terminal for the payment flow usually</span>
+        order.status = <span class="hljs-string">"CAPTURED"</span>
+        order.captured_at = now()
+        
+    db.commit()</code></pre><h3 id="solution-2-fetch-on-sync-the-source-of-truth-">Solution 2: Fetch-on-Sync (The Source of Truth)</h3>
+<p>The “State Machine” approach assumes your local logic perfectly mirrors Razorpay’s logic. A more robust (albeit slightly slower) approach is to treat the webhook merely as a <strong>“Wake Up Call”</strong>.</p>
+<p>When a webhook arrives, we don’t trust the payload’s state implicitly. Instead, we ask Razorpay for the current state.</p>
+<p><strong>The Logic:</strong></p>
+<ol>
+<li>Receive <code>payment.authorized</code> (Event A).</li>
+<li>Worker picks up Event A.</li>
+<li>Worker calls Razorpay API: <code>GET /payments/\{payment_id\}</code>.</li>
+<li>API returns: <code>status: captured</code> (Because the capture happened milliseconds later on Razorpay’s side).</li>
+<li>Worker updates local DB to <code>CAPTURED</code>.</li>
+<li>Later, <code>payment.captured</code> (Event B) arrives.</li>
+<li>Worker calls Razorpay API: <code>GET /payments/\{payment_id\}</code>.</li>
+<li>API returns: <code>status: captured</code>.</li>
+<li>Worker updates local DB to <code>CAPTURED</code> (Idempotent update).</li>
+</ol>
+<p>This solves the out-of-order problem completely because you are always fetching the “final” state from the source.</p>
+<p><img src="https://blogs.buildwithmanish.com/assets/images/code_flow-mastering-razorpay-webhooks-architecting-an-idempotent-eventdriven-ingestion-engine-5-2025-12-17-20382.png" alt="Code Flow"></p>
+<pre><code class="hljs language-python" data-lang="python"><span class="hljs-keyword">import</span> razorpay
+
+client = razorpay.Client(auth=(<span class="hljs-string">"KEY"</span>, <span class="hljs-string">"SECRET"</span>))
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">worker_process_event</span>(<span class="hljs-params">event_id, payload</span>):
+    payment_id = payload[<span class="hljs-string">'payload'</span>][<span class="hljs-string">'payment'</span>][<span class="hljs-string">'entity'</span>][<span class="hljs-string">'id'</span>]
+    
+    <span class="hljs-comment"># FETCH-ON-SYNC STRATEGY</span>
+    <span class="hljs-comment"># Ignore the state inside the webhook payload. </span>
+    <span class="hljs-comment"># Fetch the authoritative state from Razorpay.</span>
+    <span class="hljs-keyword">try</span>:
+        live_payment = client.payment.fetch(payment_id)
+    <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:
+        <span class="hljs-comment"># Handle API failures/rate limits with retry (exponential backoff)</span>
+        <span class="hljs-keyword">raise</span> RetryableException(e)
+
+    current_status = live_payment[<span class="hljs-string">'status'</span>] <span class="hljs-comment"># e.g., 'captured'</span>
+    amount = live_payment[<span class="hljs-string">'amount'</span>]
+    
+    <span class="hljs-comment"># Upsert logic: Create or Update based on payment_id</span>
+    upsert_payment_record(payment_id, current_status, amount)
+    
+    mark_event_log_completed(event_id)</code></pre><p><strong>Trade-off:</strong> This introduces an external API call for every webhook, which increases latency and eats into rate limits. However, for financial data consistency, this is often the preferred architecture.</p>
+<hr>
+<h2 id="pillar-5-reconciliation-the-safety-net-">Pillar 5: Reconciliation (The Safety Net)</h2>
+<p>No matter how good your webhook architecture is, you will miss events.</p>
+<ul>
+<li>Your servers might be down during a maintenance window.</li>
+<li>A bad deployment might break the signature verification logic.</li>
+<li>Razorpay might disable webhooks if your endpoint returns 500s too often.</li>
+</ul>
+<p>To reach 100% reliability, you need a <strong>Reconciliation Worker</strong>.</p>
+<h3 id="the-cron-job">The Cron Job</h3>
+<p>Every night (or every hour), a background job should run to close the gap between your database and Razorpay.</p>
+<p><strong>Logic:</strong></p>
+<ol>
+<li>Fetch all payments from Razorpay updated in the last <code>X</code> minutes/hours.</li>
+<li>Iterate through them.</li>
+<li>Compare the status in Razorpay vs. your Local DB.</li>
+<li>If different, trigger the logic used in the “Fetch-on-Sync” worker.</li>
+</ol>
+<pre><code class="hljs language-python" data-lang="python"><span class="hljs-comment"># Pseudo-code for Reconciliation</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">reconcile_payments</span>(<span class="hljs-params">time_window_minutes=<span class="hljs-number">60</span></span>):
+    start_time = now() - timedelta(minutes=time_window_minutes)
+    
+    <span class="hljs-comment"># Razorpay supports filtering by 'from' timestamp</span>
+    <span class="hljs-comment"># Note: Pagination is required here for high volume</span>
+    payments = client.payment.<span class="hljs-built_in">all</span>({
+        <span class="hljs-string">'from'</span>: <span class="hljs-built_in">int</span>(start_time.timestamp()),
+        <span class="hljs-string">'count'</span>: <span class="hljs-number">100</span> 
+    })
+    
+    <span class="hljs-keyword">for</span> rp_payment <span class="hljs-keyword">in</span> payments[<span class="hljs-string">'items'</span>]:
+        local_payment = db.get_payment(rp_payment[<span class="hljs-string">'id'</span>])
+        
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> local_payment:
+            logger.warning(<span class="hljs-string">f"MISSING PAYMENT FOUND: <span class="hljs-subst">{rp_payment[<span class="hljs-string">'id'</span>]}</span>"</span>)
+            create_payment(rp_payment)
+        <span class="hljs-keyword">elif</span> local_payment.status != rp_payment[<span class="hljs-string">'status'</span>]:
+            logger.warning(<span class="hljs-string">f"STATUS MISMATCH: <span class="hljs-subst">{rp_payment[<span class="hljs-string">'id'</span>]}</span> Local: <span class="hljs-subst">{local_payment.status}</span> Remote: <span class="hljs-subst">{rp_payment[<span class="hljs-string">'status'</span>]}</span>"</span>)
+            update_payment(local_payment, rp_payment[<span class="hljs-string">'status'</span>])</code></pre><p><img src="https://blogs.buildwithmanish.com/assets/images/architecture_diagram-mastering-razorpay-webhooks-architecting-an-idempotent-eventdriven-ingestion-engine-6-2025-12-17-91407.png" alt="Architecture Diagram"></p>
+<hr>
+<h2 id="conclusion">Conclusion</h2>
+<p>Building a webhook ingestion engine for payments is not just about creating an API endpoint. It is about acknowledging that distributed systems are inherently unreliable and architecting defenses against that unreliability.</p>
+<p>By implementing the <strong>Accept-Then-Process</strong> pattern, guarding against duplicates via <strong>Event IDs</strong>, handling out-of-order delivery through <strong>State Machines</strong> or <strong>Fetch-on-Sync</strong>, and implementing a <strong>Reconciliation</strong> safety net, you transform a fragile integration into a bulletproof financial engine.</p>
+<p>Your payment infrastructure is the lifeline of your business. Don’t let a network retry be the reason that lifeline breaks.</p>
+</article>
+      <aside class="blog-meta-col">
+        <section class="blog-meta-card" aria-label="Author details">
+          <p class="blog-meta-label">Author</p>
+          <p class="blog-meta-value">Manish Tiwari</p>
+        </section>
+        <section class="blog-meta-card" aria-label="Publication date">
+          <p class="blog-meta-label">Published</p>
+          <p class="blog-meta-value">Dec 17, 2025</p>
+        </section>
+        <section class="blog-meta-card" aria-label="Blog views">
+          <p class="blog-meta-label">Views</p>
+          <div class="blog-view-counter">
+            <img src="https://komarev.com/ghpvc/?username=manish-9245&label=VIEWS&color=0e75b6&style=flat" alt="Blog views counter" loading="lazy" decoding="async" />
+          </div>
+        </section>
+        <section class="blog-meta-card" aria-label="Blog navigation">
+          <p class="blog-meta-label">Navigate</p>
+          <a class="blog-meta-link" href="/blogs.html">← All posts</a>
+        </section>
+      </aside>
+    </div>
+    <section class="surface related-posts" id="related-posts" aria-label="Related blog posts">
+        <h2>Related Posts</h2>
+        <div class="related-posts-grid">
+          
+            <article class="related-card">
+              <p class="related-meta">
+                <span>Dec 29, 2025</span>
+                <span class="blog-card-dot">•</span>
+                <span>AI</span>
+              </p>
+              <h3 class="related-title"><a href="/textbook-for-excel-exam.html">Textbook for Excel Exam</a></h3>
+              <p class="related-desc">In the world of data engineering and business intelligence, Microsoft Excel remains the ubiquitous “first draft” of data analysis. While Python, SQL, and Tableau dominate big data pipelines, Excel is...</p>
+            </article>
+          
+            <article class="related-card">
+              <p class="related-meta">
+                <span>Dec 17, 2025</span>
+                <span class="blog-card-dot">•</span>
+                <span>Cloud</span>
+              </p>
+              <h3 class="related-title"><a href="/beyond-get-and-set-architecting-resilient-distributed-caching-patterns-for-microservices.html">Beyond GET and SET: Architecting Resilient Distributed Caching Patterns for Microservices</a></h3>
+              <p class="related-desc">In the infancy of a backend application, caching is often treated as a simple key-value store optimization-a sprinkle of “magic dust” to speed up slow SQL queries. Developers implement a basic client....</p>
+            </article>
+          
+            <article class="related-card">
+              <p class="related-meta">
+                <span>Dec 17, 2025</span>
+                <span class="blog-card-dot">•</span>
+                <span>AI</span>
+              </p>
+              <h3 class="related-title"><a href="/building-a-virtual-data-analyst-architecting-agentic-ai-workflows-over-power-bi.html">Building a Virtual Data Analyst: Architecting Agentic AI Workflows over Power BI</a></h3>
+              <p class="related-desc">In the rush to adopt Generative AI, organizations have flooded their backlogs with “Chat with your Data” initiatives. Most of these projects follow a predictable, often disappointing, pattern: a text-...</p>
+            </article>
+          
+        </div></section>
+    <section class="surface blog-share" id="blog-share" aria-label="Share this post">
+      <h2>Share this post</h2>
+      <div class="blog-share-actions">
+        <a class="blog-share-link" aria-label="Share on LinkedIn" title="Share on LinkedIn" target="_blank" rel="noopener noreferrer" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fbuildwithmanish.com%2Fposts%2Fmastering-razorpay-webhooks-architecting-an-idempotent-eventdriven-ingestion-engine.html"><svg class="blog-share-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.94 8.5H3.56V20h3.38V8.5zM5.25 3C4.14 3 3.2 3.94 3.2 5.05c0 1.1.9 2.05 2.01 2.05h.02c1.12 0 2.02-.95 2.02-2.05C7.25 3.94 6.36 3 5.25 3zM20.8 13.4c0-3.13-1.67-5.15-4.66-5.15-2.15 0-3.11 1.2-3.65 2.03V8.5H9.1c.04 1.17 0 11.5 0 11.5h3.38v-6.42c0-.34.03-.68.12-.92.27-.68.88-1.4 1.9-1.4 1.34 0 1.88 1.05 1.88 2.58V20h3.38v-6.6z"/></svg></a>
+        <a class="blog-share-link" aria-label="Share on X" title="Share on X" target="_blank" rel="noopener noreferrer" href="https://x.com/intent/tweet?url=https%3A%2F%2Fbuildwithmanish.com%2Fposts%2Fmastering-razorpay-webhooks-architecting-an-idempotent-eventdriven-ingestion-engine.html&text=Mastering%20Razorpay%20Webhooks%3A%20Architecting%20an%20Idempotent%2C%20Event-Driven%20Ingestion%20Engine"><svg class="blog-share-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 2H22l-6.77 7.74L23 22h-6.1l-4.78-6.24L6.66 22H3.55l7.24-8.27L1 2h6.25l4.32 5.7L18.9 2zm-1.07 18h1.69L6.33 3.9H4.52L17.83 20z"/></svg></a>
+        <button type="button" class="blog-share-copy" aria-label="Copy link" title="Copy link" data-share-copy data-url="https://buildwithmanish.com/posts/mastering-razorpay-webhooks-architecting-an-idempotent-eventdriven-ingestion-engine.html"><svg class="blog-share-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 7a3 3 0 0 1 3-3h7a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3h-1v-1.5h1A1.5 1.5 0 0 0 19.5 15V7A1.5 1.5 0 0 0 18 5.5h-7A1.5 1.5 0 0 0 9.5 7v1H8V7zm-2 3A3 3 0 0 1 9 7h7a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H9a3 3 0 0 1-3-3v-8zm3-1.5A1.5 1.5 0 0 0 7.5 10v8A1.5 1.5 0 0 0 9 19.5h7a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 16 8.5H9z"/></svg></button>
+      </div></section>
+    <div class="surface" style="padding-top:0">
+      <a href="/blogs.html">← Back to all blogs</a>
+    </div></main>
 
     <footer class="site-footer">
       <div class="surface footer-row">
@@ -1374,7 +1670,7 @@
                     <span aria-hidden="true">•</span>
                     <span>${tags[0]}</span>
                   </p>
-                  <h3 class="related-title"><a href="./blog.html?post=${encodeURIComponent(post.slug)}">${post.title}</a></h3>
+                  <h3 class="related-title"><a href="/blog.html?post=${encodeURIComponent(post.slug)}">${post.title}</a></h3>
                   <p class="related-desc">${post.description || ""}</p>
                 </article>`;
               })
@@ -1460,7 +1756,7 @@
         }
 
         if (!slug) {
-          main.innerHTML = `<div class="blog-error"><p>No post specified.</p><p><a href="./blogs.html">← All blogs</a></p></div>`;
+          main.innerHTML = `<div class="blog-error"><p>No post specified.</p><p><a href="/blogs.html">← All blogs</a></p></div>`;
           main.classList.remove("is-loading");
           return;
         }
@@ -1497,7 +1793,7 @@
             throw new Error("Post body unavailable");
           }
         } catch {
-          main.innerHTML = `<div class="blog-error"><p>Post not found.</p><p><a href="./blogs.html">← All blogs</a></p></div>`;
+          main.innerHTML = `<div class="blog-error"><p>Post not found.</p><p><a href="/blogs.html">← All blogs</a></p></div>`;
           main.classList.remove("is-loading");
           return;
         }
@@ -1690,7 +1986,7 @@
         main.classList.remove("is-loading");
       }
 
-      loadPost();
+      // Static Page: loadPost() disabled
     </script>
   </body>
 </html>

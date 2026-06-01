@@ -3,68 +3,41 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title id="page-title">Blog · Manish Tiwari</title>
-    <meta
-      id="page-desc"
-      name="description"
-      content="Blog post by Manish Tiwari"
-    />
+    <title>Relational Database Management System: An Engineering Deep-Dive · Manish Tiwari</title>
+    <meta name="description" content="Despite the meteoric rise of NoSQL, time-series, and vector databases in the last decade, the Relational Database Management System (RDBMS) remains the immutable backbone of global enterprise software..." />
     <meta name="robots" content="index, follow" />
-    <link
-      id="page-canonical"
-      rel="canonical"
-      href="https://buildwithmanish.com/blog.html"
-    />
+    <link rel="canonical" href="https://buildwithmanish.com/posts/relational-database-management-system.html" />
     <meta property="og:site_name" content="Manish Tiwari" />
     <meta id="og-type" property="og:type" content="article" />
-    <meta id="og-title" property="og:title" content="Blog · Manish Tiwari" />
-    <meta
-      id="og-desc"
-      property="og:description"
-      content="Blog post by Manish Tiwari"
-    />
-    <meta
-      id="og-url"
-      property="og:url"
-      content="https://buildwithmanish.com/blog.html"
-    />
-    <meta
-      id="og-image"
-      property="og:image"
-      content="https://buildwithmanish.com/image/optimized/aiblogs-20260314-175545.webp"
-    />
+    <meta property="og:title" content="Relational Database Management System: An Engineering Deep-Dive" />
+    <meta property="og:description" content="Despite the meteoric rise of NoSQL, time-series, and vector databases in the last decade, the Relational Database Management System (RDBMS) remains the immutable backbone of global enterprise software..." />
+    <meta property="og:url" content="https://buildwithmanish.com/posts/relational-database-management-system.html" />
+    <meta property="og:image" content="https://blogs.buildwithmanish.com/assets/images/hero-relational-database-management-system-0-2025-12-30-77512.png" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta id="tw-title" name="twitter:title" content="Blog · Manish Tiwari" />
-    <meta
-      id="tw-desc"
-      name="twitter:description"
-      content="Blog post by Manish Tiwari"
-    />
-    <meta
-      id="tw-image"
-      name="twitter:image"
-      content="https://buildwithmanish.com/image/optimized/aiblogs-20260314-175545.webp"
-    />
-    <script id="post-schema" type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "BlogPosting",
-        "headline": "Engineering Blog",
-        "author": {
-          "@type": "Person",
-          "name": "Manish Tiwari",
-          "url": "https://buildwithmanish.com/about.html"
-        },
-        "publisher": {
-          "@type": "Person",
-          "name": "Manish Tiwari"
-        },
-        "mainEntityOfPage": {
-          "@type": "WebPage",
-          "@id": "https://buildwithmanish.com/blog.html"
-        }
-      }
-    </script>
+    <meta name="twitter:title" content="Relational Database Management System: An Engineering Deep-Dive" />
+    <meta name="twitter:description" content="Despite the meteoric rise of NoSQL, time-series, and vector databases in the last decade, the Relational Database Management System (RDBMS) remains the immutable backbone of global enterprise software..." />
+    <meta name="twitter:image" content="https://blogs.buildwithmanish.com/assets/images/hero-relational-database-management-system-0-2025-12-30-77512.png" />
+    <script id="post-schema" type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Relational Database Management System: An Engineering Deep-Dive",
+  "description": "Despite the meteoric rise of NoSQL, time-series, and vector databases in the last decade, the Relational Database Management System (RDBMS) remains the immutable backbone of global enterprise software...",
+  "datePublished": "2025-12-30",
+  "author": {
+    "@type": "Person",
+    "name": "Manish Tiwari",
+    "url": "https://buildwithmanish.com/about.html"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Manish Tiwari"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://buildwithmanish.com/posts/relational-database-management-system.html"
+  },
+  "image": "https://blogs.buildwithmanish.com/assets/images/hero-relational-database-management-system-0-2025-12-30-77512.png"
+}</script>
     <link
       rel="icon"
       type="image/webp"
@@ -824,7 +797,318 @@
       </div>
     </header>
 
-    <main id="blog-main" data-router-view class="is-loading"></main>
+    <main data-router-view>
+    <header class="blog-post-header">
+      <p class="muted kicker">Blog</p>
+      <h1>Relational Database Management System: An Engineering Deep-Dive</h1>
+      <p class="muted">Dec 30, 2025</p>
+    </header>
+    <div class="blog-post-layout">
+      <nav class="blog-toc" id="blog-toc" aria-label="Table of contents"><p class="blog-toc-title">Contents</p><ol><li><a href="#purpose-and-view-of-data">Purpose and View of Data</a></li><li><a href="#database-architecture">Database Architecture</a></li><li class="toc-h3"><a href="#1-the-storage-manager">1. The Storage Manager</a></li><li class="toc-h3"><a href="#2-the-query-processor">2. The Query Processor</a></li><li><a href="#the-relational-model">The Relational Model</a></li><li class="toc-h3"><a href="#keys-the-guardians-of-integrity">Keys: The Guardians of Integrity</a></li><li><a href="#entity-relationship-e-r-model">Entity-Relationship (E-R) Model</a></li><li class="toc-h3"><a href="#core-components">Core Components</a></li><li class="toc-h3"><a href="#constraints-cardinality">Constraints & Cardinality</a></li><li><a href="#relational-database-design-normalization">Relational Database Design: Normalization</a></li><li class="toc-h3"><a href="#functional-dependency-theory">Functional Dependency Theory</a></li><li class="toc-h3"><a href="#the-normal-forms">The Normal Forms</a></li><li><a href="#data-definition-language-ddl-">Data Definition Language (DDL)</a></li><li class="toc-h3"><a href="#creating-tables-with-constraints">Creating Tables with Constraints</a></li><li class="toc-h3"><a href="#altering-and-dropping">Altering and Dropping</a></li><li><a href="#dcl-data-control-language-">DCL (Data Control Language)</a></li><li><a href="#error-codes-spooling">Error Codes & Spooling</a></li><li><a href="#dml-managing-data">DML: Managing Data</a></li><li><a href="#advanced-retrieval-the-select-anatomy">Advanced Retrieval: The SELECT Anatomy</a></li><li class="toc-h3"><a href="#conditional-logic-case">Conditional Logic: CASE</a></li><li><a href="#multiple-tables-joins">Multiple Tables: Joins</a></li><li><a href="#functions-and-grouping">Functions and Grouping</a></li><li class="toc-h3"><a href="#built-in-functions">Built-in Functions</a></li><li class="toc-h3"><a href="#grouping-and-having">Grouping and HAVING</a></li><li class="toc-h3"><a href="#set-operations">Set Operations</a></li></ol></nav>
+      <article class="blog-prose" id="blog-prose"><p><img src="https://blogs.buildwithmanish.com/assets/images/hero-relational-database-management-system-0-2025-12-30-77512.png" alt="Relational Database Management System Hero"></p>
+<p>Despite the meteoric rise of NoSQL, time-series, and vector databases in the last decade, the Relational Database Management System (RDBMS) remains the immutable backbone of global enterprise software. Whether it’s financial ledgers, inventory management, or user identity systems, the relational model’s promise of ACID (Atomicity, Consistency, Isolation, Durability) compliance and mathematical rigor is irreplaceable.</p>
+<p>This article is not a high-level overview. We are going to deconstruct the RDBMS from the ground up-from the theoretical underpinnings of tuple calculus and storage architecture to the pragmatic realities of SQL optimization and schema normalization.</p>
+<hr>
+<h1>Unit 1: The Foundation – Architecture &amp; The Relational Model</h1>
+<p>To engineer robust systems, one must understand what happens <em>before</em> a query is executed. An RDBMS is not merely a data bucket; it is a complex engine designed to bridge the gap between logical data representation and physical storage.</p>
+<h2 id="purpose-and-view-of-data">Purpose and View of Data</h2>
+<p>Legacy file processing systems suffered from data redundancy, isolation, and lack of atomicity. If a file transfer crashed halfway, data was corrupted. RDBMS solves this via <strong>Data Abstraction</strong>:</p>
+<ol>
+<li><strong>Physical Level:</strong> How data is actually stored (block sizes, B-Trees, hashing).</li>
+<li><strong>Logical Level:</strong> What data is stored and the relationships (Tables, Columns).</li>
+<li><strong>View Level:</strong> Virtual tables (Views) that hide complexity or sensitive data from specific users.</li>
+</ol>
+<h2 id="database-architecture">Database Architecture</h2>
+<p>The architecture of a database determines its throughput and reliability. It is generally split into the <strong>Query Processor</strong> and the <strong>Storage Manager</strong>.</p>
+<p><img src="https://blogs.buildwithmanish.com/assets/images/architecture_diagram-relational-database-management-system-1-2025-12-30-90537.png" alt="Database Architecture Diagram"></p>
+<h3 id="1-the-storage-manager">1. The Storage Manager</h3>
+<p>This is the interface between the low-level data stored in the OS file system and the application.</p>
+<ul>
+<li><strong>Buffer Manager:</strong> Critical for performance. It manages caching data blocks in RAM to minimize expensive disk I/O. If your DB is slow, check your buffer pool hit ratio.</li>
+<li><strong>File Manager:</strong> Manages allocation of space on disk structures.</li>
+<li><strong>Transaction Manager:</strong> Ensures the system remains in a consistent state despite failures (Power loss, crashes).</li>
+</ul>
+<h3 id="2-the-query-processor">2. The Query Processor</h3>
+<p>This is the “brain” of the operation.</p>
+<ul>
+<li><strong>DDL Interpreter:</strong> Interprets schema definitions.</li>
+<li><strong>DML Compiler:</strong> Translates SQL into an evaluation plan (relational algebra).</li>
+<li><strong>Query Evaluation Engine:</strong> Executes the low-level instructions generated by the compiler.</li>
+</ul>
+<h2 id="the-relational-model">The Relational Model</h2>
+<p>Proposed by E.F. Codd, the relational model is based on set theory.</p>
+<p><img src="https://blogs.buildwithmanish.com/assets/images/technical_diagram-relational-database-management-system-2-2025-12-30-92972.png" alt="Relational Model Diagram"></p>
+<ul>
+<li><strong>Relation (Table):</strong> A set of tuples.</li>
+<li><strong>Tuple (Row):</strong> An ordered list of values.</li>
+<li><strong>Attribute (Column):</strong> A named property of the relation.</li>
+<li><strong>Domain:</strong> The set of permitted values for an attribute (e.g., Integer, Varchar).</li>
+</ul>
+<h3 id="keys-the-guardians-of-integrity">Keys: The Guardians of Integrity</h3>
+<p>Keys are not just for indexing; they strictly define identity.</p>
+<ol>
+<li><strong>Super Key:</strong> A set of one or more attributes that uniquely identify a tuple.</li>
+<li><strong>Candidate Key:</strong> A minimal super key (no extraneous attributes).</li>
+<li><strong>Primary Key (PK):</strong> The candidate key chosen by the database designer as the principal means of identification.</li>
+<li><strong>Foreign Key (FK):</strong> An attribute in one table that references the PK of another. This enforces <strong>Referential Integrity</strong>.</li>
+</ol>
+<p><strong>Scenario:</strong> If you have an <code>Orders</code> table referencing a <code>Users</code> table via <code>user_id</code>, the database engine (via FK constraints) physically prevents you from deleting a User who has active orders, preventing orphaned data.</p>
+<hr>
+<h1>Unit 2: Database Design &amp; Normalization</h1>
+<p>A poorly designed schema is a technical debt that gathers interest at a compound rate. Database design is the process of converting real-world requirements into a mathematical model that minimizes redundancy.</p>
+<h2 id="entity-relationship-e-r-model">Entity-Relationship (E-R) Model</h2>
+<p>Before writing SQL, we model. The E-R model represents the world in terms of <strong>Entities</strong> (objects) and <strong>Relationships</strong> (associations).</p>
+<p><img src="https://blogs.buildwithmanish.com/assets/images/technical_diagram-relational-database-management-system-3-2025-12-30-80972.png" alt="E-R Model Diagram"></p>
+<h3 id="core-components">Core Components</h3>
+<ul>
+<li><strong>Entity Sets:</strong> E.g., <code>Employee</code>.</li>
+<li><strong>Attributes:</strong> Properties like <code>SSN</code>, <code>Name</code>.<ul>
+<li><em>Derived Attributes:</em> Calculated from others (e.g., <code>Age</code> from <code>DOB</code>).</li>
+<li><em>Multivalued Attributes:</em> E.g., <code>Phone_Numbers</code>.</li>
+</ul>
+</li>
+<li><strong>Relationships:</strong> The association between entities (e.g., <code>Works_For</code>).</li>
+</ul>
+<h3 id="constraints-cardinality">Constraints &amp; Cardinality</h3>
+<ul>
+<li><strong>One-to-One (1:1):</strong> CEO manages one Company.</li>
+<li><strong>One-to-Many (1:N):</strong> Department employs many Employees.</li>
+<li><strong>Many-to-Many (M:N):</strong> Students enroll in many Courses.</li>
+</ul>
+<p><strong>Design Issue - Reduction to Relational Schemas:</strong> When converting E-R to Tables:</p>
+<ol>
+<li><strong>Strong Entity Sets</strong> become their own tables.</li>
+<li><strong>Weak Entity Sets</strong> (depend on a strong entity for existence) include the strong entity’s PK as a Foreign Key.</li>
+<li><strong>M:N Relationships</strong> require a <strong>Join Table</strong> (associative entity) containing the PKs of both participating entities.</li>
+</ol>
+<h2 id="relational-database-design-normalization">Relational Database Design: Normalization</h2>
+<p>Normalization is the process of organizing data to reduce redundancy and improve data integrity. It relies heavily on <strong>Functional Dependencies (FDs)</strong>.</p>
+<p><img src="https://blogs.buildwithmanish.com/assets/images/concept_illustration-relational-database-management-system-4-2025-12-30-90188.png" alt="Relational Database Design Concept"></p>
+<h3 id="functional-dependency-theory">Functional Dependency Theory</h3>
+<p>An FD is denoted as $X \rightarrow Y$. It means if two tuples agree on attribute $X$, they must agree on attribute $Y$.</p>
+<ul>
+<li><strong>Axioms of Armstrong:</strong> Reflexivity, Augmentation, Transitivity. These allow us to infer new dependencies.</li>
+</ul>
+<h3 id="the-normal-forms">The Normal Forms</h3>
+<p>We decompose tables to eliminate anomalies (Update, Insert, Delete anomalies).</p>
+<h4>1. First Normal Form (1NF)</h4>
+<p><strong>Rule:</strong> Attributes must be atomic. No repeating groups or arrays.</p>
+<ul>
+<li><em>Bad:</em> <code>User(ID, Name, Phones)</code> where Phones is “555-0101, 555-0102”.</li>
+<li><em>Good:</em> Move phones to a separate table <code>UserPhones(UserID, Phone)</code>.</li>
+</ul>
+<h4>2. Second Normal Form (2NF)</h4>
+<p><strong>Rule:</strong> Must be in 1NF AND no <strong>Partial Dependencies</strong>.</p>
+<ul>
+<li><em>Context:</em> Applies when the Primary Key is composite.</li>
+<li><em>Violation:</em> <code>OrderItems(OrderID, ProductID, ProductName, Quantity)</code>. PK is <code>(OrderID, ProductID)</code>. <code>ProductName</code> depends only on <code>ProductID</code>, not the whole key.</li>
+<li><em>Fix:</em> Split into <code>Products(ProductID, ProductName)</code> and <code>OrderItems(OrderID, ProductID, Quantity)</code>.</li>
+</ul>
+<h4>3. Third Normal Form (3NF)</h4>
+<p><strong>Rule:</strong> Must be in 2NF AND no <strong>Transitive Dependencies</strong>.</p>
+<ul>
+<li><em>Violation:</em> <code>Employee(ID, ZipCode, City)</code>. <code>ID -&gt; ZipCode</code>, but <code>ZipCode -&gt; City</code>.</li>
+<li><em>Fix:</em> <code>Employee(ID, ZipCode)</code> and <code>Locations(ZipCode, City)</code>.</li>
+</ul>
+<h4>4. BCNF (Boyce-Codd Normal Form)</h4>
+<p>A stricter version of 3NF. For every FD $X \rightarrow Y$, $X$ must be a super key. This handles edge cases where a prime attribute depends on a non-prime attribute.</p>
+<p><strong>Decomposition Algorithm:</strong> When decomposing tables, two properties must be preserved:</p>
+<ol>
+<li><strong>Lossless Join:</strong> Can we join the tables back to get the original data without creating spurious rows?</li>
+<li><strong>Dependency Preservation:</strong> Can we enforce constraints without joining tables?</li>
+</ol>
+<hr>
+<h1>Unit 3: SQL Basics – Definition &amp; Control</h1>
+<p>SQL (Structured Query Language) is the implementation of the relational model. It is declarative: you tell the DB <em>what</em> you want, not <em>how</em> to get it.</p>
+<p><img src="https://blogs.buildwithmanish.com/assets/images/comparison_chart-relational-database-management-system-5-2025-12-30-31040.png" alt="SQL Basics Comparison Chart"></p>
+<h2 id="data-definition-language-ddl-">Data Definition Language (DDL)</h2>
+<p>DDL defines the structure. In a production environment, DDL is dangerous. Locking a table to add a column can bring down a high-traffic service.</p>
+<h3 id="creating-tables-with-constraints">Creating Tables with Constraints</h3>
+<pre><code class="hljs language-sql" data-lang="sql"><span class="hljs-keyword">CREATE TABLE</span> Employees (
+    emp_id <span class="hljs-type">INT</span> <span class="hljs-keyword">PRIMARY KEY</span>,
+    email <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">255</span>) <span class="hljs-keyword">UNIQUE</span> <span class="hljs-keyword">NOT NULL</span>,
+    salary <span class="hljs-type">DECIMAL</span>(<span class="hljs-number">10</span>, <span class="hljs-number">2</span>) <span class="hljs-keyword">CHECK</span> (salary <span class="hljs-operator">&gt;</span> <span class="hljs-number">0</span>),
+    dept_id <span class="hljs-type">INT</span>,
+    hire_date <span class="hljs-type">DATE</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-built_in">CURRENT_DATE</span>,
+    <span class="hljs-keyword">CONSTRAINT</span> fk_dept 
+        <span class="hljs-keyword">FOREIGN KEY</span> (dept_id) 
+        <span class="hljs-keyword">REFERENCES</span> Departments(dept_id)
+        <span class="hljs-keyword">ON</span> <span class="hljs-keyword">DELETE</span> <span class="hljs-keyword">SET</span> <span class="hljs-keyword">NULL</span>
+);</code></pre><ul>
+<li><strong>Constraint Naming:</strong> Always name your constraints (<code>fk_dept</code>). It makes debugging error logs significantly easier.</li>
+<li><strong>Types:</strong> <code>INT</code>, <code>VARCHAR</code>, <code>DECIMAL</code> (for money-never use FLOAT), <code>DATE</code>.</li>
+</ul>
+<h3 id="altering-and-dropping">Altering and Dropping</h3>
+<pre><code class="hljs language-sql" data-lang="sql"><span class="hljs-comment">-- Adding a column</span>
+<span class="hljs-keyword">ALTER TABLE</span> Employees <span class="hljs-keyword">ADD</span> <span class="hljs-keyword">COLUMN</span> phone_number <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">20</span>);
+
+<span class="hljs-comment">-- Renaming (Database specific, standard SQL uses RENAME TO)</span>
+<span class="hljs-keyword">ALTER TABLE</span> Employees RENAME <span class="hljs-keyword">TO</span> Staff;
+
+<span class="hljs-comment">-- Truncate vs Delete</span>
+<span class="hljs-keyword">TRUNCATE</span> <span class="hljs-keyword">TABLE</span> Staff; <span class="hljs-comment">-- Fast, resets High Water Mark, no undo (DDL)</span>
+<span class="hljs-keyword">DELETE</span> <span class="hljs-keyword">FROM</span> Staff;    <span class="hljs-comment">-- Slower, logs every row, transactional (DML)</span></code></pre><h2 id="dcl-data-control-language-">DCL (Data Control Language)</h2>
+<p>Security is paramount.</p>
+<pre><code class="hljs language-sql" data-lang="sql"><span class="hljs-keyword">GRANT</span> <span class="hljs-keyword">SELECT</span>, <span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">ON</span> Employees <span class="hljs-keyword">TO</span> app_user;
+<span class="hljs-keyword">REVOKE</span> <span class="hljs-keyword">DELETE</span> <span class="hljs-keyword">ON</span> Employees <span class="hljs-keyword">FROM</span> app_user;</code></pre><h2 id="error-codes-spooling">Error Codes &amp; Spooling</h2>
+<ul>
+<li><strong>Spooling:</strong> In CLI tools (like SQL*Plus), spooling directs query output to a file. Useful for generating CSV reports via cron jobs.</li>
+<li><strong>Error Codes:</strong> Applications should trap SQLSTATE codes. For example, a duplicate key violation usually returns specific codes (e.g., 23505 in Postgres) allowing the app to fail gracefully.</li>
+</ul>
+<hr>
+<h1>Unit 4: Data Management, Retrieval &amp; Functions</h1>
+<p>This is where the rubber meets the road. Writing efficient DML (Data Manipulation Language) is the primary skill of a backend engineer.</p>
+<h2 id="dml-managing-data">DML: Managing Data</h2>
+<p>The <code>INSERT</code>, <code>UPDATE</code>, and <code>DELETE</code> statements are straightforward but powerful.</p>
+<pre><code class="hljs language-sql" data-lang="sql"><span class="hljs-comment">-- Multi-row insert</span>
+<span class="hljs-keyword">INSERT INTO</span> Products (name, price) <span class="hljs-keyword">VALUES</span> 
+(<span class="hljs-string">'Widget A'</span>, <span class="hljs-number">10.00</span>),
+(<span class="hljs-string">'Widget B'</span>, <span class="hljs-number">15.50</span>);
+
+<span class="hljs-comment">-- Update with logic</span>
+<span class="hljs-keyword">UPDATE</span> Employees 
+<span class="hljs-keyword">SET</span> salary <span class="hljs-operator">=</span> salary <span class="hljs-operator">*</span> <span class="hljs-number">1.05</span> 
+<span class="hljs-keyword">WHERE</span> performance_rating <span class="hljs-operator">&gt;</span> <span class="hljs-number">4</span>;
+
+<span class="hljs-comment">-- Substitution Variables (Tool specific, e.g., SQL*Plus)</span>
+<span class="hljs-comment">-- DEFINE department_id = 10;</span>
+<span class="hljs-comment">-- SELECT * FROM Employees WHERE dept_id = &amp;department_id;</span></code></pre><h2 id="advanced-retrieval-the-select-anatomy">Advanced Retrieval: The SELECT Anatomy</h2>
+<p>The execution order of a SQL query is different from the writing order:</p>
+<ol>
+<li><strong>FROM / JOIN</strong> (Gather data)</li>
+<li><strong>WHERE</strong> (Filter rows)</li>
+<li><strong>GROUP BY</strong> (Aggregate)</li>
+<li><strong>HAVING</strong> (Filter groups)</li>
+<li><strong>SELECT</strong> (Return columns)</li>
+<li><strong>ORDER BY</strong> (Sort)</li>
+</ol>
+<h3 id="conditional-logic-case">Conditional Logic: CASE</h3>
+<p>The <code>CASE</code> statement allows for if-then logic directly in the projection.</p>
+<pre><code class="hljs language-sql" data-lang="sql"><span class="hljs-keyword">SELECT</span> 
+    name,
+    salary,
+    <span class="hljs-keyword">CASE</span> 
+        <span class="hljs-keyword">WHEN</span> salary <span class="hljs-operator">&lt;</span> <span class="hljs-number">50000</span> <span class="hljs-keyword">THEN</span> <span class="hljs-string">'Junior'</span>
+        <span class="hljs-keyword">WHEN</span> salary <span class="hljs-keyword">BETWEEN</span> <span class="hljs-number">50000</span> <span class="hljs-keyword">AND</span> <span class="hljs-number">100000</span> <span class="hljs-keyword">THEN</span> <span class="hljs-string">'Mid'</span>
+        <span class="hljs-keyword">ELSE</span> <span class="hljs-string">'Senior'</span>
+    <span class="hljs-keyword">END</span> <span class="hljs-keyword">as</span> seniority_level
+<span class="hljs-keyword">FROM</span> Employees;</code></pre><h2 id="multiple-tables-joins">Multiple Tables: Joins</h2>
+<p>Joins are the physical realization of the Cartesian product filtered by a predicate.</p>
+<p><img src="https://blogs.buildwithmanish.com/assets/images/technical_diagram-relational-database-management-system-6-2025-12-30-17942.png" alt="Joins Diagram"></p>
+<ol>
+<li><strong>Inner Join:</strong> Returns rows when there is a match in both tables.</li>
+<li><strong>Left (Outer) Join:</strong> All rows from the left table, and matched rows from the right table (NULL if no match).</li>
+<li><strong>Right (Outer) Join:</strong> Inverse of Left Join.</li>
+<li><strong>Full Join:</strong> All rows from both tables.</li>
+<li><strong>Self Join:</strong> Joining a table to itself (e.g., Employee hierarchy where Manager is also an Employee).</li>
+</ol>
+<pre><code class="hljs language-sql" data-lang="sql"><span class="hljs-keyword">SELECT</span> 
+    e.name <span class="hljs-keyword">as</span> Employee, 
+    m.name <span class="hljs-keyword">as</span> Manager
+<span class="hljs-keyword">FROM</span> Employees e
+<span class="hljs-keyword">LEFT</span> <span class="hljs-keyword">JOIN</span> Employees m <span class="hljs-keyword">ON</span> e.manager_id <span class="hljs-operator">=</span> m.emp_id;</code></pre><h2 id="functions-and-grouping">Functions and Grouping</h2>
+<p>Aggregation reduces multiple rows into a single summary value.</p>
+<p><img src="https://blogs.buildwithmanish.com/assets/images/code_flow-relational-database-management-system-7-2025-12-30-6284.png" alt="Functions and Grouping Flow"></p>
+<h3 id="built-in-functions">Built-in Functions</h3>
+<ul>
+<li><strong>Numeric:</strong> <code>ROUND()</code>, <code>TRUNC()</code>, <code>MOD()</code>.</li>
+<li><strong>String:</strong> <code>UPPER()</code>, <code>SUBSTR()</code>, <code>CONCAT()</code>.</li>
+<li><strong>Date:</strong> <code>ADD_MONTHS()</code>, <code>EXTRACT(YEAR FROM date)</code>.</li>
+</ul>
+<h3 id="grouping-and-having">Grouping and HAVING</h3>
+<p>The <code>HAVING</code> clause is essential because the <code>WHERE</code> clause cannot filter on aggregate functions (because <code>WHERE</code> runs <em>before</em> aggregation).</p>
+<p><strong>Scenario:</strong> Find departments where the average salary is greater than $80,000.</p>
+<pre><code class="hljs language-sql" data-lang="sql"><span class="hljs-keyword">SELECT</span> 
+    dept_id, 
+    <span class="hljs-built_in">AVG</span>(salary) <span class="hljs-keyword">as</span> avg_sal
+<span class="hljs-keyword">FROM</span> Employees
+<span class="hljs-keyword">WHERE</span> status <span class="hljs-operator">=</span> <span class="hljs-string">'Active'</span>  <span class="hljs-comment">-- Filter raw rows first</span>
+<span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> dept_id         <span class="hljs-comment">-- Aggregate</span>
+<span class="hljs-keyword">HAVING</span> <span class="hljs-built_in">AVG</span>(salary) <span class="hljs-operator">&gt;</span> <span class="hljs-number">80000</span>; <span class="hljs-comment">-- Filter the aggregates</span></code></pre><h3 id="set-operations">Set Operations</h3>
+<p>These combine the results of two separate queries.</p>
+<ul>
+<li><strong>UNION:</strong> Combines results, removes duplicates.</li>
+<li><strong>UNION ALL:</strong> Combines results, keeps duplicates (Faster).</li>
+<li><strong>INTERSECT:</strong> Returns only rows present in both sets.</li>
+<li><strong>MINUS / EXCEPT:</strong> Returns rows in the first set but not the second.</li>
+</ul>
+<hr>
+<h1>Conclusion</h1>
+<p>The Relational Database Management System is a triumph of computer science, blending rigid mathematical theory with practical software engineering. From the low-level <strong>Storage Manager</strong> optimizing disk access to the high-level <strong>SQL</strong> logic handling complex joins and aggregations, the RDBMS is designed for data integrity and reliability.</p>
+<p>As you design systems, remember:</p>
+<ol>
+<li><strong>Normalize</strong> to ensure consistency, but be willing to <strong>Denormalize</strong> judiciously for read performance.</li>
+<li><strong>Constraints</strong> are your friends; let the database enforce the rules, not just the application code.</li>
+<li>Understand the <strong>Execution Order</strong> of SQL to write performant queries.</li>
+</ol>
+<p>Mastering these units provides the capability to handle not just a few thousand records, but to architect systems that scale to terabytes of mission-critical data.</p>
+</article>
+      <aside class="blog-meta-col">
+        <section class="blog-meta-card" aria-label="Author details">
+          <p class="blog-meta-label">Author</p>
+          <p class="blog-meta-value">Manish Tiwari</p>
+        </section>
+        <section class="blog-meta-card" aria-label="Publication date">
+          <p class="blog-meta-label">Published</p>
+          <p class="blog-meta-value">Dec 30, 2025</p>
+        </section>
+        <section class="blog-meta-card" aria-label="Blog views">
+          <p class="blog-meta-label">Views</p>
+          <div class="blog-view-counter">
+            <img src="https://komarev.com/ghpvc/?username=manish-9245&label=VIEWS&color=0e75b6&style=flat" alt="Blog views counter" loading="lazy" decoding="async" />
+          </div>
+        </section>
+        <section class="blog-meta-card" aria-label="Blog navigation">
+          <p class="blog-meta-label">Navigate</p>
+          <a class="blog-meta-link" href="/blogs.html">← All posts</a>
+        </section>
+      </aside>
+    </div>
+    <section class="surface related-posts" id="related-posts" aria-label="Related blog posts">
+        <h2>Related Posts</h2>
+        <div class="related-posts-grid">
+          
+            <article class="related-card">
+              <p class="related-meta">
+                <span>Dec 29, 2025</span>
+                <span class="blog-card-dot">•</span>
+                <span>AI</span>
+              </p>
+              <h3 class="related-title"><a href="/textbook-for-excel-exam.html">Textbook for Excel Exam</a></h3>
+              <p class="related-desc">In the world of data engineering and business intelligence, Microsoft Excel remains the ubiquitous “first draft” of data analysis. While Python, SQL, and Tableau dominate big data pipelines, Excel is...</p>
+            </article>
+          
+            <article class="related-card">
+              <p class="related-meta">
+                <span>Dec 17, 2025</span>
+                <span class="blog-card-dot">•</span>
+                <span>AI</span>
+              </p>
+              <h3 class="related-title"><a href="/building-a-virtual-data-analyst-architecting-agentic-ai-workflows-over-power-bi.html">Building a Virtual Data Analyst: Architecting Agentic AI Workflows over Power BI</a></h3>
+              <p class="related-desc">In the rush to adopt Generative AI, organizations have flooded their backlogs with “Chat with your Data” initiatives. Most of these projects follow a predictable, often disappointing, pattern: a text-...</p>
+            </article>
+          
+            <article class="related-card">
+              <p class="related-meta">
+                <span>Dec 18, 2025</span>
+                <span class="blog-card-dot">•</span>
+                <span>AI</span>
+              </p>
+              <h3 class="related-title"><a href="/how-i-built-an-ai-blogger-agent-using-n8n-and-jekyll.html">How I built an AI blogger Agent using N8N and Jekyll</a></h3>
+              <p class="related-desc">As engineers, we often suffer from the “cobbler’s children” syndrome. We build complex, scalable systems for clients and employers, yet our own personal portfolios and blogs gather dust. The friction...</p>
+            </article>
+          
+        </div></section>
+    <section class="surface blog-share" id="blog-share" aria-label="Share this post">
+      <h2>Share this post</h2>
+      <div class="blog-share-actions">
+        <a class="blog-share-link" aria-label="Share on LinkedIn" title="Share on LinkedIn" target="_blank" rel="noopener noreferrer" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fbuildwithmanish.com%2Fposts%2Frelational-database-management-system.html"><svg class="blog-share-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.94 8.5H3.56V20h3.38V8.5zM5.25 3C4.14 3 3.2 3.94 3.2 5.05c0 1.1.9 2.05 2.01 2.05h.02c1.12 0 2.02-.95 2.02-2.05C7.25 3.94 6.36 3 5.25 3zM20.8 13.4c0-3.13-1.67-5.15-4.66-5.15-2.15 0-3.11 1.2-3.65 2.03V8.5H9.1c.04 1.17 0 11.5 0 11.5h3.38v-6.42c0-.34.03-.68.12-.92.27-.68.88-1.4 1.9-1.4 1.34 0 1.88 1.05 1.88 2.58V20h3.38v-6.6z"/></svg></a>
+        <a class="blog-share-link" aria-label="Share on X" title="Share on X" target="_blank" rel="noopener noreferrer" href="https://x.com/intent/tweet?url=https%3A%2F%2Fbuildwithmanish.com%2Fposts%2Frelational-database-management-system.html&text=Relational%20Database%20Management%20System%3A%20An%20Engineering%20Deep-Dive"><svg class="blog-share-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 2H22l-6.77 7.74L23 22h-6.1l-4.78-6.24L6.66 22H3.55l7.24-8.27L1 2h6.25l4.32 5.7L18.9 2zm-1.07 18h1.69L6.33 3.9H4.52L17.83 20z"/></svg></a>
+        <button type="button" class="blog-share-copy" aria-label="Copy link" title="Copy link" data-share-copy data-url="https://buildwithmanish.com/posts/relational-database-management-system.html"><svg class="blog-share-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 7a3 3 0 0 1 3-3h7a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3h-1v-1.5h1A1.5 1.5 0 0 0 19.5 15V7A1.5 1.5 0 0 0 18 5.5h-7A1.5 1.5 0 0 0 9.5 7v1H8V7zm-2 3A3 3 0 0 1 9 7h7a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H9a3 3 0 0 1-3-3v-8zm3-1.5A1.5 1.5 0 0 0 7.5 10v8A1.5 1.5 0 0 0 9 19.5h7a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 16 8.5H9z"/></svg></button>
+      </div></section>
+    <div class="surface" style="padding-top:0">
+      <a href="/blogs.html">← Back to all blogs</a>
+    </div></main>
 
     <footer class="site-footer">
       <div class="surface footer-row">
@@ -1374,7 +1658,7 @@
                     <span aria-hidden="true">•</span>
                     <span>${tags[0]}</span>
                   </p>
-                  <h3 class="related-title"><a href="./blog.html?post=${encodeURIComponent(post.slug)}">${post.title}</a></h3>
+                  <h3 class="related-title"><a href="/blog.html?post=${encodeURIComponent(post.slug)}">${post.title}</a></h3>
                   <p class="related-desc">${post.description || ""}</p>
                 </article>`;
               })
@@ -1460,7 +1744,7 @@
         }
 
         if (!slug) {
-          main.innerHTML = `<div class="blog-error"><p>No post specified.</p><p><a href="./blogs.html">← All blogs</a></p></div>`;
+          main.innerHTML = `<div class="blog-error"><p>No post specified.</p><p><a href="/blogs.html">← All blogs</a></p></div>`;
           main.classList.remove("is-loading");
           return;
         }
@@ -1497,7 +1781,7 @@
             throw new Error("Post body unavailable");
           }
         } catch {
-          main.innerHTML = `<div class="blog-error"><p>Post not found.</p><p><a href="./blogs.html">← All blogs</a></p></div>`;
+          main.innerHTML = `<div class="blog-error"><p>Post not found.</p><p><a href="/blogs.html">← All blogs</a></p></div>`;
           main.classList.remove("is-loading");
           return;
         }
@@ -1690,7 +1974,7 @@
         main.classList.remove("is-loading");
       }
 
-      loadPost();
+      // Static Page: loadPost() disabled
     </script>
   </body>
 </html>

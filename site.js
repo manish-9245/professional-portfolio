@@ -284,7 +284,7 @@ async function getBlogIndex() {
     return cached.data;
   }
 
-  const response = await fetch("./posts/index.json");
+  const response = await fetch("/posts/index.json");
   if (!response.ok) {
     throw new Error("Failed to load blog index");
   }
@@ -297,19 +297,19 @@ async function getBlogIndex() {
 function createBlogCard(post) {
   const slug = encodeURIComponent(post.slug);
   const tag = getBlogTag(post.title);
-  const href = `./blog.html?post=${slug}`;
+  const href = `./posts/${slug}.html`;
 
   return `
     <article class="panel blog-card">
       <p class="blog-card-meta">
-        <span>${post.displayDate}</span>
+        <span class="muted">${post.displayDate}</span>
         <span class="blog-card-dot" aria-hidden="true">•</span>
         <span class="blog-chip">${tag}</span>
       </p>
-      <h2 class="blog-card-title"><a href="${href}">${post.title}</a></h2>
-      <p class="blog-card-desc">${post.description}</p>
+      <h2 class="blog-card-title"><a href="${href}" class="blog-card-link">${post.title}</a></h2>
+      <p class="blog-card-desc muted">${post.description}</p>
       <div class="actions-row">
-        <a href="${href}">Read article →</a>
+        <a href="${href}" class="blog-read-more">Read article <svg class="icon-arrow" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" /></svg></a>
       </div>
     </article>`;
 }
@@ -317,21 +317,23 @@ function createBlogCard(post) {
 function createFeaturedBlogCard(post) {
   const slug = encodeURIComponent(post.slug);
   const tag = getBlogTag(post.title);
-  const href = `./blog.html?post=${slug}`;
+  const href = `./posts/${slug}.html`;
 
   return `
     <article class="panel blog-card blog-card--featured">
-      <p class="blog-card-meta">
-        <span>Latest</span>
-        <span class="blog-card-dot" aria-hidden="true">•</span>
-        <span>${post.displayDate}</span>
-        <span class="blog-card-dot" aria-hidden="true">•</span>
-        <span class="blog-chip">${tag}</span>
-      </p>
-      <h2 class="blog-card-title"><a href="${href}">${post.title}</a></h2>
-      <p class="blog-card-desc">${post.description}</p>
-      <div class="actions-row">
-        <a href="${href}">Read full article →</a>
+      <div class="blog-card-content">
+        <p class="blog-card-meta">
+          <span class="kicker kicker--small">Latest Article</span>
+          <span class="blog-card-dot" aria-hidden="true">•</span>
+          <span class="muted">${post.displayDate}</span>
+          <span class="blog-card-dot" aria-hidden="true">•</span>
+          <span class="blog-chip">${tag}</span>
+        </p>
+        <h2 class="blog-card-title"><a href="${href}" class="blog-card-link">${post.title}</a></h2>
+        <p class="blog-card-desc">${post.description}</p>
+        <div class="actions-row">
+          <a href="${href}" class="blog-read-more">Read full article <svg class="icon-arrow" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" /></svg></a>
+        </div>
       </div>
     </article>`;
 }
@@ -453,13 +455,13 @@ function prefetchBlogPost(slug) {
 function createHomepageBlogCard(post) {
   const slug = encodeURIComponent(post.slug);
   const tag = getBlogTag(post.title);
-  const href = `./blog.html?post=${slug}`;
+  const href = `./posts/${slug}.html`;
 
   return `
-    <a class="panel blog-card" href="${href}">
+    <a class="panel blog-card blog-card--compact" href="${href}">
       <span class="blog-tag">${tag}</span>
       <h3 class="blog-title">${post.title}</h3>
-      <span class="muted blog-read">Read article &#8250;</span>
+      <span class="muted blog-read">Read article <svg class="icon-arrow" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" /></svg></span>
     </a>`;
 }
 
@@ -619,12 +621,234 @@ function initializeProjectCarousels() {
   });
 }
 
+function initializeBlogPostFeatures() {
+  const prose = document.getElementById("blog-prose");
+  const toc = document.getElementById("blog-toc");
+
+  if (prose) {
+    initializeCodeCopy(prose);
+    initializeImageModal(prose);
+  }
+
+  if (toc && prose) {
+    initTocScroll(toc);
+  }
+
+  // Related posts and share actions initialization if needed
+  // For static pages, we can check if these sections are empty and fill them if they are
+  const relatedSection = document.getElementById("related-posts");
+  if (relatedSection && !relatedSection.innerHTML.trim()) {
+    // This could fetch index.json and render related posts
+  }
+}
+
+async function copyText(text) {
+  if (navigator.clipboard && window.isSecureContext) {
+    await navigator.clipboard.writeText(text);
+    return;
+  }
+  const textarea = document.createElement("textarea");
+  textarea.value = text;
+  textarea.setAttribute("readonly", "");
+  textarea.style.position = "absolute";
+  textarea.style.left = "-9999px";
+  document.body.appendChild(textarea);
+  textarea.select();
+  document.execCommand("copy");
+  textarea.remove();
+}
+
+function initializeCodeCopy(container) {
+  container.querySelectorAll("pre").forEach((pre) => {
+    if (pre.parentElement && pre.parentElement.classList.contains("code-block-shell")) {
+      return;
+    }
+
+    const code = pre.querySelector("code");
+    if (!code) {
+      return;
+    }
+
+    const wrapper = document.createElement("div");
+    wrapper.className = "code-block-shell";
+    pre.parentNode.insertBefore(wrapper, pre);
+
+    const toolbar = document.createElement("div");
+    toolbar.className = "code-window-bar";
+
+    const controls = document.createElement("div");
+    controls.className = "code-window-controls";
+    controls.innerHTML = `
+      <span class="code-window-dot close" aria-hidden="true">×</span>
+      <span class="code-window-dot minimize" aria-hidden="true">−</span>
+      <span class="code-window-dot maximize" aria-hidden="true">+</span>`;
+
+    const langName = code.getAttribute("data-lang") || "";
+    const langDisplay = document.createElement("span");
+    langDisplay.className = "code-window-lang";
+    langDisplay.textContent = langName.length < 4 ? langName.toUpperCase() : langName.charAt(0).toUpperCase() + langName.slice(1);
+
+    toolbar.appendChild(controls);
+    toolbar.appendChild(langDisplay);
+    wrapper.appendChild(toolbar);
+    wrapper.appendChild(pre);
+
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "code-copy-button";
+    button.textContent = "Copy";
+    button.setAttribute("aria-label", "Copy code to clipboard");
+    wrapper.appendChild(button);
+
+    button.addEventListener("click", async () => {
+      try {
+        await copyText(code.innerText);
+        button.textContent = "Copied";
+        button.classList.add("is-copied");
+        window.setTimeout(() => {
+          button.textContent = "Copy";
+          button.classList.remove("is-copied");
+        }, 1600);
+      } catch {
+        button.textContent = "Failed";
+        window.setTimeout(() => {
+          button.textContent = "Copy";
+        }, 1600);
+      }
+    });
+  });
+}
+
+function initializeImageModal(container) {
+  const modal = document.getElementById("blog-image-modal");
+  if (!modal) return;
+
+  const modalImg = modal.querySelector("img");
+  const modalCaption = modal.querySelector(".blog-image-caption");
+  const modalLoader = modal.querySelector(".blog-image-loader");
+  const modalBody = modal.querySelector(".blog-image-modal-body");
+
+  container.querySelectorAll("img").forEach((img) => {
+    img.addEventListener("click", () => {
+      modalImg.onload = null;
+      modalImg.onerror = null;
+
+      modalImg.classList.remove("is-ready");
+      modalCaption.classList.remove("is-visible");
+
+      // Calculate size
+      const naturalW = img.naturalWidth || 800;
+      const naturalH = img.naturalHeight || 600;
+      const aspect = naturalW / naturalH;
+      const winW = window.innerWidth * 0.9;
+      const winH = window.innerHeight * 0.8;
+
+      let renderW = naturalW;
+      let renderH = naturalH;
+
+      if (renderW > winW) {
+        renderW = winW;
+        renderH = renderW / aspect;
+      }
+      if (renderH > winH) {
+        renderH = winH;
+        renderW = renderH * aspect;
+      }
+
+      modalBody.style.setProperty("--media-w", `${renderW}px`);
+      modalBody.style.setProperty("--media-h", `${renderH}px`);
+
+      modalLoader.classList.add("is-active");
+
+      modalImg.onload = () => {
+        modalImg.classList.add("is-ready");
+        modalLoader.classList.remove("is-active");
+        if (modalCaption.textContent.trim()) {
+          modalCaption.classList.add("is-visible");
+        }
+      };
+
+      modalImg.src = img.src;
+      modalCaption.textContent = img.alt || "";
+      modal.showModal();
+    });
+  });
+
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal || e.target.closest("[data-blog-image-close]")) {
+      modal.close();
+    }
+  });
+}
+
+function initTocScroll(toc) {
+  const links = [...toc.querySelectorAll("a")];
+  if (!links.length) return;
+
+  const obs = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          links.forEach((l) => l.classList.remove("active"));
+          const active = links.find((l) => l.getAttribute("href") === "#" + e.target.id);
+          if (active) active.classList.add("active");
+        }
+      });
+    },
+    { rootMargin: "-60px 0px -70% 0px" }
+  );
+
+  document.querySelectorAll("h2[id], h3[id]").forEach((h) => obs.observe(h));
+}
+
 function initializePageFeatures() {
   initializeThemeToggle();
   initializeMobileNavigation();
   initializeHomepageRecentBlogs();
   initializeBlogsPage();
   initializeProjectCarousels();
+  initializePredictivePrefetch();
+  initializeBlogPostFeatures();
+}
+
+const PREFETCH_CACHE = new Set();
+
+function prefetchPage(url) {
+  try {
+    const destination = new URL(url, window.location.href);
+    const path = normalizePath(destination.pathname);
+    if (PREFETCH_CACHE.has(path)) {
+      return;
+    }
+
+    PREFETCH_CACHE.add(path);
+    fetch(destination.href, {
+      headers: {
+        "X-Requested-With": "spa-navigation",
+      },
+    }).catch(() => {
+      PREFETCH_CACHE.delete(path);
+    });
+  } catch {
+    // ignore
+  }
+}
+
+function initializePredictivePrefetch() {
+  document.querySelectorAll("a").forEach((link) => {
+    if (link.dataset.prefetchBound === "true" || !isInternalNavigableLink(link)) {
+      return;
+    }
+
+    link.addEventListener(
+      "mouseenter",
+      () => {
+        prefetchPage(link.href);
+      },
+      { once: true }
+    );
+    link.dataset.prefetchBound = "true";
+  });
 }
 
 function isInternalNavigableLink(link) {
@@ -634,8 +858,13 @@ function isInternalNavigableLink(link) {
 
   try {
     const target = new URL(link.href, window.location.href);
-    if (normalizePath(target.pathname) === "blog.html" && target.searchParams.get("post")) {
+    const normalizedPath = normalizePath(target.pathname);
+    if (normalizedPath === "blog.html" && target.searchParams.get("post")) {
       return false;
+    }
+    // Allow posts/*.html but ensure it's handled as an internal link
+    if (normalizedPath.startsWith("posts/") && normalizedPath.endsWith(".html")) {
+      return true;
     }
   } catch {
     // fall through for non-standard href values

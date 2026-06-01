@@ -3,68 +3,41 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title id="page-title">Blog · Manish Tiwari</title>
-    <meta
-      id="page-desc"
-      name="description"
-      content="Blog post by Manish Tiwari"
-    />
+    <title>How I Built My Portfolio Website and Achieved a Perfect Lighthouse Score · Manish Tiwari</title>
+    <meta name="description" content="A deep dive into the architecture, tech stack, and best practices that helped my portfolio achieve a perfect 100/100/100/100 Lighthouse score." />
     <meta name="robots" content="index, follow" />
-    <link
-      id="page-canonical"
-      rel="canonical"
-      href="https://buildwithmanish.com/blog.html"
-    />
+    <link rel="canonical" href="https://buildwithmanish.com/posts/how-i-built-my-portfolio-website-and-achieved-a-perfect-lighthouse-score.html" />
     <meta property="og:site_name" content="Manish Tiwari" />
     <meta id="og-type" property="og:type" content="article" />
-    <meta id="og-title" property="og:title" content="Blog · Manish Tiwari" />
-    <meta
-      id="og-desc"
-      property="og:description"
-      content="Blog post by Manish Tiwari"
-    />
-    <meta
-      id="og-url"
-      property="og:url"
-      content="https://buildwithmanish.com/blog.html"
-    />
-    <meta
-      id="og-image"
-      property="og:image"
-      content="https://buildwithmanish.com/image/optimized/aiblogs-20260314-175545.webp"
-    />
+    <meta property="og:title" content="How I Built My Portfolio Website and Achieved a Perfect Lighthouse Score" />
+    <meta property="og:description" content="A deep dive into the architecture, tech stack, and best practices that helped my portfolio achieve a perfect 100/100/100/100 Lighthouse score." />
+    <meta property="og:url" content="https://buildwithmanish.com/posts/how-i-built-my-portfolio-website-and-achieved-a-perfect-lighthouse-score.html" />
+    <meta property="og:image" content="https://buildwithmanish.com/image/optimized/1.webp" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta id="tw-title" name="twitter:title" content="Blog · Manish Tiwari" />
-    <meta
-      id="tw-desc"
-      name="twitter:description"
-      content="Blog post by Manish Tiwari"
-    />
-    <meta
-      id="tw-image"
-      name="twitter:image"
-      content="https://buildwithmanish.com/image/optimized/aiblogs-20260314-175545.webp"
-    />
-    <script id="post-schema" type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "BlogPosting",
-        "headline": "Engineering Blog",
-        "author": {
-          "@type": "Person",
-          "name": "Manish Tiwari",
-          "url": "https://buildwithmanish.com/about.html"
-        },
-        "publisher": {
-          "@type": "Person",
-          "name": "Manish Tiwari"
-        },
-        "mainEntityOfPage": {
-          "@type": "WebPage",
-          "@id": "https://buildwithmanish.com/blog.html"
-        }
-      }
-    </script>
+    <meta name="twitter:title" content="How I Built My Portfolio Website and Achieved a Perfect Lighthouse Score" />
+    <meta name="twitter:description" content="A deep dive into the architecture, tech stack, and best practices that helped my portfolio achieve a perfect 100/100/100/100 Lighthouse score." />
+    <meta name="twitter:image" content="https://buildwithmanish.com/image/optimized/1.webp" />
+    <script id="post-schema" type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "How I Built My Portfolio Website and Achieved a Perfect Lighthouse Score",
+  "description": "A deep dive into the architecture, tech stack, and best practices that helped my portfolio achieve a perfect 100/100/100/100 Lighthouse score.",
+  "datePublished": "2026-03-15",
+  "author": {
+    "@type": "Person",
+    "name": "Manish Tiwari",
+    "url": "https://buildwithmanish.com/about.html"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Manish Tiwari"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://buildwithmanish.com/posts/how-i-built-my-portfolio-website-and-achieved-a-perfect-lighthouse-score.html"
+  },
+  "image": "https://buildwithmanish.com/image/optimized/1.webp"
+}</script>
     <link
       rel="icon"
       type="image/webp"
@@ -824,7 +797,333 @@
       </div>
     </header>
 
-    <main id="blog-main" data-router-view class="is-loading"></main>
+    <main data-router-view>
+    <header class="blog-post-header">
+      <p class="muted kicker">Blog</p>
+      <h1>How I Built My Portfolio Website and Achieved a Perfect Lighthouse Score</h1>
+      <p class="muted">Mar 15, 2026</p>
+    </header>
+    <div class="blog-post-layout">
+      <nav class="blog-toc" id="blog-toc" aria-label="Table of contents"><p class="blog-toc-title">Contents</p><ol><li><a href="#what-i-actually-built">What I Actually Built</a></li><li><a href="#the-core-philosophy-static-first-javascript-last">The Core Philosophy: Static First, JavaScript Last</a></li><li><a href="#performance-improvements-that-moved-the-needle">Performance Improvements That Moved the Needle</a></li><li class="toc-h3"><a href="#1-i-kept-the-runtime-extremely-small">1. I Kept the Runtime Extremely Small</a></li><li class="toc-h3"><a href="#2-i-used-a-static-first-multipage-architecture">2. I Used a Static-First Multipage Architecture</a></li><li class="toc-h3"><a href="#3-i-optimized-images-aggressively">3. I Optimized Images Aggressively</a></li><li class="toc-h3"><a href="#4-i-eliminated-avoidable-layout-shift">4. I Eliminated Avoidable Layout Shift</a></li><li class="toc-h3"><a href="#5-i-lazy-loaded-expensive-embeds-instead-of-front-loading-them">5. I Lazy-Loaded Expensive Embeds Instead of Front-Loading Them</a></li><li class="toc-h3"><a href="#6-i-cached-read-mostly-content-in-session-storage">6. I Cached Read-Mostly Content in Session Storage</a></li><li class="toc-h3"><a href="#7-i-used-progressive-enhancement-for-navigation-instead-of-a-heavy-router">7. I Used Progressive Enhancement for Navigation Instead of a Heavy Router</a></li><li><a href="#accessibility-improvements-that-helped-me-reach-100">Accessibility Improvements That Helped Me Reach 100</a></li><li class="toc-h3"><a href="#1-i-used-real-semantic-landmarks-everywhere">1. I Used Real Semantic Landmarks Everywhere</a></li><li class="toc-h3"><a href="#2-every-interactive-control-exposes-intent-clearly">2. Every Interactive Control Exposes Intent Clearly</a></li><li class="toc-h3"><a href="#3-keyboard-navigation-was-treated-as-a-first-class-requirement">3. Keyboard Navigation Was Treated as a First-Class Requirement</a></li><li class="toc-h3"><a href="#4-decorative-and-informational-images-are-distinguished-properly">4. Decorative and Informational Images Are Distinguished Properly</a></li><li class="toc-h3"><a href="#5-theme-switching-works-accessibly">5. Theme Switching Works Accessibly</a></li><li><a href="#best-practice-improvements-beyond-raw-speed">Best-Practice Improvements Beyond Raw Speed</a></li><li class="toc-h3"><a href="#1-i-kept-third-party-usage-minimal-and-intentional">1. I Kept Third-Party Usage Minimal and Intentional</a></li><li class="toc-h3"><a href="#2-external-links-are-opened-safely">2. External Links Are Opened Safely</a></li><li class="toc-h3"><a href="#3-the-site-is-resilient-when-features-fail">3. The Site Is Resilient When Features Fail</a></li><li class="toc-h3"><a href="#4-build-time-automation-prevents-content-drift">4. Build-Time Automation Prevents Content Drift</a></li><li><a href="#seo-improvements-that-closed-the-last-gap">SEO Improvements That Closed the Last Gap</a></li><li class="toc-h3"><a href="#1-every-page-has-strong-head-metadata">1. Every Page Has Strong Head Metadata</a></li><li class="toc-h3"><a href="#2-structured-data-is-present">2. Structured Data Is Present</a></li><li class="toc-h3"><a href="#3-crawlability-is-explicit-not-left-to-chance">3. Crawlability Is Explicit, Not Left to Chance</a></li><li class="toc-h3"><a href="#4-shareable-blog-urls-are-generated-properly">4. Shareable Blog URLs Are Generated Properly</a></li><li><a href="#the-small-details-that-also-matter">The Small Details That Also Matter</a></li><li><a href="#what-this-project-reinforced-for-me">What This Project Reinforced for Me</a></li><li><a href="#conclusion">Conclusion</a></li></ol></nav>
+      <article class="blog-prose" id="blog-prose"><p><img src="/image/optimized/1.webp" alt="Anatomy of a Perfect Web Score"></p>
+<p>When it came time to rebuild my portfolio website, I had a single, slightly obsessive goal: <strong>A perfect 100/100 in Performance, Accessibility, Best Practices, and SEO on Google Lighthouse.</strong></p>
+<p>You can verify the result in this <a href="https://pagespeed.web.dev/analysis/https-www-buildwithmanish-com-index-html/gfdlhz53me?form_factor=desktop">PageSpeed Insights desktop report</a>.</p>
+<p><img src="/image/optimized/score.webp" alt="Google Lighthouse 100/100/100/100 Score Requirements"></p>
+<p>In an era where many personal sites ship a framework runtime, hydration logic, analytics scripts, multiple font files, and oversized images before showing a single line of useful content, getting a perfect score required me to work backwards from the audit itself.</p>
+<p>I treated Lighthouse as a systems-design problem. Every point lost usually comes from one of four things:</p>
+<ol>
+<li>Too much JavaScript.</li>
+<li>Too many bytes on the critical path.</li>
+<li>Unstable layouts and inaccessible interactions.</li>
+<li>Weak metadata and crawlability.</li>
+</ol>
+<p>This portfolio now solves those issues deliberately, not accidentally. Here is the complete breakdown of the improvements I implemented across the site.</p>
+<h2 id="what-i-actually-built">What I Actually Built</h2>
+<p>This is not just a single landing page. It is a static-first portfolio platform with a surprisingly capable architecture:</p>
+<ul>
+<li>Individual static pages for home, about, projects, blogs, and contact.</li>
+<li>A lightweight enhanced-navigation layer for internal page transitions.</li>
+<li>A markdown-driven blog system powered by a Node generation script.</li>
+<li>Auto-generated <code>posts/index.json</code>, blog share pages, and <code>sitemap.xml</code>.</li>
+<li>Searchable and filterable blog listings with in-session caching.</li>
+<li>A theme system that respects system preference and user choice.</li>
+<li>A scheduler modal that only loads its embed when the user actually asks for it.</li>
+</ul>
+<p>That last point matters a lot: the site feels dynamic, but it does not pay the usual framework tax.</p>
+<h2 id="the-core-philosophy-static-first-javascript-last">The Core Philosophy: Static First, JavaScript Last</h2>
+<p>The biggest decision was also the most important one: <strong>I did not use React, Next.js, Vue, or any SPA framework for the public site.</strong></p>
+<p>For a content-heavy portfolio, the browser already knows how to do the hard parts extremely well:</p>
+<ul>
+<li>parse HTML,</li>
+<li>apply CSS,</li>
+<li>lazy-load images,</li>
+<li>handle links,</li>
+<li>manage focus,</li>
+<li>and render semantic content instantly.</li>
+</ul>
+<p>So instead of shipping a virtual DOM to paint static content, I used:</p>
+<ul>
+<li><strong>Semantic HTML5</strong> for structure,</li>
+<li><strong>Oat UI</strong> for a tiny semantic baseline,</li>
+<li><strong>Vanilla CSS</strong> for layout and visual polish,</li>
+<li><strong>Vanilla JavaScript</strong> only for genuinely interactive enhancements,</li>
+<li><strong>Node.js at build time</strong> to keep content, share pages, and sitemap data in sync.</li>
+</ul>
+<p>That one architectural choice removed a huge amount of JavaScript execution, parsing, hydration, and long-task overhead before I even started micro-optimizing.</p>
+<h2 id="performance-improvements-that-moved-the-needle">Performance Improvements That Moved the Needle</h2>
+<p><img src="/image/optimized/3.webp" alt="Semantic UI architecture with Oat"></p>
+<h3 id="1-i-kept-the-runtime-extremely-small">1. I Kept the Runtime Extremely Small</h3>
+<p>The site uses a very small amount of client-side JavaScript in <code>site.js</code>, and it is loaded with <code>defer</code> so HTML parsing is never blocked.</p>
+<p>I also avoided the usual payload bloat:</p>
+<ul>
+<li>no framework runtime,</li>
+<li>no hydration payload,</li>
+<li>no client-side router bundle,</li>
+<li>no tracking-heavy third-party script stack,</li>
+<li>no custom webfont downloads on the critical path.</li>
+</ul>
+<p>On the homepage, I also kept critical above-the-fold layout CSS directly in the document head so the first render does not have to wait on a large styling pipeline.</p>
+<p>That dramatically improves initial paint, main-thread availability, and total blocking time.</p>
+<h3 id="2-i-used-a-static-first-multipage-architecture">2. I Used a Static-First Multipage Architecture</h3>
+<p>The main pages are already present as real HTML documents:</p>
+<ul>
+<li><code>index.html</code></li>
+<li><code>about.html</code></li>
+<li><code>projects.html</code></li>
+<li><code>blogs.html</code></li>
+<li><code>contact.html</code></li>
+</ul>
+<p>That means the browser receives usable content immediately. Internal navigation is progressively enhanced later with <code>fetch</code>, DOM replacement, and the View Transitions API when available. If JavaScript fails or a feature is unsupported, the site still works as normal because standard links remain the foundation.</p>
+<p>This is one of the cleanest ways to get both excellent UX and excellent Lighthouse numbers.</p>
+<p>It also keeps state management refreshingly simple: for things like navigation state and theme state, the DOM is effectively the source of truth through native attributes such as <code>data-theme</code>, <code>aria-expanded</code>, and <code>aria-current</code> rather than a client-side state container.</p>
+<h3 id="3-i-optimized-images-aggressively">3. I Optimized Images Aggressively</h3>
+<p><img src="/image/optimized/2.webp" alt="Oat UI vs Utility CSS Architecture"></p>
+<p>Images are one of the easiest ways to destroy performance, so I treated them like production assets instead of decoration.</p>
+<p>The improvements include:</p>
+<ul>
+<li>Serving optimized assets from <code>image/optimized/</code>.</li>
+<li>Using responsive <code>srcset</code> and <code>sizes</code> for major visuals.</li>
+<li>Marking only the true hero image as <code>fetchpriority="high"</code> and <code>loading="eager"</code>.</li>
+<li>Marking non-critical images as <code>loading="lazy"</code>.</li>
+<li>Using <code>decoding="async"</code> to reduce decode blocking.</li>
+<li>Adding explicit <code>width</code> and <code>height</code> values where appropriate.</li>
+<li>Backing those dimensions up with CSS <code>aspect-ratio</code> rules.</li>
+</ul>
+<p>This combination improves the LCP path while also protecting against Cumulative Layout Shift (CLS).</p>
+<h3 id="4-i-eliminated-avoidable-layout-shift">4. I Eliminated Avoidable Layout Shift</h3>
+<p>Perfect performance is not just about speed. It is also about stability.</p>
+<p>To keep CLS at effectively zero, I reserved space ahead of time:</p>
+<ul>
+<li>Hero and project media use stable <code>aspect-ratio</code> values.</li>
+<li>Dynamic blog sections reserve space with <code>min-height</code> placeholders.</li>
+<li>Images include intrinsic dimensions.</li>
+<li><code>scrollbar-gutter: stable</code> prevents content jumps when scrollbars appear.</li>
+</ul>
+<p>A surprising amount of Lighthouse pain comes from tiny layout jumps that feel harmless during development but are obvious to the audit.</p>
+<h3 id="5-i-lazy-loaded-expensive-embeds-instead-of-front-loading-them">5. I Lazy-Loaded Expensive Embeds Instead of Front-Loading Them</h3>
+<p>The scheduling experience uses a modal with an embedded calendar, but the iframe is <strong>not</strong> loaded on first paint.</p>
+<p>Instead, the iframe source is only assigned when the user opens the scheduler.</p>
+<p>That means:</p>
+<ul>
+<li>no third-party embed cost during initial render,</li>
+<li>no unnecessary network requests for users who never open it,</li>
+<li>and no wasted execution time impacting the homepage score.</li>
+</ul>
+<p>This one decision alone protects the critical path from a very common portfolio-site mistake.</p>
+<h3 id="6-i-cached-read-mostly-content-in-session-storage">6. I Cached Read-Mostly Content in Session Storage</h3>
+<p>The blog index and prefetched posts are cached in-session.</p>
+<p>That means repeat visits to the blogs page avoid redundant fetches for <code>posts/index.json</code>, and prefetched markdown posts can render faster after navigation. It is a small optimization, but it improves responsiveness without adding architectural complexity.</p>
+<h3 id="7-i-used-progressive-enhancement-for-navigation-instead-of-a-heavy-router">7. I Used Progressive Enhancement for Navigation Instead of a Heavy Router</h3>
+<p>The enhanced internal navigation layer does three things well:</p>
+<ul>
+<li>fetches internal HTML pages,</li>
+<li>swaps only the main content region,</li>
+<li>uses <code>document.startViewTransition()</code> when the browser supports it.</li>
+</ul>
+<p>This produces a smooth app-like feel <strong>without</strong> the cost of turning the site into a full SPA.</p>
+<p>If the feature is unavailable, the browser falls back naturally to normal page navigation. That resilience helps both user experience and best-practice quality.</p>
+<h2 id="accessibility-improvements-that-helped-me-reach-100">Accessibility Improvements That Helped Me Reach 100</h2>
+<p>Accessibility was not a post-processing step. It shaped the markup from the beginning.</p>
+<h3 id="1-i-used-real-semantic-landmarks-everywhere">1. I Used Real Semantic Landmarks Everywhere</h3>
+<p>The site is built with native structure instead of anonymous <code>div</code> soup:</p>
+<ul>
+<li><code>header</code></li>
+<li><code>nav</code></li>
+<li><code>main</code></li>
+<li><code>section</code></li>
+<li><code>article</code></li>
+<li><code>aside</code></li>
+<li><code>footer</code></li>
+<li><code>dialog</code></li>
+</ul>
+<p>This dramatically improves screen-reader navigation and also tends to make the DOM easier to maintain.</p>
+<h3 id="2-every-interactive-control-exposes-intent-clearly">2. Every Interactive Control Exposes Intent Clearly</h3>
+<p>Buttons and links include the attributes Lighthouse expects because they are also the attributes real users need:</p>
+<ul>
+<li><code>aria-label</code> on icon-only and utility controls,</li>
+<li><code>aria-expanded</code> on the mobile navigation toggle,</li>
+<li><code>aria-controls</code> to tie toggles to controlled regions,</li>
+<li><code>aria-current="page"</code> for the active nav item,</li>
+<li><code>aria-pressed</code> on the theme toggle,</li>
+<li><code>aria-live="polite"</code> for dynamic blog content.</li>
+</ul>
+<p>This makes the interface much more understandable for assistive technologies.</p>
+<h3 id="3-keyboard-navigation-was-treated-as-a-first-class-requirement">3. Keyboard Navigation Was Treated as a First-Class Requirement</h3>
+<p>Visible focus states are implemented with <code>:focus-visible</code>, not ignored or removed.</p>
+<p>That means keyboard users can reliably track where they are across:</p>
+<ul>
+<li>navigation,</li>
+<li>theme toggles,</li>
+<li>social links,</li>
+<li>carousel controls,</li>
+<li>and interactive form-like controls.</li>
+</ul>
+<p>Many sites lose accessibility points simply because they style hover states beautifully and forget focus altogether.</p>
+<h3 id="4-decorative-and-informational-images-are-distinguished-properly">4. Decorative and Informational Images Are Distinguished Properly</h3>
+<p>I used empty alt text for decorative branding where the image should be ignored, and descriptive alt text where the image communicates actual information.</p>
+<p>That prevents redundant screen-reader noise while still preserving meaning where it matters.</p>
+<h3 id="5-theme-switching-works-accessibly">5. Theme Switching Works Accessibly</h3>
+<p>The theme system is not just cosmetic. It:</p>
+<ul>
+<li>respects <code>prefers-color-scheme</code>,</li>
+<li>persists the user’s explicit choice,</li>
+<li>updates the UI labels and pressed state correctly,</li>
+<li>and keeps the embedded scheduler aligned with the active theme.</li>
+</ul>
+<p>The CSS also declares <code>color-scheme</code>, which helps browsers render built-in UI controls correctly in light and dark modes.</p>
+<h2 id="best-practice-improvements-beyond-raw-speed">Best-Practice Improvements Beyond Raw Speed</h2>
+<p>Lighthouse Best Practices is where small engineering decisions start to matter.</p>
+<h3 id="1-i-kept-third-party-usage-minimal-and-intentional">1. I Kept Third-Party Usage Minimal and Intentional</h3>
+<p>Every third-party request has a cost. So I constrained them aggressively.</p>
+<p>The site only uses a very small set of external dependencies where they add clear value, and expensive content like the scheduler is deferred until user intent is explicit.</p>
+<p>That reduces attack surface, runtime noise, and unnecessary CPU/network work.</p>
+<h3 id="2-external-links-are-opened-safely">2. External Links Are Opened Safely</h3>
+<p>External destinations that open in a new tab use safe rel attributes such as <code>noreferrer</code>, which prevents a class of opener-related issues and aligns with modern best-practice expectations.</p>
+<h3 id="3-the-site-is-resilient-when-features-fail">3. The Site Is Resilient When Features Fail</h3>
+<p>This is a subtle but important quality improvement.</p>
+<p>Examples:</p>
+<ul>
+<li>If enhanced navigation fails, normal navigation still works.</li>
+<li>If storage access fails, the theme system and caching logic degrade gracefully.</li>
+<li>If the modal API is unavailable, the scheduler falls back to opening in a new tab.</li>
+<li>If View Transitions are unsupported, content swaps still happen without breaking navigation.</li>
+</ul>
+<p>In other words, I designed for capability detection instead of assuming a perfect browser environment.</p>
+<h3 id="4-build-time-automation-prevents-content-drift">4. Build-Time Automation Prevents Content Drift</h3>
+<p>The script at <code>scripts/generate-blog-share-pages.mjs</code> generates and synchronizes:</p>
+<ul>
+<li><code>posts/index.json</code></li>
+<li><code>posts/&lt;slug&gt;.html</code></li>
+<li><code>sitemap.xml</code></li>
+</ul>
+<p>This ensures metadata and indexable URLs stay in sync with the source markdown instead of depending on manual updates. Build-time correctness improves both maintainability and SEO hygiene.</p>
+<h2 id="seo-improvements-that-closed-the-last-gap">SEO Improvements That Closed the Last Gap</h2>
+<p>Performance alone is not enough. To get perfect SEO scoring, the site also needs to be machine-readable and crawl-friendly.</p>
+<h3 id="1-every-page-has-strong-head-metadata">1. Every Page Has Strong Head Metadata</h3>
+<p>The HTML documents include:</p>
+<ul>
+<li>unique <code>&lt;title&gt;</code> values,</li>
+<li>descriptive meta descriptions,</li>
+<li>canonical URLs,</li>
+<li>Open Graph tags,</li>
+<li>Twitter card metadata,</li>
+<li>favicon metadata,</li>
+<li>and feed discovery links where appropriate.</li>
+</ul>
+<p>That helps both search engines and link previews understand the site correctly.</p>
+<h3 id="2-structured-data-is-present">2. Structured Data Is Present</h3>
+<p>The site includes JSON-LD schema, including <code>Person</code> on the homepage and <code>BlogPosting</code> on blog content pages.</p>
+<p>Structured data is one of those details that users never see directly, but search engines absolutely do.</p>
+<h3 id="3-crawlability-is-explicit-not-left-to-chance">3. Crawlability Is Explicit, Not Left to Chance</h3>
+<p>I maintain:</p>
+<ul>
+<li><code>robots.txt</code></li>
+<li><code>sitemap.xml</code></li>
+<li><code>feed.xml</code></li>
+</ul>
+<p>That gives crawlers a clean path through the site and improves discoverability for both pages and blog content.</p>
+<h3 id="4-shareable-blog-urls-are-generated-properly">4. Shareable Blog URLs Are Generated Properly</h3>
+<p>Each markdown post gets a generated HTML share page under <code>posts/&lt;slug&gt;.html</code> that redirects to the rendered blog experience while preserving metadata. This improves indexing, sharing, and social preview behavior without introducing a heavier framework layer.</p>
+<h2 id="the-small-details-that-also-matter">The Small Details That Also Matter</h2>
+<p>Perfect scores usually come from the accumulation of many small wins, not one giant trick. Some of the less glamorous but still important improvements were:</p>
+<ul>
+<li>using <code>dns-prefetch</code> and <code>preconnect</code> where external assets are genuinely required,</li>
+<li>keeping CSS lean and modular,</li>
+<li>using responsive grids instead of heavy layout libraries,</li>
+<li>avoiding unnecessary animation complexity,</li>
+<li>protecting visual stability with reserved space and consistent media sizing,</li>
+<li>and keeping the DOM straightforward enough that the browser can optimize it naturally.</li>
+</ul>
+<p>None of these ideas are flashy. All of them help.</p>
+<h2 id="what-this-project-reinforced-for-me">What This Project Reinforced for Me</h2>
+<ol>
+<li><strong>The browser is already an incredibly capable platform.</strong> You do not need to outsmart it with layers of abstraction for every site.</li>
+<li><strong>Most performance problems are architectural problems.</strong> If you choose the wrong delivery model, optimization becomes damage control.</li>
+<li><strong>Accessibility and SEO are not separate from performance.</strong> Clean semantic structure improves all three.</li>
+<li><strong>CLS prevention should be designed in from day one.</strong> It is much harder to retrofit later.</li>
+<li><strong>Progressive enhancement is still one of the highest-leverage ideas in web engineering.</strong></li>
+</ol>
+<h2 id="conclusion">Conclusion</h2>
+<p>Achieving a perfect Lighthouse score on this portfolio was not about gaming an audit. It was about making dozens of sensible engineering choices consistently:</p>
+<ul>
+<li>shipping less JavaScript,</li>
+<li>optimizing images properly,</li>
+<li>reserving layout space,</li>
+<li>using semantic HTML,</li>
+<li>respecting keyboard and assistive tech users,</li>
+<li>generating clean metadata,</li>
+<li>and treating third-party embeds as optional, not default.</li>
+</ul>
+<p>The final result is a site that is not only fast in a benchmark, but also stable, accessible, crawlable, and pleasant to maintain.</p>
+<p>Sometimes the highest-performing stack is simply the one that does less, but does it extremely well.</p>
+<p>And when external resources are necessary, I still try to be explicit about intent by using hints like <code>preconnect</code> and <code>dns-prefetch</code> only where they actually reduce connection setup cost.</p>
+</article>
+      <aside class="blog-meta-col">
+        <section class="blog-meta-card" aria-label="Author details">
+          <p class="blog-meta-label">Author</p>
+          <p class="blog-meta-value">Manish Tiwari</p>
+        </section>
+        <section class="blog-meta-card" aria-label="Publication date">
+          <p class="blog-meta-label">Published</p>
+          <p class="blog-meta-value">Mar 15, 2026</p>
+        </section>
+        <section class="blog-meta-card" aria-label="Blog views">
+          <p class="blog-meta-label">Views</p>
+          <div class="blog-view-counter">
+            <img src="https://komarev.com/ghpvc/?username=manish-9245&label=VIEWS&color=0e75b6&style=flat" alt="Blog views counter" loading="lazy" decoding="async" />
+          </div>
+        </section>
+        <section class="blog-meta-card" aria-label="Blog navigation">
+          <p class="blog-meta-label">Navigate</p>
+          <a class="blog-meta-link" href="/blogs.html">← All posts</a>
+        </section>
+      </aside>
+    </div>
+    <section class="surface related-posts" id="related-posts" aria-label="Related blog posts">
+        <h2>Related Posts</h2>
+        <div class="related-posts-grid">
+          
+            <article class="related-card">
+              <p class="related-meta">
+                <span>Dec 29, 2025</span>
+                <span class="blog-card-dot">•</span>
+                <span>AI</span>
+              </p>
+              <h3 class="related-title"><a href="/textbook-for-excel-exam.html">Textbook for Excel Exam</a></h3>
+              <p class="related-desc">In the world of data engineering and business intelligence, Microsoft Excel remains the ubiquitous “first draft” of data analysis. While Python, SQL, and Tableau dominate big data pipelines, Excel is...</p>
+            </article>
+          
+            <article class="related-card">
+              <p class="related-meta">
+                <span>Dec 18, 2025</span>
+                <span class="blog-card-dot">•</span>
+                <span>AI</span>
+              </p>
+              <h3 class="related-title"><a href="/how-i-built-an-ai-blogger-agent-using-n8n-and-jekyll.html">How I built an AI blogger Agent using N8N and Jekyll</a></h3>
+              <p class="related-desc">As engineers, we often suffer from the “cobbler’s children” syndrome. We build complex, scalable systems for clients and employers, yet our own personal portfolios and blogs gather dust. The friction...</p>
+            </article>
+          
+            <article class="related-card">
+              <p class="related-meta">
+                <span>Dec 18, 2025</span>
+                <span class="blog-card-dot">•</span>
+                <span>AI</span>
+              </p>
+              <h3 class="related-title"><a href="/how-i-built-an-ai-blogger-agent-using-n8ngithub-and-jekyll.html">How I built an AI blogger Agent using N8N,Github and Jekyll</a></h3>
+              <p class="related-desc">In the current landscape of software engineering, “content creation” is often viewed as a secondary concern-a distraction from shipping code. However, technical documentation and knowledge sharing are...</p>
+            </article>
+          
+        </div></section>
+    <section class="surface blog-share" id="blog-share" aria-label="Share this post">
+      <h2>Share this post</h2>
+      <div class="blog-share-actions">
+        <a class="blog-share-link" aria-label="Share on LinkedIn" title="Share on LinkedIn" target="_blank" rel="noopener noreferrer" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fbuildwithmanish.com%2Fposts%2Fhow-i-built-my-portfolio-website-and-achieved-a-perfect-lighthouse-score.html"><svg class="blog-share-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.94 8.5H3.56V20h3.38V8.5zM5.25 3C4.14 3 3.2 3.94 3.2 5.05c0 1.1.9 2.05 2.01 2.05h.02c1.12 0 2.02-.95 2.02-2.05C7.25 3.94 6.36 3 5.25 3zM20.8 13.4c0-3.13-1.67-5.15-4.66-5.15-2.15 0-3.11 1.2-3.65 2.03V8.5H9.1c.04 1.17 0 11.5 0 11.5h3.38v-6.42c0-.34.03-.68.12-.92.27-.68.88-1.4 1.9-1.4 1.34 0 1.88 1.05 1.88 2.58V20h3.38v-6.6z"/></svg></a>
+        <a class="blog-share-link" aria-label="Share on X" title="Share on X" target="_blank" rel="noopener noreferrer" href="https://x.com/intent/tweet?url=https%3A%2F%2Fbuildwithmanish.com%2Fposts%2Fhow-i-built-my-portfolio-website-and-achieved-a-perfect-lighthouse-score.html&text=How%20I%20Built%20My%20Portfolio%20Website%20and%20Achieved%20a%20Perfect%20Lighthouse%20Score"><svg class="blog-share-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 2H22l-6.77 7.74L23 22h-6.1l-4.78-6.24L6.66 22H3.55l7.24-8.27L1 2h6.25l4.32 5.7L18.9 2zm-1.07 18h1.69L6.33 3.9H4.52L17.83 20z"/></svg></a>
+        <button type="button" class="blog-share-copy" aria-label="Copy link" title="Copy link" data-share-copy data-url="https://buildwithmanish.com/posts/how-i-built-my-portfolio-website-and-achieved-a-perfect-lighthouse-score.html"><svg class="blog-share-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 7a3 3 0 0 1 3-3h7a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3h-1v-1.5h1A1.5 1.5 0 0 0 19.5 15V7A1.5 1.5 0 0 0 18 5.5h-7A1.5 1.5 0 0 0 9.5 7v1H8V7zm-2 3A3 3 0 0 1 9 7h7a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H9a3 3 0 0 1-3-3v-8zm3-1.5A1.5 1.5 0 0 0 7.5 10v8A1.5 1.5 0 0 0 9 19.5h7a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 16 8.5H9z"/></svg></button>
+      </div></section>
+    <div class="surface" style="padding-top:0">
+      <a href="/blogs.html">← Back to all blogs</a>
+    </div></main>
 
     <footer class="site-footer">
       <div class="surface footer-row">
@@ -1374,7 +1673,7 @@
                     <span aria-hidden="true">•</span>
                     <span>${tags[0]}</span>
                   </p>
-                  <h3 class="related-title"><a href="./blog.html?post=${encodeURIComponent(post.slug)}">${post.title}</a></h3>
+                  <h3 class="related-title"><a href="/blog.html?post=${encodeURIComponent(post.slug)}">${post.title}</a></h3>
                   <p class="related-desc">${post.description || ""}</p>
                 </article>`;
               })
@@ -1460,7 +1759,7 @@
         }
 
         if (!slug) {
-          main.innerHTML = `<div class="blog-error"><p>No post specified.</p><p><a href="./blogs.html">← All blogs</a></p></div>`;
+          main.innerHTML = `<div class="blog-error"><p>No post specified.</p><p><a href="/blogs.html">← All blogs</a></p></div>`;
           main.classList.remove("is-loading");
           return;
         }
@@ -1497,7 +1796,7 @@
             throw new Error("Post body unavailable");
           }
         } catch {
-          main.innerHTML = `<div class="blog-error"><p>Post not found.</p><p><a href="./blogs.html">← All blogs</a></p></div>`;
+          main.innerHTML = `<div class="blog-error"><p>Post not found.</p><p><a href="/blogs.html">← All blogs</a></p></div>`;
           main.classList.remove("is-loading");
           return;
         }
@@ -1690,7 +1989,7 @@
         main.classList.remove("is-loading");
       }
 
-      loadPost();
+      // Static Page: loadPost() disabled
     </script>
   </body>
 </html>

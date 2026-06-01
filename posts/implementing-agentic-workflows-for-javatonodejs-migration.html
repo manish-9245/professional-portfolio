@@ -3,68 +3,41 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title id="page-title">Blog · Manish Tiwari</title>
-    <meta
-      id="page-desc"
-      name="description"
-      content="Blog post by Manish Tiwari"
-    />
+    <title>Implementing Agentic Workflows for Java-to-Node.js Migration · Manish Tiwari</title>
+    <meta name="description" content="Legacy migration is the “dark matter” of software engineering: we know it makes up a massive portion of the enterprise universe, yet we struggle to observe it directly without getting sucked into a bl..." />
     <meta name="robots" content="index, follow" />
-    <link
-      id="page-canonical"
-      rel="canonical"
-      href="https://buildwithmanish.com/blog.html"
-    />
+    <link rel="canonical" href="https://buildwithmanish.com/posts/implementing-agentic-workflows-for-javatonodejs-migration.html" />
     <meta property="og:site_name" content="Manish Tiwari" />
     <meta id="og-type" property="og:type" content="article" />
-    <meta id="og-title" property="og:title" content="Blog · Manish Tiwari" />
-    <meta
-      id="og-desc"
-      property="og:description"
-      content="Blog post by Manish Tiwari"
-    />
-    <meta
-      id="og-url"
-      property="og:url"
-      content="https://buildwithmanish.com/blog.html"
-    />
-    <meta
-      id="og-image"
-      property="og:image"
-      content="https://buildwithmanish.com/image/optimized/aiblogs-20260314-175545.webp"
-    />
+    <meta property="og:title" content="Implementing Agentic Workflows for Java-to-Node.js Migration" />
+    <meta property="og:description" content="Legacy migration is the “dark matter” of software engineering: we know it makes up a massive portion of the enterprise universe, yet we struggle to observe it directly without getting sucked into a bl..." />
+    <meta property="og:url" content="https://buildwithmanish.com/posts/implementing-agentic-workflows-for-javatonodejs-migration.html" />
+    <meta property="og:image" content="https://blogs.buildwithmanish.com/assets/images/hero-implementing-agentic-workflows-for-javatonodejs-migration-0-2025-12-18-75248.png" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta id="tw-title" name="twitter:title" content="Blog · Manish Tiwari" />
-    <meta
-      id="tw-desc"
-      name="twitter:description"
-      content="Blog post by Manish Tiwari"
-    />
-    <meta
-      id="tw-image"
-      name="twitter:image"
-      content="https://buildwithmanish.com/image/optimized/aiblogs-20260314-175545.webp"
-    />
-    <script id="post-schema" type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "BlogPosting",
-        "headline": "Engineering Blog",
-        "author": {
-          "@type": "Person",
-          "name": "Manish Tiwari",
-          "url": "https://buildwithmanish.com/about.html"
-        },
-        "publisher": {
-          "@type": "Person",
-          "name": "Manish Tiwari"
-        },
-        "mainEntityOfPage": {
-          "@type": "WebPage",
-          "@id": "https://buildwithmanish.com/blog.html"
-        }
-      }
-    </script>
+    <meta name="twitter:title" content="Implementing Agentic Workflows for Java-to-Node.js Migration" />
+    <meta name="twitter:description" content="Legacy migration is the “dark matter” of software engineering: we know it makes up a massive portion of the enterprise universe, yet we struggle to observe it directly without getting sucked into a bl..." />
+    <meta name="twitter:image" content="https://blogs.buildwithmanish.com/assets/images/hero-implementing-agentic-workflows-for-javatonodejs-migration-0-2025-12-18-75248.png" />
+    <script id="post-schema" type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Implementing Agentic Workflows for Java-to-Node.js Migration",
+  "description": "Legacy migration is the “dark matter” of software engineering: we know it makes up a massive portion of the enterprise universe, yet we struggle to observe it directly without getting sucked into a bl...",
+  "datePublished": "2025-12-18",
+  "author": {
+    "@type": "Person",
+    "name": "Manish Tiwari",
+    "url": "https://buildwithmanish.com/about.html"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Manish Tiwari"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://buildwithmanish.com/posts/implementing-agentic-workflows-for-javatonodejs-migration.html"
+  },
+  "image": "https://blogs.buildwithmanish.com/assets/images/hero-implementing-agentic-workflows-for-javatonodejs-migration-0-2025-12-18-75248.png"
+}</script>
     <link
       rel="icon"
       type="image/webp"
@@ -824,7 +797,345 @@
       </div>
     </header>
 
-    <main id="blog-main" data-router-view class="is-loading"></main>
+    <main data-router-view>
+    <header class="blog-post-header">
+      <p class="muted kicker">Blog</p>
+      <h1>Implementing Agentic Workflows for Java-to-Node.js Migration</h1>
+      <p class="muted">Dec 18, 2025</p>
+    </header>
+    <div class="blog-post-layout">
+      <nav class="blog-toc" id="blog-toc" aria-label="Table of contents"><p class="blog-toc-title">Contents</p><ol><li><a href="#architecture-the-migration-agent">Architecture: The Migration Agent</a></li><li><a href="#phase-1-discovery-via-ast-abstract-syntax-tree-">Phase 1: Discovery via AST (Abstract Syntax Tree)</a></li><li class="toc-h3"><a href="#why-ast-matters">Why AST matters</a></li><li><a href="#phase-2-the-core-loop-plan-transpile-verify-">Phase 2: The Core Loop (Plan, Transpile, Verify)</a></li><li class="toc-h3"><a href="#the-planner-agent">The Planner Agent</a></li><li class="toc-h3"><a href="#the-transpiler-paradigm-mapping-">The Transpiler (Paradigm Mapping)</a></li><li><a href="#phase-3-the-self-healing-feedback-loop">Phase 3: The Self-Healing Feedback Loop</a></li><li class="toc-h3"><a href="#step-1-test-generation">Step 1: Test Generation</a></li><li class="toc-h3"><a href="#step-2-execution-capture">Step 2: Execution & Capture</a></li><li class="toc-h3"><a href="#step-3-analysis-patching">Step 3: Analysis & Patching</a></li><li><a href="#database-and-entity-migration">Database and Entity Migration</a></li><li class="toc-h3"><a href="#the-lazy-loading-problem">The Lazy Loading Problem</a></li><li><a href="#implementation-guide-the-controller-agent">Implementation Guide: The Controller Agent</a></li><li><a href="#advanced-edge-cases">Advanced Edge Cases</a></li><li class="toc-h3"><a href="#1-static-contexts-singletons">1. Static Contexts & Singletons</a></li><li class="toc-h3"><a href="#2-threadlocal">2. ThreadLocal</a></li><li class="toc-h3"><a href="#3-synchronized-blocks">3. Synchronized Blocks</a></li><li><a href="#conclusion">Conclusion</a></li></ol></nav>
+      <article class="blog-prose" id="blog-prose"><p><img src="https://blogs.buildwithmanish.com/assets/images/hero-implementing-agentic-workflows-for-javatonodejs-migration-0-2025-12-18-75248.png" alt="Hero Image"></p>
+<p>Legacy migration is the “dark matter” of software engineering: we know it makes up a massive portion of the enterprise universe, yet we struggle to observe it directly without getting sucked into a black hole of regression testing and lost business logic.</p>
+<p>For the last decade, the migration of monolithic Java Spring Boot applications to microservices-based Node.js architectures (typically running on Kubernetes) has been a manual, high-friction endeavor. The “Strangler Fig” pattern is reliable, but slow.</p>
+<p>However, the emergence of <strong>Agentic Workflows</strong>-specifically Large Language Models (LLMs) integrated into a loop of reasoning, tool execution, and environment feedback-has fundamentally altered the economics of refactoring. We are no longer talking about “code translation” (a simple syntax swap). We are talking about <strong>semantic migration</strong> with self-healing capabilities.</p>
+<p>This post details the architecture and implementation of a specialized “Migration Agent” designed to convert strong-typed Spring Boot applications into idiomatic Node.js services (using NestJS as the target due to its structural parity with Spring). We will explore AST parsing, paradigm mapping, and the critical <strong>Plan, Transpile, Verify</strong> feedback loop.</p>
+<hr>
+<h2 id="architecture-the-migration-agent">Architecture: The Migration Agent</h2>
+<p>The flaw in using a standard LLM chat interface for migration is context limits and hallucination. You cannot paste a 50,000-line codebase into a context window and expect a working application.</p>
+<p>Instead, we treat the migration as a multi-step agentic workflow. The agent acts as an orchestrator that utilizes specific tools:</p>
+<ol>
+<li><strong>File System Readers:</strong> To traverse the repo.</li>
+<li><strong>AST Parsers:</strong> To understand the <em>structure</em> of the code, not just the text.</li>
+<li><strong>Transpilers:</strong> To generate the initial draft.</li>
+<li><strong>Test Runners:</strong> To execute the generated code.</li>
+<li><strong>Debuggers:</strong> To analyze stack traces.</li>
+</ol>
+<p><img src="https://blogs.buildwithmanish.com/assets/images/architecture_diagram-implementing-agentic-workflows-for-javatonodejs-migration-1-2025-12-18-16851.png" alt="Architecture Diagram"></p>
+<p>The architecture is split into three distinct phases: <strong>Discovery</strong>, <strong>Transpilation</strong>, and <strong>Verification (The Self-Healing Loop)</strong>.</p>
+<hr>
+<h2 id="phase-1-discovery-via-ast-abstract-syntax-tree-">Phase 1: Discovery via AST (Abstract Syntax Tree)</h2>
+<p>Regex is insufficient for parsing Java. You cannot reliably identify dependency injection chains or transaction boundaries using string matching. We must construct an Abstract Syntax Tree (AST) of the source Java code to build a dependency graph.</p>
+<p>We utilize tools like <code>JavaParser</code> (wrapped in a Python or Node script) to extract metadata before the LLM even sees the code.</p>
+<h3 id="why-ast-matters">Why AST matters</h3>
+<p>When migrating a Service class, the Agent needs to know:</p>
+<ul>
+<li>What other classes does this inject? (<code>@Autowired</code>)</li>
+<li>Does it use Aspect-Oriented Programming (AOP)? (<code>@Transactional</code>)</li>
+<li>What are the return types?</li>
+</ul>
+<p><img src="https://blogs.buildwithmanish.com/assets/images/concept_illustration-implementing-agentic-workflows-for-javatonodejs-migration-3-2025-12-18-71504.png" alt="Concept Illustration - AST"></p>
+<p>Here is a Python snippet using a wrapper around a Java parser to extract class signatures to feed into the Agent’s “Context Memory”:</p>
+<pre><code class="hljs language-python" data-lang="python"><span class="hljs-keyword">import</span> javalang
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">parse_java_structure</span>(<span class="hljs-params">file_content</span>):
+    tree = javalang.parse.parse(file_content)
+    structure = {
+        <span class="hljs-string">"package"</span>: <span class="hljs-built_in">str</span>(tree.package.name),
+        <span class="hljs-string">"imports"</span>: [],
+        <span class="hljs-string">"classes"</span>: []
+    }
+
+    <span class="hljs-comment"># Extract Imports</span>
+    <span class="hljs-keyword">for</span> imp <span class="hljs-keyword">in</span> tree.imports:
+        structure[<span class="hljs-string">"imports"</span>].append(imp.path)
+
+    <span class="hljs-comment"># Extract Class Metadata</span>
+    <span class="hljs-keyword">for</span> type_decl <span class="hljs-keyword">in</span> tree.types:
+        class_info = {
+            <span class="hljs-string">"name"</span>: type_decl.name,
+            <span class="hljs-string">"annotations"</span>: [a.name <span class="hljs-keyword">for</span> a <span class="hljs-keyword">in</span> type_decl.annotations],
+            <span class="hljs-string">"methods"</span>: []
+        }
+        
+        <span class="hljs-comment"># specific logic to find Dependency Injection</span>
+        <span class="hljs-keyword">for</span> field <span class="hljs-keyword">in</span> type_decl.fields:
+            <span class="hljs-keyword">if</span> <span class="hljs-string">"Autowired"</span> <span class="hljs-keyword">in</span> [a.name <span class="hljs-keyword">for</span> a <span class="hljs-keyword">in</span> field.annotations]:
+                class_info[<span class="hljs-string">"dependencies"</span>] = <span class="hljs-built_in">str</span>(field.<span class="hljs-built_in">type</span>.name)
+
+        structure[<span class="hljs-string">"classes"</span>].append(class_info)
+        
+    <span class="hljs-keyword">return</span> structure</code></pre><p>By running this across the entire Java project, the Agent builds a <strong>Topological Sort</strong> of the application. It knows it must migrate the DTOs and Entities first, then the Repositories, then Services, and finally the Controllers.</p>
+<hr>
+<h2 id="phase-2-the-core-loop-plan-transpile-verify-">Phase 2: The Core Loop (Plan, Transpile, Verify)</h2>
+<p>Once the dependency graph is established, the Agent enters its core execution loop. This is not a linear “read-write” operation. It is recursive.</p>
+<p><img src="https://blogs.buildwithmanish.com/assets/images/code_flow-implementing-agentic-workflows-for-javatonodejs-migration-2-2025-12-18-44538.png" alt="Code Flow - Core Loop"></p>
+<h3 id="the-planner-agent">The Planner Agent</h3>
+<p>The Planner does not write code. It analyzes the Java file and the AST metadata to create a “Migration Specification.”</p>
+<ul>
+<li><strong>Input:</strong> <code>UserService.java</code></li>
+<li><strong>Output:</strong> JSON Spec<ul>
+<li>Target Framework: NestJS</li>
+<li>Dependencies: TypeORM, generic-pool</li>
+<li>Async Strategy: <code>async/await</code> (replace blocking I/O)</li>
+</ul>
+</li>
+</ul>
+<h3 id="the-transpiler-paradigm-mapping-">The Transpiler (Paradigm Mapping)</h3>
+<p>This is where the semantic translation happens. We are targeting <strong>NestJS</strong> because its architecture-Decorators, Modules, and Dependency Injection-maps 1:1 with Spring Boot.</p>
+<p><img src="https://blogs.buildwithmanish.com/assets/images/comparison_chart-implementing-agentic-workflows-for-javatonodejs-migration-4-2025-12-18-63606.png" alt="Comparison Chart"></p>
+<h4>1. Dependency Injection</h4>
+<p>The Agent must convert field injection (<code>@Autowired</code>) to constructor injection, which is the standard in TypeScript/NestJS.</p>
+<p><strong>Java Source:</strong></p>
+<pre><code class="hljs language-typescript" data-lang="typescript"><span class="hljs-meta">@Service</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserService</span> {
+    <span class="hljs-meta">@Autowired</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-title class_">UserRepository</span> userRepository;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-title class_">User</span> <span class="hljs-title function_">getUser</span>(<span class="hljs-params"><span class="hljs-title class_">Long</span> id</span>) {
+        <span class="hljs-keyword">return</span> userRepository.<span class="hljs-title function_">findById</span>(id).<span class="hljs-title function_">orElseThrow</span>();
+    }
+}</code></pre><p><strong>Agent Generated NestJS:</strong></p>
+<pre><code class="hljs language-typescript" data-lang="typescript"><span class="hljs-meta">@Injectable</span>()
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserService</span> {
+    <span class="hljs-comment">// Agent identifies @Autowired and converts to Constructor Injection</span>
+    <span class="hljs-title function_">constructor</span>(<span class="hljs-params">
+        <span class="hljs-meta">@InjectRepository</span>(User)
+        <span class="hljs-keyword">private</span> <span class="hljs-keyword">readonly</span> <span class="hljs-attr">userRepository</span>: <span class="hljs-title class_">Repository</span>&lt;<span class="hljs-title class_">User</span>&gt;,
+    </span>) {}
+
+    <span class="hljs-keyword">async</span> <span class="hljs-title function_">getUser</span>(<span class="hljs-attr">id</span>: <span class="hljs-built_in">number</span>): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-title class_">User</span>&gt; {
+        <span class="hljs-comment">// Agent converts blocking call to async/await</span>
+        <span class="hljs-keyword">const</span> user = <span class="hljs-keyword">await</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">userRepository</span>.<span class="hljs-title function_">findOneBy</span>({ id });
+        <span class="hljs-keyword">if</span> (!user) <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">NotFoundException</span>();
+        <span class="hljs-keyword">return</span> user;
+    }
+}</code></pre><h4>2. Managing Dependencies (Maven to NPM)</h4>
+<p>One of the hardest parts of migration is the ecosystem shift. <code>pom.xml</code> dependencies do not map one-to-one with <code>package.json</code>.</p>
+<p><img src="https://blogs.buildwithmanish.com/assets/images/code_flow-implementing-agentic-workflows-for-javatonodejs-migration-7-2025-12-18-28413.png" alt="Code Flow - Dependencies"></p>
+<p>The Agent utilizes a lookup dictionary (which it can expand via web search tools) to resolve these:</p>
+<table>
+<thead>
+<tr>
+<th>Java Paradigm</th>
+<th>Maven Artifact</th>
+<th>Node.js Equivalent</th>
+<th>Package</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Validation</strong></td>
+<td><code>hibernate-validator</code></td>
+<td><code>class-validator</code></td>
+<td><code>class-validator</code>, <code>class-transformer</code></td>
+</tr>
+<tr>
+<td><strong>Utility</strong></td>
+<td><code>commons-lang3</code></td>
+<td>Lodash</td>
+<td><code>lodash</code></td>
+</tr>
+<tr>
+<td><strong>HTTP Client</strong></td>
+<td><code>RestTemplate</code></td>
+<td>Axios</td>
+<td><code>@nestjs/axios</code></td>
+</tr>
+<tr>
+<td><strong>Logging</strong></td>
+<td><code>slf4j</code></td>
+<td>Winston/Pino</td>
+<td><code>winston</code></td>
+</tr>
+</tbody></table>
+<p>The Agent must parse the <code>pom.xml</code>, extract versions, find the compatible Node version, and generate the <code>package.json</code> before writing application code.</p>
+<hr>
+<h2 id="phase-3-the-self-healing-feedback-loop">Phase 3: The Self-Healing Feedback Loop</h2>
+<p>This is the differentiator between a “Code Generator” and an “Agent.”</p>
+<p>Code generated by LLMs will contain bugs. It might use a Java method signature that doesn’t exist in JavaScript (e.g., <code>string.equals()</code>), or mishandle <code>Promise</code> resolution.</p>
+<p>To solve this, we implement a <strong>Self-Healing Loop</strong>.</p>
+<p><img src="https://blogs.buildwithmanish.com/assets/images/technical_diagram-implementing-agentic-workflows-for-javatonodejs-migration-5-2025-12-18-61781.png" alt="Technical Diagram - Self Healing"></p>
+<h3 id="step-1-test-generation">Step 1: Test Generation</h3>
+<p>Immediately after transpiling <code>UserService.ts</code>, the Agent is tasked to write <code>UserService.spec.ts</code>. It uses the logic from the original Java <code>UserServiceTest.java</code> to ensure functional parity.</p>
+<h3 id="step-2-execution-capture">Step 2: Execution &amp; Capture</h3>
+<p>The Agent executes the test suite using a sandbox runner.</p>
+<pre><code class="hljs language-bash" data-lang="bash">npm <span class="hljs-built_in">test</span> src/users/user.service.spec.ts</code></pre><h3 id="step-3-analysis-patching">Step 3: Analysis &amp; Patching</h3>
+<p>If the test fails, the Agent does not stop. It captures the <code>stderr</code> and the stack trace. It feeds this error back into the LLM context along with the source code.</p>
+<p><strong>The Prompt Chain:</strong></p>
+<ol>
+<li><strong>Context:</strong> “You wrote this Node.js service based on this Java logic.”</li>
+<li><strong>Observation:</strong> “Running the test resulted in <code>TypeError: Cannot read properties of undefined (reading 'findOne')</code>.”</li>
+<li><strong>Instruction:</strong> “Analyze the stack trace. Reasoning step-by-step, identify why the mock was not injected correctly. Patch the code.”</li>
+</ol>
+<p><strong>Example Scenario: The “Async” Trap</strong> A common failure mode is treating asynchronous Node code as synchronous Java code.</p>
+<ul>
+<li><p><em>Agent Draft 1:</em></p>
+<pre><code class="hljs language-javascript" data-lang="javascript">users.<span class="hljs-title function_">forEach</span>(<span class="hljs-function"><span class="hljs-params">user</span> =&gt;</span> {
+    <span class="hljs-comment">// ERROR: saving inside forEach without Promise.all</span>
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">repo</span>.<span class="hljs-title function_">save</span>(user); 
+});</code></pre></li>
+<li><p><em>Test Result:</em> Test finishes before data is saved. Assertion fails.</p>
+</li>
+<li><p><em>Agent Analysis:</em> “I detected a race condition. <code>forEach</code> does not await promises. I need to switch to <code>for...of</code> or <code>Promise.all</code>.”</p>
+</li>
+<li><p><em>Agent Patch:</em></p>
+<pre><code class="hljs language-javascript" data-lang="javascript"><span class="hljs-keyword">await</span> <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">all</span>(users.<span class="hljs-title function_">map</span>(<span class="hljs-function"><span class="hljs-params">user</span> =&gt;</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">repo</span>.<span class="hljs-title function_">save</span>(user)));</code></pre></li>
+</ul>
+<p>This loop continues up to a maximum retry count (e.g., 5 attempts) until the tests pass.</p>
+<hr>
+<h2 id="database-and-entity-migration">Database and Entity Migration</h2>
+<p>Migration isn’t just code; it’s data. Moving from Hibernate/JPA to TypeORM or Prisma requires careful handling of relationships.</p>
+<p><img src="https://blogs.buildwithmanish.com/assets/images/concept_illustration-implementing-agentic-workflows-for-javatonodejs-migration-6-2025-12-18-21806.png" alt="Concept Illustration - Database Migration"></p>
+<h3 id="the-lazy-loading-problem">The Lazy Loading Problem</h3>
+<p>Java Hibernate heavily relies on Lazy Loading. You fetch a <code>User</code>, and when you call <code>user.getOrders()</code>, Hibernate silently queries the DB.</p>
+<p>Node.js ORMs generally default to explicit loading to avoid the “N+1 Query Problem.”</p>
+<p>The Agent must detect <code>@OneToMany(fetch = FetchType.LAZY)</code> in the Java Entity and transform the consuming service code to explicitly request relations.</p>
+<p><strong>Java (Implicit):</strong></p>
+<pre><code class="hljs language-java" data-lang="java"><span class="hljs-comment">// Logic inside a Service</span>
+<span class="hljs-type">User</span> <span class="hljs-variable">user</span> <span class="hljs-operator">=</span> repo.findById(<span class="hljs-number">1</span>);
+<span class="hljs-keyword">return</span> user.getOrders().size(); <span class="hljs-comment">// Hibernate triggers query here</span></code></pre><p><strong>Node.js (Explicit - Generated by Agent):</strong> If the Agent simply translates the logic, it will crash because <code>user.orders</code> is undefined. The Agent must recognize the context and rewrite the query:</p>
+<pre><code class="hljs language-javascript" data-lang="javascript"><span class="hljs-comment">// Agent rewrite</span>
+<span class="hljs-keyword">const</span> user = <span class="hljs-keyword">await</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">repo</span>.<span class="hljs-title function_">findOne</span>({
+    <span class="hljs-attr">where</span>: { <span class="hljs-attr">id</span>: <span class="hljs-number">1</span> },
+    <span class="hljs-attr">relations</span>: [<span class="hljs-string">'orders'</span>] <span class="hljs-comment">// Explicit join added by Agent</span>
+});
+<span class="hljs-keyword">return</span> user.<span class="hljs-property">orders</span>.<span class="hljs-property">length</span>;</code></pre><hr>
+<h2 id="implementation-guide-the-controller-agent">Implementation Guide: The Controller Agent</h2>
+<p>Let’s look at the specific implementation of the “Controller Migration” step using Python and LangChain.</p>
+<pre><code class="hljs language-python" data-lang="python"><span class="hljs-keyword">from</span> langchain.chat_models <span class="hljs-keyword">import</span> ChatOpenAI
+<span class="hljs-keyword">from</span> langchain.schema <span class="hljs-keyword">import</span> SystemMessage, HumanMessage
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">migrate_controller</span>(<span class="hljs-params">java_code, service_interface_ts</span>):
+    chat = ChatOpenAI(model=<span class="hljs-string">"gpt-4-turbo"</span>, temperature=<span class="hljs-number">0</span>)
+    
+    system_prompt = <span class="hljs-string">"""
+    You are a Senior Backend Engineer migrating Spring Boot to NestJS.
+    Rules:
+    1. Map @RequestMapping to @Controller.
+    2. Map @GetMapping, @PostMapping to NestJS decorators.
+    3. Ensure all service calls use 'await'.
+    4. Use DTOs defined in the provided context.
+    5. Return strict TypeScript types.
+    """</span>
+    
+    user_prompt = <span class="hljs-string">f"""
+    ### Java Source:
+    <span class="hljs-subst">{java_code}</span>
+    
+    ### Associated TypeScript Service Interface:
+    <span class="hljs-subst">{service_interface_ts}</span>
+    
+    Convert this Controller to NestJS. Output ONLY the code.
+    """</span>
+    
+    response = chat([
+        SystemMessage(content=system_prompt),
+        HumanMessage(content=user_prompt)
+    ])
+    
+    <span class="hljs-keyword">return</span> response.content
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">verification_loop</span>(<span class="hljs-params">file_path, test_path</span>):
+    attempts = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">while</span> attempts &lt; <span class="hljs-number">5</span>:
+        result = run_npm_test(test_path)
+        <span class="hljs-keyword">if</span> result.success:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+        
+        <span class="hljs-comment"># Self-Healing Step</span>
+        error_log = result.stderr
+        current_code = read_file(file_path)
+        
+        patch = agent_fix_code(current_code, error_log)
+        write_file(file_path, patch)
+        attempts += <span class="hljs-number">1</span>
+        
+    <span class="hljs-keyword">raise</span> Exception(<span class="hljs-string">"Failed to converge on working code."</span>)</code></pre><p>This Python script represents the orchestrator. It holds the state, manages file I/O, and executes the shell commands that provide the “reality check” for the LLM.</p>
+<hr>
+<h2 id="advanced-edge-cases">Advanced Edge Cases</h2>
+<p>In production migrations, several edge cases typically break simple conversion tools.</p>
+<h3 id="1-static-contexts-singletons">1. Static Contexts &amp; Singletons</h3>
+<p>Java developers often use <code>public static</code> methods for utilities or holding state. In a Node.js microservice context, global mutable state is dangerous due to the single-threaded event loop serving all requests. The Agent must detect <code>static</code> fields that are mutated and refactor them into request-scoped providers or Redis-backed state.</p>
+<h3 id="2-threadlocal">2. ThreadLocal</h3>
+<p>Spring Security often stores user context in <code>ThreadLocal</code>.</p>
+<ul>
+<li><strong>Java:</strong> <code>SecurityContextHolder.getContext().getAuthentication()</code></li>
+<li><strong>Node:</strong> The Agent must identify this pattern and introduce <code>AsyncLocalStorage</code> (ALS) or pass the <code>request</code> object through the method chain (Context Propagation).</li>
+</ul>
+<h3 id="3-synchronized-blocks">3. Synchronized Blocks</h3>
+<p>Java uses <code>synchronized</code> for thread safety. Node.js is single-threaded, so standard concurrency issues don’t apply the same way, but race conditions on external resources (DB, File IO) do. The Agent must translate <code>synchronized</code> blocks into distributed locks (e.g., using Redlock) if the intent was to protect a shared resource across instances, or remove them entirely if they were protecting in-memory state.</p>
+<hr>
+<h2 id="conclusion">Conclusion</h2>
+<p>Migrating from Java to Node.js is no longer a brute-force manual effort. By implementing an <strong>Agentic Workflow</strong>, we move from “Syntax Translation” to “Logic Porting.”</p>
+<p>The combination of <strong>AST Analysis</strong> for deep understanding, <strong>Paradigm Mapping</strong> for idiomatic translation, and a <strong>Self-Healing Feedback Loop</strong> for functional verification allows us to automate 70-80% of the migration effort.</p>
+<p>The remaining 20%? That’s where you, the Senior Engineer, come in. You review the architecture, optimize the database queries that the Agent mapped too literally, and handle the complex business logic that requires human intuition. But the boilerplate, the DTOs, the basic CRUD, and the test suites? Let the Agents handle that.</p>
+</article>
+      <aside class="blog-meta-col">
+        <section class="blog-meta-card" aria-label="Author details">
+          <p class="blog-meta-label">Author</p>
+          <p class="blog-meta-value">Manish Tiwari</p>
+        </section>
+        <section class="blog-meta-card" aria-label="Publication date">
+          <p class="blog-meta-label">Published</p>
+          <p class="blog-meta-value">Dec 18, 2025</p>
+        </section>
+        <section class="blog-meta-card" aria-label="Blog views">
+          <p class="blog-meta-label">Views</p>
+          <div class="blog-view-counter">
+            <img src="https://komarev.com/ghpvc/?username=manish-9245&label=VIEWS&color=0e75b6&style=flat" alt="Blog views counter" loading="lazy" decoding="async" />
+          </div>
+        </section>
+        <section class="blog-meta-card" aria-label="Blog navigation">
+          <p class="blog-meta-label">Navigate</p>
+          <a class="blog-meta-link" href="/blogs.html">← All posts</a>
+        </section>
+      </aside>
+    </div>
+    <section class="surface related-posts" id="related-posts" aria-label="Related blog posts">
+        <h2>Related Posts</h2>
+        <div class="related-posts-grid">
+          
+            <article class="related-card">
+              <p class="related-meta">
+                <span>Dec 30, 2025</span>
+                <span class="blog-card-dot">•</span>
+                <span>AI</span>
+              </p>
+              <h3 class="related-title"><a href="/relational-database-management-system.html">Relational Database Management System: An Engineering Deep-Dive</a></h3>
+              <p class="related-desc">Despite the meteoric rise of NoSQL, time-series, and vector databases in the last decade, the Relational Database Management System (RDBMS) remains the immutable backbone of global enterprise software...</p>
+            </article>
+          
+            <article class="related-card">
+              <p class="related-meta">
+                <span>Dec 29, 2025</span>
+                <span class="blog-card-dot">•</span>
+                <span>AI</span>
+              </p>
+              <h3 class="related-title"><a href="/textbook-for-excel-exam.html">Textbook for Excel Exam</a></h3>
+              <p class="related-desc">In the world of data engineering and business intelligence, Microsoft Excel remains the ubiquitous “first draft” of data analysis. While Python, SQL, and Tableau dominate big data pipelines, Excel is...</p>
+            </article>
+          
+            <article class="related-card">
+              <p class="related-meta">
+                <span>Dec 18, 2025</span>
+                <span class="blog-card-dot">•</span>
+                <span>AI</span>
+              </p>
+              <h3 class="related-title"><a href="/how-i-built-an-ai-blogger-agent-using-n8n-and-jekyll.html">How I built an AI blogger Agent using N8N and Jekyll</a></h3>
+              <p class="related-desc">As engineers, we often suffer from the “cobbler’s children” syndrome. We build complex, scalable systems for clients and employers, yet our own personal portfolios and blogs gather dust. The friction...</p>
+            </article>
+          
+        </div></section>
+    <section class="surface blog-share" id="blog-share" aria-label="Share this post">
+      <h2>Share this post</h2>
+      <div class="blog-share-actions">
+        <a class="blog-share-link" aria-label="Share on LinkedIn" title="Share on LinkedIn" target="_blank" rel="noopener noreferrer" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fbuildwithmanish.com%2Fposts%2Fimplementing-agentic-workflows-for-javatonodejs-migration.html"><svg class="blog-share-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.94 8.5H3.56V20h3.38V8.5zM5.25 3C4.14 3 3.2 3.94 3.2 5.05c0 1.1.9 2.05 2.01 2.05h.02c1.12 0 2.02-.95 2.02-2.05C7.25 3.94 6.36 3 5.25 3zM20.8 13.4c0-3.13-1.67-5.15-4.66-5.15-2.15 0-3.11 1.2-3.65 2.03V8.5H9.1c.04 1.17 0 11.5 0 11.5h3.38v-6.42c0-.34.03-.68.12-.92.27-.68.88-1.4 1.9-1.4 1.34 0 1.88 1.05 1.88 2.58V20h3.38v-6.6z"/></svg></a>
+        <a class="blog-share-link" aria-label="Share on X" title="Share on X" target="_blank" rel="noopener noreferrer" href="https://x.com/intent/tweet?url=https%3A%2F%2Fbuildwithmanish.com%2Fposts%2Fimplementing-agentic-workflows-for-javatonodejs-migration.html&text=Implementing%20Agentic%20Workflows%20for%20Java-to-Node.js%20Migration"><svg class="blog-share-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 2H22l-6.77 7.74L23 22h-6.1l-4.78-6.24L6.66 22H3.55l7.24-8.27L1 2h6.25l4.32 5.7L18.9 2zm-1.07 18h1.69L6.33 3.9H4.52L17.83 20z"/></svg></a>
+        <button type="button" class="blog-share-copy" aria-label="Copy link" title="Copy link" data-share-copy data-url="https://buildwithmanish.com/posts/implementing-agentic-workflows-for-javatonodejs-migration.html"><svg class="blog-share-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 7a3 3 0 0 1 3-3h7a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3h-1v-1.5h1A1.5 1.5 0 0 0 19.5 15V7A1.5 1.5 0 0 0 18 5.5h-7A1.5 1.5 0 0 0 9.5 7v1H8V7zm-2 3A3 3 0 0 1 9 7h7a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H9a3 3 0 0 1-3-3v-8zm3-1.5A1.5 1.5 0 0 0 7.5 10v8A1.5 1.5 0 0 0 9 19.5h7a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 16 8.5H9z"/></svg></button>
+      </div></section>
+    <div class="surface" style="padding-top:0">
+      <a href="/blogs.html">← Back to all blogs</a>
+    </div></main>
 
     <footer class="site-footer">
       <div class="surface footer-row">
@@ -1374,7 +1685,7 @@
                     <span aria-hidden="true">•</span>
                     <span>${tags[0]}</span>
                   </p>
-                  <h3 class="related-title"><a href="./blog.html?post=${encodeURIComponent(post.slug)}">${post.title}</a></h3>
+                  <h3 class="related-title"><a href="/blog.html?post=${encodeURIComponent(post.slug)}">${post.title}</a></h3>
                   <p class="related-desc">${post.description || ""}</p>
                 </article>`;
               })
@@ -1460,7 +1771,7 @@
         }
 
         if (!slug) {
-          main.innerHTML = `<div class="blog-error"><p>No post specified.</p><p><a href="./blogs.html">← All blogs</a></p></div>`;
+          main.innerHTML = `<div class="blog-error"><p>No post specified.</p><p><a href="/blogs.html">← All blogs</a></p></div>`;
           main.classList.remove("is-loading");
           return;
         }
@@ -1497,7 +1808,7 @@
             throw new Error("Post body unavailable");
           }
         } catch {
-          main.innerHTML = `<div class="blog-error"><p>Post not found.</p><p><a href="./blogs.html">← All blogs</a></p></div>`;
+          main.innerHTML = `<div class="blog-error"><p>Post not found.</p><p><a href="/blogs.html">← All blogs</a></p></div>`;
           main.classList.remove("is-loading");
           return;
         }
@@ -1690,7 +2001,7 @@
         main.classList.remove("is-loading");
       }
 
-      loadPost();
+      // Static Page: loadPost() disabled
     </script>
   </body>
 </html>
