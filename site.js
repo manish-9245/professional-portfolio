@@ -626,6 +626,11 @@ function initializeBlogPostFeatures() {
   const toc = document.getElementById("blog-toc");
 
   if (prose) {
+    if (window.hljs) {
+      prose.querySelectorAll("pre code").forEach((block) => {
+        window.hljs.highlightElement(block);
+      });
+    }
     initializeCodeCopy(prose);
     initializeImageModal(prose);
   }
@@ -851,6 +856,70 @@ function initializePredictivePrefetch() {
   });
 }
 
+function syncHead(nextDocument) {
+  // Update title
+  document.title = nextDocument.title || document.title;
+
+  // Update meta tags and links (canonical, etc.)
+  const currentHead = document.head;
+
+  // Tags we want to synchronize
+  const syncSelectors = [
+    'meta[name="description"]',
+    'meta[name="keywords"]',
+    'meta[name="robots"]',
+    'meta[property^="og:"]',
+    'meta[name^="twitter:"]',
+    'link[rel="canonical"]',
+    'script[id="post-schema"]',
+    'link[id^="hljs-theme-"]'
+  ];
+
+  syncSelectors.forEach((selector) => {
+    const nextEl = nextDocument.head.querySelector(selector);
+    const currentEl = currentHead.querySelector(selector);
+
+    if (nextEl) {
+      if (currentEl) {
+        // Only replace if content/href changed to avoid flicker or unnecessary DOM ops
+        if (
+          nextEl.tagName === "META" &&
+          currentEl.getAttribute("content") !== nextEl.getAttribute("content")
+        ) {
+          currentEl.setAttribute("content", nextEl.getAttribute("content"));
+        } else if (
+          nextEl.tagName === "LINK" &&
+          currentEl.getAttribute("href") !== nextEl.getAttribute("href")
+        ) {
+          currentEl.setAttribute("href", nextEl.getAttribute("href"));
+          // Handle disabled state for hljs themes
+          if (nextEl.hasAttribute("disabled")) {
+            currentEl.setAttribute("disabled", "");
+          } else {
+            currentEl.removeAttribute("disabled");
+          }
+        } else if (nextEl.tagName === "SCRIPT") {
+          currentEl.replaceWith(nextEl.cloneNode(true));
+        }
+      } else {
+        currentHead.appendChild(nextEl.cloneNode(true));
+      }
+    }
+  });
+
+  // Handle new scripts (like highlight.js if not present)
+  nextDocument.head.querySelectorAll("script[src]").forEach((nextScript) => {
+    const src = nextScript.getAttribute("src");
+    if (!currentHead.querySelector(`script[src="${src}"]`)) {
+      const newScript = document.createElement("script");
+      Array.from(nextScript.attributes).forEach((attr) =>
+        newScript.setAttribute(attr.name, attr.value),
+      );
+      currentHead.appendChild(newScript);
+    }
+  });
+}
+
 function isInternalNavigableLink(link) {
   if (!link || !link.href) {
     return false;
@@ -936,7 +1005,7 @@ async function navigateTo(url, options = {}) {
       currentMain.replaceWith(nextMain);
     }
 
-    document.title = nextDocument.title || document.title;
+    syncHead(nextDocument);
 
     if (replace) {
       history.replaceState({}, "", destination.href);
