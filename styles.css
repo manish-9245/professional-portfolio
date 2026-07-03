@@ -2295,25 +2295,60 @@ html[data-theme="dark"] .project-carousel-btn:hover {
   max-width: 95vw;
 }
 
+.blog-mermaid-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: color-mix(in srgb, currentColor 5%, transparent);
+  padding: 0.2rem;
+  border-radius: 100px;
+  margin: 0 0.5rem;
+}
+
+.blog-mermaid-controls button {
+  width: 1.8rem !important;
+  height: 1.8rem !important;
+  padding: 0 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none !important;
+  background: transparent !important;
+  opacity: 0.7;
+  transition: all 0.2s ease;
+}
+
+.blog-mermaid-controls button:hover {
+  opacity: 1;
+  background: color-mix(in srgb, currentColor 10%, transparent) !important;
+}
+
 .blog-mermaid-modal-body {
   padding: 2rem;
   background: color-mix(in srgb, var(--o-bg, canvas) 98%, #000);
-  min-height: 40vh;
+  min-height: 60vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  position: relative;
+  overflow: hidden;
 }
 
 .mermaid-canvas-container {
   width: 100%;
+  height: 100%;
   display: flex;
   justify-content: center;
-  overflow: auto;
+  align-items: center;
+  overflow: hidden;
   padding: 1rem;
-  background: white; /* Force white background for accessibility/contrast in modal if needed */
-  border-radius: 8px;
-  box-shadow: inset 0 2px 10px rgba(0,0,0,0.05);
+  cursor: grab;
+  user-select: none;
+}
+
+.mermaid-canvas-container:active {
+  cursor: grabbing;
 }
 
 [data-theme="dark"] .mermaid-canvas-container {

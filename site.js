@@ -1297,43 +1297,104 @@ function initializeMermaidModal(container) {
   const modalContainer = document.getElementById("blog-mermaid-modal-container");
   if (!modal || !modalContainer) return;
 
+  let state = {
+    scale: 1,
+    translateX: 0,
+    translateY: 0,
+    isDragging: false,
+    startX: 0,
+    startY: 0
+  };
+
+  const updateTransform = () => {
+    const svg = modalContainer.querySelector("svg");
+    if (svg) {
+      svg.style.transform = `translate(${state.translateX}px, ${state.translateY}px) scale(${state.scale})`;
+      svg.style.cursor = state.isDragging ? "grabbing" : "grab";
+    }
+  };
+
+  const resetState = () => {
+    state = { scale: 1, translateX: 0, translateY: 0, isDragging: false, startX: 0, startY: 0 };
+    updateTransform();
+  };
+
   container.querySelectorAll(".mermaid").forEach((mermaidDiv) => {
-    // Make the diagram feel interactive
     mermaidDiv.style.cursor = "zoom-in";
     mermaidDiv.title = "Click to view high-accessibility diagram";
 
     mermaidDiv.addEventListener("click", () => {
-      // Clear previous content
       modalContainer.innerHTML = "";
-
-      // Clone the SVG
       const svg = mermaidDiv.querySelector("svg");
       if (!svg) return;
 
       const clonedSvg = svg.cloneNode(true);
-      
-      // Ensure the cloned SVG is responsive within the modal
       clonedSvg.setAttribute("width", "100%");
       clonedSvg.setAttribute("height", "auto");
-      clonedSvg.style.maxWidth = "100%";
-      clonedSvg.style.height = "auto";
+      clonedSvg.style.maxWidth = "none"; // Allow it to grow beyond container
+      clonedSvg.style.transition = "transform 0.1s ease-out";
+      clonedSvg.style.transformOrigin = "center center";
       
-      // Accessibility: Ensure it's read-only and has proper labels
       clonedSvg.setAttribute("role", "img");
       clonedSvg.setAttribute("aria-label", "High-contrast diagram view");
       
       modalContainer.appendChild(clonedSvg);
+      resetState();
       modal.showModal();
     });
   });
 
-  modal.addEventListener("click", (e) => {
-    if (e.target === modal || e.target.closest("[data-blog-mermaid-close]")) {
-      if (modal.dataset.closing === "true") return;
+  // Pan logic
+  modalContainer.addEventListener("mousedown", (e) => {
+    const svg = modalContainer.querySelector("svg");
+    if (!svg) return;
+    state.isDragging = true;
+    state.startX = e.clientX - state.translateX;
+    state.startY = e.clientY - state.translateY;
+    svg.style.transition = "none";
+    updateTransform();
+  });
 
+  window.addEventListener("mousemove", (e) => {
+    if (!state.isDragging) return;
+    state.translateX = e.clientX - state.startX;
+    state.translateY = e.clientY - state.startY;
+    updateTransform();
+  });
+
+  window.addEventListener("mouseup", () => {
+    if (state.isDragging) {
+      state.isDragging = false;
+      const svg = modalContainer.querySelector("svg");
+      if (svg) svg.style.transition = "transform 0.1s ease-out";
+      updateTransform();
+    }
+  });
+
+  // Zoom logic
+  modal.addEventListener("wheel", (e) => {
+    if (modal.open) {
+      e.preventDefault();
+      const delta = e.deltaY > 0 ? 0.9 : 1.1;
+      state.scale = Math.min(Math.max(state.scale * delta, 0.5), 10);
+      updateTransform();
+    }
+  }, { passive: false });
+
+  // Control buttons
+  modal.addEventListener("click", (e) => {
+    if (e.target.closest("[data-mermaid-zoom-in]")) {
+      state.scale = Math.min(state.scale * 1.2, 10);
+      updateTransform();
+    } else if (e.target.closest("[data-mermaid-zoom-out]")) {
+      state.scale = Math.max(state.scale / 1.2, 0.5);
+      updateTransform();
+    } else if (e.target.closest("[data-mermaid-reset]")) {
+      resetState();
+    } else if (e.target === modal || e.target.closest("[data-blog-mermaid-close]")) {
+      if (modal.dataset.closing === "true") return;
       modal.dataset.closing = "true";
       modal.classList.add("is-closing");
-
       setTimeout(() => {
         modal.close();
         modal.classList.remove("is-closing");
