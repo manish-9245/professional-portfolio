@@ -795,7 +795,8 @@ function initializeBlogReader() {
 
   // Extract clean text
   const tempDiv = prose.cloneNode(true);
-  tempDiv.querySelectorAll("pre, .code-block-shell, .blog-toc, script, style, .blog-reader-bar, aside").forEach(el => el.remove());
+  // Remove technical/visual elements that shouldn't be read
+  tempDiv.querySelectorAll("pre, .code-block-shell, .blog-toc, script, style, .blog-reader-bar, aside, .katex-html").forEach(el => el.remove());
   const textContent = tempDiv.innerText.trim().replace(/\s+/g, " ");
   
   if (!textContent || textContent.length < 5) return;
