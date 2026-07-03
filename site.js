@@ -300,12 +300,18 @@ async function getBlogIndex() {
     return cached.data;
   }
 
-  const response = await fetch("/posts/index.json");
+  // Add cache buster to ensure fresh data if cache is missing or stale
+  const response = await fetch(`/posts/index.json?v=${now}`);
   if (!response.ok) {
-    throw new Error("Failed to load blog index");
+    console.error("Failed to fetch blog index:", response.status, response.statusText);
+    throw new Error(`Failed to load blog index: ${response.status}`);
   }
 
   const posts = await response.json();
+  if (!Array.isArray(posts)) {
+    throw new Error("Blog index is not an array");
+  }
+  
   writeSessionJson(BLOG_INDEX_CACHE_KEY, { timestamp: now, data: posts });
   return posts;
 }
