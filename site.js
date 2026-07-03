@@ -649,6 +649,7 @@ function initializeBlogPostFeatures() {
     }
     initializeCodeCopy(prose);
     initializeImageModal(prose);
+    initializeBlogReader();
   }
 
   if (toc && prose) {
@@ -773,6 +774,104 @@ function initializeCodeCopy(container) {
   });
 }
 
+function initializeBlogReader() {
+  const header = document.querySelector(".blog-post-header");
+  const prose = document.getElementById("blog-prose");
+  if (!header || !prose || !window.speechSynthesis) return;
+
+  if (header.querySelector(".blog-reader-bar")) return;
+
+  const tempDiv = prose.cloneNode(true);
+  tempDiv.querySelectorAll("pre, .code-block-shell, .blog-toc, script, style").forEach(el => el.remove());
+  const text = tempDiv.innerText.trim().replace(/\s+/g, " ");
+  
+  const wordCount = text.split(/\s+/).length;
+  const readTime = Math.ceil(wordCount / 200);
+
+  const readerBar = document.createElement("div");
+  readerBar.className = "blog-reader-bar";
+  readerBar.innerHTML = `
+    <div class="blog-reader-label">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+      <span>Listen</span>
+    </div>
+    <div class="blog-reader-controls">
+      <button type="button" class="blog-reader-btn" id="reader-play" title="Play">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+      </button>
+      <button type="button" class="blog-reader-btn" id="reader-stop" title="Stop">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12"></rect></svg>
+      </button>
+    </div>
+    <div class="blog-reader-status" id="reader-status">${readTime} min read</div>
+  `;
+
+  header.appendChild(readerBar);
+
+  const playBtn = readerBar.querySelector("#reader-play");
+  const stopBtn = readerBar.querySelector("#reader-stop");
+  const status = readerBar.querySelector("#reader-status");
+
+  let isPlaying = false;
+  let isPaused = false;
+
+  const updateUI = () => {
+    if (isPlaying) {
+      playBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>`;
+      playBtn.title = "Pause";
+      playBtn.classList.add("is-active");
+      status.textContent = "Reading...";
+    } else {
+      playBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>`;
+      playBtn.title = "Play";
+      playBtn.classList.remove("is-active");
+      status.textContent = isPaused ? "Paused" : `${readTime} min read`;
+    }
+  };
+
+  playBtn.addEventListener("click", () => {
+    if (isPlaying) {
+      window.speechSynthesis.pause();
+      isPlaying = false;
+      isPaused = true;
+    } else {
+      if (isPaused) {
+        window.speechSynthesis.resume();
+      } else {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        
+        // Try to find a nice English voice
+        const voices = window.speechSynthesis.getVoices();
+        const preferredVoice = voices.find(v => v.name.includes("Google") && v.lang.startsWith("en")) || 
+                               voices.find(v => v.lang.startsWith("en"));
+        if (preferredVoice) utterance.voice = preferredVoice;
+        
+        utterance.rate = 1.0;
+        utterance.onend = () => {
+          isPlaying = false;
+          isPaused = false;
+          updateUI();
+        };
+        utterance.onerror = () => {
+          isPlaying = false;
+          isPaused = false;
+          updateUI();
+        };
+        window.speechSynthesis.speak(utterance);
+      }
+      isPlaying = true;
+      isPaused = false;
+    }
+    updateUI();
+  });
+
+  stopBtn.addEventListener("click", () => {
+    window.speechSynthesis.cancel();
+    isPlaying = false;
+    isPaused = false;
+    updateUI();
+  });
 function initializeImageModal(container) {
   const modal = document.getElementById("blog-image-modal");
   if (!modal) return;
@@ -1068,6 +1167,9 @@ async function navigateTo(url, options = {}) {
     setActivePage(destination.pathname);
     initializePageFeatures();
     window.scrollTo({ top: 0, behavior: "auto" });
+    if (window.speechSynthesis) {
+      window.speechSynthesis.cancel();
+    }
   } catch {
     window.location.href = destination.href;
   } finally {

@@ -1930,3 +1930,76 @@ html[data-theme="dark"] .project-carousel-btn:hover {
     grid-template-columns: 1fr;
   }
 }
+/* Blog Reader (TTS) */
+.blog-reader-bar {
+  margin-top: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 0.9rem;
+  background: color-mix(in srgb, var(--o-accent, currentColor) 4%, transparent);
+  border: 1px solid var(--o-border, color-mix(in srgb, currentColor 8%, transparent));
+  border-radius: 12px;
+  width: fit-content;
+  animation: fade-in 0.4s ease-out;
+}
+
+.blog-reader-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  opacity: 0.8;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.blog-reader-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.blog-reader-btn {
+  background: transparent;
+  border: 1px solid var(--o-border, color-mix(in srgb, currentColor 12%, transparent));
+  color: inherit;
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.blog-reader-btn:hover {
+  background: color-mix(in srgb, currentColor 8%, transparent);
+  transform: scale(1.05);
+}
+
+.blog-reader-btn:active {
+  transform: scale(0.95);
+}
+
+.blog-reader-btn.is-active {
+  background: var(--o-accent, currentColor);
+  color: var(--o-bg, canvas);
+  border-color: transparent;
+}
+
+.blog-reader-status {
+  font-size: 0.74rem;
+  opacity: 0.6;
+  font-weight: 500;
+  min-width: 4rem;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+[data-theme="dark"] .blog-reader-bar {
+  background: color-mix(in srgb, white 3%, transparent);
+}
