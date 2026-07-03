@@ -28,6 +28,11 @@ marked.use({
     code(token) {
       const code = token.text;
       const lang = (token.lang || "").match(/\S*/)[0];
+
+      if (lang === "mermaid") {
+        return `<pre class="mermaid">${code}</pre>`;
+      }
+
       let highlighted;
       let detectedLang = lang;
 
