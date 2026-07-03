@@ -788,10 +788,17 @@ function initializeBlogReader() {
 
   if (header.querySelector(".blog-reader-bar")) return;
 
+  // Icons as constants to ensure they are always correct
+  const ICON_PLAY = `<svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>`;
+  const ICON_PAUSE = `<svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`;
+  const ICON_STOP = `<svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M6 6h12v12H6z"/></svg>`;
+
   const tempDiv = prose.cloneNode(true);
   tempDiv.querySelectorAll("pre, .code-block-shell, .blog-toc, script, style, .blog-reader-bar, aside").forEach(el => el.remove());
   const text = tempDiv.innerText.trim().replace(/\s+/g, " ");
   
+  if (!text) return; // Nothing to read
+
   const wordCount = text.split(/\s+/).length;
   const readTime = Math.ceil(wordCount / 200);
 
@@ -800,20 +807,16 @@ function initializeBlogReader() {
   readerBar.innerHTML = `
     <div class="blog-reader-info">
       <div class="blog-reader-icon-wrapper">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
       </div>
       <div class="blog-reader-label">Listen</div>
     </div>
     <div class="blog-reader-controls">
-      <button type="button" class="blog-reader-btn" id="reader-play" title="Play">
-        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-      </button>
+      <button type="button" class="blog-reader-btn" id="reader-play" title="Play">${ICON_PLAY}</button>
       <button type="button" class="blog-reader-btn" id="reader-speed" title="Playback Speed">
         <span class="blog-reader-speed">1x</span>
       </button>
-      <button type="button" class="blog-reader-btn" id="reader-stop" title="Stop">
-        <svg viewBox="0 0 24 24"><path d="M6 6h12v12H6z"/></svg>
-      </button>
+      <button type="button" class="blog-reader-btn" id="reader-stop" title="Stop">${ICON_STOP}</button>
     </div>
     <div class="blog-reader-status" id="reader-status">${readTime} min</div>
   `;
@@ -833,12 +836,12 @@ function initializeBlogReader() {
 
   const updateUI = () => {
     if (isPlaying) {
-      playBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`;
+      playBtn.innerHTML = ICON_PAUSE;
       playBtn.title = "Pause";
       playBtn.classList.add("is-active");
       status.textContent = "Playing";
     } else {
-      playBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>`;
+      playBtn.innerHTML = ICON_PLAY;
       playBtn.title = isPaused ? "Resume" : "Play";
       playBtn.classList.remove("is-active");
       status.textContent = isPaused ? "Paused" : `${readTime} min`;
@@ -853,83 +856,70 @@ function initializeBlogReader() {
     updateUI();
   };
 
+  const startReading = () => {
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'en-US';
+    utterance.rate = speeds[speedIdx];
+    utterance.volume = 1;
+    
+    // Voice selection
+    const voices = window.speechSynthesis.getVoices();
+    const preferred = voices.find(v => v.name.includes("Google") && v.lang.startsWith("en")) || 
+                      voices.find(v => v.lang.startsWith("en"));
+    if (preferred) utterance.voice = preferred;
+
+    utterance.onstart = () => {
+      isPlaying = true;
+      isPaused = false;
+      updateUI();
+    };
+    
+    utterance.onend = () => {
+      isPlaying = false;
+      isPaused = false;
+      updateUI();
+    };
+
+    utterance.onerror = (e) => {
+      console.error("Speech error:", e);
+      isPlaying = false;
+      isPaused = false;
+      updateUI();
+    };
+
+    window.speechSynthesis.speak(utterance);
+  };
+
   playBtn.addEventListener("click", () => {
     if (isPlaying) {
       window.speechSynthesis.pause();
       isPlaying = false;
       isPaused = true;
+      updateUI();
     } else if (isPaused) {
       window.speechSynthesis.resume();
       isPlaying = true;
       isPaused = false;
+      updateUI();
     } else {
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
-      
-      const voices = window.speechSynthesis.getVoices();
-      const preferred = voices.find(v => v.name.includes("Google") && v.lang.startsWith("en")) || 
-                        voices.find(v => v.lang.startsWith("en"));
-      if (preferred) utterance.voice = preferred;
-      
-      utterance.rate = speeds[speedIdx];
-      utterance.onend = () => {
-        isPlaying = false;
-        isPaused = false;
-        updateUI();
-      };
-      utterance.onerror = () => {
-        isPlaying = false;
-        isPaused = false;
-        updateUI();
-      };
-
-      // Chrome/Safari "Keep-Alive" fix
-      const keepAlive = setInterval(() => {
-        if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
-          window.speechSynthesis.pause();
-          window.speechSynthesis.resume();
-        } else if (!window.speechSynthesis.speaking) {
-          clearInterval(keepAlive);
-        }
-      }, 10000);
-
-      window.speechSynthesis.speak(utterance);
-      isPlaying = true;
-      isPaused = false;
+      startReading();
     }
-    updateUI();
   });
 
   speedBtn.addEventListener("click", () => {
     speedIdx = (speedIdx + 1) % speeds.length;
     if (isPlaying || isPaused) {
-      // Mid-read speed change requires a restart in many browsers
-      const wasPlaying = isPlaying;
-      window.speechSynthesis.cancel();
-      setTimeout(() => {
-        const utterance = new SpeechSynthesisUtterance(text);
-        const voices = window.speechSynthesis.getVoices();
-        const preferred = voices.find(v => v.name.includes("Google") && v.lang.startsWith("en")) || 
-                          voices.find(v => v.lang.startsWith("en"));
-        if (preferred) utterance.voice = preferred;
-        utterance.rate = speeds[speedIdx];
-        utterance.onend = () => {
-          isPlaying = false;
-          isPaused = false;
-          updateUI();
-        };
-        window.speechSynthesis.speak(utterance);
-        if (!wasPlaying) window.speechSynthesis.pause();
-        isPlaying = wasPlaying;
-        isPaused = !wasPlaying;
-        updateUI();
-      }, 50);
-    } else {
-      updateUI();
+      startReading();
+      if (isPaused) window.speechSynthesis.pause();
     }
+    updateUI();
   });
 
   stopBtn.addEventListener("click", stopReading);
+
+  // Handle page navigation/unloading
+  window.addEventListener("beforeunload", () => window.speechSynthesis.cancel());
 }
 
 function initializeShareActions() {
