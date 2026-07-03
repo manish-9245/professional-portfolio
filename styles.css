@@ -1909,8 +1909,8 @@ html[data-theme="dark"] .project-carousel-btn:hover {
 .blog-share-link svg,
 .blog-share-copy svg,
 .floating-share-item svg {
-  width: 1.4rem;
-  height: 1.4rem;
+  width: 1.8rem;
+  height: 1.8rem;
   display: block;
   fill: currentColor;
   flex-shrink: 0;
@@ -1930,8 +1930,8 @@ html[data-theme="dark"] .project-carousel-btn:hover {
 }
 
 .blog-share-icon {
-  width: 1.4rem;
-  height: 1.4rem;
+  width: 1.8rem;
+  height: 1.8rem;
   display: block;
   fill: currentColor;
   flex-shrink: 0;
