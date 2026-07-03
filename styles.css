@@ -2328,8 +2328,17 @@ html[data-theme="dark"] .project-carousel-btn:hover {
 
 /* Make diagrams look clickable */
 .mermaid {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
   cursor: zoom-in;
+  min-height: 50px;
+}
+
+.mermaid:not([data-processed]) {
+  opacity: 0.5;
+}
+
+.mermaid[data-processed] {
+  opacity: 1;
 }
 
 .mermaid:hover {

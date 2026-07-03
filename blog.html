@@ -811,11 +811,7 @@
           </div>
           ${floatingShareHtml}`;
 
-        if (window.mermaid) {
-          mermaid.run({
-            nodes: document.querySelectorAll(".mermaid"),
-          });
-        }
+        // Mermaid is now initialized via initializeBlogPostFeatures()
 
         // Syntax highlight any un-highlighted code blocks
         document

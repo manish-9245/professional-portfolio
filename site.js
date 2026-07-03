@@ -65,6 +65,100 @@ function applyTheme(theme, options = {}) {
 
   updateThemeToggleUI();
   syncHljs();
+  syncMermaid();
+}
+
+function syncMermaid() {
+  const prose = document.getElementById("blog-prose");
+  if (prose) {
+    initializeMermaid(prose);
+  }
+}
+
+function initializeMermaid(container) {
+  if (!window.mermaid) return;
+
+  const isDark = getActiveTheme() === "dark";
+  
+  // Save original source before first render to allow re-renders on theme change
+  container.querySelectorAll(".mermaid").forEach(el => {
+    if (!el.dataset.mermaidSrc) {
+      el.dataset.mermaidSrc = el.textContent.trim();
+    }
+  });
+
+  // Premium color palette for Mermaid
+  const themeVars = isDark ? {
+    // Dark mode: Deep slates and vibrant cyan accents
+    primaryColor: "#0f172a",
+    primaryTextColor: "#f1f5f9",
+    primaryBorderColor: "#334155",
+    lineColor: "#38bdf8",
+    secondaryColor: "#1e293b",
+    tertiaryColor: "#0f172a",
+    mainBkg: "#0f172a",
+    nodeBorder: "#334155",
+    clusterBkg: "#1e293b",
+    clusterBorder: "#334155",
+    defaultLinkColor: "#38bdf8",
+    titleColor: "#38bdf8",
+    edgeLabelBackground: "#1e293b",
+    nodeTextColor: "#f1f5f9"
+  } : {
+    // Light mode: Clean whites and professional blue accents
+    primaryColor: "#f8fafc",
+    primaryTextColor: "#0f172a",
+    primaryBorderColor: "#e2e8f0",
+    lineColor: "#0e75b6",
+    secondaryColor: "#f1f5f9",
+    tertiaryColor: "#f8fafc",
+    mainBkg: "#ffffff",
+    nodeBorder: "#cbd5e1",
+    clusterBkg: "#f8fafc",
+    clusterBorder: "#e2e8f0",
+    defaultLinkColor: "#0e75b6",
+    titleColor: "#0e75b6",
+    edgeLabelBackground: "#ffffff",
+    nodeTextColor: "#0f172a"
+  };
+
+  mermaid.initialize({
+    startOnLoad: false,
+    theme: isDark ? "dark" : "neutral",
+    themeVariables: themeVars,
+    fontFamily: "var(--font-sans, system-ui, sans-serif)",
+    fontSize: 14,
+    flowchart: { 
+      useMaxWidth: true, 
+      htmlLabels: true, 
+      curve: "basis",
+      padding: 20
+    },
+    sequence: { 
+      useMaxWidth: true, 
+      actorMargin: 50, 
+      showSequenceNumbers: false,
+      mirrorActors: false,
+      bottomMargin: 10
+    },
+    gantt: {
+      fontSize: 12,
+      barGap: 4,
+      barHeight: 20
+    }
+  });
+  
+  // Restore original source and clear 'data-processed' to force Mermaid to re-render
+  container.querySelectorAll(".mermaid").forEach(el => {
+    if (el.dataset.mermaidSrc) {
+      el.textContent = el.dataset.mermaidSrc;
+      el.removeAttribute("data-processed");
+    }
+  });
+
+  mermaid.run({
+    nodes: container.querySelectorAll(".mermaid"),
+  });
 }
 
 function syncHljs() {
@@ -669,6 +763,7 @@ function initializeBlogPostFeatures() {
     }
     initializeCodeCopy(prose);
     initializeImageModal(prose);
+    initializeMermaid(prose);
     initializeMermaidModal(prose);
     initializeBlogReader();
     initializeShareActions();
