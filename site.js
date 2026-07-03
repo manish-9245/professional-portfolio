@@ -669,6 +669,7 @@ function initializeBlogPostFeatures() {
     }
     initializeCodeCopy(prose);
     initializeImageModal(prose);
+    initializeMermaidModal(prose);
     initializeBlogReader();
     initializeShareActions();
   }
@@ -1182,6 +1183,57 @@ function initializeImageModal(container) {
 
   modal.addEventListener("click", (e) => {
     if (e.target === modal || e.target.closest("[data-blog-image-close]")) {
+      if (modal.dataset.closing === "true") return;
+
+      modal.dataset.closing = "true";
+      modal.classList.add("is-closing");
+
+      setTimeout(() => {
+        modal.close();
+        modal.classList.remove("is-closing");
+        modal.dataset.closing = "false";
+      }, 190);
+    }
+  });
+}
+
+function initializeMermaidModal(container) {
+  const modal = document.getElementById("blog-mermaid-modal");
+  const modalContainer = document.getElementById("blog-mermaid-modal-container");
+  if (!modal || !modalContainer) return;
+
+  container.querySelectorAll(".mermaid").forEach((mermaidDiv) => {
+    // Make the diagram feel interactive
+    mermaidDiv.style.cursor = "zoom-in";
+    mermaidDiv.title = "Click to view high-accessibility diagram";
+
+    mermaidDiv.addEventListener("click", () => {
+      // Clear previous content
+      modalContainer.innerHTML = "";
+
+      // Clone the SVG
+      const svg = mermaidDiv.querySelector("svg");
+      if (!svg) return;
+
+      const clonedSvg = svg.cloneNode(true);
+      
+      // Ensure the cloned SVG is responsive within the modal
+      clonedSvg.setAttribute("width", "100%");
+      clonedSvg.setAttribute("height", "auto");
+      clonedSvg.style.maxWidth = "100%";
+      clonedSvg.style.height = "auto";
+      
+      // Accessibility: Ensure it's read-only and has proper labels
+      clonedSvg.setAttribute("role", "img");
+      clonedSvg.setAttribute("aria-label", "High-contrast diagram view");
+      
+      modalContainer.appendChild(clonedSvg);
+      modal.showModal();
+    });
+  });
+
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal || e.target.closest("[data-blog-mermaid-close]")) {
       if (modal.dataset.closing === "true") return;
 
       modal.dataset.closing = "true";
