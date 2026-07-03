@@ -713,7 +713,7 @@ function getLanguageIcon(lang) {
 
 function initializeCodeCopy(container) {
   container.querySelectorAll("pre").forEach((pre) => {
-    if (pre.parentElement && pre.parentElement.classList.contains("code-block-shell")) {
+    if (pre.parentElement && (pre.parentElement.classList.contains("code-block-shell") || pre.parentElement.classList.contains("code-block-wrapper"))) {
       return;
     }
 
