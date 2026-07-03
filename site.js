@@ -650,6 +650,7 @@ function initializeBlogPostFeatures() {
     initializeCodeCopy(prose);
     initializeImageModal(prose);
     initializeBlogReader();
+    initializeShareActions();
   }
 
   if (toc && prose) {
@@ -872,6 +873,66 @@ function initializeBlogReader() {
     isPaused = false;
     updateUI();
   });
+}
+
+function initializeShareActions() {
+  const shareContainer = document.getElementById("blog-share");
+  const floatingShare = document.querySelector(".floating-share");
+  if (!shareContainer && !floatingShare) return;
+
+  const handleCopy = async (btn) => {
+    const url = btn.getAttribute("data-url") || window.location.href;
+    try {
+      await copyText(url);
+      const originalHtml = btn.innerHTML;
+      btn.innerHTML = `
+        <svg class="blog-share-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        <span>Copied!</span>`;
+      btn.style.color = "#27c93f";
+      setTimeout(() => {
+        btn.innerHTML = originalHtml;
+        btn.style.color = "";
+      }, 2000);
+    } catch (err) {
+      console.error("Failed to copy link", err);
+    }
+  };
+
+  document.querySelectorAll("[data-share-copy]").forEach(btn => {
+    btn.addEventListener("click", () => handleCopy(btn));
+  });
+
+  if (floatingShare) {
+    const trigger = floatingShare.querySelector(".floating-share-trigger");
+    const menu = floatingShare.querySelector(".floating-share-menu");
+
+    if (trigger) {
+      trigger.addEventListener("click", (e) => {
+        e.stopPropagation();
+        
+        if (navigator.share && window.innerWidth < 768) {
+          navigator.share({
+            title: document.title,
+            text: document.querySelector('meta[name="description"]')?.content || "",
+            url: window.location.href
+          }).catch(err => console.log("Share failed", err));
+          return;
+        }
+
+        floatingShare.classList.toggle("is-active");
+      });
+    }
+
+    document.addEventListener("click", () => {
+      floatingShare.classList.remove("is-active");
+    });
+
+    if (menu) {
+      menu.addEventListener("click", (e) => e.stopPropagation());
+    }
+  }
+}
+
 function initializeImageModal(container) {
   const modal = document.getElementById("blog-image-modal");
   if (!modal) return;
