@@ -1892,31 +1892,35 @@ html[data-theme="dark"] .project-carousel-btn:hover {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
   border: 1px solid var(--o-border, color-mix(in srgb, currentColor 15%, transparent));
-  border-radius: 999px;
-  min-width: 3.2rem;
-  min-height: 3.2rem;
-  width: 3.2rem;
-  height: 3.2rem;
-  padding: 0;
-  font-size: 0.82rem;
-  line-height: 1.1;
+  color: #fff; /* Default to white since we use brand backgrounds */
+  background: var(--o-accent, #0e75b6);
   text-decoration: none;
-  color: inherit;
-  background: color-mix(in srgb, var(--o-bg, canvas) 96%, transparent);
-  transition: border-color 0.15s ease, background-color 0.15s ease, transform 0.15s ease;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.23, 1, 0.32, 1);
+  box-shadow: 0 4px 12px -2px rgba(0,0,0,0.1);
+  padding: 0;
+  margin: 0;
 }
 
-.blog-share-copy {
-  font: inherit;
-  cursor: pointer;
+.blog-share-link svg,
+.blog-share-copy svg,
+.floating-share-item svg {
+  width: 1.4rem;
+  height: 1.4rem;
+  display: block;
+  fill: currentColor;
+  flex-shrink: 0;
 }
 
 .blog-share-link:hover,
 .blog-share-copy:hover {
-  border-color: color-mix(in srgb, currentColor 28%, transparent);
-  background: color-mix(in srgb, currentColor 8%, transparent);
-  transform: translateY(-1px);
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 8px 20px -4px rgba(0,0,0,0.2);
+  filter: brightness(1.1);
 }
 
 .blog-share-link:focus-visible,
@@ -1932,6 +1936,15 @@ html[data-theme="dark"] .project-carousel-btn:hover {
   fill: currentColor;
   flex-shrink: 0;
 }
+
+.share-whatsapp { background: #25D366; color: #fff; border-color: #25D366; }
+.share-linkedin { background: #0077b5; color: #fff; border-color: #0077b5; }
+.share-x { background: #000; color: #fff; border-color: #333; }
+.share-facebook { background: #1877F2; color: #fff; border-color: #1877F2; }
+.share-reddit { background: #FF4500; color: #fff; border-color: #FF4500; }
+.share-telegram { background: #0088cc; color: #fff; border-color: #0088cc; }
+.share-email { background: #ea4335; color: #fff; border-color: #ea4335; }
+.share-copy { background: var(--o-accent, #0e75b6); color: #fff; border-color: var(--o-accent, #0e75b6); }
 
 .related-card {
   border: 1px solid var(--o-border, color-mix(in srgb, currentColor 14%, transparent));
@@ -2116,59 +2129,23 @@ html[data-theme="dark"] .project-carousel-btn:hover {
   margin-top: 1.5rem;
 }
 
-.blog-share-link, .blog-share-copy {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.6rem 1rem;
-  border-radius: 10px;
-  background: color-mix(in srgb, currentColor 5%, transparent);
-  border: 1px solid var(--o-border, color-mix(in srgb, currentColor 10%, transparent));
-  color: inherit;
-  font-size: 0.88rem;
-  font-weight: 600;
-  text-decoration: none;
-  cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.blog-share-link:hover, .blog-share-copy:hover {
-  background: color-mix(in srgb, currentColor 10%, transparent);
-  transform: translateY(-2px);
-  border-color: color-mix(in srgb, currentColor 20%, transparent);
-}
-
-.blog-share-icon {
-  width: 1.1rem;
-  height: 1.1rem;
-  fill: currentColor;
-}
-
-.share-whatsapp { background: #25D366; color: #fff; border-color: #25D366; }
-.share-linkedin { background: #0077b5; color: #fff; border-color: #0077b5; }
-.share-x { background: #000; color: #fff; border-color: #333; }
-.share-facebook { background: #1877F2; color: #fff; border-color: #1877F2; }
-.share-reddit { background: #FF4500; color: #fff; border-color: #FF4500; }
-.share-telegram { background: #0088cc; color: #fff; border-color: #0088cc; }
-.share-email { background: #ea4335; color: #fff; border-color: #ea4335; }
-.share-copy { background: var(--o-accent, #0e75b6); color: #fff; border-color: var(--o-accent, #0e75b6); }
-
-.blog-share-link, .blog-share-copy {
+.floating-share-item {
+  width: 3.2rem;
+  height: 3.2rem;
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 52px;
-  height: 52px;
-  border-radius: 14px;
-  border: 1px solid var(--o-border, color-mix(in srgb, currentColor 15%, transparent));
+  text-decoration: none;
+  color: #fff;
   transition: all 0.25s cubic-bezier(0.23, 1, 0.32, 1);
   box-shadow: 0 4px 12px -2px rgba(0,0,0,0.1);
 }
 
-.blog-share-link:hover, .blog-share-copy:hover {
-  transform: translateY(-4px) scale(1.05);
-  box-shadow: 0 8px 20px -4px rgba(0,0,0,0.2);
+.floating-share-item:hover {
+  transform: scale(1.1) translateX(-4px);
   filter: brightness(1.1);
+  box-shadow: 0 8px 20px -4px rgba(0,0,0,0.2);
 }
 
 /* Floating Share Button */
@@ -2231,23 +2208,7 @@ html[data-theme="dark"] .project-carousel-btn:hover {
   border: 1px solid var(--o-border, color-mix(in srgb, currentColor 12%, transparent));
 }
 
-.floating-share-item {
-  width: 2.8rem;
-  height: 2.8rem;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  color: inherit;
-  background: color-mix(in srgb, currentColor 5%, transparent);
-  transition: all 0.2s ease;
-}
 
-.floating-share-item:hover {
-  background: color-mix(in srgb, currentColor 12%, transparent);
-  transform: scale(1.1);
-}
 
 @media (max-width: 768px) {
   .floating-share {
