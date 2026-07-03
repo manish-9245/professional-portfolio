@@ -800,10 +800,10 @@ function initializeBlogReader() {
   const readerBar = document.createElement("div");
   readerBar.className = "blog-reader-bar";
   
-  // High-visibility icons with explicit dimensions and fill
-  const playIcon = '<svg viewBox="0 0 24 24" fill="currentColor" style="width:1.2rem;height:1.2rem;display:block;"><path d="M8 5v14l11-7z"/></svg>';
-  const pauseIcon = '<svg viewBox="0 0 24 24" fill="currentColor" style="width:1.2rem;height:1.2rem;display:block;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>';
-  const stopIcon = '<svg viewBox="0 0 24 24" fill="currentColor" style="width:1.2rem;height:1.2rem;display:block;"><path d="M6 6h12v12H6z"/></svg>';
+  // High-fidelity stroke-based icons
+  const iconPlay = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>`;
+  const iconPause = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>`;
+  const iconStop = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12"></rect></svg>`;
 
   readerBar.innerHTML = `
     <div class="blog-reader-info">
@@ -813,11 +813,11 @@ function initializeBlogReader() {
       <div class="blog-reader-label">Listen</div>
     </div>
     <div class="blog-reader-controls">
-      <button type="button" class="blog-reader-btn" id="reader-play" title="Play">${playIcon}</button>
+      <button type="button" class="blog-reader-btn" id="reader-play" title="Play">${iconPlay}</button>
       <button type="button" class="blog-reader-btn" id="reader-speed" title="Playback Speed">
         <span class="blog-reader-speed">1x</span>
       </button>
-      <button type="button" class="blog-reader-btn" id="reader-stop" title="Stop">${stopIcon}</button>
+      <button type="button" class="blog-reader-btn" id="reader-stop" title="Stop">${iconStop}</button>
     </div>
     <div class="blog-reader-status" id="reader-status">${readTime} min</div>
   `;
@@ -837,11 +837,11 @@ function initializeBlogReader() {
 
   function updateUI() {
     if (isPlaying) {
-      playBtn.innerHTML = pauseIcon;
+      playBtn.innerHTML = iconPause;
       playBtn.classList.add("is-active");
       statusText.textContent = "Playing";
     } else {
-      playBtn.innerHTML = playIcon;
+      playBtn.innerHTML = iconPlay;
       playBtn.classList.remove("is-active");
       statusText.textContent = isPaused ? "Paused" : `${readTime} min`;
     }
@@ -853,7 +853,7 @@ function initializeBlogReader() {
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.rate = speeds[speedIdx];
     
-    // Explicitly handle voice loading
+    // Voice selection logic
     const voices = window.speechSynthesis.getVoices();
     const voice = voices.find(v => v.lang.startsWith("en-") && v.name.includes("Google")) || 
                   voices.find(v => v.lang.startsWith("en-")) || 
@@ -878,10 +878,20 @@ function initializeBlogReader() {
 
     window.speechSynthesis.speak(utterance);
     
-    // Immediate UI feedback
+    // Immediate UI feedback for responsiveness
     isPlaying = true;
     isPaused = false;
     updateUI();
+
+    // Chrome/Safari Keep-Alive
+    const interval = setInterval(() => {
+      if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
+        window.speechSynthesis.pause();
+        window.speechSynthesis.resume();
+      } else if (!window.speechSynthesis.speaking) {
+        clearInterval(interval);
+      }
+    }, 10000);
   }
 
   playBtn.addEventListener("click", (e) => {
