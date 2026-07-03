@@ -2196,10 +2196,11 @@ html[data-theme="dark"] .project-carousel-btn:hover {
   backdrop-filter: blur(20px);
 }
 
-.floating-share.is-active .floating-share-menu {
+.floating-share.is-active .floating-share-menu,
+.floating-share:hover .floating-share-menu {
   opacity: 1;
   transform: translateY(0) scale(1);
-  pointer-events: auto;
+  pointer-events: all;
 }
 
 .floating-share.is-active .floating-share-trigger {

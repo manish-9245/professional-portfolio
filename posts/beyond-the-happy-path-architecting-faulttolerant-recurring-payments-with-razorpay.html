@@ -965,7 +965,7 @@ r = redis.Redis(host=<span class="hljs-string">'localhost'</span>, port=<span cl
                     <span aria-hidden="true">•</span>
                     <span>${tags[0]}</span>
                   </p>
-                  <h3 class="related-title"><a href="/blog.html?post=${encodeURIComponent(post.slug)}">${post.title}</a></h3>
+                  <h3 class="related-title"><a href="/posts/${post.slug}.html">${post.title}</a></h3>
                   <p class="related-desc">${post.description || ""}</p>
                 </article>`;
               })
