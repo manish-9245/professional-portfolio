@@ -860,30 +860,32 @@ function initializeBlogReader() {
   }
 
   function startReading() {
-    // Clear any existing speech
-    window.speechSynthesis.cancel();
+    console.log("Blog Reader: Starting playback...");
     
-    // Create and configure the utterance synchronously
+    // The "Universal Chrome Fix": Pause, Cancel, and Resume to clear any stuck state
+    window.speechSynthesis.pause();
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.resume();
+    
+    // Create the real utterance
     const utterance = new SpeechSynthesisUtterance(textContent);
     utterance.rate = speeds[speedIdx];
     utterance.lang = "en-US";
     
-    // Enhanced Voice selection logic for more "Human" sound
-    const getBestVoice = () => {
-      const voices = window.speechSynthesis.getVoices();
-      
-      // Order of preference for high-quality, human-sounding voices
-      const preferences = [
-        v => v.name.includes("Natural"), // High-quality modern voices
-        v => v.name.includes("Neural"),  // Neural-based TTS
-        v => v.name.includes("Google") && v.lang.includes("en-US"), // Google's premium web voices
-        v => v.name.includes("Siri"),    // Apple's natural voices
-        v => v.name.includes("Enhanced"), // High-fidelity system voices
-        v => v.lang.startsWith("en-US"), // Standard US English
-        v => v.lang.startsWith("en-GB"), // Standard UK English
-        v => v.lang.startsWith("en")     // Any English
-      ];
+    // Enhanced Voice selection
+    const voices = window.speechSynthesis.getVoices();
+    console.log(`Blog Reader: Found ${voices.length} voices`);
 
+    const getBestVoice = () => {
+      const preferences = [
+        v => v.name.includes("Natural"),
+        v => v.name.includes("Neural"),
+        v => v.name.includes("Google") && v.lang.includes("en-US"),
+        v => v.name.includes("Siri"),
+        v => v.name.includes("Enhanced"),
+        v => v.lang.startsWith("en-US"),
+        v => v.lang.startsWith("en-GB")
+      ];
       for (const check of preferences) {
         const found = voices.find(check);
         if (found) return found;
@@ -893,21 +895,19 @@ function initializeBlogReader() {
 
     const voice = getBestVoice();
     if (voice) {
+      console.log(`Blog Reader: Using voice - ${voice.name}`);
       utterance.voice = voice;
-      // Subtly adjust pitch/rate for a less "monotone" feel if it's a standard voice
-      if (!voice.name.includes("Natural") && !voice.name.includes("Neural")) {
-        utterance.pitch = 1.05; // Slightly higher pitch can sound less "flat"
-        utterance.rate = speeds[speedIdx] * 0.95; // Slightly slower for better articulation
-      }
     }
 
     utterance.onstart = () => {
+      console.log("Blog Reader: Speech started");
       isPlaying = true;
       isPaused = false;
       updateUI();
     };
 
     utterance.onend = () => {
+      console.log("Blog Reader: Speech ended naturally");
       isPlaying = false;
       isPaused = false;
       if (heartbeatInterval) clearInterval(heartbeatInterval);
@@ -915,22 +915,23 @@ function initializeBlogReader() {
     };
 
     utterance.onerror = (e) => {
-      console.error("SpeechSynthesis error:", e);
+      console.error("Blog Reader: Speech error", e);
       isPlaying = false;
       isPaused = false;
       if (heartbeatInterval) clearInterval(heartbeatInterval);
       updateUI();
     };
 
-    // Critical: Call speak() synchronously in the user-gesture context
+    // Kickstart the engine (Dummy utterance fix for Chrome macOS)
+    window.speechSynthesis.speak(new SpeechSynthesisUtterance(""));
+    
+    // Speak the real content
     window.speechSynthesis.speak(utterance);
     
-    // UI state feedback
     isPlaying = true;
     isPaused = false;
     updateUI();
 
-    // Heartbeat Keep-Alive
     if (heartbeatInterval) clearInterval(heartbeatInterval);
     heartbeatInterval = setInterval(() => {
       if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
