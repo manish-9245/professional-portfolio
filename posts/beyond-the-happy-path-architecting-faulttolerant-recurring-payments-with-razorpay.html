@@ -1171,19 +1171,6 @@ r = redis.Redis(host=<span class="hljs-string">'localhost'</span>, port=<span cl
           description: socialDescription,
         });
 
-        // Dark mode hljs stylesheet swap
-        function syncHljs() {
-          const dark =
-            document.documentElement.getAttribute("data-theme") === "dark";
-          document.getElementById("hljs-theme-light").disabled = dark;
-          document.getElementById("hljs-theme-dark").disabled = !dark;
-        }
-        syncHljs();
-        new MutationObserver(syncHljs).observe(document.documentElement, {
-          attributes: true,
-          attributeFilter: ["data-theme"],
-        });
-
         main.classList.remove("is-loading");
       }
 

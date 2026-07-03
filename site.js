@@ -74,11 +74,19 @@ function syncHljs() {
 
   if (lightTheme) {
     lightTheme.disabled = isDark;
-    lightTheme.setAttribute("disabled", isDark);
+    if (isDark) {
+      lightTheme.setAttribute("disabled", "true");
+    } else {
+      lightTheme.removeAttribute("disabled");
+    }
   }
   if (darkTheme) {
     darkTheme.disabled = !isDark;
-    darkTheme.setAttribute("disabled", !isDark);
+    if (!isDark) {
+      darkTheme.setAttribute("disabled", "true");
+    } else {
+      darkTheme.removeAttribute("disabled");
+    }
   }
 }
 
@@ -100,6 +108,12 @@ function initializeTheme() {
     }
     mediaQuery._themeBound = true;
   }
+
+  // Watch for manual data-theme changes
+  new MutationObserver(() => syncHljs()).observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["data-theme", "data-o-theme"],
+  });
 }
 
 function getSchedulerUrl() {
