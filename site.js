@@ -789,7 +789,7 @@ function initializeBlogReader() {
   if (header.querySelector(".blog-reader-bar")) return;
 
   const tempDiv = prose.cloneNode(true);
-  tempDiv.querySelectorAll("pre, .code-block-shell, .blog-toc, script, style").forEach(el => el.remove());
+  tempDiv.querySelectorAll("pre, .code-block-shell, .blog-toc, script, style, .blog-reader-bar, aside").forEach(el => el.remove());
   const text = tempDiv.innerText.trim().replace(/\s+/g, " ");
   
   const wordCount = text.split(/\s+/).length;
@@ -798,42 +798,59 @@ function initializeBlogReader() {
   const readerBar = document.createElement("div");
   readerBar.className = "blog-reader-bar";
   readerBar.innerHTML = `
-    <div class="blog-reader-label">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
-      <span>Listen</span>
+    <div class="blog-reader-info">
+      <div class="blog-reader-icon-wrapper">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+      </div>
+      <div class="blog-reader-label">Listen</div>
     </div>
     <div class="blog-reader-controls">
       <button type="button" class="blog-reader-btn" id="reader-play" title="Play">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      </button>
+      <button type="button" class="blog-reader-btn" id="reader-speed" title="Playback Speed">
+        <span class="blog-reader-speed">1x</span>
       </button>
       <button type="button" class="blog-reader-btn" id="reader-stop" title="Stop">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12"></rect></svg>
+        <svg viewBox="0 0 24 24"><path d="M6 6h12v12H6z"/></svg>
       </button>
     </div>
-    <div class="blog-reader-status" id="reader-status">${readTime} min read</div>
+    <div class="blog-reader-status" id="reader-status">${readTime} min</div>
   `;
 
   header.appendChild(readerBar);
 
   const playBtn = readerBar.querySelector("#reader-play");
   const stopBtn = readerBar.querySelector("#reader-stop");
+  const speedBtn = readerBar.querySelector("#reader-speed");
+  const speedText = speedBtn.querySelector(".blog-reader-speed");
   const status = readerBar.querySelector("#reader-status");
 
   let isPlaying = false;
   let isPaused = false;
+  let speedIdx = 0;
+  const speeds = [1.0, 1.25, 1.5, 2.0];
 
   const updateUI = () => {
     if (isPlaying) {
-      playBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>`;
+      playBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`;
       playBtn.title = "Pause";
       playBtn.classList.add("is-active");
-      status.textContent = "Reading...";
+      status.textContent = "Playing";
     } else {
-      playBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>`;
-      playBtn.title = "Play";
+      playBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>`;
+      playBtn.title = isPaused ? "Resume" : "Play";
       playBtn.classList.remove("is-active");
-      status.textContent = isPaused ? "Paused" : `${readTime} min read`;
+      status.textContent = isPaused ? "Paused" : `${readTime} min`;
     }
+    speedText.textContent = `${speeds[speedIdx]}x`;
+  };
+
+  const stopReading = () => {
+    window.speechSynthesis.cancel();
+    isPlaying = false;
+    isPaused = false;
+    updateUI();
   };
 
   playBtn.addEventListener("click", () => {
@@ -841,44 +858,78 @@ function initializeBlogReader() {
       window.speechSynthesis.pause();
       isPlaying = false;
       isPaused = true;
+    } else if (isPaused) {
+      window.speechSynthesis.resume();
+      isPlaying = true;
+      isPaused = false;
     } else {
-      if (isPaused) {
-        window.speechSynthesis.resume();
-      } else {
-        window.speechSynthesis.cancel();
-        const utterance = new SpeechSynthesisUtterance(text);
-        
-        // Try to find a nice English voice
-        const voices = window.speechSynthesis.getVoices();
-        const preferredVoice = voices.find(v => v.name.includes("Google") && v.lang.startsWith("en")) || 
-                               voices.find(v => v.lang.startsWith("en"));
-        if (preferredVoice) utterance.voice = preferredVoice;
-        
-        utterance.rate = 1.0;
-        utterance.onend = () => {
-          isPlaying = false;
-          isPaused = false;
-          updateUI();
-        };
-        utterance.onerror = () => {
-          isPlaying = false;
-          isPaused = false;
-          updateUI();
-        };
-        window.speechSynthesis.speak(utterance);
-      }
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      
+      const voices = window.speechSynthesis.getVoices();
+      const preferred = voices.find(v => v.name.includes("Google") && v.lang.startsWith("en")) || 
+                        voices.find(v => v.lang.startsWith("en"));
+      if (preferred) utterance.voice = preferred;
+      
+      utterance.rate = speeds[speedIdx];
+      utterance.onend = () => {
+        isPlaying = false;
+        isPaused = false;
+        updateUI();
+      };
+      utterance.onerror = () => {
+        isPlaying = false;
+        isPaused = false;
+        updateUI();
+      };
+
+      // Chrome/Safari "Keep-Alive" fix
+      const keepAlive = setInterval(() => {
+        if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
+          window.speechSynthesis.pause();
+          window.speechSynthesis.resume();
+        } else if (!window.speechSynthesis.speaking) {
+          clearInterval(keepAlive);
+        }
+      }, 10000);
+
+      window.speechSynthesis.speak(utterance);
       isPlaying = true;
       isPaused = false;
     }
     updateUI();
   });
 
-  stopBtn.addEventListener("click", () => {
-    window.speechSynthesis.cancel();
-    isPlaying = false;
-    isPaused = false;
-    updateUI();
+  speedBtn.addEventListener("click", () => {
+    speedIdx = (speedIdx + 1) % speeds.length;
+    if (isPlaying || isPaused) {
+      // Mid-read speed change requires a restart in many browsers
+      const wasPlaying = isPlaying;
+      window.speechSynthesis.cancel();
+      setTimeout(() => {
+        const utterance = new SpeechSynthesisUtterance(text);
+        const voices = window.speechSynthesis.getVoices();
+        const preferred = voices.find(v => v.name.includes("Google") && v.lang.startsWith("en")) || 
+                          voices.find(v => v.lang.startsWith("en"));
+        if (preferred) utterance.voice = preferred;
+        utterance.rate = speeds[speedIdx];
+        utterance.onend = () => {
+          isPlaying = false;
+          isPaused = false;
+          updateUI();
+        };
+        window.speechSynthesis.speak(utterance);
+        if (!wasPlaying) window.speechSynthesis.pause();
+        isPlaying = wasPlaying;
+        isPaused = !wasPlaying;
+        updateUI();
+      }, 50);
+    } else {
+      updateUI();
+    }
   });
+
+  stopBtn.addEventListener("click", stopReading);
 }
 
 function initializeShareActions() {
