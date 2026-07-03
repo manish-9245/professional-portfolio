@@ -679,6 +679,22 @@ async function copyText(text) {
   textarea.remove();
 }
 
+function getLanguageIcon(lang) {
+  const l = lang.toLowerCase();
+  const icons = {
+    javascript: `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M3 3h18v18H3V3zm12.525 10.931c-.131-.412-.422-.722-.843-.881l-.816-.312c-.29-.112-.45-.216-.45-.403 0-.15.113-.3.394-.3.216 0 .393.075.543.216l.46-.47c-.188-.178-.45-.3-.76-.3-.572 0-.965.347-.965.862 0 .544.337.816.852.994l.816.319c.272.094.403.225.403.422 0 .197-.16.347-.46.347-.28 0-.524-.131-.693-.31l-.488.45c.234.28.618.45 1.05.45.694 0 1.125-.384 1.125-1.022v-.063zM10.82 11.23h-.638v3.45c0 .76-.328 1.171-.994 1.171-.356 0-.6-.103-.768-.262l-.375.46c.216.206.581.356 1.05.356.966 0 1.416-.544 1.416-1.575V11.23h.309z"/></svg>`,
+    js: `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M3 3h18v18H3V3zm12.525 10.931c-.131-.412-.422-.722-.843-.881l-.816-.312c-.29-.112-.45-.216-.45-.403 0-.15.113-.3.394-.3.216 0 .393.075.543.216l.46-.47c-.188-.178-.45-.3-.76-.3-.572 0-.965.347-.965.862 0 .544.337.816.852.994l.816.319c.272.094.403.225.403.422 0 .197-.16.347-.46.347-.28 0-.524-.131-.693-.31l-.488.45c.234.28.618.45 1.05.45.694 0 1.125-.384 1.125-1.022v-.063zM10.82 11.23h-.638v3.45c0 .76-.328 1.171-.994 1.171-.356 0-.6-.103-.768-.262l-.375.46c.216.206.581.356 1.05.356.966 0 1.416-.544 1.416-1.575V11.23h.309z"/></svg>`,
+    python: `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M11.758 0c-2.486 0-2.333 1.077-2.333 1.077l.006 1.12h4.636V3.82c0 0 .092 1.066-1.048 1.066h-4.66s-2.32-.016-2.32 2.275v1.657h2.245V6.756s.016-1.033 1.067-1.033h4.631s1.078-.027 1.078-1.038v-3.6s.035-1.085-2.34-1.085h-1.012zM7.55 1.554a.65.65 0 110 1.3.65.65 0 010-1.3zm4.686 7.697c2.486 0 2.333-1.077 2.333-1.077l-.006-1.12H9.927V5.429s-.092-1.066 1.048-1.066h4.66s2.32.016 2.32-2.275V.431H15.71v2.062s-.016 1.033-1.067 1.033H10.012s-1.078.027-1.078 1.038v3.6s-.035 1.085 2.34 1.085h1.012zM16.45 7.146a.65.65 0 110-1.3.65.65 0 010 1.3z"/></svg>`,
+    java: `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M2.38 18.23s-.73-.13-.73-.56c0-.36.32-.56.32-.56.63-.35 1.95-.53 3.01-.62.33-.03.66-.05 1-.07-.3-.15-.59-.3-.89-.47-.46-.26-1-.57-1.44-.95-1.22-1.08-1.4-2.44-.81-3.52 0 0 .15-.26.41-.53-.29-.15-.5-.33-.67-.53-.45-.52-.39-1.13-.15-1.57.17-.32.47-.63.92-.93.38-.25.84-.48 1.39-.7C3.96 8.52 3.1 9.4 3.1 10.43c0 1.52 1.41 2.45 2.76 3.17.65.34 1.34.64 2 .88-.34-.47-.64-.98-.89-1.52-.45-1-.58-2.06-.37-3.08l.05-.22c-.41.13-.77.29-1.07.48-.6.38-.89.84-.89 1.4 0 .78.58 1.48 1.57 1.99.3.16.63.3.99.43.34-.14.67-.32.99-.54 1.14-.79 1.77-1.87 1.77-3.03 0-.61-.16-1.18-.47-1.7-.17-.28-.39-.53-.65-.75-.3-.26-.64-.46-1.02-.6 1.74.22 3.17 1.25 3.17 3.32 0 .96-.34 1.88-1.01 2.7l-.37.45c.87.18 1.63.45 2.22.84 1.07.71 1.09 1.63.58 2.26-.26.31-.63.56-1.11.75-.48.18-1.06.31-1.72.37.66.1 1.25.26 1.75.48.56.24.96.56 1.2.95.28.45.24.95-.12 1.34-.35.38-.88.63-1.55.75-.68.12-1.51.15-2.45.08-.94-.07-1.84-.22-2.58-.45-1.54-.48-2.07-1.29-2.07-2.07 0-.41.14-.77.41-1.07.28-.31.67-.56 1.15-.75.47-.19.98-.31 1.5-.37-.58-.09-1.1-.25-1.55-.47zm6.75-2.34c-.66-.23-1.34-.52-1.99-.86-1.08-.58-2.21-1.33-2.21-2.59 0-.81.67-1.52 1.59-1.89.5-.2 1.05-.29 1.57-.29.61 0 1.18.12 1.66.36.4.2.73.47.95.8.27.42.4.91.4 1.43 0 1.2-.69 2.14-1.97 3.04z"/></svg>`,
+    html: `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M1.5 0h21l-1.91 21.563L11.977 24l-8.564-2.438L1.5 0zm7.031 9.75l-.232-2.718 10.059.003.23-2.622L5.412 4.41l.698 8.01h9.126l-.326 3.426-2.91.804-2.955-.81-.188-2.11H6.248l.33 4.171L12 19.351l5.379-1.443.744-8.157H8.531z"/></svg>`,
+    css: `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M1.5 0h21l-1.91 21.563L11.977 24l-8.564-2.438L1.5 0zm7.031 9.75l-.232-2.718 10.059.003.23-2.622L5.412 4.41l.698 8.01h9.126l-.326 3.426-2.91.804-2.955-.81-.188-2.11H6.248l.33 4.171L12 19.351l5.379-1.443.744-8.157H8.531z"/></svg>`,
+    shell: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>`,
+    bash: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>`,
+    json: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline><line x1="12" y1="2" x2="12" y2="22"></line></svg>`,
+  };
+  return icons[l] || `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>`;
+}
+
 function initializeCodeCopy(container) {
   container.querySelectorAll("pre").forEach((pre) => {
     if (pre.parentElement && pre.parentElement.classList.contains("code-block-shell")) {
@@ -705,14 +721,12 @@ function initializeCodeCopy(container) {
       <span class="code-window-dot maximize" title="Maximize" aria-hidden="true"></span>`;
 
     const langName = code.getAttribute("data-lang") || "";
-    const langDisplay = document.createElement("span");
-    langDisplay.className = "code-window-lang";
-    langDisplay.textContent = langName.length < 4 ? langName.toUpperCase() : langName.charAt(0).toUpperCase() + langName.slice(1);
-
-    toolbar.appendChild(controls);
-    toolbar.appendChild(langDisplay);
-    wrapper.appendChild(toolbar);
-    wrapper.appendChild(pre);
+    const langDisplay = document.createElement("div");
+    langDisplay.className = "code-window-center";
+    langDisplay.innerHTML = `
+      ${getLanguageIcon(langName)}
+      <span class="code-window-lang">${langName.length < 4 ? langName.toUpperCase() : langName.charAt(0).toUpperCase() + langName.slice(1)}</span>
+    `;
 
     const button = document.createElement("button");
     button.type = "button";
@@ -721,7 +735,12 @@ function initializeCodeCopy(container) {
       <svg class="icon-copy" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
       <span>Copy</span>`;
     button.setAttribute("aria-label", "Copy code to clipboard");
-    wrapper.appendChild(button);
+
+    toolbar.appendChild(controls);
+    toolbar.appendChild(langDisplay);
+    toolbar.appendChild(button);
+    wrapper.appendChild(toolbar);
+    wrapper.appendChild(pre);
 
     button.addEventListener("click", async () => {
       const label = button.querySelector("span");
