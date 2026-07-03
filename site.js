@@ -981,38 +981,75 @@ function initializeBlogReader() {
   }
 }
 
+function renderShareActions({ url, title, description } = {}) {
+  const section = document.getElementById("blog-share");
+  if (!section) return;
+
+  const pageUrl = url || window.location.href;
+  const encodedUrl = encodeURIComponent(pageUrl);
+  const encodedTitle = encodeURIComponent(title || document.title || "");
+  const encodedDescription = encodeURIComponent(description || "");
+
+  const icons = {
+    linkedin: '<svg class="blog-share-icon" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>',
+    x: '<svg class="blog-share-icon" viewBox="0 0 24 24"><path d="M18.901 2.001H22.01l-6.772 7.74 7.961 10.26H16.1l-4.782-6.241-5.462 6.241H2.74l7.243-8.272L2.24 2.001h6.257l4.316 5.7L18.901 2.001zM17.81 18.232h1.725L6.442 3.633H4.59L17.81 18.232z"/></svg>',
+    facebook: '<svg class="blog-share-icon" viewBox="0 0 24 24"><path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-8.74h-2.94v-3.403h2.94v-2.511c0-2.91 1.777-4.496 4.375-4.496 1.243 0 2.312.093 2.623.134v3.042l-1.799.001c-1.412 0-1.687.672-1.687 1.654v2.176h3.368l-.438 3.403h-2.93v8.74h6.052c.73 0 1.323-.593 1.323-1.324v-21.351c0-.732-.593-1.325-1.325-1.325z"/></svg>',
+    whatsapp: '<svg class="blog-share-icon" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.319 1.592 5.548 0 10.064-4.516 10.066-10.066.002-5.546-4.512-10.064-10.061-10.064-2.689 0-5.212 1.048-7.103 2.942-1.892 1.893-2.938 4.417-2.94 7.104 0 2.115.654 4.043 1.767 5.717l-.543 1.981 2.053-.538zm11.332-7.606c-.341-.17-2.022-1.001-2.333-1.115-.312-.113-.54-.169-.767.17-.227.34-.879 1.115-1.077 1.341-.199.227-.398.254-.74.085-.34-.17-1.437-.534-2.735-1.693-1.01-.902-1.692-2.016-1.891-2.356-.199-.34-.022-.524.148-.693.154-.151.341-.4.511-.6.17-.199.227-.34.341-.568.113-.227.056-.425-.028-.595-.085-.17-.767-1.851-.105-2.651-.235-.572-.465-.494-.666-.504-.171-.008-.369-.01-.567-.01-.199 0-.522.074-.795.372-.273.298-1.041 1.021-1.041 2.492 0 1.47 1.07 2.887 1.219 3.085.148.199 2.103 3.21 5.1 4.505.714.307 1.272.49 1.706.629.715.227 1.366.195 1.88.118.573-.085 1.767-.723 2.016-1.42.25-.697.25-1.294.175-1.42-.074-.126-.271-.199-.611-.369z"/></svg>',
+    telegram: '<svg class="blog-share-icon" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm5.891 8.146l-2.103 9.917c-.159.704-.577.878-1.167.548l-3.21-2.365-1.549 1.49c-.171.171-.315.315-.644.315l.23-3.267 5.945-5.371c.259-.229-.056-.356-.403-.122l-7.346 4.625-3.166-.991c-.689-.215-.703-.689.143-.991l12.378-4.771c.573-.207 1.074.135.89 1.011z"/></svg>',
+    reddit: '<svg class="blog-share-icon" viewBox="0 0 24 24"><path d="M24 11.779c0-1.459-1.192-2.645-2.657-2.645-.715 0-1.363.285-1.84.746-2.031-1.454-4.82-2.39-7.896-2.484l1.352-6.353 4.429.933c.007.741.613 1.34 1.364 1.34 1.459 0 2.646-1.187 2.646-2.646 0-1.459-1.187-2.645-2.646-2.645-.961 0-1.801.516-2.27 1.29l-4.965-1.046c-.244-.052-.486.107-.54.348l-1.554 7.303c-3.134.053-5.986.997-8.061 2.476-.475-.453-1.121-.734-1.831-.734-1.464 0-2.657 1.193-2.657 2.657 0 1.026.587 1.916 1.442 2.365-.067.381-.103.77-.103 1.164 0 4.13 4.857 7.491 10.831 7.491 5.974 0 10.831-3.361 10.831-7.491 0-.387-.035-.769-.1-1.141.879-.444 1.482-1.352 1.482-2.399zm-16.711 3.125c0-1.054.858-1.912 1.912-1.912s1.912.858 1.912 1.912-.858 1.912-1.912 1.912-1.912-.858-1.912-1.912zm9.155 4.393c-.927.927-2.673 1.002-3.444 1.002-.771 0-2.518-.075-3.444-1.002-.131-.131-.131-.345 0-.476.131-.131.344-.131.475 0 .708.708 2.067.818 2.969.818s2.261-.11 2.969-.818c.131-.131.344-.131.475 0 .131.131.131.344 0 .476zm-.124-2.481c-1.054 0-1.912-.858-1.912-1.912s.858-1.912 1.912-1.912 1.912.858 1.912 1.912-.858 1.912-1.912 1.912z"/></svg>',
+    email: '<svg class="blog-share-icon" viewBox="0 0 24 24"><path d="M12 12.713l-11.985-9.713h23.97l-11.985 9.713zm0 2.574l-12-9.725v15.438h24v-15.438l-12 9.725z"/></svg>',
+    copy: '<svg class="blog-share-icon" viewBox="0 0 24 24"><path d="M14.851 11.923c-.179-.18-.469-.18-.649 0l-2.41 2.41c-.179.18-.179.469 0 .649.18.179.469.179.649 0l1.625-1.625v4.545c0 .254.206.46.46.46s.46-.206.46-.46v-4.545l1.625 1.625c.18.179.469.179.649 0 .179-.18.179-.469 0-.649l-2.41-2.41zm6.918-6.19c-.18-.179-.469-.179-.649 0l-2.41 2.41c-.179.18-.179.469 0 .649.18.179.469.179.649 0l1.625-1.625v4.545c0 .254.206.46.46.46s.46-.206.46-.46v-4.545l1.625 1.625c.18.179.469.179.649 0 .179-.18.179-.469 0-.649l-2.41-2.41z"/></svg>',
+  };
+
+  section.innerHTML = `
+    <h2>Share this post</h2>
+    <div class="blog-share-actions">
+      <a class="blog-share-link share-linkedin" aria-label="Share on LinkedIn" title="Share on LinkedIn" target="_blank" rel="noopener noreferrer" href="https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}">${icons.linkedin}</a>
+      <a class="blog-share-link share-x" aria-label="Share on X" title="Share on X" target="_blank" rel="noopener noreferrer" href="https://x.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}">${icons.x}</a>
+      <a class="blog-share-link share-facebook" aria-label="Share on Facebook" title="Share on Facebook" target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}">${icons.facebook}</a>
+      <a class="blog-share-link share-whatsapp" aria-label="Share on WhatsApp" title="Share on WhatsApp" target="_blank" rel="noopener noreferrer" href="https://api.whatsapp.com/send?text=${encodedTitle}%20${encodedUrl}">${icons.whatsapp}</a>
+      <a class="blog-share-link share-telegram" aria-label="Share on Telegram" title="Share on Telegram" target="_blank" rel="noopener noreferrer" href="https://t.me/share/url?url=${encodedUrl}&text=${encodedTitle}">${icons.telegram}</a>
+      <a class="blog-share-link share-reddit" aria-label="Share on Reddit" title="Share on Reddit" target="_blank" rel="noopener noreferrer" href="https://www.reddit.com/submit?url=${encodedUrl}&title=${encodedTitle}">${icons.reddit}</a>
+      <a class="blog-share-link share-email" aria-label="Share by email" title="Share by email" href="mailto:?subject=${encodedTitle}&body=${encodedDescription}%0A%0A${encodedUrl}">${icons.email}</a>
+      <button type="button" class="blog-share-copy share-copy" aria-label="Copy link" title="Copy link" data-share-copy data-url="${pageUrl}">
+        <svg class="blog-share-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+      </button>
+    </div>`;
+
+  const copyButton = section.querySelector("[data-share-copy]");
+  if (copyButton) {
+    copyButton.onclick = async () => {
+      try {
+        await copyText(pageUrl);
+        const originalContent = copyButton.innerHTML;
+        copyButton.innerHTML = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+        copyButton.classList.add("is-copied");
+        setTimeout(() => {
+          copyButton.innerHTML = originalContent;
+          copyButton.classList.remove("is-copied");
+        }, 2000);
+      } catch (err) {
+        console.error("Copy failed", err);
+      }
+    };
+  }
+}
+
 function initializeShareActions() {
   const shareContainer = document.getElementById("blog-share");
   const floatingShare = document.querySelector(".floating-share");
-  if (!shareContainer && !floatingShare) return;
-
-  const handleCopy = async (btn) => {
-    const url = btn.getAttribute("data-url") || window.location.href;
-    try {
-      await copyText(url);
-      const originalHtml = btn.innerHTML;
-      btn.innerHTML = `
-        <svg class="blog-share-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-        <span>Copied!</span>`;
-      btn.style.color = "#27c93f";
-      setTimeout(() => {
-        btn.innerHTML = originalHtml;
-        btn.style.color = "";
-      }, 2000);
-    } catch (err) {
-      console.error("Failed to copy link", err);
-    }
-  };
-
-  document.querySelectorAll("[data-share-copy]").forEach(btn => {
-    btn.addEventListener("click", () => handleCopy(btn));
-  });
+  
+  if (shareContainer && !shareContainer.dataset.rendered) {
+    // Note: title/desc should be provided by the caller or extracted from DOM
+    renderShareActions();
+    shareContainer.dataset.rendered = "true";
+  }
 
   if (floatingShare) {
     const trigger = floatingShare.querySelector(".floating-share-trigger");
     const menu = floatingShare.querySelector(".floating-share-menu");
 
-    if (trigger) {
+    if (trigger && !trigger.dataset.bound) {
       trigger.addEventListener("click", (e) => {
         e.stopPropagation();
         
@@ -1027,17 +1064,45 @@ function initializeShareActions() {
 
         floatingShare.classList.toggle("is-active");
       });
+      trigger.dataset.bound = "true";
     }
 
-    document.addEventListener("click", () => {
-      floatingShare.classList.remove("is-active");
-    });
+    if (!floatingShare.dataset.docBound) {
+      document.addEventListener("click", () => {
+        floatingShare.classList.remove("is-active");
+      });
+      floatingShare.dataset.docBound = "true";
+    }
 
-    if (menu) {
+    if (menu && !menu.dataset.bound) {
       menu.addEventListener("click", (e) => e.stopPropagation());
+      menu.dataset.bound = "true";
     }
   }
+
+  // Handle the copy buttons that might be in the floating menu
+  document.querySelectorAll("[data-share-copy]").forEach(btn => {
+    if (btn.dataset.bound) return;
+    btn.addEventListener("click", async (e) => {
+      e.stopPropagation();
+      const url = btn.getAttribute("data-url") || window.location.href;
+      try {
+        await copyText(url);
+        const originalHtml = btn.innerHTML;
+        btn.innerHTML = `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> <span>Copied!</span>`;
+        btn.style.color = "#27c93f";
+        setTimeout(() => {
+          btn.innerHTML = originalHtml;
+          btn.style.color = "";
+        }, 2000);
+      } catch (err) {
+        console.error("Copy failed", err);
+      }
+    });
+    btn.dataset.bound = "true";
+  });
 }
+window.renderShareActions = renderShareActions;
 
 function initializeImageModal(container) {
   const modal = document.getElementById("blog-image-modal");
