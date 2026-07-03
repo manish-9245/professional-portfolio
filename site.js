@@ -782,28 +782,36 @@ function initializeCodeCopy(container) {
 }
 
 function initializeBlogReader() {
+  console.log("Initializing Blog Reader...");
   const header = document.querySelector(".blog-post-header");
   const prose = document.getElementById("blog-prose");
-  if (!header || !prose || !window.speechSynthesis) return;
+  if (!header || !prose || !window.speechSynthesis) {
+    console.log("Blog reader requirements not met:", { header: !!header, prose: !!prose, tts: !!window.speechSynthesis });
+    return;
+  }
 
   if (header.querySelector(".blog-reader-bar")) return;
-
-  // Icons as constants to ensure they are always correct
-  const ICON_PLAY = `<svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>`;
-  const ICON_PAUSE = `<svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`;
-  const ICON_STOP = `<svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M6 6h12v12H6z"/></svg>`;
 
   const tempDiv = prose.cloneNode(true);
   tempDiv.querySelectorAll("pre, .code-block-shell, .blog-toc, script, style, .blog-reader-bar, aside").forEach(el => el.remove());
   const text = tempDiv.innerText.trim().replace(/\s+/g, " ");
   
-  if (!text) return; // Nothing to read
+  if (!text) {
+    console.log("No text found to read.");
+    return;
+  }
 
   const wordCount = text.split(/\s+/).length;
   const readTime = Math.ceil(wordCount / 200);
 
   const readerBar = document.createElement("div");
   readerBar.className = "blog-reader-bar";
+  
+  // Define icons here for clarity
+  const playIcon = '<svg class="play-svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
+  const pauseIcon = '<svg class="pause-svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>';
+  const stopIcon = '<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M6 6h12v12H6z"/></svg>';
+
   readerBar.innerHTML = `
     <div class="blog-reader-info">
       <div class="blog-reader-icon-wrapper">
@@ -812,11 +820,11 @@ function initializeBlogReader() {
       <div class="blog-reader-label">Listen</div>
     </div>
     <div class="blog-reader-controls">
-      <button type="button" class="blog-reader-btn" id="reader-play" title="Play">${ICON_PLAY}</button>
+      <button type="button" class="blog-reader-btn" id="reader-play" title="Play">${playIcon}</button>
       <button type="button" class="blog-reader-btn" id="reader-speed" title="Playback Speed">
         <span class="blog-reader-speed">1x</span>
       </button>
-      <button type="button" class="blog-reader-btn" id="reader-stop" title="Stop">${ICON_STOP}</button>
+      <button type="button" class="blog-reader-btn" id="reader-stop" title="Stop">${stopIcon}</button>
     </div>
     <div class="blog-reader-status" id="reader-status">${readTime} min</div>
   `;
@@ -827,71 +835,64 @@ function initializeBlogReader() {
   const stopBtn = readerBar.querySelector("#reader-stop");
   const speedBtn = readerBar.querySelector("#reader-speed");
   const speedText = speedBtn.querySelector(".blog-reader-speed");
-  const status = readerBar.querySelector("#reader-status");
+  const statusText = readerBar.querySelector("#reader-status");
 
   let isPlaying = false;
   let isPaused = false;
   let speedIdx = 0;
   const speeds = [1.0, 1.25, 1.5, 2.0];
 
-  const updateUI = () => {
+  function updateUI() {
     if (isPlaying) {
-      playBtn.innerHTML = ICON_PAUSE;
-      playBtn.title = "Pause";
+      playBtn.innerHTML = pauseIcon;
       playBtn.classList.add("is-active");
-      status.textContent = "Playing";
+      statusText.textContent = "Playing";
     } else {
-      playBtn.innerHTML = ICON_PLAY;
-      playBtn.title = isPaused ? "Resume" : "Play";
+      playBtn.innerHTML = playIcon;
       playBtn.classList.remove("is-active");
-      status.textContent = isPaused ? "Paused" : `${readTime} min`;
+      statusText.textContent = isPaused ? "Paused" : `${readTime} min`;
     }
     speedText.textContent = `${speeds[speedIdx]}x`;
-  };
+  }
 
-  const stopReading = () => {
-    window.speechSynthesis.cancel();
-    isPlaying = false;
-    isPaused = false;
-    updateUI();
-  };
-
-  const startReading = () => {
+  function startReading() {
     window.speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = 'en-US';
     utterance.rate = speeds[speedIdx];
-    utterance.volume = 1;
     
-    // Voice selection
     const voices = window.speechSynthesis.getVoices();
-    const preferred = voices.find(v => v.name.includes("Google") && v.lang.startsWith("en")) || 
-                      voices.find(v => v.lang.startsWith("en"));
-    if (preferred) utterance.voice = preferred;
+    const voice = voices.find(v => v.lang.startsWith("en-") && v.name.includes("Google")) || 
+                  voices.find(v => v.lang.startsWith("en-")) || 
+                  voices[0];
+    if (voice) utterance.voice = voice;
 
     utterance.onstart = () => {
       isPlaying = true;
       isPaused = false;
       updateUI();
     };
-    
     utterance.onend = () => {
       isPlaying = false;
       isPaused = false;
       updateUI();
     };
-
-    utterance.onerror = (e) => {
-      console.error("Speech error:", e);
+    utterance.onerror = () => {
       isPlaying = false;
       isPaused = false;
       updateUI();
     };
 
     window.speechSynthesis.speak(utterance);
-  };
+    
+    // Fallback UI update in case onstart doesn't fire immediately
+    isPlaying = true;
+    isPaused = false;
+    updateUI();
+  }
 
-  playBtn.addEventListener("click", () => {
+  playBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    console.log("Play button clicked. State:", { isPlaying, isPaused });
     if (isPlaying) {
       window.speechSynthesis.pause();
       isPlaying = false;
@@ -907,18 +908,25 @@ function initializeBlogReader() {
     }
   });
 
-  speedBtn.addEventListener("click", () => {
+  speedBtn.addEventListener("click", (e) => {
+    e.preventDefault();
     speedIdx = (speedIdx + 1) % speeds.length;
     if (isPlaying || isPaused) {
       startReading();
       if (isPaused) window.speechSynthesis.pause();
+    } else {
+      updateUI();
     }
+  });
+
+  stopBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    window.speechSynthesis.cancel();
+    isPlaying = false;
+    isPaused = false;
     updateUI();
   });
 
-  stopBtn.addEventListener("click", stopReading);
-
-  // Handle page navigation/unloading
   window.addEventListener("beforeunload", () => window.speechSynthesis.cancel());
 }
 
