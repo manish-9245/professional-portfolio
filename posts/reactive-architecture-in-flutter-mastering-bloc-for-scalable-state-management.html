@@ -1237,25 +1237,19 @@ part <span class="hljs-string">'order_bloc.freezed.dart'</span>;
         }
 
         // Configure marked with custom renderer for Mermaid
-        const renderer = new marked.Renderer();
-        const originalCode = renderer.code.bind(renderer);
-        renderer.code = (code, lang) => {
-          if (lang === "mermaid") {
-            return `<pre class="mermaid">${code}</pre>`;
-          }
-          return originalCode(code, lang);
-        };
-
-        marked.setOptions({
-          renderer: renderer,
-          highlight: (code, lang) => {
-            if (lang && hljs.getLanguage(lang)) {
-              return hljs.highlight(code, { language: lang }).value;
+        marked.use({
+          renderer: {
+            code(token) {
+              const { text, lang } = token;
+              if (lang === "mermaid") {
+                return `<pre class="mermaid">${text}</pre>`;
+              }
+              // Return false to use the default renderer for other languages
+              return false;
             }
-            return hljs.highlightAuto(code).value;
           },
           gfm: true,
-          breaks: false,
+          breaks: false
         });
 
         // Initialize Mermaid
