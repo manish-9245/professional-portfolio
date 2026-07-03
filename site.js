@@ -838,6 +838,9 @@ function initializeBlogReader() {
   let isPaused = false;
   let speedIdx = 0;
   const speeds = [1.0, 1.25, 1.5, 2.0];
+  let currentUtterance = null;
+  let chunks = [];
+  let currentChunkIdx = 0;
   let heartbeatInterval = null;
 
   function updateUI() {
@@ -856,26 +859,33 @@ function initializeBlogReader() {
     if (heartbeatInterval) clearInterval(heartbeatInterval);
     isPlaying = false;
     isPaused = false;
+    currentChunkIdx = 0;
     updateUI();
   }
 
   function startReading() {
-    console.log("Blog Reader: Starting playback...");
+    console.log("Blog Reader: Preparing chunks...");
     
-    // The "Universal Chrome Fix": Pause, Cancel, and Resume to clear any stuck state
-    window.speechSynthesis.pause();
+    // Split text into meaningful chunks (sentences)
+    chunks = textContent.match(/[^.!?]+[.!?]+/g) || [textContent];
+    currentChunkIdx = 0;
+    
+    playNextChunk();
+  }
+
+  function playNextChunk() {
+    if (currentChunkIdx >= chunks.length) {
+      stopReading();
+      return;
+    }
+
     window.speechSynthesis.cancel();
-    window.speechSynthesis.resume();
     
-    // Create the real utterance
-    const utterance = new SpeechSynthesisUtterance(textContent);
+    const utterance = new SpeechSynthesisUtterance(chunks[currentChunkIdx].trim());
     utterance.rate = speeds[speedIdx];
     utterance.lang = "en-US";
     
-    // Enhanced Voice selection
     const voices = window.speechSynthesis.getVoices();
-    console.log(`Blog Reader: Found ${voices.length} voices`);
-
     const getBestVoice = () => {
       const preferences = [
         v => v.name.includes("Natural"),
@@ -883,7 +893,7 @@ function initializeBlogReader() {
         v => v.name.includes("Google") && v.lang.includes("en-US"),
         v => v.name.includes("Siri"),
         v => v.name.includes("Enhanced"),
-        v => v.lang.startsWith("en-US"),
+        v => v.lang.startsWith("en-US") && !["Zarvox", "Organ", "Cellos", "Bad News", "Bells", "Bubbles"].some(n => v.name.includes(n)),
         v => v.lang.startsWith("en-GB")
       ];
       for (const check of preferences) {
@@ -894,56 +904,40 @@ function initializeBlogReader() {
     };
 
     const voice = getBestVoice();
-    if (voice) {
-      console.log(`Blog Reader: Using voice - ${voice.name}`);
-      utterance.voice = voice;
-    }
+    if (voice) utterance.voice = voice;
 
     utterance.onstart = () => {
-      console.log("Blog Reader: Speech started");
       isPlaying = true;
       isPaused = false;
       updateUI();
     };
 
     utterance.onend = () => {
-      console.log("Blog Reader: Speech ended naturally");
-      isPlaying = false;
-      isPaused = false;
-      if (heartbeatInterval) clearInterval(heartbeatInterval);
-      updateUI();
+      currentChunkIdx++;
+      if (isPlaying) playNextChunk();
     };
 
     utterance.onerror = (e) => {
-      console.error("Blog Reader: Speech error", e);
-      isPlaying = false;
-      isPaused = false;
-      if (heartbeatInterval) clearInterval(heartbeatInterval);
-      updateUI();
+      console.error("Blog Reader Error:", e);
+      // Try to recover by moving to next chunk
+      currentChunkIdx++;
+      if (currentChunkIdx < chunks.length && isPlaying) {
+        playNextChunk();
+      } else {
+        stopReading();
+      }
     };
 
-    // Kickstart the engine (Dummy utterance fix for Chrome macOS)
-    window.speechSynthesis.speak(new SpeechSynthesisUtterance(""));
+    // Chrome macOS Kickstart
+    if (currentChunkIdx === 0) {
+      window.speechSynthesis.speak(new SpeechSynthesisUtterance(""));
+    }
     
-    // Speak the real content
     window.speechSynthesis.speak(utterance);
-    
-    isPlaying = true;
-    isPaused = false;
-    updateUI();
-
-    if (heartbeatInterval) clearInterval(heartbeatInterval);
-    heartbeatInterval = setInterval(() => {
-      if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
-        window.speechSynthesis.pause();
-        window.speechSynthesis.resume();
-      }
-    }, 10000);
   }
 
   playBtn.addEventListener("click", (e) => {
     e.preventDefault();
-    
     if (isPlaying) {
       window.speechSynthesis.pause();
       isPlaying = false;
