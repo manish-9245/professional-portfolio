@@ -1500,22 +1500,25 @@ document.querySelectorAll("[data-year]").forEach((node) => {
  * Copy code to clipboard from the premium code blocks
  */
 function copyCode(button) {
-  const wrapper = button.closest(".code-block-wrapper");
+  const wrapper = button.closest(".code-block-shell") || button.closest(".code-block-wrapper");
+  if (!wrapper) return;
+  
   const codeEl = wrapper.querySelector("code");
+  if (!codeEl) return;
+  
   const text = codeEl.innerText;
+  const originalContent = button.innerHTML;
 
-  navigator.clipboard.writeText(text).then(() => {
-    const originalContent = button.innerHTML;
-    button.classList.add("copied");
+  copyText(text).then(() => {
+    button.classList.add("is-copied");
     button.innerHTML = `
       <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
       <span>Copied!</span>
     `;
     
     setTimeout(() => {
-      button.classList.remove("copied");
+      button.classList.remove("is-copied");
       button.innerHTML = originalContent;
-      // Refresh lucide icons if they were reset
       if (window.lucide) window.lucide.createIcons();
     }, 2000);
   }).catch(err => {
