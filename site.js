@@ -750,7 +750,15 @@ function initializeCodeCopy(container) {
       <span class="code-window-dot minimize" aria-hidden="true"></span>
       <span class="code-window-dot maximize" aria-hidden="true"></span>`;
 
-    const langName = code.getAttribute("data-lang") || "";
+    let langName = code.getAttribute("data-lang") || "";
+    if (!langName) {
+      const classes = Array.from(code.classList);
+      const langClass = classes.find((c) => c.startsWith("language-"));
+      if (langClass) {
+        langName = langClass.replace("language-", "");
+      }
+    }
+
     const langDisplay = document.createElement("div");
     langDisplay.className = "code-window-center";
     langDisplay.innerHTML = `
