@@ -800,10 +800,10 @@ function initializeBlogReader() {
   const readerBar = document.createElement("div");
   readerBar.className = "blog-reader-bar";
   
-  // High-fidelity stroke-based icons
-  const iconPlay = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>`;
-  const iconPause = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>`;
-  const iconStop = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12"></rect></svg>`;
+  // Lucide-style paths for maximum consistency
+  const iconPlay = `<svg class="icon-play" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>`;
+  const iconPause = `<svg class="icon-pause" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>`;
+  const iconStop = `<svg class="icon-stop" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect></svg>`;
 
   readerBar.innerHTML = `
     <div class="blog-reader-info">
@@ -813,11 +813,15 @@ function initializeBlogReader() {
       <div class="blog-reader-label">Listen</div>
     </div>
     <div class="blog-reader-controls">
-      <button type="button" class="blog-reader-btn" id="reader-play" title="Play">${iconPlay}</button>
-      <button type="button" class="blog-reader-btn" id="reader-speed" title="Playback Speed">
+      <button type="button" class="blog-reader-btn" id="reader-play" title="Play">
+        ${iconPlay}${iconPause}
+      </button>
+      <button type="button" class="blog-reader-btn" id="reader-speed" title="Speed">
         <span class="blog-reader-speed">1x</span>
       </button>
-      <button type="button" class="blog-reader-btn" id="reader-stop" title="Stop">${iconStop}</button>
+      <button type="button" class="blog-reader-btn" id="reader-stop" title="Stop">
+        ${iconStop}
+      </button>
     </div>
     <div class="blog-reader-status" id="reader-status">${readTime} min</div>
   `;
@@ -837,12 +841,10 @@ function initializeBlogReader() {
 
   function updateUI() {
     if (isPlaying) {
-      playBtn.innerHTML = iconPause;
-      playBtn.classList.add("is-active");
+      playBtn.classList.add("is-playing");
       statusText.textContent = "Playing";
     } else {
-      playBtn.innerHTML = iconPlay;
-      playBtn.classList.remove("is-active");
+      playBtn.classList.remove("is-playing");
       statusText.textContent = isPaused ? "Paused" : `${readTime} min`;
     }
     speedText.textContent = `${speeds[speedIdx]}x`;
@@ -853,13 +855,16 @@ function initializeBlogReader() {
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.rate = speeds[speedIdx];
     
-    // Voice selection logic
-    const voices = window.speechSynthesis.getVoices();
-    const voice = voices.find(v => v.lang.startsWith("en-") && v.name.includes("Google")) || 
-                  voices.find(v => v.lang.startsWith("en-")) || 
-                  voices[0];
-    if (voice) utterance.voice = voice;
+    // Ensure voices are loaded
+    const getBestVoice = () => {
+      const voices = window.speechSynthesis.getVoices();
+      return voices.find(v => v.lang.startsWith("en-") && v.name.includes("Google")) || 
+             voices.find(v => v.lang.startsWith("en-")) || 
+             voices[0];
+    };
 
+    utterance.voice = getBestVoice();
+    
     utterance.onstart = () => {
       isPlaying = true;
       isPaused = false;
@@ -878,18 +883,18 @@ function initializeBlogReader() {
 
     window.speechSynthesis.speak(utterance);
     
-    // Immediate UI feedback for responsiveness
+    // Fallback UI update
     isPlaying = true;
     isPaused = false;
     updateUI();
 
-    // Chrome/Safari Keep-Alive
-    const interval = setInterval(() => {
+    // Heartbeat Keep-Alive for longer posts
+    const heartbeat = setInterval(() => {
       if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
         window.speechSynthesis.pause();
         window.speechSynthesis.resume();
       } else if (!window.speechSynthesis.speaking) {
-        clearInterval(interval);
+        clearInterval(heartbeat);
       }
     }, 10000);
   }
@@ -929,6 +934,14 @@ function initializeBlogReader() {
     isPaused = false;
     updateUI();
   });
+
+  // Hotfix: Chrome voices sometimes don't load immediately
+  if (window.speechSynthesis.onvoiceschanged !== undefined) {
+    window.speechSynthesis.onvoiceschanged = () => {
+      // Just warming up the engine
+      window.speechSynthesis.getVoices();
+    };
+  }
 
   window.addEventListener("beforeunload", () => window.speechSynthesis.cancel());
 }
