@@ -653,6 +653,7 @@
           <button
             type="button"
             id="blog-image-modal-close"
+            data-blog-image-close
             aria-label="Close image preview"
           >
             Close
@@ -829,140 +830,8 @@
       }
 
       function initializeImageModal(container) {
-        const modal = document.getElementById("blog-image-modal");
-        const modalBody = modal
-          ? modal.querySelector(".blog-image-modal-body")
-          : null;
-        const modalImg = document.getElementById("blog-image-modal-img");
-        const modalLoader = document.getElementById("blog-image-modal-loader");
-        const modalCaption = document.getElementById(
-          "blog-image-modal-caption",
-        );
-        const closeButton = document.getElementById("blog-image-modal-close");
-
-        if (
-          !modal ||
-          !modalBody ||
-          !modalImg ||
-          !modalLoader ||
-          !modalCaption ||
-          !closeButton ||
-          !container
-        ) {
-          return;
-        }
-
-        const calculateRenderSize = (img) => {
-          const naturalWidth = img.naturalWidth || 640;
-          const naturalHeight = img.naturalHeight || 360;
-          const maxWidth = Math.max(160, modalBody.clientWidth || 640);
-          const maxHeight = Math.max(
-            120,
-            Math.round(window.innerHeight * 0.78),
-          );
-
-          const widthRatio = maxWidth / naturalWidth;
-          const heightRatio = maxHeight / naturalHeight;
-          const scale = Math.min(widthRatio, heightRatio, 1);
-
-          return {
-            width: Math.max(160, Math.round(naturalWidth * scale)),
-            height: Math.max(120, Math.round(naturalHeight * scale)),
-          };
-        };
-
-        const applyModalMediaSize = (img) => {
-          const { width, height } = calculateRenderSize(img);
-
-          modalBody.style.setProperty("--media-w", `${width}px`);
-          modalBody.style.setProperty("--media-h", `${height}px`);
-        };
-
-        const showLoader = () => {
-          modalLoader.classList.add("is-active");
-        };
-
-        const hideLoader = () => {
-          modalLoader.classList.remove("is-active");
-        };
-
-        const closeModal = () => {
-          if (!modal.open || modal.dataset.closing === "true") {
-            return;
-          }
-
-          modal.dataset.closing = "true";
-          modal.classList.add("is-closing");
-
-          window.setTimeout(() => {
-            modal.close();
-            modal.classList.remove("is-closing");
-            modal.dataset.closing = "false";
-          }, 190);
-        };
-
-        const revealModalImage = () => {
-          modalImg.classList.add("is-ready");
-          window.requestAnimationFrame(() => {
-            hideLoader();
-          });
-          if (modalCaption.textContent.trim()) {
-            modalCaption.classList.add("is-visible");
-          }
-        };
-
-        container.querySelectorAll("img").forEach((img) => {
-          img.addEventListener("click", () => {
-            modalImg.onload = null;
-            modalImg.onerror = null;
-
-            modalImg.classList.remove("is-ready");
-            modalCaption.classList.remove("is-visible");
-            applyModalMediaSize(img);
-            showLoader();
-
-            const nextSrc = img.currentSrc || img.src;
-            modalImg.alt = img.alt || "Expanded blog image";
-            modalCaption.textContent = img.alt || "";
-
-            if (!modal.open) {
-              modal.showModal();
-            }
-
-            modalImg.src = nextSrc;
-            if (modalImg.complete && modalImg.naturalWidth > 0) {
-              revealModalImage();
-            } else {
-              modalImg.onload = revealModalImage;
-              modalImg.onerror = hideLoader;
-            }
-          });
-        });
-
-        if (!modal.dataset.initialized) {
-          closeButton.onclick = () => closeModal();
-          modal.addEventListener("click", (event) => {
-            if (event.target === modal) {
-              closeModal();
-            }
-          });
-
-          modal.addEventListener("cancel", (event) => {
-            event.preventDefault();
-            closeModal();
-          });
-
-          modal.addEventListener("close", () => {
-            hideLoader();
-            modalImg.classList.remove("is-ready");
-            modalImg.onload = null;
-            modalImg.onerror = null;
-            modalBody.style.removeProperty("--media-w");
-            modalBody.style.removeProperty("--media-h");
-            modalCaption.classList.remove("is-visible");
-          });
-
-          modal.dataset.initialized = "true";
+        if (window.initializeImageModal) {
+          window.initializeImageModal(container);
         }
       }
 

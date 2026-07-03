@@ -1096,7 +1096,16 @@ function initializeImageModal(container) {
 
   modal.addEventListener("click", (e) => {
     if (e.target === modal || e.target.closest("[data-blog-image-close]")) {
-      modal.close();
+      if (modal.dataset.closing === "true") return;
+
+      modal.dataset.closing = "true";
+      modal.classList.add("is-closing");
+
+      setTimeout(() => {
+        modal.close();
+        modal.classList.remove("is-closing");
+        modal.dataset.closing = "false";
+      }, 190);
     }
   });
 }
