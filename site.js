@@ -860,72 +860,63 @@ function initializeBlogReader() {
   }
 
   function startReading() {
-    // Clear any existing speech and force a reset
+    // Clear any existing speech
     window.speechSynthesis.cancel();
     
-    // Some browsers need a resume after cancel to actually clear
-    if (window.speechSynthesis.paused) {
-      window.speechSynthesis.resume();
-    }
+    // Create and configure the utterance synchronously
+    const utterance = new SpeechSynthesisUtterance(textContent);
+    utterance.rate = speeds[speedIdx];
+    utterance.lang = "en-US";
     
-    // Brief delay to let the speech engine clear (required for Chrome/Safari)
-    setTimeout(() => {
-      const utterance = new SpeechSynthesisUtterance(textContent);
-      utterance.rate = speeds[speedIdx];
-      utterance.lang = "en-US";
-      
-      const voices = window.speechSynthesis.getVoices();
-      const voice = voices.find(v => v.lang.startsWith("en-") && v.name.includes("Google")) || 
-                    voices.find(v => v.lang.startsWith("en-")) || 
-                    voices[0];
-      if (voice) utterance.voice = voice;
+    // Voice selection logic
+    const voices = window.speechSynthesis.getVoices();
+    const voice = voices.find(v => v.lang.startsWith("en-") && v.name.includes("Google")) || 
+                  voices.find(v => v.lang.startsWith("en-")) || 
+                  voices[0];
+    if (voice) utterance.voice = voice;
 
-      utterance.onstart = () => {
-        isPlaying = true;
-        isPaused = false;
-        updateUI();
-      };
-
-      utterance.onend = () => {
-        isPlaying = false;
-        isPaused = false;
-        if (heartbeatInterval) clearInterval(heartbeatInterval);
-        updateUI();
-      };
-
-      utterance.onerror = () => {
-        isPlaying = false;
-        isPaused = false;
-        if (heartbeatInterval) clearInterval(heartbeatInterval);
-        updateUI();
-      };
-
-      window.speechSynthesis.speak(utterance);
-      
-      // Heartbeat Keep-Alive
-      if (heartbeatInterval) clearInterval(heartbeatInterval);
-      heartbeatInterval = setInterval(() => {
-        if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
-          window.speechSynthesis.pause();
-          window.speechSynthesis.resume();
-        }
-      }, 10000);
-
-      // Force UI update
+    utterance.onstart = () => {
       isPlaying = true;
       isPaused = false;
       updateUI();
-    }, 50);
+    };
+
+    utterance.onend = () => {
+      isPlaying = false;
+      isPaused = false;
+      if (heartbeatInterval) clearInterval(heartbeatInterval);
+      updateUI();
+    };
+
+    utterance.onerror = (e) => {
+      console.error("SpeechSynthesis error:", e);
+      isPlaying = false;
+      isPaused = false;
+      if (heartbeatInterval) clearInterval(heartbeatInterval);
+      updateUI();
+    };
+
+    // Critical: Call speak() synchronously in the user-gesture context
+    window.speechSynthesis.speak(utterance);
+    
+    // UI state feedback
+    isPlaying = true;
+    isPaused = false;
+    updateUI();
+
+    // Heartbeat Keep-Alive
+    if (heartbeatInterval) clearInterval(heartbeatInterval);
+    heartbeatInterval = setInterval(() => {
+      if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
+        window.speechSynthesis.pause();
+        window.speechSynthesis.resume();
+      }
+    }, 10000);
   }
 
   playBtn.addEventListener("click", (e) => {
     e.preventDefault();
     
-    // Critical: Resume before any other action to wake up the speech engine (Safari/Chrome fix)
-    if (window.speechSynthesis.paused) {
-      window.speechSynthesis.resume();
-    }
-
     if (isPlaying) {
       window.speechSynthesis.pause();
       isPlaying = false;
