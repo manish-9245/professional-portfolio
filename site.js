@@ -868,12 +868,38 @@ function initializeBlogReader() {
     utterance.rate = speeds[speedIdx];
     utterance.lang = "en-US";
     
-    // Voice selection logic
-    const voices = window.speechSynthesis.getVoices();
-    const voice = voices.find(v => v.lang.startsWith("en-") && v.name.includes("Google")) || 
-                  voices.find(v => v.lang.startsWith("en-")) || 
-                  voices[0];
-    if (voice) utterance.voice = voice;
+    // Enhanced Voice selection logic for more "Human" sound
+    const getBestVoice = () => {
+      const voices = window.speechSynthesis.getVoices();
+      
+      // Order of preference for high-quality, human-sounding voices
+      const preferences = [
+        v => v.name.includes("Natural"), // High-quality modern voices
+        v => v.name.includes("Neural"),  // Neural-based TTS
+        v => v.name.includes("Google") && v.lang.includes("en-US"), // Google's premium web voices
+        v => v.name.includes("Siri"),    // Apple's natural voices
+        v => v.name.includes("Enhanced"), // High-fidelity system voices
+        v => v.lang.startsWith("en-US"), // Standard US English
+        v => v.lang.startsWith("en-GB"), // Standard UK English
+        v => v.lang.startsWith("en")     // Any English
+      ];
+
+      for (const check of preferences) {
+        const found = voices.find(check);
+        if (found) return found;
+      }
+      return voices[0];
+    };
+
+    const voice = getBestVoice();
+    if (voice) {
+      utterance.voice = voice;
+      // Subtly adjust pitch/rate for a less "monotone" feel if it's a standard voice
+      if (!voice.name.includes("Natural") && !voice.name.includes("Neural")) {
+        utterance.pitch = 1.05; // Slightly higher pitch can sound less "flat"
+        utterance.rate = speeds[speedIdx] * 0.95; // Slightly slower for better articulation
+      }
+    }
 
     utterance.onstart = () => {
       isPlaying = true;
