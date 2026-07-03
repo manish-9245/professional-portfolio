@@ -64,6 +64,22 @@ function applyTheme(theme, options = {}) {
   }
 
   updateThemeToggleUI();
+  syncHljs();
+}
+
+function syncHljs() {
+  const isDark = getActiveTheme() === "dark";
+  const lightTheme = document.getElementById("hljs-theme-light");
+  const darkTheme = document.getElementById("hljs-theme-dark");
+
+  if (lightTheme) {
+    lightTheme.disabled = isDark;
+    lightTheme.setAttribute("disabled", isDark);
+  }
+  if (darkTheme) {
+    darkTheme.disabled = !isDark;
+    darkTheme.setAttribute("disabled", !isDark);
+  }
 }
 
 function initializeTheme() {
@@ -684,9 +700,9 @@ function initializeCodeCopy(container) {
     const controls = document.createElement("div");
     controls.className = "code-window-controls";
     controls.innerHTML = `
-      <span class="code-window-dot close" aria-hidden="true">×</span>
-      <span class="code-window-dot minimize" aria-hidden="true">−</span>
-      <span class="code-window-dot maximize" aria-hidden="true">+</span>`;
+      <span class="code-window-dot close" title="Close" aria-hidden="true"></span>
+      <span class="code-window-dot minimize" title="Minimize" aria-hidden="true"></span>
+      <span class="code-window-dot maximize" title="Maximize" aria-hidden="true"></span>`;
 
     const langName = code.getAttribute("data-lang") || "";
     const langDisplay = document.createElement("span");
@@ -701,24 +717,30 @@ function initializeCodeCopy(container) {
     const button = document.createElement("button");
     button.type = "button";
     button.className = "code-copy-button";
-    button.textContent = "Copy";
+    button.innerHTML = `
+      <svg class="icon-copy" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+      <span>Copy</span>`;
     button.setAttribute("aria-label", "Copy code to clipboard");
     wrapper.appendChild(button);
 
     button.addEventListener("click", async () => {
+      const label = button.querySelector("span");
+      const originalHtml = button.innerHTML;
       try {
         await copyText(code.innerText);
-        button.textContent = "Copied";
+        button.innerHTML = `
+          <svg class="icon-check" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          <span>Copied</span>`;
         button.classList.add("is-copied");
         window.setTimeout(() => {
-          button.textContent = "Copy";
+          button.innerHTML = originalHtml;
           button.classList.remove("is-copied");
-        }, 1600);
+        }, 2000);
       } catch {
-        button.textContent = "Failed";
+        if (label) label.textContent = "Failed";
         window.setTimeout(() => {
-          button.textContent = "Copy";
-        }, 1600);
+          button.innerHTML = originalHtml;
+        }, 2000);
       }
     });
   });
@@ -889,13 +911,16 @@ function syncHead(nextDocument) {
           currentEl.setAttribute("content", nextEl.getAttribute("content"));
         } else if (
           nextEl.tagName === "LINK" &&
-          currentEl.getAttribute("href") !== nextEl.getAttribute("href")
+          (currentEl.getAttribute("href") !== nextEl.getAttribute("href") ||
+           currentEl.hasAttribute("disabled") !== nextEl.hasAttribute("disabled"))
         ) {
           currentEl.setAttribute("href", nextEl.getAttribute("href"));
           // Handle disabled state for hljs themes
           if (nextEl.hasAttribute("disabled")) {
+            currentEl.disabled = true;
             currentEl.setAttribute("disabled", "");
           } else {
+            currentEl.disabled = false;
             currentEl.removeAttribute("disabled");
           }
         } else if (nextEl.tagName === "SCRIPT") {

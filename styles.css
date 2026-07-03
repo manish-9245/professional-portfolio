@@ -1,5 +1,11 @@
 :root {
-  --surface-max: 1080px;
+  --surface-max: 1200px;
+}
+
+@media (min-width: 1440px) {
+  :root {
+    --surface-max: 1320px;
+  }
 }
 
 html[data-theme="light"] {
@@ -1445,25 +1451,34 @@ html[data-theme="dark"] .project-carousel-btn:hover {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.52rem;
+  font-size: 0.55rem;
   line-height: 1;
-  font-weight: 700;
+  font-weight: 800;
   opacity: 0.95;
+  transition: opacity 0.2s ease;
+  cursor: default;
+}
+
+.code-window-dot:hover {
+  opacity: 1;
 }
 
 .code-window-dot.close {
-  background: color-mix(in srgb, currentColor 22%, transparent);
-  color: color-mix(in srgb, currentColor 86%, transparent);
+  background: #ff5f56;
+  border: 1px solid #e0443e;
+  color: #4b0000;
 }
 
 .code-window-dot.minimize {
-  background: color-mix(in srgb, currentColor 16%, transparent);
-  color: color-mix(in srgb, currentColor 82%, transparent);
+  background: #ffbd2e;
+  border: 1px solid #dea123;
+  color: #5d3b00;
 }
 
 .code-window-dot.maximize {
-  background: color-mix(in srgb, currentColor 12%, transparent);
-  color: color-mix(in srgb, currentColor 78%, transparent);
+  background: #27c93f;
+  border: 1px solid #1aab29;
+  color: #004b00;
 }
 
 .code-block-shell pre {
@@ -1474,28 +1489,43 @@ html[data-theme="dark"] .project-carousel-btn:hover {
 
 .code-copy-button {
   position: absolute;
-  top: 0.3rem;
+  top: 0.35rem;
   right: 0.5rem;
   z-index: 1;
   border: 1px solid var(--o-border, color-mix(in srgb, currentColor 15%, transparent));
-  background: color-mix(in srgb, var(--o-bg, canvas) 92%, transparent);
+  background: color-mix(in srgb, var(--o-bg, canvas) 82%, transparent);
+  backdrop-filter: blur(12px);
   color: inherit;
-  border-radius: 999px;
-  padding: 0.28rem 0.7rem;
+  border-radius: 8px;
+  padding: 0.32rem 0.65rem;
   font: inherit;
-  font-size: 0.78rem;
+  font-size: 0.76rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: transform 0.15s ease, opacity 0.15s ease;
-  opacity: 0.92;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0.85;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  box-shadow: 0 2px 8px -2px color-mix(in srgb, currentColor 8%, transparent);
 }
 
 .code-copy-button:hover {
-  transform: translateY(-1px);
   opacity: 1;
+  transform: translateY(-1px);
+  background: color-mix(in srgb, var(--o-bg, canvas) 92%, transparent);
+  border-color: color-mix(in srgb, currentColor 25%, transparent);
+  box-shadow: 0 4px 12px -2px color-mix(in srgb, currentColor 12%, transparent);
+}
+
+.code-copy-button:active {
+  transform: translateY(0);
 }
 
 .code-copy-button.is-copied {
-  font-weight: 600;
+  border-color: #27c93f;
+  color: #27c93f;
+  background: color-mix(in srgb, #27c93f 8%, transparent);
 }
 
 .blog-prose :not(pre) > code {
