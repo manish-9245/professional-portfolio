@@ -269,7 +269,16 @@
 <h2 id="data-definition-language-ddl-">Data Definition Language (DDL)</h2>
 <p>DDL defines the structure. In a production environment, DDL is dangerous. Locking a table to add a column can bring down a high-traffic service.</p>
 <h3 id="creating-tables-with-constraints">Creating Tables with Constraints</h3>
-<pre><code class="hljs language-sql" data-lang="sql"><span class="hljs-keyword">CREATE TABLE</span> Employees (
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">sql</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-sql" data-lang="sql"><span class="hljs-keyword">CREATE TABLE</span> Employees (
     emp_id <span class="hljs-type">INT</span> <span class="hljs-keyword">PRIMARY KEY</span>,
     email <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">255</span>) <span class="hljs-keyword">UNIQUE</span> <span class="hljs-keyword">NOT NULL</span>,
     salary <span class="hljs-type">DECIMAL</span>(<span class="hljs-number">10</span>, <span class="hljs-number">2</span>) <span class="hljs-keyword">CHECK</span> (salary <span class="hljs-operator">&gt;</span> <span class="hljs-number">0</span>),
@@ -279,12 +288,23 @@
         <span class="hljs-keyword">FOREIGN KEY</span> (dept_id) 
         <span class="hljs-keyword">REFERENCES</span> Departments(dept_id)
         <span class="hljs-keyword">ON</span> <span class="hljs-keyword">DELETE</span> <span class="hljs-keyword">SET</span> <span class="hljs-keyword">NULL</span>
-);</code></pre><ul>
+);</code></pre>
+        </div>
+      <ul>
 <li><strong>Constraint Naming:</strong> Always name your constraints (<code>fk_dept</code>). It makes debugging error logs significantly easier.</li>
 <li><strong>Types:</strong> <code>INT</code>, <code>VARCHAR</code>, <code>DECIMAL</code> (for money-never use FLOAT), <code>DATE</code>.</li>
 </ul>
 <h3 id="altering-and-dropping">Altering and Dropping</h3>
-<pre><code class="hljs language-sql" data-lang="sql"><span class="hljs-comment">-- Adding a column</span>
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">sql</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-sql" data-lang="sql"><span class="hljs-comment">-- Adding a column</span>
 <span class="hljs-keyword">ALTER TABLE</span> Employees <span class="hljs-keyword">ADD</span> <span class="hljs-keyword">COLUMN</span> phone_number <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">20</span>);
 
 <span class="hljs-comment">-- Renaming (Database specific, standard SQL uses RENAME TO)</span>
@@ -292,10 +312,23 @@
 
 <span class="hljs-comment">-- Truncate vs Delete</span>
 <span class="hljs-keyword">TRUNCATE</span> <span class="hljs-keyword">TABLE</span> Staff; <span class="hljs-comment">-- Fast, resets High Water Mark, no undo (DDL)</span>
-<span class="hljs-keyword">DELETE</span> <span class="hljs-keyword">FROM</span> Staff;    <span class="hljs-comment">-- Slower, logs every row, transactional (DML)</span></code></pre><h2 id="dcl-data-control-language-">DCL (Data Control Language)</h2>
+<span class="hljs-keyword">DELETE</span> <span class="hljs-keyword">FROM</span> Staff;    <span class="hljs-comment">-- Slower, logs every row, transactional (DML)</span></code></pre>
+        </div>
+      <h2 id="dcl-data-control-language-">DCL (Data Control Language)</h2>
 <p>Security is paramount.</p>
-<pre><code class="hljs language-sql" data-lang="sql"><span class="hljs-keyword">GRANT</span> <span class="hljs-keyword">SELECT</span>, <span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">ON</span> Employees <span class="hljs-keyword">TO</span> app_user;
-<span class="hljs-keyword">REVOKE</span> <span class="hljs-keyword">DELETE</span> <span class="hljs-keyword">ON</span> Employees <span class="hljs-keyword">FROM</span> app_user;</code></pre><h2 id="error-codes-spooling">Error Codes &amp; Spooling</h2>
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">sql</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-sql" data-lang="sql"><span class="hljs-keyword">GRANT</span> <span class="hljs-keyword">SELECT</span>, <span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">ON</span> Employees <span class="hljs-keyword">TO</span> app_user;
+<span class="hljs-keyword">REVOKE</span> <span class="hljs-keyword">DELETE</span> <span class="hljs-keyword">ON</span> Employees <span class="hljs-keyword">FROM</span> app_user;</code></pre>
+        </div>
+      <h2 id="error-codes-spooling">Error Codes &amp; Spooling</h2>
 <ul>
 <li><strong>Spooling:</strong> In CLI tools (like SQL*Plus), spooling directs query output to a file. Useful for generating CSV reports via cron jobs.</li>
 <li><strong>Error Codes:</strong> Applications should trap SQLSTATE codes. For example, a duplicate key violation usually returns specific codes (e.g., 23505 in Postgres) allowing the app to fail gracefully.</li>
@@ -305,7 +338,16 @@
 <p>This is where the rubber meets the road. Writing efficient DML (Data Manipulation Language) is the primary skill of a backend engineer.</p>
 <h2 id="dml-managing-data">DML: Managing Data</h2>
 <p>The <code>INSERT</code>, <code>UPDATE</code>, and <code>DELETE</code> statements are straightforward but powerful.</p>
-<pre><code class="hljs language-sql" data-lang="sql"><span class="hljs-comment">-- Multi-row insert</span>
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">sql</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-sql" data-lang="sql"><span class="hljs-comment">-- Multi-row insert</span>
 <span class="hljs-keyword">INSERT INTO</span> Products (name, price) <span class="hljs-keyword">VALUES</span> 
 (<span class="hljs-string">'Widget A'</span>, <span class="hljs-number">10.00</span>),
 (<span class="hljs-string">'Widget B'</span>, <span class="hljs-number">15.50</span>);
@@ -317,7 +359,9 @@
 
 <span class="hljs-comment">-- Substitution Variables (Tool specific, e.g., SQL*Plus)</span>
 <span class="hljs-comment">-- DEFINE department_id = 10;</span>
-<span class="hljs-comment">-- SELECT * FROM Employees WHERE dept_id = &amp;department_id;</span></code></pre><h2 id="advanced-retrieval-the-select-anatomy">Advanced Retrieval: The SELECT Anatomy</h2>
+<span class="hljs-comment">-- SELECT * FROM Employees WHERE dept_id = &amp;department_id;</span></code></pre>
+        </div>
+      <h2 id="advanced-retrieval-the-select-anatomy">Advanced Retrieval: The SELECT Anatomy</h2>
 <p>The execution order of a SQL query is different from the writing order:</p>
 <ol>
 <li><strong>FROM / JOIN</strong> (Gather data)</li>
@@ -329,7 +373,16 @@
 </ol>
 <h3 id="conditional-logic-case">Conditional Logic: CASE</h3>
 <p>The <code>CASE</code> statement allows for if-then logic directly in the projection.</p>
-<pre><code class="hljs language-sql" data-lang="sql"><span class="hljs-keyword">SELECT</span> 
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">sql</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-sql" data-lang="sql"><span class="hljs-keyword">SELECT</span> 
     name,
     salary,
     <span class="hljs-keyword">CASE</span> 
@@ -337,7 +390,9 @@
         <span class="hljs-keyword">WHEN</span> salary <span class="hljs-keyword">BETWEEN</span> <span class="hljs-number">50000</span> <span class="hljs-keyword">AND</span> <span class="hljs-number">100000</span> <span class="hljs-keyword">THEN</span> <span class="hljs-string">'Mid'</span>
         <span class="hljs-keyword">ELSE</span> <span class="hljs-string">'Senior'</span>
     <span class="hljs-keyword">END</span> <span class="hljs-keyword">as</span> seniority_level
-<span class="hljs-keyword">FROM</span> Employees;</code></pre><h2 id="multiple-tables-joins">Multiple Tables: Joins</h2>
+<span class="hljs-keyword">FROM</span> Employees;</code></pre>
+        </div>
+      <h2 id="multiple-tables-joins">Multiple Tables: Joins</h2>
 <p>Joins are the physical realization of the Cartesian product filtered by a predicate.</p>
 <p><img src="https://blogs.buildwithmanish.com/assets/images/technical_diagram-relational-database-management-system-6-2025-12-30-17942.png" alt="Joins Diagram"></p>
 <ol>
@@ -347,11 +402,22 @@
 <li><strong>Full Join:</strong> All rows from both tables.</li>
 <li><strong>Self Join:</strong> Joining a table to itself (e.g., Employee hierarchy where Manager is also an Employee).</li>
 </ol>
-<pre><code class="hljs language-sql" data-lang="sql"><span class="hljs-keyword">SELECT</span> 
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">sql</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-sql" data-lang="sql"><span class="hljs-keyword">SELECT</span> 
     e.name <span class="hljs-keyword">as</span> Employee, 
     m.name <span class="hljs-keyword">as</span> Manager
 <span class="hljs-keyword">FROM</span> Employees e
-<span class="hljs-keyword">LEFT</span> <span class="hljs-keyword">JOIN</span> Employees m <span class="hljs-keyword">ON</span> e.manager_id <span class="hljs-operator">=</span> m.emp_id;</code></pre><h2 id="functions-and-grouping">Functions and Grouping</h2>
+<span class="hljs-keyword">LEFT</span> <span class="hljs-keyword">JOIN</span> Employees m <span class="hljs-keyword">ON</span> e.manager_id <span class="hljs-operator">=</span> m.emp_id;</code></pre>
+        </div>
+      <h2 id="functions-and-grouping">Functions and Grouping</h2>
 <p>Aggregation reduces multiple rows into a single summary value.</p>
 <p><img src="https://blogs.buildwithmanish.com/assets/images/code_flow-relational-database-management-system-7-2025-12-30-6284.png" alt="Functions and Grouping Flow"></p>
 <h3 id="built-in-functions">Built-in Functions</h3>
@@ -363,13 +429,24 @@
 <h3 id="grouping-and-having">Grouping and HAVING</h3>
 <p>The <code>HAVING</code> clause is essential because the <code>WHERE</code> clause cannot filter on aggregate functions (because <code>WHERE</code> runs <em>before</em> aggregation).</p>
 <p><strong>Scenario:</strong> Find departments where the average salary is greater than $80,000.</p>
-<pre><code class="hljs language-sql" data-lang="sql"><span class="hljs-keyword">SELECT</span> 
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">sql</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-sql" data-lang="sql"><span class="hljs-keyword">SELECT</span> 
     dept_id, 
     <span class="hljs-built_in">AVG</span>(salary) <span class="hljs-keyword">as</span> avg_sal
 <span class="hljs-keyword">FROM</span> Employees
 <span class="hljs-keyword">WHERE</span> status <span class="hljs-operator">=</span> <span class="hljs-string">'Active'</span>  <span class="hljs-comment">-- Filter raw rows first</span>
 <span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> dept_id         <span class="hljs-comment">-- Aggregate</span>
-<span class="hljs-keyword">HAVING</span> <span class="hljs-built_in">AVG</span>(salary) <span class="hljs-operator">&gt;</span> <span class="hljs-number">80000</span>; <span class="hljs-comment">-- Filter the aggregates</span></code></pre><h3 id="set-operations">Set Operations</h3>
+<span class="hljs-keyword">HAVING</span> <span class="hljs-built_in">AVG</span>(salary) <span class="hljs-operator">&gt;</span> <span class="hljs-number">80000</span>; <span class="hljs-comment">-- Filter the aggregates</span></code></pre>
+        </div>
+      <h3 id="set-operations">Set Operations</h3>
 <p>These combine the results of two separate queries.</p>
 <ul>
 <li><strong>UNION:</strong> Combines results, removes duplicates.</li>

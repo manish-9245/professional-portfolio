@@ -173,15 +173,26 @@
 <h3 id="1-the-trigger-and-state-management">1. The Trigger and State Management</h3>
 <p>The workflow begins by polling a Google Sheet. While webhooks are faster, polling offers better rate-limit control when dealing with LLMs.</p>
 <p><strong>The Filter Logic:</strong> We fetch all rows but process only one where <code>Status == "Pending"</code>. This acts as a semaphore, preventing the agent from trying to write the entire backlog simultaneously.</p>
-<pre><code class="hljs language-javascript" data-lang="javascript"><span class="hljs-comment">// n8n Function Item Node: Filter for next assignment</span>
-<span class="hljs-keyword">const</span> rows = items[<span class="hljs-number">0</span>].<span class="hljs-property">json</span>.<span class="hljs-property">rows</span>;
-<span class="hljs-keyword">const</span> pendingTask = rows.<span class="hljs-title function_">find</span>(<span class="hljs-function"><span class="hljs-params">row</span> =&gt;</span> row.<span class="hljs-property">status</span> === <span class="hljs-string">'Pending'</span>);
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">kotlin</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-kotlin" data-lang="kotlin"><span class="hljs-comment">// n8n Function Item Node: Filter for next assignment</span>
+<span class="hljs-keyword">const</span> rows = items[<span class="hljs-number">0</span>].json.rows;
+<span class="hljs-keyword">const</span> pendingTask = rows.find(row =&gt; row.status === <span class="hljs-string">'Pending'</span>);
 
 <span class="hljs-keyword">if</span> (!pendingTask) {
   <span class="hljs-keyword">return</span> []; <span class="hljs-comment">// Stop workflow if nothing to do</span>
 }
 
-<span class="hljs-keyword">return</span> [{ <span class="hljs-attr">json</span>: pendingTask }];</code></pre><h3 id="2-the-visual-strategist-gemini-">2. The Visual Strategist (Gemini)</h3>
+<span class="hljs-keyword">return</span> [{ json: pendingTask }];</code></pre>
+        </div>
+      <h3 id="2-the-visual-strategist-gemini-">2. The Visual Strategist (Gemini)</h3>
 <p>Before writing a single word, the workflow invokes Google’s Gemini LLM. The prompt here is crucial. We don’t ask for the blog post yet. We ask for a <strong>Visual Asset Plan</strong>.</p>
 <p><strong>Prompt Engineering:</strong></p>
 <blockquote>
@@ -198,7 +209,16 @@
 <li><strong>HTTP Request:</strong> Download image as Binary.</li>
 <li><strong>Code Node:</strong> Convert Binary Buffer to Base64 string.</li>
 </ol>
-<pre><code class="hljs language-javascript" data-lang="javascript"><span class="hljs-comment">// n8n Code Node: Buffer to Base64 for GitHub API</span>
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">javascript</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-javascript" data-lang="javascript"><span class="hljs-comment">// n8n Code Node: Buffer to Base64 for GitHub API</span>
 <span class="hljs-keyword">const</span> binaryData = items[<span class="hljs-number">0</span>].<span class="hljs-property">binary</span>.<span class="hljs-property">data</span>; <span class="hljs-comment">// The image from previous node</span>
 <span class="hljs-keyword">const</span> buffer = <span class="hljs-title class_">Buffer</span>.<span class="hljs-title function_">from</span>(binaryData.<span class="hljs-property">data</span>, <span class="hljs-string">'base64'</span>); <span class="hljs-comment">// n8n stores internal binary as base64 already, but let's ensure context</span>
 
@@ -211,7 +231,9 @@
     <span class="hljs-attr">content</span>: content,
     <span class="hljs-attr">message</span>: <span class="hljs-string">`chore: add auto-generated asset for <span class="hljs-subst">${topic}</span>`</span>
   }
-};</code></pre><p><strong>The GitHub Commit:</strong> We then fire a <code>PUT</code> request to <code>https://api.github.com/repos/\{owner\}/\{repo\}/contents/\{path\}</code>.</p>
+};</code></pre>
+        </div>
+      <p><strong>The GitHub Commit:</strong> We then fire a <code>PUT</code> request to <code>https://api.github.com/repos/\{owner\}/\{repo\}/contents/\{path\}</code>.</p>
 <p>Success here returns the <code>download_url</code>. We collect these URLs into an array to pass to the next stage.</p>
 <h3 id="4-contextual-content-generation">4. Contextual Content Generation</h3>
 <p>Now, we have a list of live image URLs. We feed these back into Gemini for the final writing phase.</p>
@@ -225,10 +247,21 @@
 <p>Finally, the generated Markdown is cleaned (removing Markdown code block fences usually returned by LLMs) and committed to the <code>_posts/</code> directory.</p>
 <p><img src="https://blogs.buildwithmanish.com/assets/images/technical_diagram-how-i-built-an-ai-blogger-agent-using-n8n-and-jekyll-5-2025-12-18-8248.png" alt="GitHub Directory Structure"></p>
 <p>The filename format is strict: <code>YYYY-MM-DD-title-slug.md</code>. This is required for Jekyll to parse the date correctly.</p>
-<pre><code class="hljs language-javascript" data-lang="javascript"><span class="hljs-comment">// Filename generation logic</span>
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">javascript</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-javascript" data-lang="javascript"><span class="hljs-comment">// Filename generation logic</span>
 <span class="hljs-keyword">const</span> date = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>().<span class="hljs-title function_">toISOString</span>().<span class="hljs-title function_">split</span>(<span class="hljs-string">'T'</span>)[<span class="hljs-number">0</span>];
 <span class="hljs-keyword">const</span> slug = title.<span class="hljs-title function_">toLowerCase</span>().<span class="hljs-title function_">replace</span>(<span class="hljs-regexp">/[^a-z0-9]+/g</span>, <span class="hljs-string">'-'</span>).<span class="hljs-title function_">replace</span>(<span class="hljs-regexp">/(^-|-$)+/g</span>, <span class="hljs-string">''</span>);
-<span class="hljs-keyword">const</span> filename = <span class="hljs-string">`_posts/<span class="hljs-subst">${date}</span>-<span class="hljs-subst">${slug}</span>.md`</span>;</code></pre><hr>
+<span class="hljs-keyword">const</span> filename = <span class="hljs-string">`_posts/<span class="hljs-subst">${date}</span>-<span class="hljs-subst">${slug}</span>.md`</span>;</code></pre>
+        </div>
+      <hr>
 <h2 id="part-2-the-frontend-jekyll-on-railway-">Part 2: The Frontend (Jekyll on Railway)</h2>
 <p>While the backend is the brain, the frontend is the experience. I chose Jekyll because it transforms the filesystem into a website. There is no database to hack, no CMS to update, and the “API” is just the Git repository.</p>
 <h3 id="deployment-pipeline">Deployment Pipeline</h3>
@@ -246,7 +279,16 @@
 <p>A standard Jekyll theme wasn’t enough. I wanted a “Medium-like” experience but without the paywall and tracking. I implemented several features using raw JavaScript to keep the site lightweight.</p>
 <h4>1. Image Lightbox</h4>
 <p>Since the AI generates detailed diagrams, users need to zoom in. I wrote a script that wraps every post image in a modal trigger.</p>
-<pre><code class="hljs language-javascript" data-lang="javascript"><span class="hljs-variable language_">document</span>.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">'DOMContentLoaded'</span>, <span class="hljs-function">() =&gt;</span> {
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">javascript</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-javascript" data-lang="javascript"><span class="hljs-variable language_">document</span>.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">'DOMContentLoaded'</span>, <span class="hljs-function">() =&gt;</span> {
   <span class="hljs-keyword">const</span> images = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelectorAll</span>(<span class="hljs-string">'.post-content img'</span>);
   <span class="hljs-keyword">const</span> lightbox = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">'lightbox'</span>);
   <span class="hljs-keyword">const</span> lightboxImg = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">'lightbox-img'</span>);
@@ -264,10 +306,21 @@
       lightbox.<span class="hljs-property">classList</span>.<span class="hljs-title function_">remove</span>(<span class="hljs-string">'active'</span>);
     }
   });
-});</code></pre><h4>2. Multi-Tag Filtering</h4>
+});</code></pre>
+        </div>
+      <h4>2. Multi-Tag Filtering</h4>
 <p>Jekyll handles categories natively, but real-time filtering usually requires a page reload. I implemented a client-side filter. I serialize all post metadata into a JSON object in the DOM, allowing instant filtering.</p>
 <p><strong>_layouts/home.html:</strong></p>
-<pre><code class="hljs language-html" data-lang="html"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="language-javascript">
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">html</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-html" data-lang="html"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="language-javascript">
   <span class="hljs-variable language_">window</span>.<span class="hljs-property">posts</span> = [
     
       {
@@ -349,10 +402,21 @@
       },
     
   ];
-</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre><p>The Javascript then simply toggles <code>display: none</code> on the post cards based on the selected tag array.</p>
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre>
+        </div>
+      <p>The Javascript then simply toggles <code>display: none</code> on the post cards based on the selected tag array.</p>
 <h4>3. Dark Mode with Persistence</h4>
 <p>Dark mode is implemented via CSS variables and <code>localStorage</code>. This prevents the “flash of white content” (FOUC) by checking storage in the <code>&lt;head&gt;</code> before the body renders.</p>
-<pre><code class="hljs language-css" data-lang="css"><span class="hljs-selector-pseudo">:root</span> {
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">css</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-css" data-lang="css"><span class="hljs-selector-pseudo">:root</span> {
   <span class="hljs-attr">--bg-color</span>: <span class="hljs-number">#ffffff</span>;
   <span class="hljs-attr">--text-color</span>: <span class="hljs-number">#1a1a1a</span>;
 }
@@ -366,18 +430,31 @@
   <span class="hljs-attribute">background-color</span>: <span class="hljs-built_in">var</span>(--bg-color);
   <span class="hljs-attribute">color</span>: <span class="hljs-built_in">var</span>(--text-color);
   <span class="hljs-attribute">transition</span>: background-color <span class="hljs-number">0.3s</span> ease;
-}</code></pre><hr>
+}</code></pre>
+        </div>
+      <hr>
 <h2 id="advanced-scenarios-trade-offs">Advanced Scenarios &amp; Trade-offs</h2>
 <p>Building an autonomous agent isn’t without its edge cases. Here are the production issues I encountered and how I solved them.</p>
 <h3 id="1-hallucinations-and-json-validity">1. Hallucinations and JSON Validity</h3>
 <p>When asking an LLM for a JSON plan (visual assets), it sometimes wraps the JSON in markdown code blocks (```json … ```) or adds conversational text.</p>
 <p><strong>Solution:</strong> In n8n, I use a “Function Item” node specifically to sanitize the LLM output before parsing it.</p>
-<pre><code class="hljs language-javascript" data-lang="javascript"><span class="hljs-comment">// Regex to extract pure JSON</span>
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">javascript</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-javascript" data-lang="javascript"><span class="hljs-comment">// Regex to extract pure JSON</span>
 <span class="hljs-keyword">const</span> jsonMatch = items[<span class="hljs-number">0</span>].<span class="hljs-property">json</span>.<span class="hljs-property">content</span>.<span class="hljs-title function_">match</span>(<span class="hljs-regexp">/\{[\s\S]*\}/</span>);
 <span class="hljs-keyword">if</span> (jsonMatch) {
     <span class="hljs-keyword">return</span> { <span class="hljs-attr">json</span>: <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">parse</span>(jsonMatch[<span class="hljs-number">0</span>]) };
 }
-<span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">"LLM failed to return valid JSON"</span>);</code></pre><h3 id="2-github-api-race-conditions">2. GitHub API Race Conditions</h3>
+<span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">"LLM failed to return valid JSON"</span>);</code></pre>
+        </div>
+      <h3 id="2-github-api-race-conditions">2. GitHub API Race Conditions</h3>
 <p>If the agent tries to upload 4 images simultaneously (parallel execution in n8n), GitHub might reject requests if the git tree updates haven’t propagated instantly, or we might hit rate limits.</p>
 <p><strong>Solution:</strong> I configured the n8n “Split In Batches” node to size <code>1</code>. This forces sequential uploads. It’s slower, but significantly more reliable. It also simplifies the logic of aggregating the resulting URLs.</p>
 <h3 id="3-context-window-limits">3. Context Window Limits</h3>

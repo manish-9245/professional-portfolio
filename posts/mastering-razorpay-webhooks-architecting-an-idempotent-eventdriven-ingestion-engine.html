@@ -193,7 +193,16 @@
 <p><strong>Do not use the <code>payment_id</code> for deduplication</strong> at the ingress layer. A single payment ID will have multiple events (<code>authorized</code>, <code>captured</code>, <code>failed</code>). The Event ID is your unique constraints key.</p>
 <h3 id="implementation-the-redis-guard">Implementation: The Redis Guard</h3>
 <p>To handle high concurrency (e.g., “Retry Storms” where two identical requests arrive milliseconds apart), a database unique constraint might be too slow or result in lock contention. A Redis-based distributed lock or a simple key check is preferred at the API gateway level.</p>
-<pre><code class="hljs language-python" data-lang="python"><span class="hljs-keyword">import</span> redis
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">python</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-python" data-lang="python"><span class="hljs-keyword">import</span> redis
 <span class="hljs-keyword">import</span> hmac
 <span class="hljs-keyword">import</span> hashlib
 <span class="hljs-keyword">from</span> fastapi <span class="hljs-keyword">import</span> Request, HTTPException
@@ -234,13 +243,24 @@ r = redis.Redis(host=<span class="hljs-string">'localhost'</span>, port=<span cl
     <span class="hljs-comment"># 4. Proceed to Persistence (See Pillar 3)</span>
     <span class="hljs-keyword">await</span> persist_to_db(event_id, payload_body)
     
-    <span class="hljs-keyword">return</span> {<span class="hljs-string">"status"</span>: <span class="hljs-string">"ok"</span>}</code></pre><p><img src="https://blogs.buildwithmanish.com/assets/images/technical_diagram-mastering-razorpay-webhooks-architecting-an-idempotent-eventdriven-ingestion-engine-3-2025-12-17-38261.png" alt="Technical Diagram"></p>
+    <span class="hljs-keyword">return</span> {<span class="hljs-string">"status"</span>: <span class="hljs-string">"ok"</span>}</code></pre>
+        </div>
+      <p><img src="https://blogs.buildwithmanish.com/assets/images/technical_diagram-mastering-razorpay-webhooks-architecting-an-idempotent-eventdriven-ingestion-engine-3-2025-12-17-38261.png" alt="Technical Diagram"></p>
 <hr>
 <h2 id="pillar-3-storage-implementation-the-raw-log-">Pillar 3: Storage Implementation (The Raw Log)</h2>
 <p>Before any processing happens, the raw payload must be saved. This provides an audit trail and allows for re-playing events if your worker logic contains bugs.</p>
 <p>We need a table specifically for ingestion, separate from your <code>payments</code> or <code>orders</code> tables.</p>
 <h3 id="database-schema-postgresql-">Database Schema (PostgreSQL)</h3>
-<pre><code class="hljs language-sql" data-lang="sql"><span class="hljs-keyword">CREATE</span> TYPE processing_status <span class="hljs-keyword">AS</span> ENUM (<span class="hljs-string">'PENDING'</span>, <span class="hljs-string">'PROCESSING'</span>, <span class="hljs-string">'COMPLETED'</span>, <span class="hljs-string">'FAILED'</span>, <span class="hljs-string">'IGNORED'</span>);
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">sql</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-sql" data-lang="sql"><span class="hljs-keyword">CREATE</span> TYPE processing_status <span class="hljs-keyword">AS</span> ENUM (<span class="hljs-string">'PENDING'</span>, <span class="hljs-string">'PROCESSING'</span>, <span class="hljs-string">'COMPLETED'</span>, <span class="hljs-string">'FAILED'</span>, <span class="hljs-string">'IGNORED'</span>);
 
 <span class="hljs-keyword">CREATE TABLE</span> razorpay_event_logs (
     id BIGSERIAL <span class="hljs-keyword">PRIMARY KEY</span>,
@@ -266,7 +286,9 @@ r = redis.Redis(host=<span class="hljs-string">'localhost'</span>, port=<span cl
 );
 
 <span class="hljs-comment">-- Index for querying by entity (e.g. find all logs for order_123)</span>
-<span class="hljs-keyword">CREATE</span> INDEX idx_rpay_payload_entity <span class="hljs-keyword">ON</span> razorpay_event_logs ((payload<span class="hljs-operator">-</span><span class="hljs-operator">&gt;</span><span class="hljs-string">'payload'</span><span class="hljs-operator">-</span><span class="hljs-operator">&gt;</span><span class="hljs-string">'payment'</span><span class="hljs-operator">-</span><span class="hljs-operator">&gt;</span><span class="hljs-string">'entity'</span><span class="hljs-operator">-</span><span class="hljs-operator">&gt;&gt;</span><span class="hljs-string">'order_id'</span>));</code></pre><p><strong>Key Decisions:</strong></p>
+<span class="hljs-keyword">CREATE</span> INDEX idx_rpay_payload_entity <span class="hljs-keyword">ON</span> razorpay_event_logs ((payload<span class="hljs-operator">-</span><span class="hljs-operator">&gt;</span><span class="hljs-string">'payload'</span><span class="hljs-operator">-</span><span class="hljs-operator">&gt;</span><span class="hljs-string">'payment'</span><span class="hljs-operator">-</span><span class="hljs-operator">&gt;</span><span class="hljs-string">'entity'</span><span class="hljs-operator">-</span><span class="hljs-operator">&gt;&gt;</span><span class="hljs-string">'order_id'</span>));</code></pre>
+        </div>
+      <p><strong>Key Decisions:</strong></p>
 <ul>
 <li><strong><code>razorpay_event_id</code> Unique Index:</strong> This is the hard stop at the database level. If Redis fails or is flushed, the database ensures integrity.</li>
 <li><strong><code>JSONB</code> Payload:</strong> Razorpay adds fields to their webhooks occasionally. Using a rigid schema here effectively breaks your integration when they update their API. Always store the raw JSON.</li>
@@ -294,7 +316,16 @@ r = redis.Redis(host=<span class="hljs-string">'localhost'</span>, port=<span cl
 <li><code>AUTHORIZED</code> -&gt; <code>CAPTURED</code> (Valid)</li>
 <li><code>CAPTURED</code> -&gt; <code>AUTHORIZED</code> (<strong>INVALID</strong> - Ignore)</li>
 </ul>
-<pre><code class="hljs language-python" data-lang="python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">process_webhook_event</span>(<span class="hljs-params">event_type, payment_id, payload</span>):
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">python</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-python" data-lang="python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">process_webhook_event</span>(<span class="hljs-params">event_type, payment_id, payload</span>):
     <span class="hljs-comment"># Lock the row to prevent race conditions during the check</span>
     order = db.query(Order).with_for_update().filter_by(payment_id=payment_id).first()
     
@@ -316,7 +347,9 @@ r = redis.Redis(host=<span class="hljs-string">'localhost'</span>, port=<span cl
         order.status = <span class="hljs-string">"CAPTURED"</span>
         order.captured_at = now()
         
-    db.commit()</code></pre><h3 id="solution-2-fetch-on-sync-the-source-of-truth-">Solution 2: Fetch-on-Sync (The Source of Truth)</h3>
+    db.commit()</code></pre>
+        </div>
+      <h3 id="solution-2-fetch-on-sync-the-source-of-truth-">Solution 2: Fetch-on-Sync (The Source of Truth)</h3>
 <p>The “State Machine” approach assumes your local logic perfectly mirrors Razorpay’s logic. A more robust (albeit slightly slower) approach is to treat the webhook merely as a <strong>“Wake Up Call”</strong>.</p>
 <p>When a webhook arrives, we don’t trust the payload’s state implicitly. Instead, we ask Razorpay for the current state.</p>
 <p><strong>The Logic:</strong></p>
@@ -333,7 +366,16 @@ r = redis.Redis(host=<span class="hljs-string">'localhost'</span>, port=<span cl
 </ol>
 <p>This solves the out-of-order problem completely because you are always fetching the “final” state from the source.</p>
 <p><img src="https://blogs.buildwithmanish.com/assets/images/code_flow-mastering-razorpay-webhooks-architecting-an-idempotent-eventdriven-ingestion-engine-5-2025-12-17-20382.png" alt="Code Flow"></p>
-<pre><code class="hljs language-python" data-lang="python"><span class="hljs-keyword">import</span> razorpay
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">python</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-python" data-lang="python"><span class="hljs-keyword">import</span> razorpay
 
 client = razorpay.Client(auth=(<span class="hljs-string">"KEY"</span>, <span class="hljs-string">"SECRET"</span>))
 
@@ -355,7 +397,9 @@ client = razorpay.Client(auth=(<span class="hljs-string">"KEY"</span>, <span cla
     <span class="hljs-comment"># Upsert logic: Create or Update based on payment_id</span>
     upsert_payment_record(payment_id, current_status, amount)
     
-    mark_event_log_completed(event_id)</code></pre><p><strong>Trade-off:</strong> This introduces an external API call for every webhook, which increases latency and eats into rate limits. However, for financial data consistency, this is often the preferred architecture.</p>
+    mark_event_log_completed(event_id)</code></pre>
+        </div>
+      <p><strong>Trade-off:</strong> This introduces an external API call for every webhook, which increases latency and eats into rate limits. However, for financial data consistency, this is often the preferred architecture.</p>
 <hr>
 <h2 id="pillar-5-reconciliation-the-safety-net-">Pillar 5: Reconciliation (The Safety Net)</h2>
 <p>No matter how good your webhook architecture is, you will miss events.</p>
@@ -374,7 +418,16 @@ client = razorpay.Client(auth=(<span class="hljs-string">"KEY"</span>, <span cla
 <li>Compare the status in Razorpay vs. your Local DB.</li>
 <li>If different, trigger the logic used in the “Fetch-on-Sync” worker.</li>
 </ol>
-<pre><code class="hljs language-python" data-lang="python"><span class="hljs-comment"># Pseudo-code for Reconciliation</span>
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">python</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-python" data-lang="python"><span class="hljs-comment"># Pseudo-code for Reconciliation</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">reconcile_payments</span>(<span class="hljs-params">time_window_minutes=<span class="hljs-number">60</span></span>):
     start_time = now() - timedelta(minutes=time_window_minutes)
     
@@ -393,7 +446,9 @@ client = razorpay.Client(auth=(<span class="hljs-string">"KEY"</span>, <span cla
             create_payment(rp_payment)
         <span class="hljs-keyword">elif</span> local_payment.status != rp_payment[<span class="hljs-string">'status'</span>]:
             logger.warning(<span class="hljs-string">f"STATUS MISMATCH: <span class="hljs-subst">{rp_payment[<span class="hljs-string">'id'</span>]}</span> Local: <span class="hljs-subst">{local_payment.status}</span> Remote: <span class="hljs-subst">{rp_payment[<span class="hljs-string">'status'</span>]}</span>"</span>)
-            update_payment(local_payment, rp_payment[<span class="hljs-string">'status'</span>])</code></pre><p><img src="https://blogs.buildwithmanish.com/assets/images/architecture_diagram-mastering-razorpay-webhooks-architecting-an-idempotent-eventdriven-ingestion-engine-6-2025-12-17-91407.png" alt="Architecture Diagram"></p>
+            update_payment(local_payment, rp_payment[<span class="hljs-string">'status'</span>])</code></pre>
+        </div>
+      <p><img src="https://blogs.buildwithmanish.com/assets/images/architecture_diagram-mastering-razorpay-webhooks-architecting-an-idempotent-eventdriven-ingestion-engine-6-2025-12-17-91407.png" alt="Architecture Diagram"></p>
 <hr>
 <h2 id="conclusion">Conclusion</h2>
 <p>Building a webhook ingestion engine for payments is not just about creating an API endpoint. It is about acknowledging that distributed systems are inherently unreliable and architecting defenses against that unreliability.</p>

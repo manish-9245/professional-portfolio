@@ -242,10 +242,21 @@
 </ul>
 <h2 id="2-library-of-functions">2. Library of Functions</h2>
 <h3 id="mathematical-statistical">Mathematical &amp; Statistical</h3>
-<pre><code class="hljs language-sql" data-lang="sql"><span class="hljs-operator">=</span><span class="hljs-built_in">SUM</span>(A1:A10)        <span class="hljs-comment">-- Aggregate total</span>
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">sql</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-sql" data-lang="sql"><span class="hljs-operator">=</span><span class="hljs-built_in">SUM</span>(A1:A10)        <span class="hljs-comment">-- Aggregate total</span>
 <span class="hljs-operator">=</span>AVERAGE(B1:B20)    <span class="hljs-comment">-- Arithmetic mean</span>
 <span class="hljs-operator">=</span><span class="hljs-built_in">COUNT</span>(C1:C10)      <span class="hljs-comment">-- Counts cells with numbers</span>
-<span class="hljs-operator">=</span>COUNTA(C1:C10)     <span class="hljs-comment">-- Counts non-empty cells (includes text)</span></code></pre><h3 id="text-manipulation-string-functions-">Text Manipulation (String Functions)</h3>
+<span class="hljs-operator">=</span>COUNTA(C1:C10)     <span class="hljs-comment">-- Counts non-empty cells (includes text)</span></code></pre>
+        </div>
+      <h3 id="text-manipulation-string-functions-">Text Manipulation (String Functions)</h3>
 <p>Data often arrives “dirty.” These functions sanitize it.</p>
 <ul>
 <li><strong>CONCAT:</strong> Joins strings. <code>=CONCAT(A2, " ", B2)</code></li>
@@ -255,8 +266,19 @@
 <h3 id="logical-functions">Logical Functions</h3>
 <p>The <code>IF</code> statement is the backbone of Excel logic. <strong>Syntax:</strong> <code>=IF(logical_test, value_if_true, value_if_false)</code></p>
 <p><strong>Nested Logic (AND/OR):</strong></p>
-<pre><code class="hljs language-javascript" data-lang="javascript">-- <span class="hljs-title class_">Return</span> <span class="hljs-string">"Pass"</span> <span class="hljs-keyword">if</span> <span class="hljs-title class_">Score</span> &gt; <span class="hljs-number">50</span> <span class="hljs-variable constant_">AND</span> <span class="hljs-title class_">Attendance</span> &gt; <span class="hljs-number">75</span>%
-=<span class="hljs-title function_">IF</span>(<span class="hljs-title function_">AND</span>(<span class="hljs-variable constant_">A2</span>&gt;<span class="hljs-number">50</span>, <span class="hljs-variable constant_">B2</span>&gt;<span class="hljs-number">0.75</span>), <span class="hljs-string">"Pass"</span>, <span class="hljs-string">"Fail"</span>)</code></pre><h2 id="3-excel-tables-structured-references-">3. Excel Tables (Structured References)</h2>
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">javascript</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-javascript" data-lang="javascript">-- <span class="hljs-title class_">Return</span> <span class="hljs-string">"Pass"</span> <span class="hljs-keyword">if</span> <span class="hljs-title class_">Score</span> &gt; <span class="hljs-number">50</span> <span class="hljs-variable constant_">AND</span> <span class="hljs-title class_">Attendance</span> &gt; <span class="hljs-number">75</span>%
+=<span class="hljs-title function_">IF</span>(<span class="hljs-title function_">AND</span>(<span class="hljs-variable constant_">A2</span>&gt;<span class="hljs-number">50</span>, <span class="hljs-variable constant_">B2</span>&gt;<span class="hljs-number">0.75</span>), <span class="hljs-string">"Pass"</span>, <span class="hljs-string">"Fail"</span>)</code></pre>
+        </div>
+      <h2 id="3-excel-tables-structured-references-">3. Excel Tables (Structured References)</h2>
 <p><img src="https://blogs.buildwithmanish.com/assets/images/comparison_chart-textbook-for-excel-exam-3-2025-12-29-23135.png" alt="Comparison Chart"></p>
 <p>Converting a range to a Table (<code>Ctrl + T</code>) transforms standard cells into a database object.</p>
 <p><strong>Why use Tables?</strong></p>
@@ -358,7 +380,18 @@
 </li>
 <li><strong>Formula Logic (The <code>IF</code> Function):</strong><ul>
 <li><p>In cell C2 (Commission), type:</p>
-<pre><code class="hljs language-text" data-lang="">=IF(B2&gt;10000, B2*0.10, B2*0.05)</code></pre></li>
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">text</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-text" data-lang="text">=IF(B2&gt;10000, B2*0.10, B2*0.05)</code></pre>
+        </div>
+      </li>
 <li><p>Double-click the fill handle to propagate down.</p>
 </li>
 </ul>

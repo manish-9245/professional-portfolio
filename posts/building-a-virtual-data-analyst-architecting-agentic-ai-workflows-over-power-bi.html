@@ -158,7 +158,18 @@
 <p><img src="https://blogs.buildwithmanish.com/assets/images/architecture_diagram-building-a-virtual-data-analyst-architecting-agentic-ai-workflows-over-power-bi-1-2025-12-17-87202.png" alt="Architecture Diagram"></p>
 <h2 id="the-core-problem-why-text-to-sql-fails-power-bi">The Core Problem: Why Text-to-SQL Fails Power BI</h2>
 <p>Before writing code, we must understand the semantic gap. A raw SQL database contains <code>Sales_Amount</code> and <code>Cost_Amount</code>. However, the concept of <code>Gross Margin %</code> isn’t a column; it’s a DAX measure defined as:</p>
-<pre><code class="hljs language-text" data-lang="">Gross Margin % = DIVIDE([Total Sales] - [Total Cost], [Total Sales], 0)</code></pre><p>Furthermore, this measure might rely on Time Intelligence functions (<code>SAMEPERIODLASTYEAR</code>) or complex filter contexts (<code>CALCULATE</code>).</p>
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">text</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-text" data-lang="text">Gross Margin % = DIVIDE([Total Sales] - [Total Cost], [Total Sales], 0)</code></pre>
+        </div>
+      <p>Furthermore, this measure might rely on Time Intelligence functions (<code>SAMEPERIODLASTYEAR</code>) or complex filter contexts (<code>CALCULATE</code>).</p>
 <p>If you point a standard Text-to-SQL agent at the underlying SQL database, it will hallucinate the math, ignore the verified logic defined in Power BI, and return numbers that don’t match your executive dashboard. To fix this, our agent must speak <strong>DAX</strong> (Data Analysis Expressions) and query the <strong>Semantic Model</strong> directly.</p>
 <h2 id="architectural-pattern-the-plan-and-execute-agent">Architectural Pattern: The Plan-and-Execute Agent</h2>
 <p>We will move beyond simple RAG (Retrieval Augmented Generation) to a “Plan-and-Execute” agentic pattern. A human analyst doesn’t just run a query immediately. They:</p>
@@ -189,7 +200,16 @@
 </ul>
 <h3 id="implementation-the-schema-fetcher">Implementation: The Schema Fetcher</h3>
 <p>Here is how we implement a robust schema fetcher using the Power BI REST API. This tool will be available to our Agent.</p>
-<pre><code class="hljs language-python" data-lang="python"><span class="hljs-keyword">import</span> requests
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">python</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-python" data-lang="python"><span class="hljs-keyword">import</span> requests
 <span class="hljs-keyword">import</span> json
 
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">PowerBIMetadataService</span>:
@@ -261,14 +281,25 @@
         <span class="hljs-comment"># enabling the LLM to ingest the schema without blowing up the context window.</span>
         schema_summary = <span class="hljs-string">"DATASET SCHEMA:\n"</span>
         <span class="hljs-comment"># ... transformation logic ...</span>
-        <span class="hljs-keyword">return</span> schema_summary</code></pre><p><img src="https://blogs.buildwithmanish.com/assets/images/concept_illustration-building-a-virtual-data-analyst-architecting-agentic-ai-workflows-over-power-bi-3-2025-12-17-24503.png" alt="Concept Illustration: Introspection"></p>
+        <span class="hljs-keyword">return</span> schema_summary</code></pre>
+        </div>
+      <p><img src="https://blogs.buildwithmanish.com/assets/images/concept_illustration-building-a-virtual-data-analyst-architecting-agentic-ai-workflows-over-power-bi-3-2025-12-17-24503.png" alt="Concept Illustration: Introspection"></p>
 <h2 id="phase-2-dynamic-dax-generation-strategies">Phase 2: Dynamic DAX Generation Strategies</h2>
 <p>The hardest part of this workflow is preventing DAX syntax errors. DAX is unforgiving; a missing bracket or an invalid relationship reference breaks the query.</p>
 <p>To mitigate this, we employ <strong>Constraint-Based Prompt Engineering</strong> and <strong>Few-Shot Learning</strong>.</p>
 <h3 id="the-prompt-strategy">The Prompt Strategy</h3>
 <p>We don’t just ask the model to “Write DAX.” We provide a strict template.</p>
 <p><strong>System Prompt Template:</strong></p>
-<pre><code class="hljs language-sql" data-lang="sql">You <span class="hljs-keyword">are</span> an expert Power BI Architect <span class="hljs-keyword">and</span> DAX developer. 
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">sql</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-sql" data-lang="sql">You <span class="hljs-keyword">are</span> an expert Power BI Architect <span class="hljs-keyword">and</span> DAX developer. 
 Your goal <span class="hljs-keyword">is</span> <span class="hljs-keyword">to</span> answer business questions <span class="hljs-keyword">by</span> generating valid DAX queries.
 
 RULES:
@@ -280,7 +311,9 @@ RULES:
    If <span class="hljs-keyword">none</span> exist, construct them <span class="hljs-keyword">using</span> CALCULATE <span class="hljs-keyword">and</span> SAMEPERIODLASTYEAR.
 
 OUTPUT FORMAT:
-<span class="hljs-keyword">Return</span> <span class="hljs-keyword">ONLY</span> the raw DAX query inside a code block.</code></pre><h3 id="handling-hallucinations-via-self-correction">Handling “Hallucinations” via Self-Correction</h3>
+<span class="hljs-keyword">Return</span> <span class="hljs-keyword">ONLY</span> the raw DAX query inside a code block.</code></pre>
+        </div>
+      <h3 id="handling-hallucinations-via-self-correction">Handling “Hallucinations” via Self-Correction</h3>
 <p>In an agentic loop, if the generated DAX fails execution, the error message from the Power BI API (e.g., “Column ‘Rev’ does not exist”) is captured and fed back to the LLM.</p>
 <p><strong>The Correction Loop:</strong></p>
 <ol>
@@ -295,7 +328,16 @@ OUTPUT FORMAT:
 <h2 id="phase-3-the-execution-layer-python-langchain-">Phase 3: The Execution Layer (Python &amp; LangChain)</h2>
 <p>Now we combine the tools into a LangChain Agent. We utilize the <code>OpenAIFunctionsAgent</code> or a <code>LangGraph</code> state machine for more control.</p>
 <h3 id="the-agent-definition">The Agent Definition</h3>
-<pre><code class="hljs language-python" data-lang="python"><span class="hljs-keyword">from</span> langchain.agents <span class="hljs-keyword">import</span> AgentExecutor, create_openai_tools_agent
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">python</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-python" data-lang="python"><span class="hljs-keyword">from</span> langchain.agents <span class="hljs-keyword">import</span> AgentExecutor, create_openai_tools_agent
 <span class="hljs-keyword">from</span> langchain_openai <span class="hljs-keyword">import</span> ChatOpenAI
 <span class="hljs-keyword">from</span> langchain_core.prompts <span class="hljs-keyword">import</span> ChatPromptTemplate, MessagesPlaceholder
 <span class="hljs-keyword">from</span> langchain.tools <span class="hljs-keyword">import</span> tool
@@ -341,15 +383,28 @@ agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=<span class="hl
 <span class="hljs-comment"># Execution</span>
 response = agent_executor.invoke({
     <span class="hljs-string">"input"</span>: <span class="hljs-string">"Analyze the sales trend for Q4 2024 specifically for the 'Enterprise' segment. Compare it to the previous year."</span>
-})</code></pre><h2 id="phase-4-synthesis-and-narrative-generation">Phase 4: Synthesis and Narrative Generation</h2>
+})</code></pre>
+        </div>
+      <h2 id="phase-4-synthesis-and-narrative-generation">Phase 4: Synthesis and Narrative Generation</h2>
 <p>The output of <code>execute_dax_query</code> is a raw JSON array. While accurate, it is not a “response.” The final step in the agentic workflow is <strong>Synthesis</strong>.</p>
 <p>Once the agent has the data in its context, it switches roles from “Data Engineer” to “Strategy Consultant.”</p>
 <p><strong>Data Context:</strong></p>
-<pre><code class="hljs language-json" data-lang="json"><span class="hljs-punctuation">[</span>
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">json</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-json" data-lang="json"><span class="hljs-punctuation">[</span>
   <span class="hljs-punctuation">{</span><span class="hljs-attr">"Month"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Oct 2024"</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">"Sales"</span><span class="hljs-punctuation">:</span> <span class="hljs-number">150000</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">"Sales_LY"</span><span class="hljs-punctuation">:</span> <span class="hljs-number">140000</span><span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
   <span class="hljs-punctuation">{</span><span class="hljs-attr">"Month"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Nov 2024"</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">"Sales"</span><span class="hljs-punctuation">:</span> <span class="hljs-number">160000</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">"Sales_LY"</span><span class="hljs-punctuation">:</span> <span class="hljs-number">155000</span><span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
   <span class="hljs-punctuation">{</span><span class="hljs-attr">"Month"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Dec 2024"</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">"Sales"</span><span class="hljs-punctuation">:</span> <span class="hljs-number">200000</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">"Sales_LY"</span><span class="hljs-punctuation">:</span> <span class="hljs-number">180000</span><span class="hljs-punctuation">}</span>
-<span class="hljs-punctuation">]</span></code></pre><p><strong>Synthesis Prompt:</strong></p>
+<span class="hljs-punctuation">]</span></code></pre>
+        </div>
+      <p><strong>Synthesis Prompt:</strong></p>
 <blockquote>
 <p>“Review the data retrieved. Identify key trends, calculate the Year-over-Year growth percentage for the quarter, and summarize the findings in a professional paragraph suitable for a CEO.”</p>
 </blockquote>

@@ -47,11 +47,33 @@ marked.use({
           "typescript",
           "go",
           "rust",
+          "cpp",
+          "c",
+          "csharp",
+          "php",
+          "ruby",
+          "swift",
+          "kotlin",
+          "dockerfile",
         ]);
         highlighted = result.value;
         detectedLang = result.language;
       }
-      return `<pre><code class="hljs language-${detectedLang || "text"}" data-lang="${detectedLang || ""}">${highlighted}</code></pre>`;
+
+      const displayLang = detectedLang || "text";
+      
+      return `
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">${displayLang}</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-${displayLang}" data-lang="${displayLang}">${highlighted}</code></pre>
+        </div>
+      `;
     },
   },
 });

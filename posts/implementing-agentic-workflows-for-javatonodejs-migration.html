@@ -181,7 +181,16 @@
 </ul>
 <p><img src="https://blogs.buildwithmanish.com/assets/images/concept_illustration-implementing-agentic-workflows-for-javatonodejs-migration-3-2025-12-18-71504.png" alt="Concept Illustration - AST"></p>
 <p>Here is a Python snippet using a wrapper around a Java parser to extract class signatures to feed into the Agent’s “Context Memory”:</p>
-<pre><code class="hljs language-python" data-lang="python"><span class="hljs-keyword">import</span> javalang
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">python</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-python" data-lang="python"><span class="hljs-keyword">import</span> javalang
 
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">parse_java_structure</span>(<span class="hljs-params">file_content</span>):
     tree = javalang.parse.parse(file_content)
@@ -210,7 +219,9 @@
 
         structure[<span class="hljs-string">"classes"</span>].append(class_info)
         
-    <span class="hljs-keyword">return</span> structure</code></pre><p>By running this across the entire Java project, the Agent builds a <strong>Topological Sort</strong> of the application. It knows it must migrate the DTOs and Entities first, then the Repositories, then Services, and finally the Controllers.</p>
+    <span class="hljs-keyword">return</span> structure</code></pre>
+        </div>
+      <p>By running this across the entire Java project, the Agent builds a <strong>Topological Sort</strong> of the application. It knows it must migrate the DTOs and Entities first, then the Repositories, then Services, and finally the Controllers.</p>
 <hr>
 <h2 id="phase-2-the-core-loop-plan-transpile-verify-">Phase 2: The Core Loop (Plan, Transpile, Verify)</h2>
 <p>Once the dependency graph is established, the Agent enters its core execution loop. This is not a linear “read-write” operation. It is recursive.</p>
@@ -232,16 +243,36 @@
 <h4>1. Dependency Injection</h4>
 <p>The Agent must convert field injection (<code>@Autowired</code>) to constructor injection, which is the standard in TypeScript/NestJS.</p>
 <p><strong>Java Source:</strong></p>
-<pre><code class="hljs language-typescript" data-lang="typescript"><span class="hljs-meta">@Service</span>
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">kotlin</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-kotlin" data-lang="kotlin"><span class="hljs-meta">@Service</span>
 <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserService</span> {
     <span class="hljs-meta">@Autowired</span>
-    <span class="hljs-keyword">private</span> <span class="hljs-title class_">UserRepository</span> userRepository;
+    <span class="hljs-keyword">private</span> UserRepository userRepository;
 
-    <span class="hljs-keyword">public</span> <span class="hljs-title class_">User</span> <span class="hljs-title function_">getUser</span>(<span class="hljs-params"><span class="hljs-title class_">Long</span> id</span>) {
-        <span class="hljs-keyword">return</span> userRepository.<span class="hljs-title function_">findById</span>(id).<span class="hljs-title function_">orElseThrow</span>();
+    <span class="hljs-keyword">public</span> User getUser(<span class="hljs-built_in">Long</span> id) {
+        <span class="hljs-keyword">return</span> userRepository.findById(id).orElseThrow();
     }
-}</code></pre><p><strong>Agent Generated NestJS:</strong></p>
-<pre><code class="hljs language-typescript" data-lang="typescript"><span class="hljs-meta">@Injectable</span>()
+}</code></pre>
+        </div>
+      <p><strong>Agent Generated NestJS:</strong></p>
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">typescript</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-typescript" data-lang="typescript"><span class="hljs-meta">@Injectable</span>()
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserService</span> {
     <span class="hljs-comment">// Agent identifies @Autowired and converts to Constructor Injection</span>
     <span class="hljs-title function_">constructor</span>(<span class="hljs-params">
@@ -255,7 +286,9 @@
         <span class="hljs-keyword">if</span> (!user) <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">NotFoundException</span>();
         <span class="hljs-keyword">return</span> user;
     }
-}</code></pre><h4>2. Managing Dependencies (Maven to NPM)</h4>
+}</code></pre>
+        </div>
+      <h4>2. Managing Dependencies (Maven to NPM)</h4>
 <p>One of the hardest parts of migration is the ecosystem shift. <code>pom.xml</code> dependencies do not map one-to-one with <code>package.json</code>.</p>
 <p><img src="https://blogs.buildwithmanish.com/assets/images/code_flow-implementing-agentic-workflows-for-javatonodejs-migration-7-2025-12-18-28413.png" alt="Code Flow - Dependencies"></p>
 <p>The Agent utilizes a lookup dictionary (which it can expand via web search tools) to resolve these:</p>
@@ -304,7 +337,18 @@
 <p>Immediately after transpiling <code>UserService.ts</code>, the Agent is tasked to write <code>UserService.spec.ts</code>. It uses the logic from the original Java <code>UserServiceTest.java</code> to ensure functional parity.</p>
 <h3 id="step-2-execution-capture">Step 2: Execution &amp; Capture</h3>
 <p>The Agent executes the test suite using a sandbox runner.</p>
-<pre><code class="hljs language-bash" data-lang="bash">npm <span class="hljs-built_in">test</span> src/users/user.service.spec.ts</code></pre><h3 id="step-3-analysis-patching">Step 3: Analysis &amp; Patching</h3>
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">bash</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-bash" data-lang="bash">npm <span class="hljs-built_in">test</span> src/users/user.service.spec.ts</code></pre>
+        </div>
+      <h3 id="step-3-analysis-patching">Step 3: Analysis &amp; Patching</h3>
 <p>If the test fails, the Agent does not stop. It captures the <code>stderr</code> and the stack trace. It feeds this error back into the LLM context along with the source code.</p>
 <p><strong>The Prompt Chain:</strong></p>
 <ol>
@@ -315,16 +359,38 @@
 <p><strong>Example Scenario: The “Async” Trap</strong> A common failure mode is treating asynchronous Node code as synchronous Java code.</p>
 <ul>
 <li><p><em>Agent Draft 1:</em></p>
-<pre><code class="hljs language-javascript" data-lang="javascript">users.<span class="hljs-title function_">forEach</span>(<span class="hljs-function"><span class="hljs-params">user</span> =&gt;</span> {
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">javascript</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-javascript" data-lang="javascript">users.<span class="hljs-title function_">forEach</span>(<span class="hljs-function"><span class="hljs-params">user</span> =&gt;</span> {
     <span class="hljs-comment">// ERROR: saving inside forEach without Promise.all</span>
     <span class="hljs-variable language_">this</span>.<span class="hljs-property">repo</span>.<span class="hljs-title function_">save</span>(user); 
-});</code></pre></li>
+});</code></pre>
+        </div>
+      </li>
 <li><p><em>Test Result:</em> Test finishes before data is saved. Assertion fails.</p>
 </li>
 <li><p><em>Agent Analysis:</em> “I detected a race condition. <code>forEach</code> does not await promises. I need to switch to <code>for...of</code> or <code>Promise.all</code>.”</p>
 </li>
 <li><p><em>Agent Patch:</em></p>
-<pre><code class="hljs language-javascript" data-lang="javascript"><span class="hljs-keyword">await</span> <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">all</span>(users.<span class="hljs-title function_">map</span>(<span class="hljs-function"><span class="hljs-params">user</span> =&gt;</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">repo</span>.<span class="hljs-title function_">save</span>(user)));</code></pre></li>
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">javascript</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-javascript" data-lang="javascript"><span class="hljs-keyword">await</span> <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">all</span>(users.<span class="hljs-title function_">map</span>(<span class="hljs-function"><span class="hljs-params">user</span> =&gt;</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">repo</span>.<span class="hljs-title function_">save</span>(user)));</code></pre>
+        </div>
+      </li>
 </ul>
 <p>This loop continues up to a maximum retry count (e.g., 5 attempts) until the tests pass.</p>
 <hr>
@@ -336,18 +402,49 @@
 <p>Node.js ORMs generally default to explicit loading to avoid the “N+1 Query Problem.”</p>
 <p>The Agent must detect <code>@OneToMany(fetch = FetchType.LAZY)</code> in the Java Entity and transform the consuming service code to explicitly request relations.</p>
 <p><strong>Java (Implicit):</strong></p>
-<pre><code class="hljs language-java" data-lang="java"><span class="hljs-comment">// Logic inside a Service</span>
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">java</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-java" data-lang="java"><span class="hljs-comment">// Logic inside a Service</span>
 <span class="hljs-type">User</span> <span class="hljs-variable">user</span> <span class="hljs-operator">=</span> repo.findById(<span class="hljs-number">1</span>);
-<span class="hljs-keyword">return</span> user.getOrders().size(); <span class="hljs-comment">// Hibernate triggers query here</span></code></pre><p><strong>Node.js (Explicit - Generated by Agent):</strong> If the Agent simply translates the logic, it will crash because <code>user.orders</code> is undefined. The Agent must recognize the context and rewrite the query:</p>
-<pre><code class="hljs language-javascript" data-lang="javascript"><span class="hljs-comment">// Agent rewrite</span>
-<span class="hljs-keyword">const</span> user = <span class="hljs-keyword">await</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">repo</span>.<span class="hljs-title function_">findOne</span>({
-    <span class="hljs-attr">where</span>: { <span class="hljs-attr">id</span>: <span class="hljs-number">1</span> },
-    <span class="hljs-attr">relations</span>: [<span class="hljs-string">'orders'</span>] <span class="hljs-comment">// Explicit join added by Agent</span>
+<span class="hljs-keyword">return</span> user.getOrders().size(); <span class="hljs-comment">// Hibernate triggers query here</span></code></pre>
+        </div>
+      <p><strong>Node.js (Explicit - Generated by Agent):</strong> If the Agent simply translates the logic, it will crash because <code>user.orders</code> is undefined. The Agent must recognize the context and rewrite the query:</p>
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">kotlin</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-kotlin" data-lang="kotlin"><span class="hljs-comment">// Agent rewrite</span>
+<span class="hljs-keyword">const</span> user = await <span class="hljs-keyword">this</span>.repo.findOne({
+    <span class="hljs-keyword">where</span>: { id: <span class="hljs-number">1</span> },
+    relations: [<span class="hljs-string">'orders'</span>] <span class="hljs-comment">// Explicit join added by Agent</span>
 });
-<span class="hljs-keyword">return</span> user.<span class="hljs-property">orders</span>.<span class="hljs-property">length</span>;</code></pre><hr>
+<span class="hljs-keyword">return</span> user.orders.length;</code></pre>
+        </div>
+      <hr>
 <h2 id="implementation-guide-the-controller-agent">Implementation Guide: The Controller Agent</h2>
 <p>Let’s look at the specific implementation of the “Controller Migration” step using Python and LangChain.</p>
-<pre><code class="hljs language-python" data-lang="python"><span class="hljs-keyword">from</span> langchain.chat_models <span class="hljs-keyword">import</span> ChatOpenAI
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">python</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-python" data-lang="python"><span class="hljs-keyword">from</span> langchain.chat_models <span class="hljs-keyword">import</span> ChatOpenAI
 <span class="hljs-keyword">from</span> langchain.schema <span class="hljs-keyword">import</span> SystemMessage, HumanMessage
 
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">migrate_controller</span>(<span class="hljs-params">java_code, service_interface_ts</span>):
@@ -395,7 +492,9 @@
         write_file(file_path, patch)
         attempts += <span class="hljs-number">1</span>
         
-    <span class="hljs-keyword">raise</span> Exception(<span class="hljs-string">"Failed to converge on working code."</span>)</code></pre><p>This Python script represents the orchestrator. It holds the state, manages file I/O, and executes the shell commands that provide the “reality check” for the LLM.</p>
+    <span class="hljs-keyword">raise</span> Exception(<span class="hljs-string">"Failed to converge on working code."</span>)</code></pre>
+        </div>
+      <p>This Python script represents the orchestrator. It holds the state, manages file I/O, and executes the shell commands that provide the “reality check” for the LLM.</p>
 <hr>
 <h2 id="advanced-edge-cases">Advanced Edge Cases</h2>
 <p>In production migrations, several edge cases typically break simple conversion tools.</p>

@@ -206,7 +206,16 @@
 <h3 id="1-cache-avalanche">1. Cache Avalanche</h3>
 <p><strong>The Scenario:</strong> You cache 10,000 product details, all with a TTL of 60 minutes. At 12:00 PM, you deploy. At 1:00 PM, all 10,000 keys expire simultaneously. Your database is instantly hammered by thousands of reconstruction queries.</p>
 <p><strong>The Solution: TTL Jitter.</strong> Never use a hardcoded TTL. Always add a random variance.</p>
-<pre><code class="hljs language-python" data-lang="python"><span class="hljs-keyword">import</span> random
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">python</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-python" data-lang="python"><span class="hljs-keyword">import</span> random
 
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">set_product_cache</span>(<span class="hljs-params">product_id, data</span>):
     base_ttl = <span class="hljs-number">3600</span>  <span class="hljs-comment"># 60 minutes</span>
@@ -214,12 +223,23 @@
     jitter = random.randint(-<span class="hljs-number">360</span>, <span class="hljs-number">360</span>) 
     final_ttl = base_ttl + jitter
     
-    redis_client.setex(<span class="hljs-string">f"product:<span class="hljs-subst">{product_id}</span>"</span>, final_ttl, data)</code></pre><p>By spreading the expiry, you smooth out the re-computation load on the database, turning a spike into a manageable curve.</p>
+    redis_client.setex(<span class="hljs-string">f"product:<span class="hljs-subst">{product_id}</span>"</span>, final_ttl, data)</code></pre>
+        </div>
+      <p>By spreading the expiry, you smooth out the re-computation load on the database, turning a spike into a manageable curve.</p>
 <h3 id="2-cache-penetration">2. Cache Penetration</h3>
 <p><strong>The Scenario:</strong> A malicious actor (or a buggy crawler) requests IDs that do not exist in your database (e.g., <code>id=-1</code> or UUIDs that aren’t real). The cache misses, the DB is queried, returns nothing, and nothing is cached. The attack continues, effectively DoS-ing your database.</p>
 <p><strong>The Solution: Bloom Filters and Null Caching.</strong></p>
 <p><strong>Strategy A: Cache Nulls.</strong> If the DB returns nothing, cache a “Null Object” with a short TTL (e.g., 5 minutes).</p>
-<pre><code class="hljs language-python" data-lang="python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_user</span>(<span class="hljs-params">user_id</span>):
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">python</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-python" data-lang="python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_user</span>(<span class="hljs-params">user_id</span>):
     cache_key = <span class="hljs-string">f"user:<span class="hljs-subst">{user_id}</span>"</span>
     data = redis_client.get(cache_key)
     
@@ -236,12 +256,23 @@
         <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
         
     redis_client.setex(cache_key, <span class="hljs-number">3600</span>, serialize(user))
-    <span class="hljs-keyword">return</span> user</code></pre><p><strong>Strategy B: Bloom Filters.</strong> Before even hitting Redis, check a Bloom Filter (a probabilistic data structure). If the Bloom Filter says the key <em>definitely doesn’t exist</em>, reject the request immediately.</p>
+    <span class="hljs-keyword">return</span> user</code></pre>
+        </div>
+      <p><strong>Strategy B: Bloom Filters.</strong> Before even hitting Redis, check a Bloom Filter (a probabilistic data structure). If the Bloom Filter says the key <em>definitely doesn’t exist</em>, reject the request immediately.</p>
 <h3 id="3-cache-breakdown-thundering-herd-">3. Cache Breakdown (Thundering Herd)</h3>
 <p><strong>The Scenario:</strong> A single key (e.g., “Homepage_Top_News”) is extremely hot (10k req/sec). The key expires. Instantly, 10,000 requests hit the cache, miss, and <em>all 10,000</em> rush to the database to calculate the same value.</p>
 <p><strong>The Solution: Mutex Locking (Check-Lock-Check).</strong> Only allow ONE thread/process to rebuild the cache. Everyone else waits or receives stale data.</p>
 <p><img src="https://blogs.buildwithmanish.com/assets/images/code_flow-beyond-get-and-set-architecting-resilient-distributed-caching-patterns-for-microservices-4-2025-12-17-78837.png" alt="Code Flow Diagram for Thundering Herd"></p>
-<pre><code class="hljs language-python" data-lang="python"><span class="hljs-keyword">import</span> time
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">python</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-python" data-lang="python"><span class="hljs-keyword">import</span> time
 <span class="hljs-keyword">import</span> uuid
 
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_hot_key</span>(<span class="hljs-params">key</span>):
@@ -273,7 +304,9 @@
     <span class="hljs-keyword">else</span>:
         <span class="hljs-comment"># Failed to get lock. Sleep and retry (or return stale if architecture allows)</span>
         time.sleep(<span class="hljs-number">0.1</span>)
-        <span class="hljs-keyword">return</span> get_hot_key(key)</code></pre><hr>
+        <span class="hljs-keyword">return</span> get_hot_key(key)</code></pre>
+        </div>
+      <hr>
 <h2 id="consistency-vs-availability-the-hard-truths">Consistency vs. Availability: The Hard Truths</h2>
 <p>There are only two hard things in Computer Science: cache invalidation and naming things. In microservices, Strong Consistency with caching is essentially impossible without sacrificing Availability (CAP theorem).</p>
 <p><img src="https://blogs.buildwithmanish.com/assets/images/technical_diagram-beyond-get-and-set-architecting-resilient-distributed-caching-patterns-for-microservices-5-2025-12-17-57893.png" alt="Technical Diagram: Consistency Models"></p>
@@ -330,7 +363,16 @@
 </li>
 </ol>
 <p><strong>Implementation Logic (Pseudo-code):</strong></p>
-<pre><code class="hljs language-css" data-lang="css"># Application Startup
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">css</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-css" data-lang="css"># Application Startup
 def start_subscriber():
     pubsub = redis_client.<span class="hljs-built_in">pubsub</span>()
     pubsub.<span class="hljs-built_in">subscribe</span>(<span class="hljs-string">'cache-invalidation'</span>)
@@ -344,7 +386,9 @@ def <span class="hljs-built_in">update_data</span>(key, value):
     db.<span class="hljs-built_in">update</span>(key, value)
     redis_client.<span class="hljs-built_in">delete</span>(key) # Clear L2
     # Notify all L1s to clear
-    redis_client.<span class="hljs-built_in">publish</span>(<span class="hljs-string">'cache-invalidation'</span>, key)</code></pre><p>This architecture provides the speed of local memory with the consistency controls of a distributed system.</p>
+    redis_client.<span class="hljs-built_in">publish</span>(<span class="hljs-string">'cache-invalidation'</span>, key)</code></pre>
+        </div>
+      <p>This architecture provides the speed of local memory with the consistency controls of a distributed system.</p>
 <hr>
 <h2 id="conclusion">Conclusion</h2>
 <p>Architecting distributed caching is an exercise in managing failure modes. It requires shifting your mindset from “Caching is a storage feature” to “Caching is a distributed systems problem.”</p>

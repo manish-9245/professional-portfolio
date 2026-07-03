@@ -1389,19 +1389,81 @@ html[data-theme="dark"] .project-carousel-btn:hover {
   cursor: zoom-in;
 }
 
-.blog-prose pre {
-  border-radius: 14px;
-  overflow-x: auto;
-  margin: 2rem 0;
-  font-size: 0.9rem;
+.code-block-wrapper {
+  margin: 2.5rem 0;
   border: 1px solid var(--o-border, color-mix(in srgb, currentColor 12%, transparent));
-  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
   background: color-mix(in srgb, var(--o-bg, canvas) 97%, transparent);
+  box-shadow: 0 8px 32px -4px color-mix(in srgb, currentColor 8%, transparent);
+}
+
+.code-block-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 1rem;
+  background: color-mix(in srgb, currentColor 3%, transparent);
+  border-bottom: 1px solid var(--o-border, color-mix(in srgb, currentColor 8%, transparent));
+  user-select: none;
+}
+
+.code-block-lang {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 0.55;
+  font-family: var(--font-mono, monospace);
+}
+
+.code-block-copy {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: 1px solid var(--o-border, color-mix(in srgb, currentColor 10%, transparent));
+  background: transparent;
+  color: inherit;
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  opacity: 0.7;
+}
+
+.code-block-copy:hover {
+  opacity: 1;
+  background: color-mix(in srgb, currentColor 5%, transparent);
+  border-color: var(--o-accent, currentColor);
+}
+
+.code-block-copy.copied {
+  color: #10b981;
+  border-color: #10b981;
+  background: color-mix(in srgb, #10b981 8%, transparent);
+}
+
+.code-block-copy i, .code-block-copy svg {
+  width: 13px;
+  height: 13px;
+  stroke-width: 2.5;
+}
+
+.blog-prose pre {
+  margin: 0;
+  border: none;
+  background: transparent;
+  border-radius: 0;
 }
 
 .blog-prose pre code {
   display: block;
-  padding: 1.2rem;
+  padding: 1.4rem;
+  font-size: 0.88rem;
+  line-height: 1.65;
+  overflow-x: auto;
 }
 
 .code-block-shell {

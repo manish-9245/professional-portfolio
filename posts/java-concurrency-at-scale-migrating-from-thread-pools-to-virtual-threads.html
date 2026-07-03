@@ -184,7 +184,16 @@
 <h3 id="code-comparison-the-throughput-test">Code Comparison: The Throughput Test</h3>
 <p>Let’s look at a scenario simulating a high-latency network call.</p>
 <p><strong>Traditional Thread Pool Approach:</strong></p>
-<pre><code class="hljs language-java" data-lang="java"><span class="hljs-keyword">import</span> java.util.concurrent.Executors;
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">java</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-java" data-lang="java"><span class="hljs-keyword">import</span> java.util.concurrent.Executors;
 <span class="hljs-keyword">import</span> java.util.concurrent.TimeUnit;
 
 <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">PlatformThreadServer</span> {
@@ -205,9 +214,20 @@
             }
         }
     }
-}</code></pre><p>In the code above, we cap the pool at 200. If 10,000 requests come in, 9,800 are queued. Latency spikes.</p>
+}</code></pre>
+        </div>
+      <p>In the code above, we cap the pool at 200. If 10,000 requests come in, 9,800 are queued. Latency spikes.</p>
 <p><strong>Virtual Thread Approach:</strong></p>
-<pre><code class="hljs language-java" data-lang="java"><span class="hljs-keyword">import</span> java.util.concurrent.Executors;
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">java</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-java" data-lang="java"><span class="hljs-keyword">import</span> java.util.concurrent.Executors;
 <span class="hljs-keyword">import</span> java.util.concurrent.TimeUnit;
 
 <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">VirtualThreadServer</span> {
@@ -227,7 +247,9 @@
             }
         }
     }
-}</code></pre><p>Here, we can submit <strong>1 million tasks</strong>. The JVM will likely use only as many carrier threads as there are CPU cores (e.g., 12 threads on a 12-core machine). The throughput is vastly superior because the threads are not holding onto OS resources while waiting.</p>
+}</code></pre>
+        </div>
+      <p>Here, we can submit <strong>1 million tasks</strong>. The JVM will likely use only as many carrier threads as there are CPU cores (e.g., 12 threads on a 12-core machine). The throughput is vastly superior because the threads are not holding onto OS resources while waiting.</p>
 <h2 id="resource-efficiency-analysis">Resource Efficiency Analysis</h2>
 <p>The implications for hardware utilization are massive. Under the traditional model, scaling meant adding more RAM to support thread stacks. With Virtual Threads, scaling is bound primarily by CPU cycles and Heap space for application data.</p>
 <p><img src="https://blogs.buildwithmanish.com/assets/images/comparison_chart-java-concurrency-at-scale-migrating-from-thread-pools-to-virtual-threads-3-2025-12-17-51563.png" alt="Comparison Chart: Efficiency"></p>
@@ -244,7 +266,16 @@
 <h3 id="scenario-the-aggregation-service">Scenario: The Aggregation Service</h3>
 <p>Imagine an endpoint that fetches User details, then fetches their Orders, and essentially their Loyalty points, combining them all.</p>
 <p><strong>The CompletableFuture Nightmare:</strong></p>
-<pre><code class="hljs language-typescript" data-lang="typescript"><span class="hljs-keyword">public</span> <span class="hljs-title class_">CompletableFuture</span>&lt;<span class="hljs-title class_">UserDashboard</span>&gt; <span class="hljs-title function_">getDashboardAsync</span>(<span class="hljs-params"><span class="hljs-title class_">String</span> userId</span>) {
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">typescript</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-typescript" data-lang="typescript"><span class="hljs-keyword">public</span> <span class="hljs-title class_">CompletableFuture</span>&lt;<span class="hljs-title class_">UserDashboard</span>&gt; <span class="hljs-title function_">getDashboardAsync</span>(<span class="hljs-params"><span class="hljs-title class_">String</span> userId</span>) {
     <span class="hljs-keyword">return</span> <span class="hljs-title function_">getUser</span>(userId)
         .<span class="hljs-title function_">thenCompose</span>(user -&gt; 
             <span class="hljs-title function_">getOrders</span>(user.<span class="hljs-title function_">getId</span>())
@@ -255,10 +286,21 @@
             log.<span class="hljs-title function_">error</span>(<span class="hljs-string">"Async chain failed"</span>, ex);
             <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">UserDashboard</span>(); <span class="hljs-comment">// Fallback</span>
         });
-}</code></pre><p>This code is brittle. If <code>getUser</code> fails, the stack trace won’t easily tell you <em>where</em> the request originated.</p>
+}</code></pre>
+        </div>
+      <p>This code is brittle. If <code>getUser</code> fails, the stack trace won’t easily tell you <em>where</em> the request originated.</p>
 <p><strong>The Virtual Thread Refactor (Structured Concurrency):</strong></p>
 <p>We can revert to a clean, sequential style. For parallel execution (fetching orders and loyalty simultaneously), we use the new <code>StructuredTaskScope</code> (preview in 21, maturing in later versions) or standard ExecutorServices.</p>
-<pre><code class="hljs language-java" data-lang="java"><span class="hljs-comment">// Using standard Executors with Virtual Threads</span>
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">java</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-java" data-lang="java"><span class="hljs-comment">// Using standard Executors with Virtual Threads</span>
 <span class="hljs-keyword">public</span> UserDashboard <span class="hljs-title function_">getDashboardVirtual</span><span class="hljs-params">(String userId)</span> <span class="hljs-keyword">throws</span> ExecutionException, InterruptedException {
     <span class="hljs-keyword">try</span> (<span class="hljs-type">var</span> <span class="hljs-variable">executor</span> <span class="hljs-operator">=</span> Executors.newVirtualThreadPerTaskExecutor()) {
         <span class="hljs-comment">// 1. Fetch User (Sequential)</span>
@@ -272,7 +314,9 @@
         <span class="hljs-comment">// The .get() calls block the virtual thread, releasing the carrier.</span>
         <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">UserDashboard</span>(user, ordersFuture.get(), loyaltyFuture.get());
     }
-}</code></pre><p>This code is readable, debuggable, and performs just as well (if not better) than the reactive version. The stack trace upon exception will show the exact line number in <code>getDashboardVirtual</code>.</p>
+}</code></pre>
+        </div>
+      <p>This code is readable, debuggable, and performs just as well (if not better) than the reactive version. The stack trace upon exception will show the exact line number in <code>getDashboardVirtual</code>.</p>
 <h2 id="the-java-memory-model-jmm-happens-before">The Java Memory Model (JMM) &amp; Happens-Before</h2>
 <p>One common misconception is that Virtual Threads change the Java Memory Model. They do not. The rules of <strong>visibility</strong>, <strong>atomicity</strong>, and <strong>ordering</strong> remain identical. However, the <em>implications</em> of shared state change because you now have millions of threads potentially contending for resources.</p>
 <p><img src="https://blogs.buildwithmanish.com/assets/images/concept_illustration-java-concurrency-at-scale-migrating-from-thread-pools-to-virtual-threads-5-2025-12-17-84457.png" alt="Concept Illustration: JMM"></p>
@@ -304,7 +348,16 @@
 <p>For high-concurrency read-heavy scenarios, <code>StampedLock</code> offers optimistic locking, which is significantly faster and aligns well with the high volume of virtual threads.</p>
 <p><img src="https://blogs.buildwithmanish.com/assets/images/technical_diagram-java-concurrency-at-scale-migrating-from-thread-pools-to-virtual-threads-6-2025-12-17-43250.png" alt="Technical Diagram: Locking"></p>
 <p><strong>High-Performance Counter Example:</strong></p>
-<pre><code class="hljs language-java" data-lang="java"><span class="hljs-keyword">import</span> java.util.concurrent.locks.StampedLock;
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">java</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-java" data-lang="java"><span class="hljs-keyword">import</span> java.util.concurrent.locks.StampedLock;
 
 <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">HighThroughputState</span> {
     <span class="hljs-keyword">private</span> <span class="hljs-type">double</span> x, y;
@@ -338,7 +391,9 @@
             sl.unlockWrite(stamp);
         }
     }
-}</code></pre><p>By using <code>StampedLock</code>, we avoid <code>synchronized</code> (preventing pinning) and reduce contention overhead compared to standard <code>ReentrantReadWriteLock</code>.</p>
+}</code></pre>
+        </div>
+      <p>By using <code>StampedLock</code>, we avoid <code>synchronized</code> (preventing pinning) and reduce contention overhead compared to standard <code>ReentrantReadWriteLock</code>.</p>
 <h2 id="migration-guide-from-pools-to-virtual">Migration Guide: From Pools to Virtual</h2>
 <p>Migrating a legacy application requires a strategic approach. You cannot simply flip a switch if you rely heavily on <code>synchronized</code> or thread-local caches.</p>
 <p><img src="https://blogs.buildwithmanish.com/assets/images/architecture_diagram-java-concurrency-at-scale-migrating-from-thread-pools-to-virtual-threads-7-2025-12-17-50150.png" alt="Architecture Diagram: Migration"></p>
@@ -346,9 +401,31 @@
 <p>Identify libraries that synchronize on I/O. Older JDBC drivers or XML parsers might do this. Upgrade dependencies to versions that declare “Virtual Thread Friendliness” (usually by replacing synchronized with ReentrantLock).</p>
 <h3 id="step-2-stop-pooling-threads">Step 2: Stop Pooling Threads</h3>
 <p><strong>Anti-Pattern:</strong></p>
-<pre><code class="hljs language-java" data-lang="java"><span class="hljs-comment">// DON'T DO THIS</span>
-<span class="hljs-type">ExecutorService</span> <span class="hljs-variable">pool</span> <span class="hljs-operator">=</span> Executors.newFixedThreadPool(<span class="hljs-number">100</span>, Thread.ofVirtual().factory());</code></pre><p>Pooling virtual threads defeats their purpose. They are disposable. Always use:</p>
-<pre><code class="hljs language-java" data-lang="java"><span class="hljs-type">ExecutorService</span> <span class="hljs-variable">executor</span> <span class="hljs-operator">=</span> Executors.newVirtualThreadPerTaskExecutor();</code></pre><h3 id="step-3-bound-external-resources">Step 3: Bound External Resources</h3>
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">java</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-java" data-lang="java"><span class="hljs-comment">// DON'T DO THIS</span>
+<span class="hljs-type">ExecutorService</span> <span class="hljs-variable">pool</span> <span class="hljs-operator">=</span> Executors.newFixedThreadPool(<span class="hljs-number">100</span>, Thread.ofVirtual().factory());</code></pre>
+        </div>
+      <p>Pooling virtual threads defeats their purpose. They are disposable. Always use:</p>
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">java</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-java" data-lang="java"><span class="hljs-type">ExecutorService</span> <span class="hljs-variable">executor</span> <span class="hljs-operator">=</span> Executors.newVirtualThreadPerTaskExecutor();</code></pre>
+        </div>
+      <h3 id="step-3-bound-external-resources">Step 3: Bound External Resources</h3>
 <p>While you can create infinite threads, you cannot create infinite Database Connections.</p>
 <ul>
 <li><strong>Keep the Connection Pool:</strong> HikariCP or similar DB pools are still mandatory.</li>
@@ -356,10 +433,21 @@
 </ul>
 <h3 id="step-4-spring-boot-configuration">Step 4: Spring Boot Configuration</h3>
 <p>If you are on Spring Boot 3.2+, enabling virtual threads is configuration-driven:</p>
-<pre><code class="hljs language-yaml" data-lang="yaml"><span class="hljs-attr">spring:</span>
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">yaml</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-yaml" data-lang="yaml"><span class="hljs-attr">spring:</span>
   <span class="hljs-attr">threads:</span>
     <span class="hljs-attr">virtual:</span>
-      <span class="hljs-attr">enabled:</span> <span class="hljs-literal">true</span></code></pre><p>This automatically configures Tomcat/Jetty to use a virtual thread executor for incoming HTTP requests.</p>
+      <span class="hljs-attr">enabled:</span> <span class="hljs-literal">true</span></code></pre>
+        </div>
+      <p>This automatically configures Tomcat/Jetty to use a virtual thread executor for incoming HTTP requests.</p>
 <h3 id="step-5-handling-pinning-in-logs">Step 5: Handling “Pinning” in Logs</h3>
 <p>Run your application with <code>-Djdk.tracePinnedThreads=full</code>. This will print stack traces whenever a virtual thread blocks while pinned. Refactor these hotspots specifically.</p>
 <h2 id="conclusion">Conclusion</h2>

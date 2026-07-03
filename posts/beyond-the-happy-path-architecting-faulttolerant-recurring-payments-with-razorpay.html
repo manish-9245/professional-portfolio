@@ -184,7 +184,16 @@
 <li>Backend generates a manual invoice for the pending amount.</li>
 <li>User pays the invoice -&gt; Subscription auto-heals.</li>
 </ol>
-<pre><code class="hljs language-python" data-lang="python"><span class="hljs-keyword">import</span> razorpay
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">python</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-python" data-lang="python"><span class="hljs-keyword">import</span> razorpay
 <span class="hljs-keyword">from</span> my_app.exceptions <span class="hljs-keyword">import</span> PaymentError
 
 client = razorpay.Client(auth=(<span class="hljs-string">"KEY_ID"</span>, <span class="hljs-string">"KEY_SECRET"</span>))
@@ -228,7 +237,9 @@ client = razorpay.Client(auth=(<span class="hljs-string">"KEY_ID"</span>, <span 
 
     <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:
         <span class="hljs-comment"># Log critical failure</span>
-        <span class="hljs-keyword">raise</span> PaymentError(<span class="hljs-string">f"Failed to create rescue invoice: <span class="hljs-subst">{<span class="hljs-built_in">str</span>(e)}</span>"</span>)</code></pre><p>By linking the <code>subscription_id</code> in the invoice creation, you maintain the continuity of the subscription entity, preserving the <code>billing_cycle</code> count and lifetime value (LTV) data.</p>
+        <span class="hljs-keyword">raise</span> PaymentError(<span class="hljs-string">f"Failed to create rescue invoice: <span class="hljs-subst">{<span class="hljs-built_in">str</span>(e)}</span>"</span>)</code></pre>
+        </div>
+      <p>By linking the <code>subscription_id</code> in the invoice creation, you maintain the continuity of the subscription entity, preserving the <code>billing_cycle</code> count and lifetime value (LTV) data.</p>
 <hr>
 <h2 id="2-webhook-architecture-idempotency">2. Webhook Architecture &amp; Idempotency</h2>
 <p>Webhooks are the heartbeat of a subscription system. However, webhooks are asynchronous, unreliable, and prone to duplication. If your architecture assumes that webhooks arrive exactly once and in the correct order, you will eventually double-credit a user or disable an account that just paid.</p>
@@ -241,7 +252,16 @@ client = razorpay.Client(auth=(<span class="hljs-string">"KEY_ID"</span>, <span 
 <p><img src="https://blogs.buildwithmanish.com/assets/images/architecture_diagram-beyond-the-happy-path-architecting-faulttolerant-recurring-payments-with-razorpay-2-2025-12-17-98043.png" alt="Webhook Architecture Diagram"></p>
 <h3 id="security-hmac-verification">Security: HMAC Verification</h3>
 <p>Before looking at the payload, you <strong>must</strong> verify the signature. This is not optional. It prevents Man-in-the-Middle attacks and spoofing.</p>
-<pre><code class="hljs language-python" data-lang="python"><span class="hljs-keyword">import</span> hmac
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">python</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-python" data-lang="python"><span class="hljs-keyword">import</span> hmac
 <span class="hljs-keyword">import</span> hashlib
 <span class="hljs-keyword">import</span> json
 
@@ -261,13 +281,24 @@ client = razorpay.Client(auth=(<span class="hljs-string">"KEY_ID"</span>, <span 
     ).hexdigest()
     
     <span class="hljs-comment"># hmac.compare_digest prevents timing attacks</span>
-    <span class="hljs-keyword">return</span> hmac.compare_digest(generated_signature, signature)</code></pre><h3 id="idempotency-handling-duplicates">Idempotency: Handling Duplicates</h3>
+    <span class="hljs-keyword">return</span> hmac.compare_digest(generated_signature, signature)</code></pre>
+        </div>
+      <h3 id="idempotency-handling-duplicates">Idempotency: Handling Duplicates</h3>
 <p>Idempotency ensures that processing the same event multiple times yields the same result as processing it once.</p>
 <p><strong>The Anti-Pattern:</strong> checking your database for <code>if transaction_exists: return</code>. <strong>The Better Pattern:</strong> Using a distributed lock (Redis) combined with an Event Log.</p>
 <p>You should use the <code>x-razorpay-event-id</code> header or the <code>payload.id</code> to uniquely identify the event.</p>
 <p><img src="https://blogs.buildwithmanish.com/assets/images/code_flow-beyond-the-happy-path-architecting-faulttolerant-recurring-payments-with-razorpay-3-2025-12-17-65241.png" alt="Code Flow Diagram"></p>
 <p><strong>Implementation with Redis (Python/Pseudo-code):</strong></p>
-<pre><code class="hljs language-python" data-lang="python"><span class="hljs-keyword">import</span> redis
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">python</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-python" data-lang="python"><span class="hljs-keyword">import</span> redis
 <span class="hljs-keyword">from</span> django.db <span class="hljs-keyword">import</span> transaction
 
 r = redis.Redis(host=<span class="hljs-string">'localhost'</span>, port=<span class="hljs-number">6379</span>, db=<span class="hljs-number">0</span>)
@@ -295,7 +326,9 @@ r = redis.Redis(host=<span class="hljs-string">'localhost'</span>, port=<span cl
     <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:
         <span class="hljs-comment"># 4. Critical: If processing fails, DELETE the key so we can retry</span>
         r.delete(<span class="hljs-string">f"webhook_event:<span class="hljs-subst">{event_id}</span>"</span>)
-        <span class="hljs-keyword">raise</span> e <span class="hljs-comment"># Let the server 500 so Razorpay retries</span></code></pre><p>This logic ensures that even if two requests with the same ID hit your servers in parallel (race condition), only one will acquire the Redis lock and process the logic.</p>
+        <span class="hljs-keyword">raise</span> e <span class="hljs-comment"># Let the server 500 so Razorpay retries</span></code></pre>
+        </div>
+      <p>This logic ensures that even if two requests with the same ID hit your servers in parallel (race condition), only one will acquire the Redis lock and process the logic.</p>
 <hr>
 <h2 id="3-handling-upgrades-downgrades-proration-">3. Handling Upgrades &amp; Downgrades (Proration)</h2>
 <p>Moving a user from a “Basic” plan (₹500/mo) to a “Pro” plan (₹1000/mo) in the middle of a billing cycle is mathematically complex. You cannot simply switch the <code>plan_id</code>. You must account for the money already paid for the unused days of the Basic plan.</p>
@@ -315,7 +348,16 @@ r = redis.Redis(host=<span class="hljs-string">'localhost'</span>, port=<span cl
 </ol>
 <p><strong>Architectural Warning:</strong> Your local database must stay in sync with this logic. Do not try to calculate proration yourself. Rely on the webhook <code>subscription.charged</code> that results from the upgrade to update your local “Plan Tier” field.</p>
 <p><strong>Code Example: Performing an Immediate Upgrade</strong></p>
-<pre><code class="hljs language-python" data-lang="python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">upgrade_subscription</span>(<span class="hljs-params">sub_id: <span class="hljs-built_in">str</span>, new_plan_id: <span class="hljs-built_in">str</span></span>):
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">python</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-python" data-lang="python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">upgrade_subscription</span>(<span class="hljs-params">sub_id: <span class="hljs-built_in">str</span>, new_plan_id: <span class="hljs-built_in">str</span></span>):
     <span class="hljs-keyword">try</span>:
         <span class="hljs-comment"># Razorpay handles the math (credits/debits)</span>
         resp = client.subscription.edit(sub_id, {
@@ -333,7 +375,9 @@ r = redis.Redis(host=<span class="hljs-string">'localhost'</span>, port=<span cl
         <span class="hljs-keyword">return</span> resp
     <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:
         <span class="hljs-comment"># Handle scenarios like "Upgrade not possible on halted sub"</span>
-        handle_error(e)</code></pre><p><strong>Key Takeaway:</strong> Never update user permissions synchronously during an upgrade request. The proration charge might fail (card declined). Always drive permission updates via webhooks.</p>
+        handle_error(e)</code></pre>
+        </div>
+      <p><strong>Key Takeaway:</strong> Never update user permissions synchronously during an upgrade request. The proration charge might fail (card declined). Always drive permission updates via webhooks.</p>
 <hr>
 <h2 id="4-resiliency-patterns-the-dunning-process">4. Resiliency Patterns: The “Dunning” Process</h2>
 <p>Dunning is the process of communicating with customers to ensure the collection of accounts receivable. In SaaS, it means “How do we handle failed renewal charges without losing the customer?”</p>
@@ -371,7 +415,16 @@ r = redis.Redis(host=<span class="hljs-string">'localhost'</span>, port=<span cl
 </ol>
 <h3 id="configuration">Configuration</h3>
 <p>In your Database, your Subscription model should look something like this:</p>
-<pre><code class="hljs language-python" data-lang="python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Subscription</span>(models.Model):
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">python</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-python" data-lang="python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Subscription</span>(models.Model):
     razorpay_id = models.CharField(max_length=<span class="hljs-number">50</span>)
     status = models.CharField(choices=[<span class="hljs-string">'active'</span>, <span class="hljs-string">'pending'</span>, <span class="hljs-string">'halted'</span>, <span class="hljs-string">'cancelled'</span>])
     current_period_end = models.DateTimeField()
@@ -393,7 +446,9 @@ r = redis.Redis(host=<span class="hljs-string">'localhost'</span>, port=<span cl
         Set a hard stop date, perhaps 2 days from now.
         """</span>
         <span class="hljs-variable language_">self</span>.access_valid_until = datetime.now() + timedelta(days=<span class="hljs-number">2</span>)
-        <span class="hljs-variable language_">self</span>.save()</code></pre><p>This decoupled architecture ensures that temporary banking glitches do not result in a degraded user experience.</p>
+        <span class="hljs-variable language_">self</span>.save()</code></pre>
+        </div>
+      <p>This decoupled architecture ensures that temporary banking glitches do not result in a degraded user experience.</p>
 <hr>
 <h2 id="5-system-architecture-scaling">5. System Architecture &amp; Scaling</h2>
 <p>To tie this all together, your backend architecture needs to be robust. You cannot rely on a single monolithic web server to handle user traffic and webhook processing simultaneously.</p>

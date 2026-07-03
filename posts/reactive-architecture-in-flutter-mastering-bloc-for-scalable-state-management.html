@@ -168,18 +168,29 @@
 <p>At the heart of BLoC is the Dart <code>Stream</code>. If you are coming from a purely imperative background, think of a <code>Stream</code> as an asynchronous pipe. Data enters one end (via a <code>StreamController</code> or <code>Sink</code>) and exits the other end where listeners react to it.</p>
 <p><img src="https://blogs.buildwithmanish.com/assets/images/concept_illustration-reactive-architecture-in-flutter-mastering-bloc-for-scalable-state-management-2-2025-12-18-60940.png" alt="Concept Illustration - Reactive Streams"></p>
 <p>In the context of the <code>flutter_bloc</code> library, the complexity of managing StreamControllers, subscriptions, and memory leaks (closing streams) is abstracted away, allowing us to focus on the transitions:</p>
-<pre><code class="hljs language-java" data-lang="java"><span class="hljs-comment">// Conceptual Model of a BLoC</span>
-Stream&lt;State&gt; <span class="hljs-title function_">mapEventToState</span><span class="hljs-params">(Event event)</span> async* {
-  <span class="hljs-keyword">if</span> (event is LoadData) {
-    <span class="hljs-keyword">yield</span> <span class="hljs-title function_">LoadingState</span><span class="hljs-params">()</span>;
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">csharp</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-csharp" data-lang="csharp"><span class="hljs-comment">// Conceptual Model of a BLoC</span>
+<span class="hljs-function">Stream&lt;State&gt; <span class="hljs-title">mapEventToState</span>(<span class="hljs-params">Event <span class="hljs-keyword">event</span></span>) <span class="hljs-keyword">async</span>*</span> {
+  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">event</span> <span class="hljs-keyword">is</span> LoadData) {
+    <span class="hljs-function"><span class="hljs-keyword">yield</span> <span class="hljs-title">LoadingState</span>()</span>;
     <span class="hljs-keyword">try</span> {
-      <span class="hljs-type">final</span> <span class="hljs-variable">data</span> <span class="hljs-operator">=</span> await repository.fetch();
-      <span class="hljs-keyword">yield</span> <span class="hljs-title function_">LoadedState</span><span class="hljs-params">(data)</span>;
+      final data = <span class="hljs-keyword">await</span> repository.fetch();
+      <span class="hljs-function"><span class="hljs-keyword">yield</span> <span class="hljs-title">LoadedState</span>(<span class="hljs-params">data</span>)</span>;
     } <span class="hljs-keyword">catch</span> (e) {
-      <span class="hljs-keyword">yield</span> <span class="hljs-title function_">ErrorState</span><span class="hljs-params">(e.toString()</span>);
+      <span class="hljs-function"><span class="hljs-keyword">yield</span> <span class="hljs-title">ErrorState</span>(<span class="hljs-params">e.toString(</span>))</span>;
     }
   }
-}</code></pre><p>While the modern BLoC library uses <code>on&lt;Event&gt;</code> handlers rather than <code>mapEventToState</code> generators, the underlying reactive principle remains: <strong>State is a function of time and events.</strong></p>
+}</code></pre>
+        </div>
+      <p>While the modern BLoC library uses <code>on&lt;Event&gt;</code> handlers rather than <code>mapEventToState</code> generators, the underlying reactive principle remains: <strong>State is a function of time and events.</strong></p>
 <h2 id="supercharging-bloc-with-freezed-immutable-unions">Supercharging BLoC with Freezed: Immutable Unions</h2>
 <p>One of the biggest pain points in standard BLoC implementation is verbosity and lack of safety when handling states. If you implement states as standard Dart classes, you have to manually override <code>==</code> and <code>hashCode</code> to ensure that BLoC knows when a state has actually changed (value equality vs. referential equality). Furthermore, checking states with <code>if (state is Loading)</code> is brittle.</p>
 <p>Enter <strong>Freezed</strong>. This code-generation package allows us to define “Sealed Classes” (Union Types). This gives us two massive advantages:</p>
@@ -190,7 +201,16 @@ Stream&lt;State&gt; <span class="hljs-title function_">mapEventToState</span><sp
 <p><img src="https://blogs.buildwithmanish.com/assets/images/code_flow-reactive-architecture-in-flutter-mastering-bloc-for-scalable-state-management-3-2025-12-18-41841.png" alt="Code Flow - Freezed Implementation"></p>
 <p>Let’s look at a real-world scenario: An <code>OrderProcessing</code> feature.</p>
 <h3 id="1-defining-events-and-states-with-freezed">1. Defining Events and States with Freezed</h3>
-<pre><code class="hljs language-typescript" data-lang="typescript"><span class="hljs-keyword">import</span> <span class="hljs-string">'package:freezed_annotation/freezed_annotation.dart'</span>;
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">typescript</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-typescript" data-lang="typescript"><span class="hljs-keyword">import</span> <span class="hljs-string">'package:freezed_annotation/freezed_annotation.dart'</span>;
 
 part <span class="hljs-string">'order_bloc.freezed.dart'</span>;
 
@@ -209,44 +229,57 @@ part <span class="hljs-string">'order_bloc.freezed.dart'</span>;
   <span class="hljs-keyword">const</span> factory <span class="hljs-title class_">OrderState</span>.<span class="hljs-title function_">processing</span>() = _Processing;
   <span class="hljs-keyword">const</span> factory <span class="hljs-title class_">OrderState</span>.<span class="hljs-title function_">success</span>(<span class="hljs-title class_">String</span> confirmationCode) = _Success;
   <span class="hljs-keyword">const</span> factory <span class="hljs-title class_">OrderState</span>.<span class="hljs-title function_">failure</span>(<span class="hljs-title class_">String</span> error) = _Failure;
-}</code></pre><h3 id="2-implementing-the-business-logic">2. Implementing the Business Logic</h3>
+}</code></pre>
+        </div>
+      <h3 id="2-implementing-the-business-logic">2. Implementing the Business Logic</h3>
 <p>Now we implement the BLoC. Notice how the logic is purely focused on data transformation. It doesn’t care if the UI is a button or a gesture detector.</p>
-<pre><code class="hljs language-javascript" data-lang="javascript"><span class="hljs-keyword">import</span> <span class="hljs-string">'package:flutter_bloc/flutter_bloc.dart'</span>;
 
-<span class="hljs-keyword">class</span> <span class="hljs-title class_">OrderBloc</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">Bloc</span>&lt;<span class="hljs-title class_">OrderEvent</span>, <span class="hljs-title class_">OrderState</span>&gt; {
-  final <span class="hljs-title class_">OrderRepository</span> _repository;
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">csharp</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-csharp" data-lang="csharp">import <span class="hljs-string">'package:flutter_bloc/flutter_bloc.dart'</span>;
 
-  <span class="hljs-title class_">OrderBloc</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">_repository</span>) : <span class="hljs-title function_">super</span>(<span class="hljs-params"><span class="hljs-keyword">const</span> OrderState.initial()</span>) {
-    on&lt;_SubmitOrder&gt;(_onSubmitOrder);
-    on&lt;_CancelOrder&gt;(_onCancelOrder);
+<span class="hljs-keyword">class</span> <span class="hljs-title">OrderBloc</span> <span class="hljs-title">extends</span> <span class="hljs-title">Bloc</span>&lt;<span class="hljs-title">OrderEvent</span>, <span class="hljs-title">OrderState</span>&gt; {
+  final OrderRepository _repository;
+
+  OrderBloc(<span class="hljs-keyword">this</span>._repository) : super(<span class="hljs-keyword">const</span> OrderState.initial()) {
+    <span class="hljs-keyword">on</span>&lt;_SubmitOrder&gt;(_onSubmitOrder);
+    <span class="hljs-keyword">on</span>&lt;_CancelOrder&gt;(_onCancelOrder);
   }
 
-  <span class="hljs-title class_">Future</span>&lt;<span class="hljs-keyword">void</span>&gt; <span class="hljs-title function_">_onSubmitOrder</span>(
-    _SubmitOrder event,
-    <span class="hljs-title class_">Emitter</span>&lt;<span class="hljs-title class_">OrderState</span>&gt; emit,
+  Future&lt;<span class="hljs-keyword">void</span>&gt; _onSubmitOrder(
+    _SubmitOrder <span class="hljs-keyword">event</span>,
+    Emitter&lt;OrderState&gt; emit,
   ) <span class="hljs-keyword">async</span> {
     <span class="hljs-comment">// 1. Emit loading state</span>
-    <span class="hljs-title function_">emit</span>(<span class="hljs-keyword">const</span> <span class="hljs-title class_">OrderState</span>.<span class="hljs-title function_">processing</span>());
+    emit(<span class="hljs-keyword">const</span> OrderState.processing());
 
     <span class="hljs-keyword">try</span> {
       <span class="hljs-comment">// 2. Perform async business logic</span>
-      final result = <span class="hljs-keyword">await</span> _repository.<span class="hljs-title function_">processOrder</span>(event.<span class="hljs-property">orderId</span>, event.<span class="hljs-property">amount</span>);
+      final result = <span class="hljs-keyword">await</span> _repository.processOrder(<span class="hljs-keyword">event</span>.orderId, <span class="hljs-keyword">event</span>.amount);
       
       <span class="hljs-comment">// 3. Emit success state with data</span>
-      <span class="hljs-title function_">emit</span>(<span class="hljs-title class_">OrderState</span>.<span class="hljs-title function_">success</span>(result.<span class="hljs-property">confirmationCode</span>));
+      emit(OrderState.success(result.confirmationCode));
     } <span class="hljs-keyword">catch</span> (e) {
       <span class="hljs-comment">// 4. Handle errors gracefully</span>
-      <span class="hljs-title function_">emit</span>(<span class="hljs-title class_">OrderState</span>.<span class="hljs-title function_">failure</span>(<span class="hljs-string">"Failed to process order: ${e.toString()}"</span>));
+      emit(OrderState.failure(<span class="hljs-string">"Failed to process order: ${e.toString()}"</span>));
     }
   }
 
-  <span class="hljs-title class_">Future</span>&lt;<span class="hljs-keyword">void</span>&gt; <span class="hljs-title function_">_onCancelOrder</span>(
-    _CancelOrder event,
-    <span class="hljs-title class_">Emitter</span>&lt;<span class="hljs-title class_">OrderState</span>&gt; emit,
+  Future&lt;<span class="hljs-keyword">void</span>&gt; _onCancelOrder(
+    _CancelOrder <span class="hljs-keyword">event</span>,
+    Emitter&lt;OrderState&gt; emit,
   ) <span class="hljs-keyword">async</span> {
     <span class="hljs-comment">// Logic for cancellation...</span>
   }
-}</code></pre><p>Because <code>Freezed</code> overrides <code>==</code> and <code>hashCode</code>, if you emit <code>OrderState.processing()</code> twice in a row, the BLoC library detects the values are identical and will <em>not</em> trigger a UI rebuild, optimizing performance automatically.</p>
+}</code></pre>
+        </div>
+      <p>Because <code>Freezed</code> overrides <code>==</code> and <code>hashCode</code>, if you emit <code>OrderState.processing()</code> twice in a row, the BLoC library detects the values are identical and will <em>not</em> trigger a UI rebuild, optimizing performance automatically.</p>
 <h2 id="dependency-injection-multiblocprovider-and-scope">Dependency Injection: MultiBlocProvider and Scope</h2>
 <p>A BLoC needs dependencies (Repositories, API Clients). A Widget needs a BLoC. Connecting these cleanly is vital for a decoupled architecture.</p>
 <p>The <code>flutter_bloc</code> package provides <code>BlocProvider</code> to inject a BLoC into the widget tree. Since providers rely on <code>InheritedWidget</code> under the hood, any child widget can access the BLoC instance via <code>context.read&lt;OrderBloc&gt;()</code>.</p>
@@ -254,7 +287,16 @@ part <span class="hljs-string">'order_bloc.freezed.dart'</span>;
 <h3 id="the-strategic-use-of-multiblocprovider">The Strategic Use of MultiBlocProvider</h3>
 <p>In complex apps, you often have global BLoCs (Authentication, Theme, Localization) and scoped BLoCs (OrderProcessing, Cart).</p>
 <p><strong>Do not create BLoCs globally.</strong> Create them as close to where they are needed as possible, but high enough to be shared by all widgets that need them.</p>
-<pre><code class="hljs language-typescript" data-lang="typescript"><span class="hljs-built_in">void</span> <span class="hljs-title function_">main</span>(<span class="hljs-params"></span>) {
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">typescript</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-typescript" data-lang="typescript"><span class="hljs-built_in">void</span> <span class="hljs-title function_">main</span>(<span class="hljs-params"></span>) {
   <span class="hljs-title function_">runApp</span>(
     <span class="hljs-comment">// Inject Repositories first</span>
     <span class="hljs-title class_">RepositoryProvider</span>(
@@ -285,15 +327,28 @@ part <span class="hljs-string">'order_bloc.freezed.dart'</span>;
       ),
     );
   }
-}</code></pre><p>When navigating to a specific feature screen (e.g., Checkout), create the <code>OrderBloc</code> specifically for that route:</p>
-<pre><code class="hljs language-javascript" data-lang="javascript"><span class="hljs-title class_">Navigator</span>.<span class="hljs-title function_">of</span>(context).<span class="hljs-title function_">push</span>(
+}</code></pre>
+        </div>
+      <p>When navigating to a specific feature screen (e.g., Checkout), create the <code>OrderBloc</code> specifically for that route:</p>
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">javascript</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-javascript" data-lang="javascript"><span class="hljs-title class_">Navigator</span>.<span class="hljs-title function_">of</span>(context).<span class="hljs-title function_">push</span>(
   <span class="hljs-title class_">MaterialPageRoute</span>(
     <span class="hljs-attr">builder</span>: <span class="hljs-function">(<span class="hljs-params">context</span>) =&gt;</span> <span class="hljs-title class_">BlocProvider</span>(
       <span class="hljs-attr">create</span>: <span class="hljs-function">(<span class="hljs-params">context</span>) =&gt;</span> <span class="hljs-title class_">OrderBloc</span>(context.<span class="hljs-property">read</span>&lt;<span class="hljs-title class_">OrderRepository</span>&gt;()),
       <span class="hljs-attr">child</span>: <span class="hljs-keyword">const</span> <span class="hljs-title class_">CheckoutScreen</span>(),
     ),
   ),
-);</code></pre><p>This ensures that when <code>CheckoutScreen</code> is popped from the navigation stack, the <code>OrderBloc</code> is automatically closed (disposed), freeing up resources.</p>
+);</code></pre>
+        </div>
+      <p>This ensures that when <code>CheckoutScreen</code> is popped from the navigation stack, the <code>OrderBloc</code> is automatically closed (disposed), freeing up resources.</p>
 <h2 id="handling-side-effects-vs-ui-building">Handling Side Effects vs. UI Building</h2>
 <p>This is where 90% of developers get BLoC wrong.</p>
 <p><strong>The Problem:</strong> You want to show a <code>SnackBar</code> or navigate to a new screen when the state changes to <code>Success</code>. <strong>The Mistake:</strong> Putting this logic inside the <code>builder</code> function of a <code>BlocBuilder</code>.</p>
@@ -306,7 +361,16 @@ part <span class="hljs-string">'order_bloc.freezed.dart'</span>;
 </ul>
 <p><img src="https://blogs.buildwithmanish.com/assets/images/comparison_chart-reactive-architecture-in-flutter-mastering-bloc-for-scalable-state-management-5-2025-12-18-88786.png" alt="Comparison Chart - Side Effects"></p>
 <p>Here is the correct implementation using <code>freezed</code> pattern matching inside the UI:</p>
-<pre><code class="hljs language-css" data-lang="css">class CheckoutView extends StatelessWidget {
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">css</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-css" data-lang="css">class CheckoutView extends StatelessWidget {
   const CheckoutView({super<span class="hljs-selector-class">.key</span>});
 
   <span class="hljs-keyword">@override</span>
@@ -349,7 +413,9 @@ part <span class="hljs-string">'order_bloc.freezed.dart'</span>;
       },
     );
   }
-}</code></pre><p>Notice the use of <code>state.whenOrNull</code> and <code>state.maybeWhen</code>. These are generated by Freezed.</p>
+}</code></pre>
+        </div>
+      <p>Notice the use of <code>state.whenOrNull</code> and <code>state.maybeWhen</code>. These are generated by Freezed.</p>
 <ul>
 <li><code>listener</code>: We only care about Success and Failure.</li>
 <li><code>builder</code>: We show a spinner for Processing, and the form for everything else.</li>
@@ -360,7 +426,16 @@ part <span class="hljs-string">'order_bloc.freezed.dart'</span>;
 <p><img src="https://blogs.buildwithmanish.com/assets/images/technical_diagram-reactive-architecture-in-flutter-mastering-bloc-for-scalable-state-management-6-2025-12-18-82639.png" alt="Technical Diagram - Testing Flow"></p>
 <h3 id="writing-the-test">Writing the Test</h3>
 <p>We define the “Scenario,” the “Act” (event added), and the “Expectation” (sequence of states).</p>
-<pre><code class="hljs language-typescript" data-lang="typescript"><span class="hljs-keyword">import</span> <span class="hljs-string">'package:bloc_test/bloc_test.dart'</span>;
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">typescript</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-typescript" data-lang="typescript"><span class="hljs-keyword">import</span> <span class="hljs-string">'package:bloc_test/bloc_test.dart'</span>;
 <span class="hljs-keyword">import</span> <span class="hljs-string">'package:flutter_test/flutter_test.dart'</span>;
 <span class="hljs-keyword">import</span> <span class="hljs-string">'package:mocktail/mocktail.dart'</span>;
 
@@ -421,31 +496,44 @@ part <span class="hljs-string">'order_bloc.freezed.dart'</span>;
       ],
     );
   });
-}</code></pre><p>This test suite gives you 100% confidence that your business logic works correctly before you even draw a single pixel on the screen.</p>
+}</code></pre>
+        </div>
+      <p>This test suite gives you 100% confidence that your business logic works correctly before you even draw a single pixel on the screen.</p>
 <h2 id="advanced-techniques-event-transformers">Advanced Techniques: Event Transformers</h2>
 <p>For Senior Engineers, BLoC offers powerful control over <em>how</em> events are processed using <code>EventTransformer</code>.</p>
 <p>Imagine a Search Bar. Users type quickly. You don’t want to hit your API on every keystroke. In an imperative world, you’d manually manage a <code>Timer</code>. In BLoC, you just use a reactive operator: <code>debounce</code>.</p>
-<pre><code class="hljs language-javascript" data-lang="javascript"><span class="hljs-keyword">import</span> <span class="hljs-string">'package:rxdart/rxdart.dart'</span>;
 
-<span class="hljs-title class_">EventTransformer</span>&lt;T&gt; debounce&lt;T&gt;(<span class="hljs-title class_">Duration</span> duration) {
-  <span class="hljs-keyword">return</span> <span class="hljs-function">(<span class="hljs-params">events, mapper</span>) =&gt;</span> events.<span class="hljs-title function_">debounceTime</span>(duration).<span class="hljs-title function_">flatMap</span>(mapper);
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">csharp</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-csharp" data-lang="csharp">import <span class="hljs-string">'package:rxdart/rxdart.dart'</span>;
+
+<span class="hljs-function"><span class="hljs-title">EventTransformer</span>&lt;<span class="hljs-title">T</span>&gt; <span class="hljs-title">debounce</span>&lt;<span class="hljs-title">T</span>&gt;(<span class="hljs-params">Duration duration</span>)</span> {
+  <span class="hljs-keyword">return</span> (events, mapper) =&gt; events.debounceTime(duration).flatMap(mapper);
 }
 
-<span class="hljs-keyword">class</span> <span class="hljs-title class_">SearchBloc</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">Bloc</span>&lt;<span class="hljs-title class_">SearchEvent</span>, <span class="hljs-title class_">SearchState</span>&gt; {
-  <span class="hljs-title class_">SearchBloc</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">_api</span>) : <span class="hljs-title function_">super</span>(<span class="hljs-params">SearchInitial()</span>) {
-    on&lt;<span class="hljs-title class_">SearchTextChanged</span>&gt;(
+<span class="hljs-keyword">class</span> <span class="hljs-title">SearchBloc</span> <span class="hljs-title">extends</span> <span class="hljs-title">Bloc</span>&lt;<span class="hljs-title">SearchEvent</span>, <span class="hljs-title">SearchState</span>&gt; {
+  SearchBloc(<span class="hljs-keyword">this</span>._api) : super(SearchInitial()) {
+    <span class="hljs-keyword">on</span>&lt;SearchTextChanged&gt;(
       _onTextChanged,
       <span class="hljs-comment">// Apply the transformer</span>
-      <span class="hljs-attr">transformer</span>: <span class="hljs-title function_">debounce</span>(<span class="hljs-keyword">const</span> <span class="hljs-title class_">Duration</span>(<span class="hljs-attr">milliseconds</span>: <span class="hljs-number">300</span>)),
-    );
+      transformer: debounce(<span class="hljs-function"><span class="hljs-keyword">const</span> <span class="hljs-title">Duration</span>(<span class="hljs-params">milliseconds: <span class="hljs-number">300</span></span>)),
+    )</span>;
   }
 
-  <span class="hljs-title class_">Future</span>&lt;<span class="hljs-keyword">void</span>&gt; <span class="hljs-title function_">_onTextChanged</span>(<span class="hljs-title class_">SearchTextChanged</span> event, <span class="hljs-title class_">Emitter</span>&lt;<span class="hljs-title class_">SearchState</span>&gt; emit) <span class="hljs-keyword">async</span> {
+  Future&lt;<span class="hljs-keyword">void</span>&gt; _onTextChanged(SearchTextChanged <span class="hljs-keyword">event</span>, Emitter&lt;SearchState&gt; emit) <span class="hljs-keyword">async</span> {
     <span class="hljs-comment">// This logic only runs if the user stops typing for 300ms</span>
-    final results = <span class="hljs-keyword">await</span> _api.<span class="hljs-title function_">search</span>(event.<span class="hljs-property">query</span>);
-    <span class="hljs-title function_">emit</span>(<span class="hljs-title class_">SearchSuccess</span>(results));
+    final results = <span class="hljs-keyword">await</span> _api.search(<span class="hljs-keyword">event</span>.query);
+    emit(SearchSuccess(results));
   }
-}</code></pre><p>This elegant integration of <code>rxdart</code> with BLoC transforms a complex concurrency problem into a single line of configuration.</p>
+}</code></pre>
+        </div>
+      <p>This elegant integration of <code>rxdart</code> with BLoC transforms a complex concurrency problem into a single line of configuration.</p>
 <h2 id="conclusion">Conclusion</h2>
 <p>Reactive Architecture with BLoC is not just a library choice; it is a commitment to quality. By strictly separating UI from Logic, implementing immutable state with Freezed, and adhering to the Input/Output stream contract, you create applications that are:</p>
 <ol>

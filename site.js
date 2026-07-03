@@ -1400,3 +1400,31 @@ initializePageFeatures();
 document.querySelectorAll("[data-year]").forEach((node) => {
   node.textContent = String(new Date().getFullYear());
 });
+
+/**
+ * Copy code to clipboard from the premium code blocks
+ */
+function copyCode(button) {
+  const wrapper = button.closest(".code-block-wrapper");
+  const codeEl = wrapper.querySelector("code");
+  const text = codeEl.innerText;
+
+  navigator.clipboard.writeText(text).then(() => {
+    const originalContent = button.innerHTML;
+    button.classList.add("copied");
+    button.innerHTML = `
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      <span>Copied!</span>
+    `;
+    
+    setTimeout(() => {
+      button.classList.remove("copied");
+      button.innerHTML = originalContent;
+      // Refresh lucide icons if they were reset
+      if (window.lucide) window.lucide.createIcons();
+    }, 2000);
+  }).catch(err => {
+    console.error("Failed to copy code: ", err);
+  });
+}
+window.copyCode = copyCode;

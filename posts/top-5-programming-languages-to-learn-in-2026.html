@@ -199,7 +199,16 @@
 <p>Libraries like NumPy, PyTorch, and TensorFlow are written in C and C++. Python provides the high-level syntax to manipulate these low-level memory structures.</p>
 <p>Consider the recent updates to my Data Science course. We are running OpenAI’s Whisper model. You aren’t writing the matrix multiplication algorithms in Python loops; you are calling a compiled binary.</p>
 <p><strong>Code Example: Running Whisper Inference</strong> Here is how simple it is to leverage State-of-the-Art (SOTA) AI, hiding massive complexity behind a clean Python API.</p>
-<pre><code class="hljs language-python" data-lang="python"><span class="hljs-keyword">import</span> torch
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">python</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-python" data-lang="python"><span class="hljs-keyword">import</span> torch
 <span class="hljs-keyword">from</span> transformers <span class="hljs-keyword">import</span> AutoModelForSpeechSeq2Seq, AutoProcessor, pipeline
 
 <span class="hljs-comment"># 1. Device Agnosticism: Check for GPU (CUDA), Mac (MPS), or CPU</span>
@@ -232,7 +241,9 @@ pipe = pipeline(
 <span class="hljs-comment"># 4. Execute</span>
 <span class="hljs-comment"># This single line triggers massive parallel computation on the GPU</span>
 result = pipe(<span class="hljs-string">"audio_sample.mp3"</span>)
-<span class="hljs-built_in">print</span>(<span class="hljs-string">f"Transcribed Text: <span class="hljs-subst">{result[<span class="hljs-string">'text'</span>]}</span>"</span>)</code></pre><p><img src="https://blogs.buildwithmanish.com/assets/images/technical_diagram-top-5-programming-languages-to-learn-in-2026-3-2025-12-31-89405.png" alt="Python Technical Diagram"></p>
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f"Transcribed Text: <span class="hljs-subst">{result[<span class="hljs-string">'text'</span>]}</span>"</span>)</code></pre>
+        </div>
+      <p><img src="https://blogs.buildwithmanish.com/assets/images/technical_diagram-top-5-programming-languages-to-learn-in-2026-3-2025-12-31-89405.png" alt="Python Technical Diagram"></p>
 <h3 id="career-salary">Career &amp; Salary</h3>
 <p>In India, Python developers in the Data Science/AI domain command between <strong>13 LPA to 26 LPA</strong> on average.</p>
 <p><strong>The Warning:</strong> If you are a first-year student and your curriculum focuses on C/C++, <strong>do not ignore it for Python.</strong> Python makes you lazy with memory. C++ teaches you how the computer actually works. Learn Python on the side, but master your foundations first.</p>
@@ -257,7 +268,16 @@ result = pipe(<span class="hljs-string">"audio_sample.mp3"</span>)
 <h4>The Problem: “undefined is not a function”</h4>
 <p>In 2026, shipping code without type safety is considered professional negligence in top-tier tech companies.</p>
 <p><strong>Code Example: Interfaces and Generics</strong> Here is how TypeScript prevents an entire class of bugs that plague JavaScript developers.</p>
-<pre><code class="hljs language-typescript" data-lang="typescript"><span class="hljs-comment">// Defining the Shape of Data</span>
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">typescript</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-typescript" data-lang="typescript"><span class="hljs-comment">// Defining the Shape of Data</span>
 <span class="hljs-keyword">interface</span> <span class="hljs-title class_">User</span> {
   <span class="hljs-attr">id</span>: <span class="hljs-built_in">number</span>;
   <span class="hljs-attr">username</span>: <span class="hljs-built_in">string</span>;
@@ -297,7 +317,9 @@ result = pipe(<span class="hljs-string">"audio_sample.mp3"</span>)
 <span class="hljs-comment">// It also knows 'result.data.password' DOES NOT exist.</span>
 <span class="hljs-keyword">if</span> (result.<span class="hljs-property">data</span>.<span class="hljs-property">role</span> === <span class="hljs-string">'admin'</span>) {
     <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">"Access Granted"</span>);
-}</code></pre><p><img src="https://blogs.buildwithmanish.com/assets/images/technical_diagram-top-5-programming-languages-to-learn-in-2026-4-2025-12-31-1775.png" alt="TypeScript Diagram"></p>
+}</code></pre>
+        </div>
+      <p><img src="https://blogs.buildwithmanish.com/assets/images/technical_diagram-top-5-programming-languages-to-learn-in-2026-4-2025-12-31-1775.png" alt="TypeScript Diagram"></p>
 <h3 id="career-salary">Career &amp; Salary</h3>
 <p>For React/Next.js developers in India, the average salary ranges from <strong>10 LPA to 30 LPA</strong>. Senior developers architecting large frontend systems with strict TypeScript configurations can easily surpass <strong>40 LPA</strong>.</p>
 <hr>
@@ -319,46 +341,57 @@ result = pipe(<span class="hljs-string">"audio_sample.mp3"</span>)
 <p>Why is C++ still growing in 2026? <strong>Performance per watt and predictability.</strong> In languages like Java or Python, a Garbage Collector (GC) runs periodically to clean up memory. This causes “stop-the-world” pauses. In HFT or Real-Time systems (like self-driving cars), a 50ms GC pause causes a crash or a financial loss.</p>
 <p>C++ gives you RAII (Resource Acquisition Is Initialization) and Smart Pointers, allowing for deterministic memory management without the GC overhead.</p>
 <p><strong>Code Example: Modern C++ (C++20) &amp; Memory Management</strong> Notice how we use <code>std::unique_ptr</code> to handle memory automatically (when it goes out of scope) without a garbage collector.</p>
-<pre><code class="hljs language-rust" data-lang="rust">#include &lt;iostream&gt;
-#include &lt;vector&gt;
-#include &lt;memory&gt;
-#include &lt;algorithm&gt;
 
-class MatrixEngine {
-    int rows, cols;
-    std::vector&lt;double&gt; data;
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">cpp</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-cpp" data-lang="cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;vector&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;memory&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;algorithm&gt;</span></span>
 
-public:
-    <span class="hljs-title function_ invoke__">MatrixEngine</span>(int r, int c) : <span class="hljs-title function_ invoke__">rows</span>(r), <span class="hljs-title function_ invoke__">cols</span>(c) {
-        data.<span class="hljs-title function_ invoke__">resize</span>(r * c, <span class="hljs-number">0.0</span>);
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">MatrixEngine</span> {
+    <span class="hljs-type">int</span> rows, cols;
+    std::vector&lt;<span class="hljs-type">double</span>&gt; data;
+
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-built_in">MatrixEngine</span>(<span class="hljs-type">int</span> r, <span class="hljs-type">int</span> c) : <span class="hljs-built_in">rows</span>(r), <span class="hljs-built_in">cols</span>(c) {
+        data.<span class="hljs-built_in">resize</span>(r * c, <span class="hljs-number">0.0</span>);
         std::cout &lt;&lt; <span class="hljs-string">"Matrix initialized on Heap"</span> &lt;&lt; std::endl;
     }
 
-    ~<span class="hljs-title function_ invoke__">MatrixEngine</span>() {
+    ~<span class="hljs-built_in">MatrixEngine</span>() {
         std::cout &lt;&lt; <span class="hljs-string">"Matrix destroyed (Memory Freed)"</span> &lt;&lt; std::endl;
     }
 
-    void <span class="hljs-title function_ invoke__">compute</span>() {
+    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">compute</span><span class="hljs-params">()</span> </span>{
         <span class="hljs-comment">// Simulating heavy computation</span>
-        std::<span class="hljs-title function_ invoke__">transform</span>(data.<span class="hljs-title function_ invoke__">begin</span>(), data.<span class="hljs-title function_ invoke__">end</span>(), data.<span class="hljs-title function_ invoke__">begin</span>(), [](double d) {
+        std::<span class="hljs-built_in">transform</span>(data.<span class="hljs-built_in">begin</span>(), data.<span class="hljs-built_in">end</span>(), data.<span class="hljs-built_in">begin</span>(), [](<span class="hljs-type">double</span> d) {
             <span class="hljs-keyword">return</span> d + <span class="hljs-number">1.0</span>;
         });
     }
 };
 
-int <span class="hljs-title function_ invoke__">main</span>() {
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
     <span class="hljs-comment">// Smart Pointer: Automatically manages lifecycle</span>
     <span class="hljs-comment">// No 'new' or 'delete' keywords needed here.</span>
-    std::unique_ptr&lt;MatrixEngine&gt; engine = std::make_unique&lt;MatrixEngine&gt;(<span class="hljs-number">1000</span>, <span class="hljs-number">1000</span>);
+    std::unique_ptr&lt;MatrixEngine&gt; engine = std::<span class="hljs-built_in">make_unique</span>&lt;MatrixEngine&gt;(<span class="hljs-number">1000</span>, <span class="hljs-number">1000</span>);
 
-    engine<span class="hljs-punctuation">-&gt;</span><span class="hljs-title function_ invoke__">compute</span>();
+    engine-&gt;<span class="hljs-built_in">compute</span>();
 
     std::cout &lt;&lt; <span class="hljs-string">"Computation Complete"</span> &lt;&lt; std::endl;
     
     <span class="hljs-comment">// 'engine' goes out of scope here. </span>
     <span class="hljs-comment">// The destructor is called immediately and deterministically.</span>
     <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
-}</code></pre><p><img src="https://blogs.buildwithmanish.com/assets/images/concept_illustration-top-5-programming-languages-to-learn-in-2026-5-2025-12-31-46471.png" alt="C++ Concept Illustration"></p>
+}</code></pre>
+        </div>
+      <p><img src="https://blogs.buildwithmanish.com/assets/images/concept_illustration-top-5-programming-languages-to-learn-in-2026-5-2025-12-31-46471.png" alt="C++ Concept Illustration"></p>
 <h3 id="advice">Advice</h3>
 <p>If you are in college, obsess over C++. If you understand Pointers, Stack vs. Heap, and Pass-by-Reference, learning any other language (Java, JS, Python) becomes trivial.</p>
 <hr>
@@ -379,37 +412,48 @@ int <span class="hljs-title function_ invoke__">main</span>() {
 <p>Java runs on the Java Virtual Machine (JVM), a marvel of engineering. The Just-In-Time (JIT) compiler optimizes code as it runs, often making long-running Java applications faster than compiled C++ code in specific server scenarios due to runtime profiling.</p>
 <p><strong>The Evolution:</strong> Java isn’t stagnant. Recent versions introduced <strong>Virtual Threads (Project Loom)</strong>. Previously, one Java thread equaled one OS thread (expensive). Now, Java can handle millions of lightweight virtual threads, rivaling Go’s goroutines and Node.js’s event loop for throughput.</p>
 <p><strong>Code Example: Spring Boot 3 &amp; Virtual Threads</strong> This is what modern backend code looks like-declarative and highly scalable.</p>
-<pre><code class="hljs language-java" data-lang="java"><span class="hljs-keyword">package</span> com.example.demo;
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">kotlin</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-kotlin" data-lang="kotlin"><span class="hljs-keyword">package</span> com.example.demo;
 
 <span class="hljs-keyword">import</span> org.springframework.boot.SpringApplication;
 <span class="hljs-keyword">import</span> org.springframework.boot.autoconfigure.SpringBootApplication;
-<span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.GetMapping;
-<span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.RestController;
+<span class="hljs-keyword">import</span> org.springframework.web.bind.<span class="hljs-keyword">annotation</span>.GetMapping;
+<span class="hljs-keyword">import</span> org.springframework.web.bind.<span class="hljs-keyword">annotation</span>.RestController;
 <span class="hljs-keyword">import</span> java.util.concurrent.Executors;
 
 <span class="hljs-meta">@SpringBootApplication</span>
 <span class="hljs-meta">@RestController</span>
 <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">BankingService</span> {
 
-    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> {
-        SpringApplication.run(BankingService.class, args);
+    <span class="hljs-keyword">public</span> static void main(String[] args) {
+        SpringApplication.run(BankingService.<span class="hljs-keyword">class</span>, args);
     }
 
-    <span class="hljs-meta">@GetMapping("/process-transaction")</span>
-    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">process</span><span class="hljs-params">()</span> {
+    <span class="hljs-meta">@GetMapping(<span class="hljs-string">"/process-transaction"</span>)</span>
+    <span class="hljs-keyword">public</span> String process() {
         <span class="hljs-comment">// In Java 21+, we can use Virtual Threads for high-throughput I/O</span>
-        <span class="hljs-keyword">try</span> (<span class="hljs-type">var</span> <span class="hljs-variable">executor</span> <span class="hljs-operator">=</span> Executors.newVirtualThreadPerTaskExecutor()) {
+        <span class="hljs-keyword">try</span> (<span class="hljs-keyword">var</span> executor = Executors.newVirtualThreadPerTaskExecutor()) {
             executor.submit(() -&gt; {
                 <span class="hljs-comment">// Simulate Database Latency</span>
                 Thread.sleep(<span class="hljs-number">100</span>); 
-                System.out.println(<span class="hljs-string">"Transaction processed by: "</span> + Thread.currentThread());
+                System.<span class="hljs-keyword">out</span>.println(<span class="hljs-string">"Transaction processed by: "</span> + Thread.currentThread());
             });
         } <span class="hljs-keyword">catch</span> (Exception e) {
             <span class="hljs-keyword">return</span> <span class="hljs-string">"Failed"</span>;
         }
         <span class="hljs-keyword">return</span> <span class="hljs-string">"Transaction Queued"</span>;
     }
-}</code></pre><p><img src="https://blogs.buildwithmanish.com/assets/images/architecture_diagram-top-5-programming-languages-to-learn-in-2026-6-2025-12-31-45787.png" alt="Java Architecture"></p>
+}</code></pre>
+        </div>
+      <p><img src="https://blogs.buildwithmanish.com/assets/images/architecture_diagram-top-5-programming-languages-to-learn-in-2026-6-2025-12-31-45787.png" alt="Java Architecture"></p>
 <h3 id="career-salary">Career &amp; Salary</h3>
 <p>Jobs in Java are massive in volume. If you know Spring Boot and Microservices architecture, you will never be unemployed. In India, salaries are comparable to Python but often offer more stability in traditional banking and finance sectors.</p>
 <hr>
@@ -435,7 +479,16 @@ int <span class="hljs-title function_ invoke__">main</span>() {
 <li>When the owner goes out of scope, the value will be dropped.</li>
 </ol>
 <p><strong>Code Example: Fighting (and winning) against the Borrow Checker</strong></p>
-<pre><code class="hljs language-rust" data-lang="rust"><span class="hljs-keyword">use</span> std::thread;
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">rust</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-rust" data-lang="rust"><span class="hljs-keyword">use</span> std::thread;
 <span class="hljs-keyword">use</span> std::sync::{Arc, Mutex};
 
 <span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() {
@@ -461,7 +514,9 @@ int <span class="hljs-title function_ invoke__">main</span>() {
     <span class="hljs-comment">// In C++, doing this without race conditions is incredibly hard.</span>
     <span class="hljs-comment">// In Rust, the compiler REFUSES to build if you do it wrong.</span>
     <span class="hljs-built_in">println!</span>(<span class="hljs-string">"Result: {}"</span>, *counter.<span class="hljs-title function_ invoke__">lock</span>().<span class="hljs-title function_ invoke__">unwrap</span>());
-}</code></pre><p><img src="https://blogs.buildwithmanish.com/assets/images/concept_illustration-top-5-programming-languages-to-learn-in-2026-7-2025-12-31-3931.png" alt="Rust Concept Illustration"></p>
+}</code></pre>
+        </div>
+      <p><img src="https://blogs.buildwithmanish.com/assets/images/concept_illustration-top-5-programming-languages-to-learn-in-2026-7-2025-12-31-3931.png" alt="Rust Concept Illustration"></p>
 <h3 id="career-salary">Career &amp; Salary</h3>
 <p>Rust developers are rare. Supply is low, demand is high (especially in Silicon Valley and remote roles). If you master Rust, you are positioning yourself for top-tier engineering roles globally.</p>
 <hr>

@@ -152,9 +152,20 @@
       <nav class="blog-toc" id="blog-toc" aria-label="Table of contents"><p class="blog-toc-title">Contents</p><ol><li class="toc-h3"><a href="#the-evolution-from-boolean-flags-to-abac">The Evolution: From Boolean Flags to ABAC</a></li><li class="toc-h3"><a href="#database-schema-design-for-dynamic-permissions">Database Schema Design for Dynamic Permissions</a></li><li class="toc-h3"><a href="#implementing-the-logic-with-casl">Implementing the Logic with CASL</a></li><li class="toc-h3"><a href="#the-ownership-challenge-abac-">The Ownership Challenge (ABAC)</a></li><li class="toc-h3"><a href="#architecture-the-reusable-middleware">Architecture: The Reusable Middleware</a></li><li class="toc-h3"><a href="#performance-optimization-caching-permissions">Performance Optimization: Caching Permissions</a></li><li class="toc-h3"><a href="#handling-edge-cases-advanced-scenarios">Handling Edge Cases & Advanced Scenarios</a></li><li class="toc-h3"><a href="#conclusion">Conclusion</a></li></ol></nav>
       <article class="blog-prose" id="blog-prose"><p><img src="https://blogs.buildwithmanish.com/assets/images/hero-escaping-the-if-isadmin-trap-implementing-scalable-rbac-and-abac-in-nodejs-0-2025-12-17-25949.png" alt="Escaping the if (isAdmin) Trap"></p>
 <p>We have all written it. The line of code that marks the beginning of the end for a scalable codebase:</p>
-<pre><code class="hljs language-javascript" data-lang="javascript"><span class="hljs-keyword">if</span> (user.<span class="hljs-property">isAdmin</span> || (user.<span class="hljs-property">role</span> === <span class="hljs-string">'manager'</span> &amp;&amp; resource.<span class="hljs-property">ownerId</span> === user.<span class="hljs-property">id</span>)) {
-  <span class="hljs-comment">// Allow logic</span>
-}</code></pre><p>It starts innocently enough. A boolean flag here, a string check there. But as your application grows, these conditionals metastasize. Suddenly, you have “SuperAdmins” who need to see everything, “Editors” who can publish but not delete, and “Viewers” who can only see resources within their specific organization.</p>
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">dockerfile</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-dockerfile" data-lang="dockerfile">if (<span class="hljs-keyword">user</span>.isAdmin || (<span class="hljs-keyword">user</span>.role === <span class="hljs-string">'manager'</span> &amp;&amp; resource.ownerId === <span class="hljs-keyword">user</span>.id)) {
+  // Allow logic
+}</code></pre>
+        </div>
+      <p>It starts innocently enough. A boolean flag here, a string check there. But as your application grows, these conditionals metastasize. Suddenly, you have “SuperAdmins” who need to see everything, “Editors” who can publish but not delete, and “Viewers” who can only see resources within their specific organization.</p>
 <p>The conditionals scatter across controllers, services, and even view layers. When a security audit requests a change to the “Editor” role, you are forced to grep through hundreds of files, hoping you didn’t miss a nested <code>if</code> statement.</p>
 <p>This is the “Boolean Trap.” It is brittle, untestable, and insecure by design.</p>
 <p>In this deep dive, we are going to dismantle this pattern. We will architect a robust, database-driven authorization system in Node.js that transitions from simple Role-Based Access Control (RBAC) to granular Attribute-Based Access Control (ABAC). We will cover hierarchical inheritance, ownership policies, reusable middleware, and the caching strategies required to keep it performant.</p>
@@ -179,7 +190,16 @@
 <p><img src="https://blogs.buildwithmanish.com/assets/images/concept_illustration-escaping-the-if-isadmin-trap-implementing-scalable-rbac-and-abac-in-nodejs-2-2025-12-17-36449.png" alt="Hierarchical Role Inheritance"></p>
 <h4>The Schema (Prisma Example)</h4>
 <p>Here is a schema designed for flexibility. It allows roles to be defined dynamically and supports complex inheritance through a self-referencing relation (or an adjacency list pattern).</p>
-<pre><code class="hljs language-java" data-lang="java"><span class="hljs-comment">// schema.prisma</span>
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">kotlin</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-kotlin" data-lang="kotlin"><span class="hljs-comment">// schema.prisma</span>
 
 model User {
   id        String   <span class="hljs-meta">@id</span> <span class="hljs-meta">@default(uuid())</span>
@@ -196,8 +216,8 @@ model Role {
   
   <span class="hljs-comment">// Implicit inheritance handling</span>
   parentId    String?
-  parent      Role?    <span class="hljs-meta">@relation("RoleHierarchy", fields: [parentId], references: [id])</span>
-  children    Role[]   <span class="hljs-meta">@relation("RoleHierarchy")</span>
+  parent      Role?    <span class="hljs-meta">@relation(<span class="hljs-string">"RoleHierarchy"</span>, fields: [parentId], references: [id])</span>
+  children    Role[]   <span class="hljs-meta">@relation(<span class="hljs-string">"RoleHierarchy"</span>)</span>
   
   permissions Permission[]
   users       User[]
@@ -221,15 +241,26 @@ model Post {
   title     String
   authorId  String
   author    User     <span class="hljs-meta">@relation(fields: [authorId], references: [id])</span>
-  published Boolean  <span class="hljs-meta">@default(false)</span>
-}</code></pre><p><img src="https://blogs.buildwithmanish.com/assets/images/technical_diagram-escaping-the-if-isadmin-trap-implementing-scalable-rbac-and-abac-in-nodejs-3-2025-12-17-30467.png" alt="Database Schema Diagram"></p>
+  published <span class="hljs-built_in">Boolean</span>  <span class="hljs-meta">@default(false)</span>
+}</code></pre>
+        </div>
+      <p><img src="https://blogs.buildwithmanish.com/assets/images/technical_diagram-escaping-the-if-isadmin-trap-implementing-scalable-rbac-and-abac-in-nodejs-3-2025-12-17-30467.png" alt="Database Schema Diagram"></p>
 <p>By storing <code>conditions</code> as a JSON field, we prepare our database to handle ABAC rules that can be serialized and interpreted by our application logic.</p>
 <h3 id="implementing-the-logic-with-casl">Implementing the Logic with CASL</h3>
 <p>While you can write your own permission parser, libraries like <strong>CASL</strong> (Code Access Security Logic) provide an isomorphic, battle-tested standard for defining abilities. CASL allows us to translate our database permissions into an executable function.</p>
 <h4>The Factory Pattern for Abilities</h4>
 <p>We need a factory that takes a User entity, fetches their role (and inherited roles), and constructs an <code>Ability</code> object.</p>
 <p>First, let’s define the logic to flatten the role hierarchy. If a user is a <code>SuperAdmin</code>, we need to fetch permissions for <code>SuperAdmin</code> + <code>Admin</code> + <code>User</code>.</p>
-<pre><code class="hljs language-javascript" data-lang="javascript"><span class="hljs-comment">// services/auth/ability.factory.js</span>
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">javascript</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-javascript" data-lang="javascript"><span class="hljs-comment">// services/auth/ability.factory.js</span>
 <span class="hljs-keyword">import</span> { <span class="hljs-title class_">AbilityBuilder</span>, createMongoAbility } <span class="hljs-keyword">from</span> <span class="hljs-string">'@casl/ability'</span>;
 <span class="hljs-keyword">import</span> prisma <span class="hljs-keyword">from</span> <span class="hljs-string">'../../utils/prisma'</span>;
 
@@ -287,7 +318,9 @@ model Post {
   });
 
   <span class="hljs-keyword">return</span> <span class="hljs-title function_">build</span>();
-}</code></pre><h3 id="the-ownership-challenge-abac-">The Ownership Challenge (ABAC)</h3>
+}</code></pre>
+        </div>
+      <h3 id="the-ownership-challenge-abac-">The Ownership Challenge (ABAC)</h3>
 <p>The hardest part of authorization isn’t blocking access-it’s conditionally allowing it. The classic scenario: <strong>“Editors can update any post, but Authors can only update their own posts.”</strong></p>
 <p>If we rely solely on middleware checks <em>before</em> the controller executes, we run into a problem: we often don’t have the resource loaded yet to check ownership.</p>
 <p><img src="https://blogs.buildwithmanish.com/assets/images/code_flow-escaping-the-if-isadmin-trap-implementing-scalable-rbac-and-abac-in-nodejs-4-2025-12-17-13033.png" alt="Code Flow for Ownership Logic"></p>
@@ -299,7 +332,16 @@ model Post {
 <p>For high performance, <strong>Query-Injection</strong> is superior for <code>READ</code> operations (filtering lists), while <strong>Load-then-Check</strong> is necessary for <code>UPDATE</code>/<code>DELETE</code> operations.</p>
 <h4>Strategy: Use CASL to Generate Database Queries</h4>
 <p>CASL integrates with ORMs like Mongoose and Prisma (via <code>accessibleBy</code>). This translates permissions into <code>WHERE</code> clauses.</p>
-<pre><code class="hljs language-javascript" data-lang="javascript"><span class="hljs-comment">// services/post.service.js</span>
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">javascript</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-javascript" data-lang="javascript"><span class="hljs-comment">// services/post.service.js</span>
 <span class="hljs-keyword">import</span> { accessibleBy } <span class="hljs-keyword">from</span> <span class="hljs-string">'@casl/prisma'</span>;
 
 <span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">listPosts</span>(<span class="hljs-params">userAbility</span>) {
@@ -309,11 +351,22 @@ model Post {
     <span class="hljs-attr">where</span>: <span class="hljs-title function_">accessibleBy</span>(userAbility).<span class="hljs-property">Post</span>
   });
   <span class="hljs-keyword">return</span> posts;
-}</code></pre><p>If the user is an <code>Author</code>, CASL automatically injects <code>WHERE authorId = 'user_id'</code>. If they are an <code>Admin</code> with a “manage all” permission, the <code>WHERE</code> clause is omitted.</p>
+}</code></pre>
+        </div>
+      <p>If the user is an <code>Author</code>, CASL automatically injects <code>WHERE authorId = 'user_id'</code>. If they are an <code>Admin</code> with a “manage all” permission, the <code>WHERE</code> clause is omitted.</p>
 <h3 id="architecture-the-reusable-middleware">Architecture: The Reusable Middleware</h3>
 <p>We want our controllers to be clean. They should not know about role hierarchies or JSON conditions. We implement a middleware that accepts the “Intent.”</p>
 <p><img src="https://blogs.buildwithmanish.com/assets/images/architecture_diagram-escaping-the-if-isadmin-trap-implementing-scalable-rbac-and-abac-in-nodejs-5-2025-12-17-82767.png" alt="Middleware Architecture Diagram"></p>
-<pre><code class="hljs language-javascript" data-lang="javascript"><span class="hljs-comment">// middleware/authorize.js</span>
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">javascript</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-javascript" data-lang="javascript"><span class="hljs-comment">// middleware/authorize.js</span>
 <span class="hljs-keyword">import</span> { defineAbilityFor } <span class="hljs-keyword">from</span> <span class="hljs-string">'../services/auth/ability.factory'</span>;
 <span class="hljs-keyword">import</span> { <span class="hljs-title class_">ForbiddenError</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">'../utils/errors'</span>;
 
@@ -338,8 +391,19 @@ model Post {
       <span class="hljs-title function_">next</span>(error);
     }
   };
-};</code></pre><p><strong>Usage in Routes:</strong></p>
-<pre><code class="hljs language-javascript" data-lang="javascript"><span class="hljs-comment">// routes/post.routes.js</span>
+};</code></pre>
+        </div>
+      <p><strong>Usage in Routes:</strong></p>
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">javascript</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-javascript" data-lang="javascript"><span class="hljs-comment">// routes/post.routes.js</span>
 <span class="hljs-keyword">import</span> { authorize } <span class="hljs-keyword">from</span> <span class="hljs-string">'../middleware/authorize'</span>;
 
 <span class="hljs-comment">// Anyone with 'read' on 'Post' can access</span>
@@ -350,8 +414,19 @@ router.<span class="hljs-title function_">post</span>(<span class="hljs-string">
 
 <span class="hljs-comment">// Update is tricky: We authorize the generic intent here,</span>
 <span class="hljs-comment">// but specific ownership check happens in the Service/Controller</span>
-router.<span class="hljs-title function_">put</span>(<span class="hljs-string">'/:id'</span>, <span class="hljs-title function_">authorize</span>(<span class="hljs-string">'update'</span>, <span class="hljs-string">'Post'</span>), <span class="hljs-title class_">PostController</span>.<span class="hljs-property">update</span>);</code></pre><p><strong>The Missing Link: Contextual Checks in Controller</strong> For the <code>PUT</code> route, the middleware confirms the user <em>can</em> update posts in general. The controller confirms they can update <em>this specific</em> post.</p>
-<pre><code class="hljs language-javascript" data-lang="javascript"><span class="hljs-comment">// controllers/post.controller.js</span>
+router.<span class="hljs-title function_">put</span>(<span class="hljs-string">'/:id'</span>, <span class="hljs-title function_">authorize</span>(<span class="hljs-string">'update'</span>, <span class="hljs-string">'Post'</span>), <span class="hljs-title class_">PostController</span>.<span class="hljs-property">update</span>);</code></pre>
+        </div>
+      <p><strong>The Missing Link: Contextual Checks in Controller</strong> For the <code>PUT</code> route, the middleware confirms the user <em>can</em> update posts in general. The controller confirms they can update <em>this specific</em> post.</p>
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">javascript</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-javascript" data-lang="javascript"><span class="hljs-comment">// controllers/post.controller.js</span>
 <span class="hljs-keyword">import</span> { subject } <span class="hljs-keyword">from</span> <span class="hljs-string">'@casl/ability'</span>;
 
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title function_">update</span> = <span class="hljs-keyword">async</span> (<span class="hljs-params">req, res, next</span>) =&gt; {
@@ -365,7 +440,9 @@ router.<span class="hljs-title function_">put</span>(<span class="hljs-string">'
   }
 
   <span class="hljs-comment">// Proceed with update...</span>
-};</code></pre><h3 id="performance-optimization-caching-permissions">Performance Optimization: Caching Permissions</h3>
+};</code></pre>
+        </div>
+      <h3 id="performance-optimization-caching-permissions">Performance Optimization: Caching Permissions</h3>
 <p>In the architecture above, <code>defineAbilityFor(req.user)</code> hits the database to fetch roles and permissions on <strong>every request</strong>. For a high-traffic API, this is a bottleneck.</p>
 <p>We need to implement a caching layer using Redis. However, we cannot simply cache the <code>Ability</code> object because it contains functions. Instead, we cache the <strong>Raw Rules (JSON)</strong>.</p>
 <p><img src="https://blogs.buildwithmanish.com/assets/images/technical_diagram-escaping-the-if-isadmin-trap-implementing-scalable-rbac-and-abac-in-nodejs-6-2025-12-17-22693.png" alt="Caching Strategy Diagram"></p>
@@ -374,7 +451,16 @@ router.<span class="hljs-title function_">put</span>(<span class="hljs-string">'
 <li><strong>Key Generation:</strong> <code>auth:permissions:$\{userId\}</code>.</li>
 <li><strong>TTL:</strong> Set a reasonable expiry (e.g., 10 minutes) or use event-driven invalidation.</li>
 </ol>
-<pre><code class="hljs language-javascript" data-lang="javascript"><span class="hljs-comment">// services/auth/ability.factory.js (Optimized)</span>
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">javascript</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-javascript" data-lang="javascript"><span class="hljs-comment">// services/auth/ability.factory.js (Optimized)</span>
 <span class="hljs-keyword">import</span> redis <span class="hljs-keyword">from</span> <span class="hljs-string">'../../utils/redis'</span>;
 
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">defineAbilityFor</span>(<span class="hljs-params">user</span>) {
@@ -404,7 +490,9 @@ router.<span class="hljs-title function_">put</span>(<span class="hljs-string">'
   <span class="hljs-keyword">await</span> redis.<span class="hljs-title function_">set</span>(cacheKey, <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(rules), <span class="hljs-string">'EX'</span>, <span class="hljs-number">600</span>); <span class="hljs-comment">// 10 mins</span>
 
   <span class="hljs-keyword">return</span> <span class="hljs-title function_">createMongoAbility</span>(rules);
-}</code></pre><h4>Invalidation Strategy</h4>
+}</code></pre>
+        </div>
+      <h4>Invalidation Strategy</h4>
 <p>The cache must be invalidated whenever:</p>
 <ol>
 <li>A User’s role changes.</li>
@@ -412,20 +500,42 @@ router.<span class="hljs-title function_">put</span>(<span class="hljs-string">'
 <li>The Role hierarchy structure changes.</li>
 </ol>
 <p>This is best handled via an event bus or direct hooks in your Role/User update services:</p>
-<pre><code class="hljs language-javascript" data-lang="javascript"><span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">updateUserRole</span>(<span class="hljs-params">userId, newRoleId</span>) {
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">javascript</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-javascript" data-lang="javascript"><span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">updateUserRole</span>(<span class="hljs-params">userId, newRoleId</span>) {
   <span class="hljs-keyword">await</span> prisma.<span class="hljs-property">user</span>.<span class="hljs-title function_">update</span>({ ... });
   <span class="hljs-keyword">await</span> redis.<span class="hljs-title function_">del</span>(<span class="hljs-string">`auth:rules:<span class="hljs-subst">${userId}</span>`</span>); <span class="hljs-comment">// Force refresh on next request</span>
-}</code></pre><h3 id="handling-edge-cases-advanced-scenarios">Handling Edge Cases &amp; Advanced Scenarios</h3>
+}</code></pre>
+        </div>
+      <h3 id="handling-edge-cases-advanced-scenarios">Handling Edge Cases &amp; Advanced Scenarios</h3>
 <h4>1. Field-Level Security</h4>
 <p>Sometimes a user can update a resource, but not <em>all fields</em> of that resource. For example, a User can update their <code>bio</code>, but not their <code>subscriptionStatus</code>.</p>
 <p>CASL supports this via the <code>fields</code> property.</p>
-<pre><code class="hljs language-json" data-lang="json"><span class="hljs-comment">// Permission in DB</span>
-<span class="hljs-punctuation">{</span>
-  <span class="hljs-attr">"action"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"update"</span><span class="hljs-punctuation">,</span>
-  <span class="hljs-attr">"subject"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"User"</span><span class="hljs-punctuation">,</span>
-  <span class="hljs-attr">"fields"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">"bio"</span><span class="hljs-punctuation">,</span> <span class="hljs-string">"avatar"</span><span class="hljs-punctuation">,</span> <span class="hljs-string">"name"</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span> <span class="hljs-comment">// Explicit whitelist</span>
-  <span class="hljs-attr">"conditions"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">"id"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"${user.id}"</span> <span class="hljs-punctuation">}</span>
-<span class="hljs-punctuation">}</span></code></pre><p>In your controller, you filter the request body using libraries like <code>lodash.pick</code> based on permitted fields from <code>req.ability</code>.</p>
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">kotlin</span>
+            <button class="code-block-copy" onclick="copyCode(this)" title="Copy code">
+              <i data-lucide="copy"></i>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-kotlin" data-lang="kotlin"><span class="hljs-comment">// Permission in DB</span>
+{
+  <span class="hljs-string">"action"</span>: <span class="hljs-string">"update"</span>,
+  <span class="hljs-string">"subject"</span>: <span class="hljs-string">"User"</span>,
+  <span class="hljs-string">"fields"</span>: [<span class="hljs-string">"bio"</span>, <span class="hljs-string">"avatar"</span>, <span class="hljs-string">"name"</span>], <span class="hljs-comment">// Explicit whitelist</span>
+  <span class="hljs-string">"conditions"</span>: { <span class="hljs-string">"id"</span>: <span class="hljs-string">"<span class="hljs-subst">${user.id}</span>"</span> }
+}</code></pre>
+        </div>
+      <p>In your controller, you filter the request body using libraries like <code>lodash.pick</code> based on permitted fields from <code>req.ability</code>.</p>
 <h4>2. Multi-Tenancy</h4>
 <p>If your app is multi-tenant (e.g., SaaS), roles are often scoped to an Organization. The schema must evolve: <code>UserRoles</code> table linking <code>User</code>, <code>Role</code>, and <code>Organization</code>.</p>
 <p>The middleware logic changes slightly:</p>
