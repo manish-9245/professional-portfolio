@@ -788,23 +788,23 @@ function initializeBlogReader() {
 
   if (header.querySelector(".blog-reader-bar")) return;
 
-  const tempDiv = prose.cloneNode(true);
-  tempDiv.querySelectorAll("pre, .code-block-shell, .blog-toc, script, style, .blog-reader-bar, aside").forEach(el => el.remove());
-  const text = tempDiv.innerText.trim().replace(/\s+/g, " ");
-  
-  if (!text) return;
-
-  const wordCount = text.split(/\s+/).length;
-  const readTime = Math.ceil(wordCount / 200);
-
-  const readerBar = document.createElement("div");
-  readerBar.className = "blog-reader-bar";
-  
-  // Lucide-style paths for maximum consistency
+  // Icons as constants
   const iconPlay = `<svg class="icon-play" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>`;
   const iconPause = `<svg class="icon-pause" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>`;
   const iconStop = `<svg class="icon-stop" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect></svg>`;
 
+  // Extract clean text
+  const tempDiv = prose.cloneNode(true);
+  tempDiv.querySelectorAll("pre, .code-block-shell, .blog-toc, script, style, .blog-reader-bar, aside").forEach(el => el.remove());
+  const textContent = tempDiv.innerText.trim().replace(/\s+/g, " ");
+  
+  if (!textContent || textContent.length < 5) return;
+
+  const wordCount = textContent.split(/\s+/).length;
+  const readTime = Math.ceil(wordCount / 200);
+
+  const readerBar = document.createElement("div");
+  readerBar.className = "blog-reader-bar";
   readerBar.innerHTML = `
     <div class="blog-reader-info">
       <div class="blog-reader-icon-wrapper">
@@ -838,6 +838,7 @@ function initializeBlogReader() {
   let isPaused = false;
   let speedIdx = 0;
   const speeds = [1.0, 1.25, 1.5, 2.0];
+  let heartbeatInterval = null;
 
   function updateUI() {
     if (isPlaying) {
@@ -850,57 +851,81 @@ function initializeBlogReader() {
     speedText.textContent = `${speeds[speedIdx]}x`;
   }
 
-  function startReading() {
+  function stopReading() {
     window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.rate = speeds[speedIdx];
-    
-    // Ensure voices are loaded
-    const getBestVoice = () => {
-      const voices = window.speechSynthesis.getVoices();
-      return voices.find(v => v.lang.startsWith("en-") && v.name.includes("Google")) || 
-             voices.find(v => v.lang.startsWith("en-")) || 
-             voices[0];
-    };
+    if (heartbeatInterval) clearInterval(heartbeatInterval);
+    isPlaying = false;
+    isPaused = false;
+    updateUI();
+  }
 
-    utterance.voice = getBestVoice();
+  function startReading() {
+    // Clear any existing speech and force a reset
+    window.speechSynthesis.cancel();
     
-    utterance.onstart = () => {
+    // Some browsers need a resume after cancel to actually clear
+    if (window.speechSynthesis.paused) {
+      window.speechSynthesis.resume();
+    }
+    
+    // Brief delay to let the speech engine clear (required for Chrome/Safari)
+    setTimeout(() => {
+      const utterance = new SpeechSynthesisUtterance(textContent);
+      utterance.rate = speeds[speedIdx];
+      utterance.lang = "en-US";
+      
+      const voices = window.speechSynthesis.getVoices();
+      const voice = voices.find(v => v.lang.startsWith("en-") && v.name.includes("Google")) || 
+                    voices.find(v => v.lang.startsWith("en-")) || 
+                    voices[0];
+      if (voice) utterance.voice = voice;
+
+      utterance.onstart = () => {
+        isPlaying = true;
+        isPaused = false;
+        updateUI();
+      };
+
+      utterance.onend = () => {
+        isPlaying = false;
+        isPaused = false;
+        if (heartbeatInterval) clearInterval(heartbeatInterval);
+        updateUI();
+      };
+
+      utterance.onerror = () => {
+        isPlaying = false;
+        isPaused = false;
+        if (heartbeatInterval) clearInterval(heartbeatInterval);
+        updateUI();
+      };
+
+      window.speechSynthesis.speak(utterance);
+      
+      // Heartbeat Keep-Alive
+      if (heartbeatInterval) clearInterval(heartbeatInterval);
+      heartbeatInterval = setInterval(() => {
+        if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
+          window.speechSynthesis.pause();
+          window.speechSynthesis.resume();
+        }
+      }, 10000);
+
+      // Force UI update
       isPlaying = true;
       isPaused = false;
       updateUI();
-    };
-    utterance.onend = () => {
-      isPlaying = false;
-      isPaused = false;
-      updateUI();
-    };
-    utterance.onerror = () => {
-      isPlaying = false;
-      isPaused = false;
-      updateUI();
-    };
-
-    window.speechSynthesis.speak(utterance);
-    
-    // Fallback UI update
-    isPlaying = true;
-    isPaused = false;
-    updateUI();
-
-    // Heartbeat Keep-Alive for longer posts
-    const heartbeat = setInterval(() => {
-      if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
-        window.speechSynthesis.pause();
-        window.speechSynthesis.resume();
-      } else if (!window.speechSynthesis.speaking) {
-        clearInterval(heartbeat);
-      }
-    }, 10000);
+    }, 50);
   }
 
   playBtn.addEventListener("click", (e) => {
     e.preventDefault();
+    
+    // Critical: Resume before any other action to wake up the speech engine (Safari/Chrome fix)
+    if (window.speechSynthesis.paused) {
+      window.speechSynthesis.resume();
+    }
+
     if (isPlaying) {
       window.speechSynthesis.pause();
       isPlaying = false;
@@ -929,21 +954,18 @@ function initializeBlogReader() {
 
   stopBtn.addEventListener("click", (e) => {
     e.preventDefault();
-    window.speechSynthesis.cancel();
-    isPlaying = false;
-    isPaused = false;
-    updateUI();
+    stopReading();
   });
 
-  // Hotfix: Chrome voices sometimes don't load immediately
-  if (window.speechSynthesis.onvoiceschanged !== undefined) {
-    window.speechSynthesis.onvoiceschanged = () => {
-      // Just warming up the engine
-      window.speechSynthesis.getVoices();
-    };
-  }
+  window.addEventListener("beforeunload", () => {
+    window.speechSynthesis.cancel();
+    if (heartbeatInterval) clearInterval(heartbeatInterval);
+  });
 
-  window.addEventListener("beforeunload", () => window.speechSynthesis.cancel());
+  // Pre-fetch voices
+  if (window.speechSynthesis.onvoiceschanged !== undefined) {
+    window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+  }
 }
 
 function initializeShareActions() {
