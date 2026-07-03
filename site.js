@@ -782,13 +782,9 @@ function initializeCodeCopy(container) {
 }
 
 function initializeBlogReader() {
-  console.log("Initializing Blog Reader...");
   const header = document.querySelector(".blog-post-header");
   const prose = document.getElementById("blog-prose");
-  if (!header || !prose || !window.speechSynthesis) {
-    console.log("Blog reader requirements not met:", { header: !!header, prose: !!prose, tts: !!window.speechSynthesis });
-    return;
-  }
+  if (!header || !prose || !window.speechSynthesis) return;
 
   if (header.querySelector(".blog-reader-bar")) return;
 
@@ -796,10 +792,7 @@ function initializeBlogReader() {
   tempDiv.querySelectorAll("pre, .code-block-shell, .blog-toc, script, style, .blog-reader-bar, aside").forEach(el => el.remove());
   const text = tempDiv.innerText.trim().replace(/\s+/g, " ");
   
-  if (!text) {
-    console.log("No text found to read.");
-    return;
-  }
+  if (!text) return;
 
   const wordCount = text.split(/\s+/).length;
   const readTime = Math.ceil(wordCount / 200);
@@ -807,10 +800,10 @@ function initializeBlogReader() {
   const readerBar = document.createElement("div");
   readerBar.className = "blog-reader-bar";
   
-  // Define icons here for clarity
-  const playIcon = '<svg class="play-svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
-  const pauseIcon = '<svg class="pause-svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>';
-  const stopIcon = '<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M6 6h12v12H6z"/></svg>';
+  // High-visibility icons with explicit dimensions and fill
+  const playIcon = '<svg viewBox="0 0 24 24" fill="currentColor" style="width:1.2rem;height:1.2rem;display:block;"><path d="M8 5v14l11-7z"/></svg>';
+  const pauseIcon = '<svg viewBox="0 0 24 24" fill="currentColor" style="width:1.2rem;height:1.2rem;display:block;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>';
+  const stopIcon = '<svg viewBox="0 0 24 24" fill="currentColor" style="width:1.2rem;height:1.2rem;display:block;"><path d="M6 6h12v12H6z"/></svg>';
 
   readerBar.innerHTML = `
     <div class="blog-reader-info">
@@ -860,6 +853,7 @@ function initializeBlogReader() {
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.rate = speeds[speedIdx];
     
+    // Explicitly handle voice loading
     const voices = window.speechSynthesis.getVoices();
     const voice = voices.find(v => v.lang.startsWith("en-") && v.name.includes("Google")) || 
                   voices.find(v => v.lang.startsWith("en-")) || 
@@ -884,7 +878,7 @@ function initializeBlogReader() {
 
     window.speechSynthesis.speak(utterance);
     
-    // Fallback UI update in case onstart doesn't fire immediately
+    // Immediate UI feedback
     isPlaying = true;
     isPaused = false;
     updateUI();
@@ -892,7 +886,6 @@ function initializeBlogReader() {
 
   playBtn.addEventListener("click", (e) => {
     e.preventDefault();
-    console.log("Play button clicked. State:", { isPlaying, isPaused });
     if (isPlaying) {
       window.speechSynthesis.pause();
       isPlaying = false;
