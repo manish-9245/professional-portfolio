@@ -3,26 +3,26 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Relational Database Management System: An Engineering Deep-Dive · Manish Tiwari</title>
-    <meta name="description" content="Despite the meteoric rise of NoSQL, time-series, and vector databases in the last decade, the Relational Database Management System (RDBMS) remains the immutable backbone of global enterprise software..." />
+    <title>Stop Abusing POST: Why You Need the New HTTP QUERY Method · Manish Tiwari</title>
+    <meta name="description" content="Exploring RFC 9435 and why the new HTTP QUERY method is the missing piece in the REST puzzle." />
     <meta name="robots" content="index, follow" />
-    <link rel="canonical" href="https://buildwithmanish.com/posts/relational-database-management-system.html" />
+    <link rel="canonical" href="https://buildwithmanish.com/posts/http-query-method.html" />
     <meta property="og:site_name" content="Manish Tiwari" />
     <meta id="og-type" property="og:type" content="article" />
-    <meta property="og:title" content="Relational Database Management System: An Engineering Deep-Dive" />
-    <meta property="og:description" content="Despite the meteoric rise of NoSQL, time-series, and vector databases in the last decade, the Relational Database Management System (RDBMS) remains the immutable backbone of global enterprise software..." />
-    <meta property="og:url" content="https://buildwithmanish.com/posts/relational-database-management-system.html" />
-    <meta property="og:image" content="https://blogs.buildwithmanish.com/assets/images/hero-relational-database-management-system-0-2025-12-30-77512.png" />
+    <meta property="og:title" content="Stop Abusing POST: Why You Need the New HTTP QUERY Method" />
+    <meta property="og:description" content="Exploring RFC 9435 and why the new HTTP QUERY method is the missing piece in the REST puzzle." />
+    <meta property="og:url" content="https://buildwithmanish.com/posts/http-query-method.html" />
+    <meta property="og:image" content="https://buildwithmanish.com/image/optimized/aiblogs-20260314-175545.webp" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Relational Database Management System: An Engineering Deep-Dive" />
-    <meta name="twitter:description" content="Despite the meteoric rise of NoSQL, time-series, and vector databases in the last decade, the Relational Database Management System (RDBMS) remains the immutable backbone of global enterprise software..." />
-    <meta name="twitter:image" content="https://blogs.buildwithmanish.com/assets/images/hero-relational-database-management-system-0-2025-12-30-77512.png" />
+    <meta name="twitter:title" content="Stop Abusing POST: Why You Need the New HTTP QUERY Method" />
+    <meta name="twitter:description" content="Exploring RFC 9435 and why the new HTTP QUERY method is the missing piece in the REST puzzle." />
+    <meta name="twitter:image" content="https://buildwithmanish.com/image/optimized/aiblogs-20260314-175545.webp" />
     <script id="post-schema" type="application/ld+json">{
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "Relational Database Management System: An Engineering Deep-Dive",
-  "description": "Despite the meteoric rise of NoSQL, time-series, and vector databases in the last decade, the Relational Database Management System (RDBMS) remains the immutable backbone of global enterprise software...",
-  "datePublished": "2025-12-30",
+  "headline": "Stop Abusing POST: Why You Need the New HTTP QUERY Method",
+  "description": "Exploring RFC 9435 and why the new HTTP QUERY method is the missing piece in the REST puzzle.",
+  "datePublished": "2026-07-03",
   "author": {
     "@type": "Person",
     "name": "Manish Tiwari",
@@ -34,9 +34,9 @@
   },
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "https://buildwithmanish.com/posts/relational-database-management-system.html"
+    "@id": "https://buildwithmanish.com/posts/http-query-method.html"
   },
-  "image": "https://blogs.buildwithmanish.com/assets/images/hero-relational-database-management-system-0-2025-12-30-77512.png"
+  "image": "https://buildwithmanish.com/image/optimized/aiblogs-20260314-175545.webp"
 }</script>
     <link
       rel="icon"
@@ -146,130 +146,183 @@
     <main data-router-view>
     <header class="blog-post-header">
       <p class="muted kicker">Blog</p>
-      <h1>Relational Database Management System: An Engineering Deep-Dive</h1>
-      <p class="muted">Dec 30, 2025</p>
+      <h1>Stop Abusing POST: Why You Need the New HTTP QUERY Method</h1>
+      <p class="muted">Jul 03, 2026</p>
     </header>
     <div class="blog-post-layout">
-      <nav class="blog-toc" id="blog-toc" aria-label="Table of contents"><p class="blog-toc-title">Contents</p><ol><li><a href="#purpose-and-view-of-data">Purpose and View of Data</a></li><li><a href="#database-architecture">Database Architecture</a></li><li class="toc-h3"><a href="#1-the-storage-manager">1. The Storage Manager</a></li><li class="toc-h3"><a href="#2-the-query-processor">2. The Query Processor</a></li><li><a href="#the-relational-model">The Relational Model</a></li><li class="toc-h3"><a href="#keys-the-guardians-of-integrity">Keys: The Guardians of Integrity</a></li><li><a href="#entity-relationship-e-r-model">Entity-Relationship (E-R) Model</a></li><li class="toc-h3"><a href="#core-components">Core Components</a></li><li class="toc-h3"><a href="#constraints-cardinality">Constraints & Cardinality</a></li><li><a href="#relational-database-design-normalization">Relational Database Design: Normalization</a></li><li class="toc-h3"><a href="#functional-dependency-theory">Functional Dependency Theory</a></li><li class="toc-h3"><a href="#the-normal-forms">The Normal Forms</a></li><li><a href="#data-definition-language-ddl-">Data Definition Language (DDL)</a></li><li class="toc-h3"><a href="#creating-tables-with-constraints">Creating Tables with Constraints</a></li><li class="toc-h3"><a href="#altering-and-dropping">Altering and Dropping</a></li><li><a href="#dcl-data-control-language-">DCL (Data Control Language)</a></li><li><a href="#error-codes-spooling">Error Codes & Spooling</a></li><li><a href="#dml-managing-data">DML: Managing Data</a></li><li><a href="#advanced-retrieval-the-select-anatomy">Advanced Retrieval: The SELECT Anatomy</a></li><li class="toc-h3"><a href="#conditional-logic-case">Conditional Logic: CASE</a></li><li><a href="#multiple-tables-joins">Multiple Tables: Joins</a></li><li><a href="#functions-and-grouping">Functions and Grouping</a></li><li class="toc-h3"><a href="#built-in-functions">Built-in Functions</a></li><li class="toc-h3"><a href="#grouping-and-having">Grouping and HAVING</a></li><li class="toc-h3"><a href="#set-operations">Set Operations</a></li></ol></nav>
-      <article class="blog-prose" id="blog-prose"><p><img src="https://blogs.buildwithmanish.com/assets/images/hero-relational-database-management-system-0-2025-12-30-77512.png" alt="Relational Database Management System Hero"></p>
-<p>Despite the meteoric rise of NoSQL, time-series, and vector databases in the last decade, the Relational Database Management System (RDBMS) remains the immutable backbone of global enterprise software. Whether it’s financial ledgers, inventory management, or user identity systems, the relational model’s promise of ACID (Atomicity, Consistency, Isolation, Durability) compliance and mathematical rigor is irreplaceable.</p>
-<p>This article is not a high-level overview. We are going to deconstruct the RDBMS from the ground up-from the theoretical underpinnings of tuple calculus and storage architecture to the pragmatic realities of SQL optimization and schema normalization.</p>
-<hr>
-<h1>Unit 1: The Foundation – Architecture &amp; The Relational Model</h1>
-<p>To engineer robust systems, one must understand what happens <em>before</em> a query is executed. An RDBMS is not merely a data bucket; it is a complex engine designed to bridge the gap between logical data representation and physical storage.</p>
-<h2 id="purpose-and-view-of-data">Purpose and View of Data</h2>
-<p>Legacy file processing systems suffered from data redundancy, isolation, and lack of atomicity. If a file transfer crashed halfway, data was corrupted. RDBMS solves this via <strong>Data Abstraction</strong>:</p>
+      <nav class="blog-toc" id="blog-toc" aria-label="Table of contents"><p class="blog-toc-title">Contents</p><ol><li><a href="#the-missing-middle">The Missing Middle</a></li><li class="toc-h3"><a href="#why-is-this-a-big-deal-">Why is this a big deal?</a></li><li><a href="#how-it-works">How It Works</a></li><li><a href="#implementing-it-in-the-real-world">Implementing it in the Real World</a></li><li class="toc-h3"><a href="#the-client-side">The Client Side</a></li><li class="toc-h3"><a href="#the-server-side-node-js-example-">The Server Side (Node.js Example)</a></li><li><a href="#visualizing-the-flow">Visualizing the Flow</a></li><li><a href="#is-it-ready-for-prime-time-">Is it ready for prime time?</a></li></ol></nav>
+      <article class="blog-prose" id="blog-prose"><p>We have all been there. You are building a search feature or a complex filter. You want to send a large set of parameters to the server. You start with a <code>GET</code> request, but soon your URL looks like a chaotic string of encoded gibberish that hits the 2,048 character limit of some legacy proxy.</p>
+<p>So, you do what every developer does. You switch to <code>POST</code>.</p>
+<p>It works, but it feels wrong. <code>POST</code> is meant for creating resources or changing state. It is not idempotent by default, and browsers will nag users with "Are you sure you want to resubmit this form?" if they hit refresh. Plus, caches like Cloudflare often ignore <code>POST</code> bodies, meaning your expensive search query hits the database every single time.</p>
+<p>Enter <strong>RFC 9435: The HTTP QUERY Method</strong>.</p>
+<h2 id="the-missing-middle">The Missing Middle</h2>
+<p>The <code>QUERY</code> method is designed specifically for "safe" and "idempotent" data retrieval that requires a request body. It is the middle ground we have been waiting for. It has the body of a <code>POST</code> but the soul of a <code>GET</code>.</p>
+<h3 id="why-is-this-a-big-deal-">Why is this a big deal?</h3>
 <ol>
-<li><strong>Physical Level:</strong> How data is actually stored (block sizes, B-Trees, hashing).</li>
-<li><strong>Logical Level:</strong> What data is stored and the relationships (Tables, Columns).</li>
-<li><strong>View Level:</strong> Virtual tables (Views) that hide complexity or sensitive data from specific users.</li>
+<li><strong>No More URI Bloat</strong>: You can send kilobytes of complex JSON or SQL-like filters without worrying about URL length limits.</li>
+<li><strong>Safety First</strong>: Like <code>GET</code>, a <code>QUERY</code> is safe. It does not change anything on the server.</li>
+<li><strong>Idempotency</strong>: Making the same request twice is guaranteed to give the same result without side effects.</li>
+<li><strong>Better Caching</strong>: Because it is safe and idempotent, CDNs and browsers can cache the response based on the request body.</li>
 </ol>
-<h2 id="database-architecture">Database Architecture</h2>
-<p>The architecture of a database determines its throughput and reliability. It is generally split into the <strong>Query Processor</strong> and the <strong>Storage Manager</strong>.</p>
-<p><img src="https://blogs.buildwithmanish.com/assets/images/architecture_diagram-relational-database-management-system-1-2025-12-30-90537.png" alt="Database Architecture Diagram"></p>
-<h3 id="1-the-storage-manager">1. The Storage Manager</h3>
-<p>This is the interface between the low-level data stored in the OS file system and the application.</p>
-<ul>
-<li><strong>Buffer Manager:</strong> Critical for performance. It manages caching data blocks in RAM to minimize expensive disk I/O. If your DB is slow, check your buffer pool hit ratio.</li>
-<li><strong>File Manager:</strong> Manages allocation of space on disk structures.</li>
-<li><strong>Transaction Manager:</strong> Ensures the system remains in a consistent state despite failures (Power loss, crashes).</li>
-</ul>
-<h3 id="2-the-query-processor">2. The Query Processor</h3>
-<p>This is the “brain” of the operation.</p>
-<ul>
-<li><strong>DDL Interpreter:</strong> Interprets schema definitions.</li>
-<li><strong>DML Compiler:</strong> Translates SQL into an evaluation plan (relational algebra).</li>
-<li><strong>Query Evaluation Engine:</strong> Executes the low-level instructions generated by the compiler.</li>
-</ul>
-<h2 id="the-relational-model">The Relational Model</h2>
-<p>Proposed by E.F. Codd, the relational model is based on set theory.</p>
-<p><img src="https://blogs.buildwithmanish.com/assets/images/technical_diagram-relational-database-management-system-2-2025-12-30-92972.png" alt="Relational Model Diagram"></p>
-<ul>
-<li><strong>Relation (Table):</strong> A set of tuples.</li>
-<li><strong>Tuple (Row):</strong> An ordered list of values.</li>
-<li><strong>Attribute (Column):</strong> A named property of the relation.</li>
-<li><strong>Domain:</strong> The set of permitted values for an attribute (e.g., Integer, Varchar).</li>
-</ul>
-<h3 id="keys-the-guardians-of-integrity">Keys: The Guardians of Integrity</h3>
-<p>Keys are not just for indexing; they strictly define identity.</p>
-<ol>
-<li><strong>Super Key:</strong> A set of one or more attributes that uniquely identify a tuple.</li>
-<li><strong>Candidate Key:</strong> A minimal super key (no extraneous attributes).</li>
-<li><strong>Primary Key (PK):</strong> The candidate key chosen by the database designer as the principal means of identification.</li>
-<li><strong>Foreign Key (FK):</strong> An attribute in one table that references the PK of another. This enforces <strong>Referential Integrity</strong>.</li>
-</ol>
-<p><strong>Scenario:</strong> If you have an <code>Orders</code> table referencing a <code>Users</code> table via <code>user_id</code>, the database engine (via FK constraints) physically prevents you from deleting a User who has active orders, preventing orphaned data.</p>
-<hr>
-<h1>Unit 2: Database Design &amp; Normalization</h1>
-<p>A poorly designed schema is a technical debt that gathers interest at a compound rate. Database design is the process of converting real-world requirements into a mathematical model that minimizes redundancy.</p>
-<h2 id="entity-relationship-e-r-model">Entity-Relationship (E-R) Model</h2>
-<p>Before writing SQL, we model. The E-R model represents the world in terms of <strong>Entities</strong> (objects) and <strong>Relationships</strong> (associations).</p>
-<p><img src="https://blogs.buildwithmanish.com/assets/images/technical_diagram-relational-database-management-system-3-2025-12-30-80972.png" alt="E-R Model Diagram"></p>
-<h3 id="core-components">Core Components</h3>
-<ul>
-<li><strong>Entity Sets:</strong> E.g., <code>Employee</code>.</li>
-<li><strong>Attributes:</strong> Properties like <code>SSN</code>, <code>Name</code>.<ul>
-<li><em>Derived Attributes:</em> Calculated from others (e.g., <code>Age</code> from <code>DOB</code>).</li>
-<li><em>Multivalued Attributes:</em> E.g., <code>Phone_Numbers</code>.</li>
-</ul>
-</li>
-<li><strong>Relationships:</strong> The association between entities (e.g., <code>Works_For</code>).</li>
-</ul>
-<h3 id="constraints-cardinality">Constraints &amp; Cardinality</h3>
-<ul>
-<li><strong>One-to-One (1:1):</strong> CEO manages one Company.</li>
-<li><strong>One-to-Many (1:N):</strong> Department employs many Employees.</li>
-<li><strong>Many-to-Many (M:N):</strong> Students enroll in many Courses.</li>
-</ul>
-<p><strong>Design Issue - Reduction to Relational Schemas:</strong> When converting E-R to Tables:</p>
-<ol>
-<li><strong>Strong Entity Sets</strong> become their own tables.</li>
-<li><strong>Weak Entity Sets</strong> (depend on a strong entity for existence) include the strong entity’s PK as a Foreign Key.</li>
-<li><strong>M:N Relationships</strong> require a <strong>Join Table</strong> (associative entity) containing the PKs of both participating entities.</li>
-</ol>
-<h2 id="relational-database-design-normalization">Relational Database Design: Normalization</h2>
-<p>Normalization is the process of organizing data to reduce redundancy and improve data integrity. It relies heavily on <strong>Functional Dependencies (FDs)</strong>.</p>
-<p><img src="https://blogs.buildwithmanish.com/assets/images/concept_illustration-relational-database-management-system-4-2025-12-30-90188.png" alt="Relational Database Design Concept"></p>
-<h3 id="functional-dependency-theory">Functional Dependency Theory</h3>
-<p>An FD is denoted as $X \rightarrow Y$. It means if two tuples agree on attribute $X$, they must agree on attribute $Y$.</p>
-<ul>
-<li><strong>Axioms of Armstrong:</strong> Reflexivity, Augmentation, Transitivity. These allow us to infer new dependencies.</li>
-</ul>
-<h3 id="the-normal-forms">The Normal Forms</h3>
-<p>We decompose tables to eliminate anomalies (Update, Insert, Delete anomalies).</p>
-<h4>1. First Normal Form (1NF)</h4>
-<p><strong>Rule:</strong> Attributes must be atomic. No repeating groups or arrays.</p>
-<ul>
-<li><em>Bad:</em> <code>User(ID, Name, Phones)</code> where Phones is “555-0101, 555-0102”.</li>
-<li><em>Good:</em> Move phones to a separate table <code>UserPhones(UserID, Phone)</code>.</li>
-</ul>
-<h4>2. Second Normal Form (2NF)</h4>
-<p><strong>Rule:</strong> Must be in 1NF AND no <strong>Partial Dependencies</strong>.</p>
-<ul>
-<li><em>Context:</em> Applies when the Primary Key is composite.</li>
-<li><em>Violation:</em> <code>OrderItems(OrderID, ProductID, ProductName, Quantity)</code>. PK is <code>(OrderID, ProductID)</code>. <code>ProductName</code> depends only on <code>ProductID</code>, not the whole key.</li>
-<li><em>Fix:</em> Split into <code>Products(ProductID, ProductName)</code> and <code>OrderItems(OrderID, ProductID, Quantity)</code>.</li>
-</ul>
-<h4>3. Third Normal Form (3NF)</h4>
-<p><strong>Rule:</strong> Must be in 2NF AND no <strong>Transitive Dependencies</strong>.</p>
-<ul>
-<li><em>Violation:</em> <code>Employee(ID, ZipCode, City)</code>. <code>ID -&gt; ZipCode</code>, but <code>ZipCode -&gt; City</code>.</li>
-<li><em>Fix:</em> <code>Employee(ID, ZipCode)</code> and <code>Locations(ZipCode, City)</code>.</li>
-</ul>
-<h4>4. BCNF (Boyce-Codd Normal Form)</h4>
-<p>A stricter version of 3NF. For every FD $X \rightarrow Y$, $X$ must be a super key. This handles edge cases where a prime attribute depends on a non-prime attribute.</p>
-<p><strong>Decomposition Algorithm:</strong> When decomposing tables, two properties must be preserved:</p>
-<ol>
-<li><strong>Lossless Join:</strong> Can we join the tables back to get the original data without creating spurious rows?</li>
-<li><strong>Dependency Preservation:</strong> Can we enforce constraints without joining tables?</li>
-</ol>
-<hr>
-<h1>Unit 3: SQL Basics – Definition &amp; Control</h1>
-<p>SQL (Structured Query Language) is the implementation of the relational model. It is declarative: you tell the DB <em>what</em> you want, not <em>how</em> to get it.</p>
-<p><img src="https://blogs.buildwithmanish.com/assets/images/comparison_chart-relational-database-management-system-5-2025-12-30-31040.png" alt="SQL Basics Comparison Chart"></p>
-<h2 id="data-definition-language-ddl-">Data Definition Language (DDL)</h2>
-<p>DDL defines the structure. In a production environment, DDL is dangerous. Locking a table to add a column can bring down a high-traffic service.</p>
-<h3 id="creating-tables-with-constraints">Creating Tables with Constraints</h3>
+<h2 id="how-it-works">How It Works</h2>
+<p>Here is a look at what a raw <code>QUERY</code> request looks like. Notice how we are sending a JSON payload but using the <code>QUERY</code> verb.</p>
+
+        <div class="code-block-shell">
+          <div class="code-window-bar">
+            <div class="code-window-controls">
+              <span class="code-window-dot close" aria-hidden="true"></span>
+              <span class="code-window-dot minimize" aria-hidden="true"></span>
+              <span class="code-window-dot maximize" aria-hidden="true"></span>
+            </div>
+            <div class="code-window-center">
+              <span class="code-lang-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg></span>
+              <span class="code-window-lang">http</span>
+            </div>
+            <button type="button" class="code-copy-button" onclick="copyCode(this)" aria-label="Copy code">
+              <svg class="icon-copy" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-http" data-lang="http"><span class="hljs-keyword">QUERY</span> <span class="hljs-string">/api/v1/products/search</span> <span class="hljs-meta">HTTP/1.1</span>
+<span class="hljs-attribute">Host</span><span class="hljs-punctuation">: </span>api.buildwithmanish.com
+<span class="hljs-attribute">Content-Type</span><span class="hljs-punctuation">: </span>application/json
+<span class="hljs-attribute">Accept</span><span class="hljs-punctuation">: </span>application/json
+
+<span class="language-prolog">{
+  <span class="hljs-string">"filters"</span>: {
+    <span class="hljs-string">"category"</span>: <span class="hljs-string">"electronics"</span>,
+    <span class="hljs-string">"price_range"</span>: [<span class="hljs-number">500</span>, <span class="hljs-number">1500</span>],
+    <span class="hljs-string">"tags"</span>: [<span class="hljs-string">"oled"</span>, <span class="hljs-string">"4k"</span>, <span class="hljs-string">"gaming"</span>],
+    <span class="hljs-string">"specs"</span>: {
+      <span class="hljs-string">"refresh_rate"</span>: <span class="hljs-string">"120Hz"</span>,
+      <span class="hljs-string">"panel"</span>: <span class="hljs-string">"IPS"</span>
+    }
+  },
+  <span class="hljs-string">"sort"</span>: <span class="hljs-string">"price_desc"</span>,
+  <span class="hljs-string">"limit"</span>: <span class="hljs-number">50</span>
+}</span></code></pre>
+        </div>
+      <p>The server responds just like it would to a <code>GET</code> request:</p>
+
+        <div class="code-block-shell">
+          <div class="code-window-bar">
+            <div class="code-window-controls">
+              <span class="code-window-dot close" aria-hidden="true"></span>
+              <span class="code-window-dot minimize" aria-hidden="true"></span>
+              <span class="code-window-dot maximize" aria-hidden="true"></span>
+            </div>
+            <div class="code-window-center">
+              <span class="code-lang-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg></span>
+              <span class="code-window-lang">http</span>
+            </div>
+            <button type="button" class="code-copy-button" onclick="copyCode(this)" aria-label="Copy code">
+              <svg class="icon-copy" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-http" data-lang="http"><span class="hljs-meta">HTTP/1.1</span> <span class="hljs-number">200</span> OK
+<span class="hljs-attribute">Content-Type</span><span class="hljs-punctuation">: </span>application/json
+<span class="hljs-attribute">Cache-Control</span><span class="hljs-punctuation">: </span>public, max-age=3600
+<span class="hljs-attribute">Vary</span><span class="hljs-punctuation">: </span>Content-Type
+
+<span class="language-erlang">[
+  { <span class="hljs-string">"id"</span>: <span class="hljs-string">"p123"</span>, <span class="hljs-string">"name"</span>: <span class="hljs-string">"UltraWide Gaming Monitor"</span>, <span class="hljs-string">"price"</span>: <span class="hljs-number">899</span> },
+  ...
+]</span></code></pre>
+        </div>
+      <h2 id="implementing-it-in-the-real-world">Implementing it in the Real World</h2>
+<p>While browser support for the <code>QUERY</code> method is still early, the specification is solid. If you are building internal microservices or using modern edge workers, you can start looking at this today.</p>
+<h3 id="the-client-side">The Client Side</h3>
+<p>Using the standard <code>fetch</code> API, a <code>QUERY</code> request is straightforward. Just remember that many older servers might reject this verb until they are updated.</p>
+
+        <div class="code-block-shell">
+          <div class="code-window-bar">
+            <div class="code-window-controls">
+              <span class="code-window-dot close" aria-hidden="true"></span>
+              <span class="code-window-dot minimize" aria-hidden="true"></span>
+              <span class="code-window-dot maximize" aria-hidden="true"></span>
+            </div>
+            <div class="code-window-center">
+              <span class="code-lang-icon"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="#F7DF1E" d="M0 0h24v24H0V0z"></path><path d="M12.14 12.63c0 .54.12.98.37 1.34.25.35.6.63 1.05.82.44.19.98.29 1.62.29.61 0 1.14-.1 1.58-.29.43-.19.78-.45 1.04-.79.26-.34.39-.74.39-1.2h-2.1c0 .28-.08.5-.23.67-.15.17-.38.25-.69.25-.32 0-.54-.08-.68-.24-.14-.16-.21-.39-.21-.69 0-.25.08-.45.23-.6.15-.15.39-.26.74-.34l1.09-.25c.78-.18 1.38-.46 1.8-.83.42-.37.63-.88.63-1.53 0-.51-.12-.95-.37-1.32-.25-.37-.61-.66-1.07-.86-.46-.21-1.02-.31-1.68-.31-.62 0-1.15.1-1.59.31-.44.21-.79.5-1.05.88-.26.38-.39.84-.39 1.39h2.1c0-.29.07-.51.21-.66.14-.15.35-.22.64-.22.28 0 .49.07.63.22.14.15.21.36.21.63 0 .23-.08.41-.23.55-.15.14-.38.24-.7.31l-1.09.25c-.8.19-1.39.48-1.78.86-.39.38-.59.9-.59 1.56zM6.97 12.63c0 .54.12.98.37 1.34.25.35.6.63 1.05.82.44.19.98.29 1.62.29.61 0 1.14-.1 1.58-.29.43-.19.78-.45 1.04-.79.26-.34.39-.74.39-1.2h-2.1c0 .28-.08.5-.23.67-.15.17-.38.25-.69.25-.32 0-.54-.08-.68-.24-.14-.16-.21-.39-.21-.69 0-.25.08-.45.23-.6.15-.15.39-.26.74-.34l1.09-.25c.78-.18 1.38-.46 1.8-.83.42-.37.63-.88.63-1.53 0-.51-.12-.95-.37-1.32-.25-.37-.61-.66-1.07-.86-.46-.21-1.02-.31-1.68-.31-.62 0-1.15.1-1.59.31-.44.21-.79.5-1.05.88-.26.38-.39.84-.39 1.39h2.1c0-.29.07-.51.21-.66.14-.15.35-.22.64-.22.28 0 .49.07.63.22.14.15.21.36.21.63 0 .23-.08.41-.23.55-.15.14-.38.24-.7.31l-1.09.25c-.8.19-1.39.48-1.78.86-.39.38-.59.9-.59 1.56z" fill="#000"></path><path d="M21.6 22.12c-.2.2-.47.28-.8.28H3.2c-.33 0-.6-.08-.8-.28-.2-.2-.32-.47-.32-.8V3.2c0-.33.12-.6.32-.8.2-.2.47-.32.8-.32h17.6c.33 0 .6.12.8.32.2.2.32.47.32.8v18.12c0 .33-.12.6-.32.8z" fill="none"></path></svg></span>
+              <span class="code-window-lang">javascript</span>
+            </div>
+            <button type="button" class="code-copy-button" onclick="copyCode(this)" aria-label="Copy code">
+              <svg class="icon-copy" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-javascript" data-lang="javascript"><span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">searchProducts</span>(<span class="hljs-params">criteria</span>) {
+  <span class="hljs-keyword">try</span> {
+    <span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetch</span>(<span class="hljs-string">'https://api.example.com/search'</span>, {
+      <span class="hljs-attr">method</span>: <span class="hljs-string">'QUERY'</span>, <span class="hljs-comment">// The star of the show</span>
+      <span class="hljs-attr">headers</span>: {
+        <span class="hljs-string">'Content-Type'</span>: <span class="hljs-string">'application/json'</span>,
+        <span class="hljs-string">'Accept'</span>: <span class="hljs-string">'application/json'</span>
+      },
+      <span class="hljs-attr">body</span>: <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(criteria)
+    });
+
+    <span class="hljs-keyword">if</span> (!response.<span class="hljs-property">ok</span>) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">`Search failed: <span class="hljs-subst">${response.status}</span>`</span>);
+    }
+
+    <span class="hljs-keyword">const</span> data = <span class="hljs-keyword">await</span> response.<span class="hljs-title function_">json</span>();
+    <span class="hljs-keyword">return</span> data;
+  } <span class="hljs-keyword">catch</span> (error) {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">'Error fetching data:'</span>, error);
+  }
+}
+
+<span class="hljs-comment">// Usage</span>
+<span class="hljs-keyword">const</span> results = <span class="hljs-keyword">await</span> <span class="hljs-title function_">searchProducts</span>({
+  <span class="hljs-attr">minStars</span>: <span class="hljs-number">4</span>,
+  <span class="hljs-attr">inStock</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">brand</span>: <span class="hljs-string">"Logitech"</span>
+});</code></pre>
+        </div>
+      <h3 id="the-server-side-node-js-example-">The Server Side (Node.js Example)</h3>
+<p>If you are using a modern framework or raw Node.js, you can handle the <code>QUERY</code> method by checking the <code>req.method</code>.</p>
+
+        <div class="code-block-shell">
+          <div class="code-window-bar">
+            <div class="code-window-controls">
+              <span class="code-window-dot close" aria-hidden="true"></span>
+              <span class="code-window-dot minimize" aria-hidden="true"></span>
+              <span class="code-window-dot maximize" aria-hidden="true"></span>
+            </div>
+            <div class="code-window-center">
+              <span class="code-lang-icon"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="#F7DF1E" d="M0 0h24v24H0V0z"></path><path d="M12.14 12.63c0 .54.12.98.37 1.34.25.35.6.63 1.05.82.44.19.98.29 1.62.29.61 0 1.14-.1 1.58-.29.43-.19.78-.45 1.04-.79.26-.34.39-.74.39-1.2h-2.1c0 .28-.08.5-.23.67-.15.17-.38.25-.69.25-.32 0-.54-.08-.68-.24-.14-.16-.21-.39-.21-.69 0-.25.08-.45.23-.6.15-.15.39-.26.74-.34l1.09-.25c.78-.18 1.38-.46 1.8-.83.42-.37.63-.88.63-1.53 0-.51-.12-.95-.37-1.32-.25-.37-.61-.66-1.07-.86-.46-.21-1.02-.31-1.68-.31-.62 0-1.15.1-1.59.31-.44.21-.79.5-1.05.88-.26.38-.39.84-.39 1.39h2.1c0-.29.07-.51.21-.66.14-.15.35-.22.64-.22.28 0 .49.07.63.22.14.15.21.36.21.63 0 .23-.08.41-.23.55-.15.14-.38.24-.7.31l-1.09.25c-.8.19-1.39.48-1.78.86-.39.38-.59.9-.59 1.56zM6.97 12.63c0 .54.12.98.37 1.34.25.35.6.63 1.05.82.44.19.98.29 1.62.29.61 0 1.14-.1 1.58-.29.43-.19.78-.45 1.04-.79.26-.34.39-.74.39-1.2h-2.1c0 .28-.08.5-.23.67-.15.17-.38.25-.69.25-.32 0-.54-.08-.68-.24-.14-.16-.21-.39-.21-.69 0-.25.08-.45.23-.6.15-.15.39-.26.74-.34l1.09-.25c.78-.18 1.38-.46 1.8-.83.42-.37.63-.88.63-1.53 0-.51-.12-.95-.37-1.32-.25-.37-.61-.66-1.07-.86-.46-.21-1.02-.31-1.68-.31-.62 0-1.15.1-1.59.31-.44.21-.79.5-1.05.88-.26.38-.39.84-.39 1.39h2.1c0-.29.07-.51.21-.66.14-.15.35-.22.64-.22.28 0 .49.07.63.22.14.15.21.36.21.63 0 .23-.08.41-.23.55-.15.14-.38.24-.7.31l-1.09.25c-.8.19-1.39.48-1.78.86-.39.38-.59.9-.59 1.56z" fill="#000"></path><path d="M21.6 22.12c-.2.2-.47.28-.8.28H3.2c-.33 0-.6-.08-.8-.28-.2-.2-.32-.47-.32-.8V3.2c0-.33.12-.6.32-.8.2-.2.47-.32.8-.32h17.6c.33 0 .6.12.8.32.2.2.32.47.32.8v18.12c0 .33-.12.6-.32.8z" fill="none"></path></svg></span>
+              <span class="code-window-lang">javascript</span>
+            </div>
+            <button type="button" class="code-copy-button" onclick="copyCode(this)" aria-label="Copy code">
+              <svg class="icon-copy" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-javascript" data-lang="javascript"><span class="hljs-keyword">import</span> { createServer } <span class="hljs-keyword">from</span> <span class="hljs-string">'http'</span>;
+
+<span class="hljs-keyword">const</span> server = <span class="hljs-title function_">createServer</span>(<span class="hljs-function">(<span class="hljs-params">req, res</span>) =&gt;</span> {
+  <span class="hljs-keyword">if</span> (req.<span class="hljs-property">method</span> === <span class="hljs-string">'QUERY'</span> &amp;&amp; req.<span class="hljs-property">url</span> === <span class="hljs-string">'/search'</span>) {
+    <span class="hljs-keyword">let</span> body = <span class="hljs-string">''</span>;
+    req.<span class="hljs-title function_">on</span>(<span class="hljs-string">'data'</span>, <span class="hljs-function"><span class="hljs-params">chunk</span> =&gt;</span> { body += chunk; });
+    
+    req.<span class="hljs-title function_">on</span>(<span class="hljs-string">'end'</span>, <span class="hljs-function">() =&gt;</span> {
+      <span class="hljs-keyword">const</span> params = <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">parse</span>(body);
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">'Safe and Idempotent Query Received:'</span>, params);
+      
+      res.<span class="hljs-title function_">writeHead</span>(<span class="hljs-number">200</span>, { <span class="hljs-string">'Content-Type'</span>: <span class="hljs-string">'application/json'</span> });
+      res.<span class="hljs-title function_">end</span>(<span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>({ <span class="hljs-attr">message</span>: <span class="hljs-string">"Results found"</span>, <span class="hljs-attr">data</span>: [] }));
+    });
+  } <span class="hljs-keyword">else</span> {
+    res.<span class="hljs-title function_">writeHead</span>(<span class="hljs-number">405</span>); <span class="hljs-comment">// Method Not Allowed</span>
+    res.<span class="hljs-title function_">end</span>();
+  }
+});
+
+server.<span class="hljs-title function_">listen</span>(<span class="hljs-number">3000</span>);</code></pre>
+        </div>
+      <h2 id="visualizing-the-flow">Visualizing the Flow</h2>
+<p>Here is how the <code>QUERY</code> method fits into the standard request lifecycle compared to <code>GET</code> and <code>POST</code>.</p>
 
         <div class="code-block-shell">
           <div class="code-window-bar">
@@ -287,240 +340,26 @@
               <span>Copy</span>
             </button>
           </div>
-          <pre><code class="hljs language-sql" data-lang="sql"><span class="hljs-keyword">CREATE TABLE</span> Employees (
-    emp_id <span class="hljs-type">INT</span> <span class="hljs-keyword">PRIMARY KEY</span>,
-    email <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">255</span>) <span class="hljs-keyword">UNIQUE</span> <span class="hljs-keyword">NOT NULL</span>,
-    salary <span class="hljs-type">DECIMAL</span>(<span class="hljs-number">10</span>, <span class="hljs-number">2</span>) <span class="hljs-keyword">CHECK</span> (salary <span class="hljs-operator">&gt;</span> <span class="hljs-number">0</span>),
-    dept_id <span class="hljs-type">INT</span>,
-    hire_date <span class="hljs-type">DATE</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-built_in">CURRENT_DATE</span>,
-    <span class="hljs-keyword">CONSTRAINT</span> fk_dept 
-        <span class="hljs-keyword">FOREIGN KEY</span> (dept_id) 
-        <span class="hljs-keyword">REFERENCES</span> Departments(dept_id)
-        <span class="hljs-keyword">ON</span> <span class="hljs-keyword">DELETE</span> <span class="hljs-keyword">SET</span> <span class="hljs-keyword">NULL</span>
-);</code></pre>
+          <pre><code class="hljs language-sql" data-lang="sql">sequenceDiagram
+    participant Client
+    participant Cache
+    participant Server
+
+    Note <span class="hljs-keyword">over</span> Client, Server: The QUERY Workflow
+
+    Client<span class="hljs-operator">-</span><span class="hljs-operator">&gt;&gt;</span>Cache: QUERY <span class="hljs-operator">/</span><span class="hljs-keyword">search</span> (<span class="hljs-keyword">with</span> Body)
+    alt Cache Hit
+        Cache<span class="hljs-comment">--&gt;&gt;Client: 200 OK (Cached Data)</span>
+    <span class="hljs-keyword">else</span> Cache Miss
+        Cache<span class="hljs-operator">-</span><span class="hljs-operator">&gt;&gt;</span>Server: QUERY <span class="hljs-operator">/</span><span class="hljs-keyword">search</span> (<span class="hljs-keyword">with</span> Body)
+        Server<span class="hljs-operator">-</span><span class="hljs-operator">&gt;&gt;</span>Server: Process <span class="hljs-keyword">Search</span> (Safe <span class="hljs-operator">&amp;</span> Idempotent)
+        Server<span class="hljs-comment">--&gt;&gt;Cache: 200 OK + Cache-Control</span>
+        Cache<span class="hljs-comment">--&gt;&gt;Client: 200 OK (Fresh Data)</span>
+    <span class="hljs-keyword">end</span></code></pre>
         </div>
-      <ul>
-<li><strong>Constraint Naming:</strong> Always name your constraints (<code>fk_dept</code>). It makes debugging error logs significantly easier.</li>
-<li><strong>Types:</strong> <code>INT</code>, <code>VARCHAR</code>, <code>DECIMAL</code> (for money-never use FLOAT), <code>DATE</code>.</li>
-</ul>
-<h3 id="altering-and-dropping">Altering and Dropping</h3>
-
-        <div class="code-block-shell">
-          <div class="code-window-bar">
-            <div class="code-window-controls">
-              <span class="code-window-dot close" aria-hidden="true"></span>
-              <span class="code-window-dot minimize" aria-hidden="true"></span>
-              <span class="code-window-dot maximize" aria-hidden="true"></span>
-            </div>
-            <div class="code-window-center">
-              <span class="code-lang-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 4.02 2 6.5s4.48 4.5 10 4.5 10-2.02 10-4.5S17.52 2 12 2zm0 13c-4.42 0-8-1.79-8-4v3c0 2.21 3.58 4 8 4s8-1.79 8-4v-3c0 2.21-3.58 4-8 4zm0 5c-4.42 0-8-1.79-8-4v3c0 2.21 3.58 4 8 4s8-1.79 8-4v-3c0 2.21-3.58 4-8 4z"></path></svg></span>
-              <span class="code-window-lang">sql</span>
-            </div>
-            <button type="button" class="code-copy-button" onclick="copyCode(this)" aria-label="Copy code">
-              <svg class="icon-copy" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-              <span>Copy</span>
-            </button>
-          </div>
-          <pre><code class="hljs language-sql" data-lang="sql"><span class="hljs-comment">-- Adding a column</span>
-<span class="hljs-keyword">ALTER TABLE</span> Employees <span class="hljs-keyword">ADD</span> <span class="hljs-keyword">COLUMN</span> phone_number <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">20</span>);
-
-<span class="hljs-comment">-- Renaming (Database specific, standard SQL uses RENAME TO)</span>
-<span class="hljs-keyword">ALTER TABLE</span> Employees RENAME <span class="hljs-keyword">TO</span> Staff;
-
-<span class="hljs-comment">-- Truncate vs Delete</span>
-<span class="hljs-keyword">TRUNCATE</span> <span class="hljs-keyword">TABLE</span> Staff; <span class="hljs-comment">-- Fast, resets High Water Mark, no undo (DDL)</span>
-<span class="hljs-keyword">DELETE</span> <span class="hljs-keyword">FROM</span> Staff;    <span class="hljs-comment">-- Slower, logs every row, transactional (DML)</span></code></pre>
-        </div>
-      <h2 id="dcl-data-control-language-">DCL (Data Control Language)</h2>
-<p>Security is paramount.</p>
-
-        <div class="code-block-shell">
-          <div class="code-window-bar">
-            <div class="code-window-controls">
-              <span class="code-window-dot close" aria-hidden="true"></span>
-              <span class="code-window-dot minimize" aria-hidden="true"></span>
-              <span class="code-window-dot maximize" aria-hidden="true"></span>
-            </div>
-            <div class="code-window-center">
-              <span class="code-lang-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 4.02 2 6.5s4.48 4.5 10 4.5 10-2.02 10-4.5S17.52 2 12 2zm0 13c-4.42 0-8-1.79-8-4v3c0 2.21 3.58 4 8 4s8-1.79 8-4v-3c0 2.21-3.58 4-8 4zm0 5c-4.42 0-8-1.79-8-4v3c0 2.21 3.58 4 8 4s8-1.79 8-4v-3c0 2.21-3.58 4-8 4z"></path></svg></span>
-              <span class="code-window-lang">sql</span>
-            </div>
-            <button type="button" class="code-copy-button" onclick="copyCode(this)" aria-label="Copy code">
-              <svg class="icon-copy" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-              <span>Copy</span>
-            </button>
-          </div>
-          <pre><code class="hljs language-sql" data-lang="sql"><span class="hljs-keyword">GRANT</span> <span class="hljs-keyword">SELECT</span>, <span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">ON</span> Employees <span class="hljs-keyword">TO</span> app_user;
-<span class="hljs-keyword">REVOKE</span> <span class="hljs-keyword">DELETE</span> <span class="hljs-keyword">ON</span> Employees <span class="hljs-keyword">FROM</span> app_user;</code></pre>
-        </div>
-      <h2 id="error-codes-spooling">Error Codes &amp; Spooling</h2>
-<ul>
-<li><strong>Spooling:</strong> In CLI tools (like SQL*Plus), spooling directs query output to a file. Useful for generating CSV reports via cron jobs.</li>
-<li><strong>Error Codes:</strong> Applications should trap SQLSTATE codes. For example, a duplicate key violation usually returns specific codes (e.g., 23505 in Postgres) allowing the app to fail gracefully.</li>
-</ul>
-<hr>
-<h1>Unit 4: Data Management, Retrieval &amp; Functions</h1>
-<p>This is where the rubber meets the road. Writing efficient DML (Data Manipulation Language) is the primary skill of a backend engineer.</p>
-<h2 id="dml-managing-data">DML: Managing Data</h2>
-<p>The <code>INSERT</code>, <code>UPDATE</code>, and <code>DELETE</code> statements are straightforward but powerful.</p>
-
-        <div class="code-block-shell">
-          <div class="code-window-bar">
-            <div class="code-window-controls">
-              <span class="code-window-dot close" aria-hidden="true"></span>
-              <span class="code-window-dot minimize" aria-hidden="true"></span>
-              <span class="code-window-dot maximize" aria-hidden="true"></span>
-            </div>
-            <div class="code-window-center">
-              <span class="code-lang-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 4.02 2 6.5s4.48 4.5 10 4.5 10-2.02 10-4.5S17.52 2 12 2zm0 13c-4.42 0-8-1.79-8-4v3c0 2.21 3.58 4 8 4s8-1.79 8-4v-3c0 2.21-3.58 4-8 4zm0 5c-4.42 0-8-1.79-8-4v3c0 2.21 3.58 4 8 4s8-1.79 8-4v-3c0 2.21-3.58 4-8 4z"></path></svg></span>
-              <span class="code-window-lang">sql</span>
-            </div>
-            <button type="button" class="code-copy-button" onclick="copyCode(this)" aria-label="Copy code">
-              <svg class="icon-copy" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-              <span>Copy</span>
-            </button>
-          </div>
-          <pre><code class="hljs language-sql" data-lang="sql"><span class="hljs-comment">-- Multi-row insert</span>
-<span class="hljs-keyword">INSERT INTO</span> Products (name, price) <span class="hljs-keyword">VALUES</span> 
-(<span class="hljs-string">'Widget A'</span>, <span class="hljs-number">10.00</span>),
-(<span class="hljs-string">'Widget B'</span>, <span class="hljs-number">15.50</span>);
-
-<span class="hljs-comment">-- Update with logic</span>
-<span class="hljs-keyword">UPDATE</span> Employees 
-<span class="hljs-keyword">SET</span> salary <span class="hljs-operator">=</span> salary <span class="hljs-operator">*</span> <span class="hljs-number">1.05</span> 
-<span class="hljs-keyword">WHERE</span> performance_rating <span class="hljs-operator">&gt;</span> <span class="hljs-number">4</span>;
-
-<span class="hljs-comment">-- Substitution Variables (Tool specific, e.g., SQL*Plus)</span>
-<span class="hljs-comment">-- DEFINE department_id = 10;</span>
-<span class="hljs-comment">-- SELECT * FROM Employees WHERE dept_id = &amp;department_id;</span></code></pre>
-        </div>
-      <h2 id="advanced-retrieval-the-select-anatomy">Advanced Retrieval: The SELECT Anatomy</h2>
-<p>The execution order of a SQL query is different from the writing order:</p>
-<ol>
-<li><strong>FROM / JOIN</strong> (Gather data)</li>
-<li><strong>WHERE</strong> (Filter rows)</li>
-<li><strong>GROUP BY</strong> (Aggregate)</li>
-<li><strong>HAVING</strong> (Filter groups)</li>
-<li><strong>SELECT</strong> (Return columns)</li>
-<li><strong>ORDER BY</strong> (Sort)</li>
-</ol>
-<h3 id="conditional-logic-case">Conditional Logic: CASE</h3>
-<p>The <code>CASE</code> statement allows for if-then logic directly in the projection.</p>
-
-        <div class="code-block-shell">
-          <div class="code-window-bar">
-            <div class="code-window-controls">
-              <span class="code-window-dot close" aria-hidden="true"></span>
-              <span class="code-window-dot minimize" aria-hidden="true"></span>
-              <span class="code-window-dot maximize" aria-hidden="true"></span>
-            </div>
-            <div class="code-window-center">
-              <span class="code-lang-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 4.02 2 6.5s4.48 4.5 10 4.5 10-2.02 10-4.5S17.52 2 12 2zm0 13c-4.42 0-8-1.79-8-4v3c0 2.21 3.58 4 8 4s8-1.79 8-4v-3c0 2.21-3.58 4-8 4zm0 5c-4.42 0-8-1.79-8-4v3c0 2.21 3.58 4 8 4s8-1.79 8-4v-3c0 2.21-3.58 4-8 4z"></path></svg></span>
-              <span class="code-window-lang">sql</span>
-            </div>
-            <button type="button" class="code-copy-button" onclick="copyCode(this)" aria-label="Copy code">
-              <svg class="icon-copy" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-              <span>Copy</span>
-            </button>
-          </div>
-          <pre><code class="hljs language-sql" data-lang="sql"><span class="hljs-keyword">SELECT</span> 
-    name,
-    salary,
-    <span class="hljs-keyword">CASE</span> 
-        <span class="hljs-keyword">WHEN</span> salary <span class="hljs-operator">&lt;</span> <span class="hljs-number">50000</span> <span class="hljs-keyword">THEN</span> <span class="hljs-string">'Junior'</span>
-        <span class="hljs-keyword">WHEN</span> salary <span class="hljs-keyword">BETWEEN</span> <span class="hljs-number">50000</span> <span class="hljs-keyword">AND</span> <span class="hljs-number">100000</span> <span class="hljs-keyword">THEN</span> <span class="hljs-string">'Mid'</span>
-        <span class="hljs-keyword">ELSE</span> <span class="hljs-string">'Senior'</span>
-    <span class="hljs-keyword">END</span> <span class="hljs-keyword">as</span> seniority_level
-<span class="hljs-keyword">FROM</span> Employees;</code></pre>
-        </div>
-      <h2 id="multiple-tables-joins">Multiple Tables: Joins</h2>
-<p>Joins are the physical realization of the Cartesian product filtered by a predicate.</p>
-<p><img src="https://blogs.buildwithmanish.com/assets/images/technical_diagram-relational-database-management-system-6-2025-12-30-17942.png" alt="Joins Diagram"></p>
-<ol>
-<li><strong>Inner Join:</strong> Returns rows when there is a match in both tables.</li>
-<li><strong>Left (Outer) Join:</strong> All rows from the left table, and matched rows from the right table (NULL if no match).</li>
-<li><strong>Right (Outer) Join:</strong> Inverse of Left Join.</li>
-<li><strong>Full Join:</strong> All rows from both tables.</li>
-<li><strong>Self Join:</strong> Joining a table to itself (e.g., Employee hierarchy where Manager is also an Employee).</li>
-</ol>
-
-        <div class="code-block-shell">
-          <div class="code-window-bar">
-            <div class="code-window-controls">
-              <span class="code-window-dot close" aria-hidden="true"></span>
-              <span class="code-window-dot minimize" aria-hidden="true"></span>
-              <span class="code-window-dot maximize" aria-hidden="true"></span>
-            </div>
-            <div class="code-window-center">
-              <span class="code-lang-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 4.02 2 6.5s4.48 4.5 10 4.5 10-2.02 10-4.5S17.52 2 12 2zm0 13c-4.42 0-8-1.79-8-4v3c0 2.21 3.58 4 8 4s8-1.79 8-4v-3c0 2.21-3.58 4-8 4zm0 5c-4.42 0-8-1.79-8-4v3c0 2.21 3.58 4 8 4s8-1.79 8-4v-3c0 2.21-3.58 4-8 4z"></path></svg></span>
-              <span class="code-window-lang">sql</span>
-            </div>
-            <button type="button" class="code-copy-button" onclick="copyCode(this)" aria-label="Copy code">
-              <svg class="icon-copy" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-              <span>Copy</span>
-            </button>
-          </div>
-          <pre><code class="hljs language-sql" data-lang="sql"><span class="hljs-keyword">SELECT</span> 
-    e.name <span class="hljs-keyword">as</span> Employee, 
-    m.name <span class="hljs-keyword">as</span> Manager
-<span class="hljs-keyword">FROM</span> Employees e
-<span class="hljs-keyword">LEFT</span> <span class="hljs-keyword">JOIN</span> Employees m <span class="hljs-keyword">ON</span> e.manager_id <span class="hljs-operator">=</span> m.emp_id;</code></pre>
-        </div>
-      <h2 id="functions-and-grouping">Functions and Grouping</h2>
-<p>Aggregation reduces multiple rows into a single summary value.</p>
-<p><img src="https://blogs.buildwithmanish.com/assets/images/code_flow-relational-database-management-system-7-2025-12-30-6284.png" alt="Functions and Grouping Flow"></p>
-<h3 id="built-in-functions">Built-in Functions</h3>
-<ul>
-<li><strong>Numeric:</strong> <code>ROUND()</code>, <code>TRUNC()</code>, <code>MOD()</code>.</li>
-<li><strong>String:</strong> <code>UPPER()</code>, <code>SUBSTR()</code>, <code>CONCAT()</code>.</li>
-<li><strong>Date:</strong> <code>ADD_MONTHS()</code>, <code>EXTRACT(YEAR FROM date)</code>.</li>
-</ul>
-<h3 id="grouping-and-having">Grouping and HAVING</h3>
-<p>The <code>HAVING</code> clause is essential because the <code>WHERE</code> clause cannot filter on aggregate functions (because <code>WHERE</code> runs <em>before</em> aggregation).</p>
-<p><strong>Scenario:</strong> Find departments where the average salary is greater than $80,000.</p>
-
-        <div class="code-block-shell">
-          <div class="code-window-bar">
-            <div class="code-window-controls">
-              <span class="code-window-dot close" aria-hidden="true"></span>
-              <span class="code-window-dot minimize" aria-hidden="true"></span>
-              <span class="code-window-dot maximize" aria-hidden="true"></span>
-            </div>
-            <div class="code-window-center">
-              <span class="code-lang-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 4.02 2 6.5s4.48 4.5 10 4.5 10-2.02 10-4.5S17.52 2 12 2zm0 13c-4.42 0-8-1.79-8-4v3c0 2.21 3.58 4 8 4s8-1.79 8-4v-3c0 2.21-3.58 4-8 4zm0 5c-4.42 0-8-1.79-8-4v3c0 2.21 3.58 4 8 4s8-1.79 8-4v-3c0 2.21-3.58 4-8 4z"></path></svg></span>
-              <span class="code-window-lang">sql</span>
-            </div>
-            <button type="button" class="code-copy-button" onclick="copyCode(this)" aria-label="Copy code">
-              <svg class="icon-copy" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-              <span>Copy</span>
-            </button>
-          </div>
-          <pre><code class="hljs language-sql" data-lang="sql"><span class="hljs-keyword">SELECT</span> 
-    dept_id, 
-    <span class="hljs-built_in">AVG</span>(salary) <span class="hljs-keyword">as</span> avg_sal
-<span class="hljs-keyword">FROM</span> Employees
-<span class="hljs-keyword">WHERE</span> status <span class="hljs-operator">=</span> <span class="hljs-string">'Active'</span>  <span class="hljs-comment">-- Filter raw rows first</span>
-<span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> dept_id         <span class="hljs-comment">-- Aggregate</span>
-<span class="hljs-keyword">HAVING</span> <span class="hljs-built_in">AVG</span>(salary) <span class="hljs-operator">&gt;</span> <span class="hljs-number">80000</span>; <span class="hljs-comment">-- Filter the aggregates</span></code></pre>
-        </div>
-      <h3 id="set-operations">Set Operations</h3>
-<p>These combine the results of two separate queries.</p>
-<ul>
-<li><strong>UNION:</strong> Combines results, removes duplicates.</li>
-<li><strong>UNION ALL:</strong> Combines results, keeps duplicates (Faster).</li>
-<li><strong>INTERSECT:</strong> Returns only rows present in both sets.</li>
-<li><strong>MINUS / EXCEPT:</strong> Returns rows in the first set but not the second.</li>
-</ul>
-<hr>
-<h1>Conclusion</h1>
-<p>The Relational Database Management System is a triumph of computer science, blending rigid mathematical theory with practical software engineering. From the low-level <strong>Storage Manager</strong> optimizing disk access to the high-level <strong>SQL</strong> logic handling complex joins and aggregations, the RDBMS is designed for data integrity and reliability.</p>
-<p>As you design systems, remember:</p>
-<ol>
-<li><strong>Normalize</strong> to ensure consistency, but be willing to <strong>Denormalize</strong> judiciously for read performance.</li>
-<li><strong>Constraints</strong> are your friends; let the database enforce the rules, not just the application code.</li>
-<li>Understand the <strong>Execution Order</strong> of SQL to write performant queries.</li>
-</ol>
-<p>Mastering these units provides the capability to handle not just a few thousand records, but to architect systems that scale to terabytes of mission-critical data.</p>
+      <h2 id="is-it-ready-for-prime-time-">Is it ready for prime time?</h2>
+<p>The <code>QUERY</code> method is a major win for API design. It fixes the "Search-POST-Hack" that has plagued RESTful architectures for years. While you might need to check your infrastructure (load balancers, WAFs, and proxies) to ensure they do not strip out the body of a <code>QUERY</code> request, the path forward is clear.</p>
+<p>Stop forcing <code>GET</code> to carry heavy payloads, and stop using <code>POST</code> for safe operations. Give <code>QUERY</code> a try when you need to fetch data with a complex set of requirements. It is cleaner, safer, and ultimately more human.</p>
 </article>
       <aside class="blog-meta-col">
         <section class="blog-meta-card" aria-label="Author details">
@@ -529,7 +368,7 @@
         </section>
         <section class="blog-meta-card" aria-label="Publication date">
           <p class="blog-meta-label">Published</p>
-          <p class="blog-meta-value">Dec 30, 2025</p>
+          <p class="blog-meta-value">Jul 03, 2026</p>
         </section>
         <section class="blog-meta-card" aria-label="Blog views">
           <p class="blog-meta-label">Views</p>
@@ -549,55 +388,55 @@
           
             <article class="related-card">
               <p class="related-meta">
-                <span>Dec 29, 2025</span>
+                <span>Dec 31, 2025</span>
                 <span class="blog-card-dot">•</span>
-                <span>AI</span>
+                <span>Engineering</span>
               </p>
-              <h3 class="related-title"><a href="/posts/textbook-for-excel-exam.html">Textbook for Excel Exam</a></h3>
-              <p class="related-desc">In the world of data engineering and business intelligence, Microsoft Excel remains the ubiquitous “first draft” of data analysis. While Python, SQL, and Tableau dominate big data pipelines, Excel is...</p>
+              <h3 class="related-title"><a href="/posts/top-5-programming-languages-to-learn-in-2026.html">Top 5 Programming Languages to learn in 2026</a></h3>
+              <p class="related-desc">I have a confession to make. For years, I was wrong.</p>
             </article>
           
             <article class="related-card">
               <p class="related-meta">
-                <span>Dec 17, 2025</span>
+                <span>Mar 15, 2026</span>
                 <span class="blog-card-dot">•</span>
-                <span>AI</span>
+                <span>Frontend</span>
               </p>
-              <h3 class="related-title"><a href="/posts/building-a-virtual-data-analyst-architecting-agentic-ai-workflows-over-power-bi.html">Building a Virtual Data Analyst: Architecting Agentic AI Workflows over Power BI</a></h3>
-              <p class="related-desc">In the rush to adopt Generative AI, organizations have flooded their backlogs with “Chat with your Data” initiatives. Most of these projects follow a predictable, often disappointing, pattern: a text-...</p>
+              <h3 class="related-title"><a href="/posts/how-i-built-my-portfolio-website-and-achieved-a-perfect-lighthouse-score.html">How I Built My Portfolio Website and Achieved a Perfect Lighthouse Score</a></h3>
+              <p class="related-desc">A deep dive into the architecture, tech stack, and best practices that helped my portfolio achieve a perfect 100/100/100/100 Lighthouse score.</p>
             </article>
           
             <article class="related-card">
               <p class="related-meta">
-                <span>Dec 18, 2025</span>
+                <span>Dec 30, 2025</span>
                 <span class="blog-card-dot">•</span>
                 <span>AI</span>
               </p>
-              <h3 class="related-title"><a href="/posts/how-i-built-an-ai-blogger-agent-using-n8n-and-jekyll.html">How I built an AI blogger Agent using N8N and Jekyll</a></h3>
-              <p class="related-desc">As engineers, we often suffer from the “cobbler’s children” syndrome. We build complex, scalable systems for clients and employers, yet our own personal portfolios and blogs gather dust. The friction...</p>
+              <h3 class="related-title"><a href="/posts/relational-database-management-system.html">Relational Database Management System: An Engineering Deep-Dive</a></h3>
+              <p class="related-desc">Despite the meteoric rise of NoSQL, time-series, and vector databases in the last decade, the Relational Database Management System (RDBMS) remains the immutable backbone of global enterprise software...</p>
             </article>
           
         </div></section>
     <section class="surface blog-share" id="blog-share" aria-label="Share this post">
       <h2>Share this post</h2>
       <div class="blog-share-actions">
-        <a class="blog-share-link share-linkedin" aria-label="Share on LinkedIn" title="Share on LinkedIn" target="_blank" rel="noopener noreferrer" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fbuildwithmanish.com%2Fposts%2Frelational-database-management-system.html">
+        <a class="blog-share-link share-linkedin" aria-label="Share on LinkedIn" title="Share on LinkedIn" target="_blank" rel="noopener noreferrer" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fbuildwithmanish.com%2Fposts%2Fhttp-query-method.html">
           <svg class="blog-share-icon" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
           <span>LinkedIn</span>
         </a>
-        <a class="blog-share-link share-x" aria-label="Share on X" title="Share on X" target="_blank" rel="noopener noreferrer" href="https://x.com/intent/tweet?url=https%3A%2F%2Fbuildwithmanish.com%2Fposts%2Frelational-database-management-system.html&text=Relational%20Database%20Management%20System%3A%20An%20Engineering%20Deep-Dive">
+        <a class="blog-share-link share-x" aria-label="Share on X" title="Share on X" target="_blank" rel="noopener noreferrer" href="https://x.com/intent/tweet?url=https%3A%2F%2Fbuildwithmanish.com%2Fposts%2Fhttp-query-method.html&text=Stop%20Abusing%20POST%3A%20Why%20You%20Need%20the%20New%20HTTP%20QUERY%20Method">
           <svg class="blog-share-icon" viewBox="0 0 24 24"><path d="M18.9 2H22l-6.77 7.74L23 22h-6.1l-4.78-6.24L6.66 22H3.55l7.24-8.27L1 2h6.25l4.32 5.7L18.9 2zm-1.07 18h1.69L6.33 3.9H4.52L17.83 20z"/></svg>
           <span>X</span>
         </a>
-        <a class="blog-share-link share-whatsapp" aria-label="Share on WhatsApp" title="Share on WhatsApp" target="_blank" rel="noopener noreferrer" href="https://api.whatsapp.com/send?text=Relational%20Database%20Management%20System%3A%20An%20Engineering%20Deep-Dive%20https%3A%2F%2Fbuildwithmanish.com%2Fposts%2Frelational-database-management-system.html">
+        <a class="blog-share-link share-whatsapp" aria-label="Share on WhatsApp" title="Share on WhatsApp" target="_blank" rel="noopener noreferrer" href="https://api.whatsapp.com/send?text=Stop%20Abusing%20POST%3A%20Why%20You%20Need%20the%20New%20HTTP%20QUERY%20Method%20https%3A%2F%2Fbuildwithmanish.com%2Fposts%2Fhttp-query-method.html">
           <svg class="blog-share-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.187-1.622c1.763.961 3.746 1.469 5.758 1.471h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
           <span>WhatsApp</span>
         </a>
-        <a class="blog-share-link share-reddit" aria-label="Share on Reddit" title="Share on Reddit" target="_blank" rel="noopener noreferrer" href="https://www.reddit.com/submit?url=https%3A%2F%2Fbuildwithmanish.com%2Fposts%2Frelational-database-management-system.html&title=Relational%20Database%20Management%20System%3A%20An%20Engineering%20Deep-Dive">
+        <a class="blog-share-link share-reddit" aria-label="Share on Reddit" title="Share on Reddit" target="_blank" rel="noopener noreferrer" href="https://www.reddit.com/submit?url=https%3A%2F%2Fbuildwithmanish.com%2Fposts%2Fhttp-query-method.html&title=Stop%20Abusing%20POST%3A%20Why%20You%20Need%20the%20New%20HTTP%20QUERY%20Method">
           <svg class="blog-share-icon" viewBox="0 0 24 24"><path d="M24 11.5c0-1.65-1.35-3-3-3-.41 0-.79.08-1.14.24-1.64-1.14-3.85-1.88-6.28-1.97l1.08-5.08 3.53.75c.05.83.74 1.5 1.57 1.5 0.86 0 1.56-.7 1.56-1.56s-.7-1.56-1.56-1.56c-.63 0-1.18.38-1.42.92l-3.92-.83c-.19-.04-.38.07-.44.26l-1.21 5.7c-2.43.09-4.64.83-6.28 1.97-.35-.16-.73-.24-1.14-.24-1.65 0-3 1.35-3 3 0 1.25.77 2.32 1.86 2.77-.04.24-.06.48-.06.73 0 3.31 3.58 6 8 6s8-2.69 8-6c0-.25-.02-.49-.06-.73 1.09-.45 1.86-1.52 1.86-2.77zm-18 0c0-.83.67-1.5 1.5-1.5.31 0 .59.1.82.26-1.04.77-1.74 1.83-2.02 3.01-.18-.08-.3-.26-.3-.45v-1.32zm10 5.5c-1.3 1.3-3.7 1.3-5 0-.15-.15-.15-.39 0-.54s.39-.15.54 0c1 1 3.2 1 4.2 0 .15-.15.39-.15.54 0s.15.39 0 .54zm.32-2.23c-.28-1.18-.98-2.24-2.02-3.01.23-.16.51-.26.82-.26 0.83 0 1.5.67 1.5 1.5 0 .19-.12.37-.3.45v1.32zm3.32-3.27c0 .19-.12.37-.3.45v-1.32c0-.83.67-1.5 1.5-1.5.83 0 1.5.67 1.5 1.5s-1.35 3-3 3c-.41 0-.79-.08-1.14-.24z"/></svg>
           <span>Reddit</span>
         </a>
-        <button type="button" class="blog-share-copy share-copy" aria-label="Copy link" title="Copy link" data-share-copy data-url="https://buildwithmanish.com/posts/relational-database-management-system.html">
+        <button type="button" class="blog-share-copy share-copy" aria-label="Copy link" title="Copy link" data-share-copy data-url="https://buildwithmanish.com/posts/http-query-method.html">
           <svg class="blog-share-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
           <span>Copy Link</span>
         </button>
@@ -608,16 +447,16 @@
     
       <div class="floating-share" id="floating-share">
         <div class="floating-share-menu">
-          <a class="floating-share-item share-linkedin" title="LinkedIn" target="_blank" rel="noopener noreferrer" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fbuildwithmanish.com%2Fposts%2Frelational-database-management-system.html">
+          <a class="floating-share-item share-linkedin" title="LinkedIn" target="_blank" rel="noopener noreferrer" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fbuildwithmanish.com%2Fposts%2Fhttp-query-method.html">
             <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
           </a>
-          <a class="floating-share-item share-x" title="X" target="_blank" rel="noopener noreferrer" href="https://x.com/intent/tweet?url=https%3A%2F%2Fbuildwithmanish.com%2Fposts%2Frelational-database-management-system.html&text=Relational%20Database%20Management%20System%3A%20An%20Engineering%20Deep-Dive">
+          <a class="floating-share-item share-x" title="X" target="_blank" rel="noopener noreferrer" href="https://x.com/intent/tweet?url=https%3A%2F%2Fbuildwithmanish.com%2Fposts%2Fhttp-query-method.html&text=Stop%20Abusing%20POST%3A%20Why%20You%20Need%20the%20New%20HTTP%20QUERY%20Method">
             <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-6.77 7.74L23 22h-6.1l-4.78-6.24L6.66 22H3.55l7.24-8.27L1 2h6.25l4.32 5.7L18.9 2zm-1.07 18h1.69L6.33 3.9H4.52L17.83 20z"/></svg>
           </a>
-          <a class="floating-share-item share-whatsapp" title="WhatsApp" target="_blank" rel="noopener noreferrer" href="https://api.whatsapp.com/send?text=Relational%20Database%20Management%20System%3A%20An%20Engineering%20Deep-Dive%20https%3A%2F%2Fbuildwithmanish.com%2Fposts%2Frelational-database-management-system.html">
+          <a class="floating-share-item share-whatsapp" title="WhatsApp" target="_blank" rel="noopener noreferrer" href="https://api.whatsapp.com/send?text=Stop%20Abusing%20POST%3A%20Why%20You%20Need%20the%20New%20HTTP%20QUERY%20Method%20https%3A%2F%2Fbuildwithmanish.com%2Fposts%2Fhttp-query-method.html">
             <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.187-1.622c1.763.961 3.746 1.469 5.758 1.471h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
           </a>
-          <button type="button" class="floating-share-item share-copy" title="Copy Link" data-share-copy data-url="https://buildwithmanish.com/posts/relational-database-management-system.html">
+          <button type="button" class="floating-share-item share-copy" title="Copy Link" data-share-copy data-url="https://buildwithmanish.com/posts/http-query-method.html">
             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
           </button>
         </div>

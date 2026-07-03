@@ -76,6 +76,7 @@
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.min.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="/site.js" defer></script>
   </head>
@@ -1132,8 +1133,18 @@ r = redis.Redis(host=<span class="hljs-string">'localhost'</span>, port=<span cl
           });
         }
 
-        // Configure marked for highlight.js
+        // Configure marked with custom renderer for Mermaid
+        const renderer = new marked.Renderer();
+        const originalCode = renderer.code.bind(renderer);
+        renderer.code = (code, lang) => {
+          if (lang === "mermaid") {
+            return `<pre class="mermaid">${code}</pre>`;
+          }
+          return originalCode(code, lang);
+        };
+
         marked.setOptions({
+          renderer: renderer,
           highlight: (code, lang) => {
             if (lang && hljs.getLanguage(lang)) {
               return hljs.highlight(code, { language: lang }).value;
@@ -1143,6 +1154,17 @@ r = redis.Redis(host=<span class="hljs-string">'localhost'</span>, port=<span cl
           gfm: true,
           breaks: false,
         });
+
+        // Initialize Mermaid
+        if (window.mermaid) {
+          const isDark = document.documentElement.getAttribute("data-theme") === "dark";
+          mermaid.initialize({
+            startOnLoad: false,
+            theme: isDark ? "dark" : "default",
+            securityLevel: "loose",
+            fontFamily: "inherit",
+          });
+        }
 
         const html = marked.parse(body);
 
@@ -1198,11 +1220,18 @@ r = redis.Redis(host=<span class="hljs-string">'localhost'</span>, port=<span cl
             </aside>
           </div>
           <section class="surface related-posts" id="related-posts" aria-label="Related blog posts"></section>
+          <div class="surface blog-nav-row" id="blog-nav-row"></div>
           <section class="surface blog-share" id="blog-share" aria-label="Share this post"></section>
           <div class="surface" style="padding-top:0">
             <a href="/blogs.html">← Back to all blogs</a>
           </div>
           ${floatingShareHtml}`;
+
+        if (window.mermaid) {
+          mermaid.run({
+            nodes: document.querySelectorAll(".mermaid"),
+          });
+        }
 
         // Syntax highlight any un-highlighted code blocks
         document
@@ -1222,6 +1251,28 @@ r = redis.Redis(host=<span class="hljs-string">'localhost'</span>, port=<span cl
           .then((allPosts) => {
             const relatedPosts = getRelatedPosts(currentPost, allPosts, 3);
             renderRelatedPosts(relatedPosts);
+
+            // Render Next/Previous navigation
+            const currentIndex = allPosts.findIndex(p => p.slug === slug);
+            if (currentIndex !== -1) {
+              const prevPost = allPosts[currentIndex + 1]; // Older
+              const nextPost = allPosts[currentIndex - 1]; // Newer
+              const navRow = document.getElementById("blog-nav-row");
+              if (navRow) {
+                navRow.innerHTML = `
+                  <div class="blog-adjacent-nav">
+                    ${prevPost ? `<a href="/posts/${prevPost.slug}.html" class="blog-nav-item prev">
+                      <span class="nav-label">Previous</span>
+                      <span class="nav-title">${prevPost.title}</span>
+                    </a>` : '<div></div>'}
+                    ${nextPost ? `<a href="/posts/${nextPost.slug}.html" class="blog-nav-item next">
+                      <span class="nav-label">Next</span>
+                      <span class="nav-title">${nextPost.title}</span>
+                    </a>` : '<div></div>'}
+                  </div>
+                `;
+              }
+            }
           })
           .catch(() => {
             renderRelatedPosts([]);

@@ -1,5 +1,12 @@
 [
   {
+    "slug": "http-query-method",
+    "title": "Stop Abusing POST: Why You Need the New HTTP QUERY Method",
+    "date": "2026-07-03",
+    "displayDate": "Jul 03, 2026",
+    "description": "Exploring RFC 9435 and why the new HTTP QUERY method is the missing piece in the REST puzzle."
+  },
+  {
     "slug": "how-i-built-my-portfolio-website-and-achieved-a-perfect-lighthouse-score",
     "title": "How I Built My Portfolio Website and Achieved a Perfect Lighthouse Score",
     "date": "2026-03-15",
