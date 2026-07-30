@@ -8,123 +8,37 @@ function normalizePath(pathname) {
   return lastSegment || "index.html";
 }
 
-const THEME_STORAGE_KEY = "site-theme";
-
-function readStoredTheme() {
-  try {
-    const theme = window.localStorage.getItem(THEME_STORAGE_KEY);
-    if (theme === "light" || theme === "dark") {
-      return theme;
-    }
-  } catch {
-    // ignore storage failures
-  }
-  return null;
-}
-
-function getSystemPreferredTheme() {
-  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-}
-
-function getActiveTheme() {
-  const current = document.documentElement.getAttribute("data-theme");
-  if (current === "light" || current === "dark") {
-    return current;
-  }
-  return readStoredTheme() || getSystemPreferredTheme();
-}
-
-function persistTheme(theme) {
-  try {
-    window.localStorage.setItem(THEME_STORAGE_KEY, theme);
-  } catch {
-    // ignore storage failures
-  }
-}
-
-function updateThemeToggleUI() {
-  const theme = getActiveTheme();
-  const isDark = theme === "dark";
-  document.querySelectorAll("[data-theme-toggle]").forEach((button) => {
-    button.textContent = isDark ? "☀ Light" : "☾ Dark";
-    button.setAttribute("aria-label", isDark ? "Switch to light mode" : "Switch to dark mode");
-    button.setAttribute("aria-pressed", String(isDark));
-    button.setAttribute("title", isDark ? "Switch to light mode" : "Switch to dark mode");
-  });
-}
-
-function applyTheme(theme, options = {}) {
-  const { persist = false } = options;
-  const normalizedTheme = theme === "dark" ? "dark" : "light";
-  document.documentElement.setAttribute("data-theme", normalizedTheme);
-  document.documentElement.setAttribute("data-o-theme", normalizedTheme);
-
-  if (persist) {
-    persistTheme(normalizedTheme);
-  }
-
-  updateThemeToggleUI();
-  syncHljs();
-  syncMermaid();
-}
-
-function syncMermaid() {
-  const prose = document.getElementById("blog-prose");
-  if (prose) {
-    initializeMermaid(prose);
-  }
-}
-
 function initializeMermaid(container) {
   if (!window.mermaid) return;
 
-  const isDark = getActiveTheme() === "dark";
-  
-  // Save original source before first render to allow re-renders on theme change
+  // Save original source before first render to allow re-renders
   container.querySelectorAll(".mermaid").forEach(el => {
     if (!el.dataset.mermaidSrc) {
       el.dataset.mermaidSrc = el.textContent.trim();
     }
   });
 
-  // Premium color palette for Mermaid
-  const themeVars = isDark ? {
-    // Dark mode: Deep slates and vibrant cyan accents
-    primaryColor: "#0f172a",
-    primaryTextColor: "#f1f5f9",
-    primaryBorderColor: "#334155",
-    lineColor: "#38bdf8",
-    secondaryColor: "#1e293b",
-    tertiaryColor: "#0f172a",
-    mainBkg: "#0f172a",
-    nodeBorder: "#334155",
-    clusterBkg: "#1e293b",
-    clusterBorder: "#334155",
-    defaultLinkColor: "#38bdf8",
-    titleColor: "#38bdf8",
-    edgeLabelBackground: "#1e293b",
-    nodeTextColor: "#f1f5f9"
-  } : {
-    // Light mode: Clean whites and professional blue accents
-    primaryColor: "#f8fafc",
-    primaryTextColor: "#0f172a",
+  // Warm, ink-on-cream palette for Mermaid diagrams
+  const themeVars = {
+    primaryColor: "#fbf6ec",
+    primaryTextColor: "#1c1a17",
     primaryBorderColor: "#e2e8f0",
-    lineColor: "#0e75b6",
+    lineColor: "#567bff",
     secondaryColor: "#f1f5f9",
-    tertiaryColor: "#f8fafc",
-    mainBkg: "#ffffff",
+    tertiaryColor: "#fbf6ec",
+    mainBkg: "#fbf6ec",
     nodeBorder: "#cbd5e1",
     clusterBkg: "#f8fafc",
     clusterBorder: "#e2e8f0",
-    defaultLinkColor: "#0e75b6",
-    titleColor: "#0e75b6",
-    edgeLabelBackground: "#ffffff",
-    nodeTextColor: "#0f172a"
+    defaultLinkColor: "#567bff",
+    titleColor: "#567bff",
+    edgeLabelBackground: "#fbf6ec",
+    nodeTextColor: "#1c1a17"
   };
 
   mermaid.initialize({
     startOnLoad: false,
-    theme: isDark ? "dark" : "neutral",
+    theme: "neutral",
     themeVariables: themeVars,
     fontFamily: "var(--font-sans, system-ui, sans-serif)",
     fontSize: 14,
@@ -161,57 +75,8 @@ function initializeMermaid(container) {
   });
 }
 
-function syncHljs() {
-  const isDark = getActiveTheme() === "dark";
-  const lightTheme = document.getElementById("hljs-theme-light");
-  const darkTheme = document.getElementById("hljs-theme-dark");
-
-  if (lightTheme) {
-    lightTheme.disabled = isDark;
-    if (isDark) {
-      lightTheme.setAttribute("disabled", "true");
-    } else {
-      lightTheme.removeAttribute("disabled");
-    }
-  }
-  if (darkTheme) {
-    darkTheme.disabled = !isDark;
-    if (!isDark) {
-      darkTheme.setAttribute("disabled", "true");
-    } else {
-      darkTheme.removeAttribute("disabled");
-    }
-  }
-}
-
-function initializeTheme() {
-  applyTheme(readStoredTheme() || getSystemPreferredTheme());
-
-  const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-  if (mediaQuery && !mediaQuery._themeBound) {
-    const onSystemThemeChange = () => {
-      if (!readStoredTheme()) {
-        applyTheme(getSystemPreferredTheme());
-      }
-    };
-
-    if (typeof mediaQuery.addEventListener === "function") {
-      mediaQuery.addEventListener("change", onSystemThemeChange);
-    } else if (typeof mediaQuery.addListener === "function") {
-      mediaQuery.addListener(onSystemThemeChange);
-    }
-    mediaQuery._themeBound = true;
-  }
-
-  // Watch for manual data-theme changes
-  new MutationObserver(() => syncHljs()).observe(document.documentElement, {
-    attributes: true,
-    attributeFilter: ["data-theme", "data-o-theme"],
-  });
-}
-
 function getSchedulerUrl() {
-  return `https://cal.com/manishtiwari/?embed=true&theme=${getActiveTheme()}`;
+  return `https://cal.com/manishtiwari/?embed=true&theme=light`;
 }
 
 function getSchedulerModal() {
@@ -331,55 +196,6 @@ function initializeMobileNavigation() {
   toggle.dataset.bound = "true";
 }
 
-function initializeThemeToggle() {
-  const headerRow = document.querySelector(".header-row");
-  const navList = document.querySelector("header nav ul");
-  if (!headerRow || !navList) {
-    return;
-  }
-
-  let navToggle = navList.querySelector(".theme-toggle-nav[data-theme-toggle]");
-  if (!navToggle) {
-    const item = document.createElement("li");
-    navToggle = document.createElement("button");
-    navToggle.type = "button";
-    navToggle.className = "theme-toggle theme-toggle-nav";
-    navToggle.setAttribute("data-theme-toggle", "");
-    item.appendChild(navToggle);
-    navList.appendChild(item);
-  }
-
-  let mobileToggle = headerRow.querySelector(
-    ".theme-toggle-mobile[data-theme-toggle]",
-  );
-  if (!mobileToggle) {
-    mobileToggle = document.createElement("button");
-    mobileToggle.type = "button";
-    mobileToggle.className = "theme-toggle theme-toggle-mobile";
-    mobileToggle.setAttribute("data-theme-toggle", "");
-    mobileToggle.setAttribute("aria-label", "Toggle dark mode");
-    headerRow.insertBefore(mobileToggle, document.querySelector("header nav"));
-  }
-
-  const bindToggle = (toggle) => {
-    if (!toggle || toggle.dataset.bound === "true") {
-      return;
-    }
-
-    toggle.addEventListener("click", () => {
-      const nextTheme = getActiveTheme() === "dark" ? "light" : "dark";
-      applyTheme(nextTheme, { persist: true });
-      ensureSchedulerFrame();
-    });
-    toggle.dataset.bound = "true";
-  };
-
-  bindToggle(navToggle);
-  bindToggle(mobileToggle);
-
-  updateThemeToggleUI();
-}
-
 const BLOG_INDEX_CACHE_KEY = "blog-index-cache-v2";
 const BLOG_INDEX_CACHE_TTL_MS = 5 * 60 * 1000;
 
@@ -439,7 +255,7 @@ function createBlogCard(post) {
       <h2 class="blog-card-title"><a href="${href}" class="blog-card-link">${post.title}</a></h2>
       <p class="blog-card-desc muted">${post.description}</p>
       <div class="actions-row">
-        <a href="${href}" class="blog-read-more">Read article <svg class="icon-arrow" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" /></svg></a>
+        <a href="${href}" class="blog-read-more">Read article <svg class="icon-arrow icon-sketch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15.5" /><path d="M14 6.5 20 12l-6 5.5" /></svg></a>
       </div>
     </article>`;
 }
@@ -462,7 +278,7 @@ function createFeaturedBlogCard(post) {
         <h2 class="blog-card-title"><a href="${href}" class="blog-card-link">${post.title}</a></h2>
         <p class="blog-card-desc">${post.description}</p>
         <div class="actions-row">
-          <a href="${href}" class="blog-read-more">Read full article <svg class="icon-arrow" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" /></svg></a>
+          <a href="${href}" class="blog-read-more">Read full article <svg class="icon-arrow icon-sketch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15.5" /><path d="M14 6.5 20 12l-6 5.5" /></svg></a>
         </div>
       </div>
     </article>`;
@@ -589,9 +405,9 @@ function createHomepageBlogCard(post) {
 
   return `
     <a class="panel blog-card blog-card--compact" href="${href}">
-      <span class="blog-tag">${tag}</span>
+      <span class="blog-tag blog-tag--${tag.toLowerCase()}">${tag}</span>
       <h3 class="blog-title">${post.title}</h3>
-      <span class="muted blog-read">Read article <svg class="icon-arrow" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" /></svg></span>
+      <span class="muted blog-read">Read article <svg class="icon-arrow icon-sketch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15.5" /><path d="M14 6.5 20 12l-6 5.5" /></svg></span>
     </a>`;
 }
 
@@ -1424,14 +1240,114 @@ function initTocScroll(toc) {
   document.querySelectorAll("h2[id], h3[id]").forEach((h) => obs.observe(h));
 }
 
+const TECH_ICONS = {
+  "Java": '<path d="M6 10h10v4a5 5 0 0 1-5 5 5 5 0 0 1-5-5v-4Z"/><path d="M16 11h1.5a2 2 0 0 1 0 4H16"/><path d="M9 3c-.5 1 .5 1.5 0 2.5"/>',
+  "Spring Boot": '<path d="M6 18C6 9 12 5 19 5c0 8-5 13-13 13Z"/><path d="M6 18c2-3 5-6 9-8"/>',
+  "Node.js": '<path d="M12 3 20 7.5v9L12 21 4 16.5v-9Z"/>',
+  "AWS": '<path d="M7 17h10.5a3.5 3.5 0 0 0 .3-6.98A5 5 0 0 0 8.2 8.2 4 4 0 0 0 7 17Z"/>',
+  "React": '<ellipse cx="12" cy="12" rx="9" ry="3.5"/><ellipse cx="12" cy="12" rx="9" ry="3.5" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="9" ry="3.5" transform="rotate(120 12 12)"/>',
+  "TypeScript": '<path d="M9 4c-2 0-3 1-3 3v3c0 1-1 2-2 2 1 0 2 1 2 2v3c0 2 1 3 3 3"/><path d="M15 4c2 0 3 1 3 3v3c0 1 1 2 2 2-1 0-2 1-2 2v3c0 2-1 3-3 3"/>',
+  "Docker": '<rect x="4" y="10" width="4" height="4" rx="0.5"/><rect x="9" y="10" width="4" height="4" rx="0.5"/><rect x="14" y="10" width="4" height="4" rx="0.5"/><rect x="9" y="5" width="4" height="4" rx="0.5"/><path d="M2 14c1 3 3 5 6 5h6c4 0 7-2 8-6"/>',
+  "Kubernetes": '<circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M4.5 7.5l2.5 1.5M17 15l2.5 1.5M4.5 16.5 7 15M17 9l2.5-1.5M8 4l1 3M15 4l-1 3M8 20l1-3M15 20l-1-3"/>',
+  "Python": '<path d="M4 8c2-2 4-2 6 0s4 2 6 0 4-2 4 0"/><path d="M4 16c2-2 4-2 6 0s4 2 6 0 4-2 4 0"/>',
+  "PostgreSQL": '<ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6"/><path d="M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/>',
+  "LangChain": '<rect x="3" y="9" width="8" height="6" rx="3" transform="rotate(-20 7 12)"/><rect x="13" y="9" width="8" height="6" rx="3" transform="rotate(-20 17 12)"/>',
+  "Terraform": '<path d="m12 4 8 4.5-8 4.5-8-4.5Z"/><path d="m4 13.5 8 4.5 8-4.5"/>',
+  "Kafka": '<path d="M3 8h8M3 12h14M3 16h8"/><circle cx="19" cy="8" r="1.3" fill="currentColor" stroke="none"/><circle cx="19" cy="16" r="1.3" fill="currentColor" stroke="none"/>',
+  "Next.js": '<path d="M6 18V6l12 12V6"/>',
+  "MongoDB": '<path d="M12 3c3 4 5 7.5 5 10.5a5 5 0 0 1-10 0C7 10.5 9 7 12 3Z"/><path d="M12 13v6"/>',
+  "RAG": '<rect x="4" y="3" width="10" height="13" rx="1"/><path d="M7 7h4M7 10h4"/><circle cx="16.5" cy="16.5" r="3.5"/><path d="m19.5 19.5 2.5 2.5"/>',
+  "CI/CD": '<path d="M5 12a7 7 0 0 1 12-5"/><path d="M19 12a7 7 0 0 1-12 5"/><path d="M17 4v3h-3"/><path d="M7 20v-3h3"/>',
+  "Redis": '<path d="M13 3 5 14h6l-1 7 8-11h-6l1-7Z"/>',
+  "HTML": '<path d="M8 4 3 12l5 8"/><path d="M16 4l5 8-5 8"/><path d="M14 3l-4 18"/>',
+  "CSS": '<path d="M9 15 18 6a2 2 0 0 1 3 3l-9 9"/><path d="M9 15 4 20"/><path d="M9 15c0 2-1 3-3 3"/>',
+  "JavaScript": '<rect x="5" y="4" width="14" height="16" rx="1.5"/><path d="M9 14c0 2 1 3 3 3s2-1 1-2-3 0-3-2 1-2 3-2 3 1 3 3"/>',
+  "Redux": '<rect x="5" y="9" width="14" height="10" rx="1"/><path d="M12 3v6M9 6l3-3 3 3"/>',
+  "Tailwind CSS": '<path d="M4 9c1.5-3 3.5-3 5-1.5S12 9 13.5 7.5 17 6 18.5 9"/><path d="M4 15c1.5-3 3.5-3 5-1.5S12 15 13.5 13.5 17 12 18.5 15"/>',
+  "WebRTC": '<rect x="3" y="7" width="12" height="10" rx="1.5"/><path d="m15 10 6-3v10l-6-3Z"/>',
+  "Spinnaker": '<path d="M12 3v18"/><path d="M12 4c4 2 7 6 7 12-4-1-7-5-7-12Z"/>',
+  "GitHub Actions": '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M10 9l5 3-5 3Z" fill="currentColor" stroke="none"/>',
+  "n8n": '<circle cx="5" cy="7" r="2"/><circle cx="5" cy="17" r="2"/><circle cx="17" cy="12" r="2"/><path d="M7 7l8 4.5M7 17l8-4.5"/>',
+  "MCP Server": '<rect x="4" y="4" width="16" height="6" rx="1"/><rect x="4" y="14" width="16" height="6" rx="1"/><path d="M8 7h.01M8 17h.01" stroke-width="2.4"/>',
+  "Gemini": '<path d="M12 3 4 9l8 12 8-12Z"/><path d="M4 9h16M8.5 9 12 3l3.5 6M12 21V9"/>',
+  "OpenAI API": '<path d="M9 3v4M15 3v4M6 7h12v4a6 6 0 0 1-12 0Z"/><path d="M12 17v4"/>',
+  "Agentic Workflows": '<path d="M4 18c4 0 4-12 8-12s4 12 8 12"/><circle cx="4" cy="18" r="1.4" fill="currentColor" stroke="none"/><circle cx="20" cy="18" r="1.4" fill="currentColor" stroke="none"/>',
+  "REST / GraphQL": '<path d="M9 4 4 12l5 8"/><path d="M15 4l5 8-5 8"/>',
+};
+
+const TECH_MARQUEE_ORDER = [
+  "Java", "Spring Boot", "Node.js", "AWS", "React", "TypeScript", "Docker",
+  "Kubernetes", "Python", "PostgreSQL", "LangChain", "Terraform", "Kafka",
+  "Next.js", "MongoDB", "RAG", "CI/CD", "Redis",
+];
+
+function techIconSvg(name) {
+  const icon = TECH_ICONS[name];
+  if (!icon) return "";
+  return `<svg class="icon-sketch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${icon}</svg>`;
+}
+
+function initializeMarquee() {
+  const track = document.getElementById("tech-marquee");
+  if (!track) return;
+
+  const itemsHtml = TECH_MARQUEE_ORDER.map(
+    (name) => `<span class="marquee-item">${techIconSvg(name)}${name}</span>`
+  ).join("");
+
+  track.innerHTML = `<div class="marquee-set">${itemsHtml}</div><div class="marquee-set">${itemsHtml}</div>`;
+}
+
+function initializeToolIcons() {
+  document.querySelectorAll(".stack-group .stack span[role='status']").forEach((el) => {
+    const svg = techIconSvg(el.textContent.trim());
+    if (!svg) return;
+    el.insertAdjacentHTML("afterbegin", svg.replace("icon-sketch", "icon-sketch tool-icon"));
+  });
+}
+
+function initializeScrollReveal() {
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (prefersReducedMotion || !("IntersectionObserver" in window)) {
+    return;
+  }
+
+  const viewportHeight = window.innerHeight;
+  const targets = document.querySelectorAll(
+    ".panel, .project-card, .service-card, .metric-card, .related-card, .section-title"
+  );
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.1, rootMargin: "0px 0px -40px 0px" }
+  );
+
+  targets.forEach((el) => {
+    // Skip anything already in view on load so nothing above the fold flashes in.
+    if (el.getBoundingClientRect().top > viewportHeight) {
+      el.setAttribute("data-reveal", "");
+      observer.observe(el);
+    }
+  });
+}
+
 function initializePageFeatures() {
-  initializeThemeToggle();
   initializeMobileNavigation();
+  initializeMarquee();
+  initializeToolIcons();
   initializeHomepageRecentBlogs();
   initializeBlogsPage();
   initializeProjectCarousels();
   initializePredictivePrefetch();
   initializeBlogPostFeatures();
+  initializeScrollReveal();
 }
 
 const PREFETCH_CACHE = new Set();
@@ -1697,7 +1613,6 @@ window.addEventListener("popstate", () => {
 });
 
 setActivePage();
-initializeTheme();
 initializePageFeatures();
 
 document.querySelectorAll("[data-year]").forEach((node) => {

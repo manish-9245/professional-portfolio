@@ -74,6 +74,12 @@
     <link rel="dns-prefetch" href="//cdn.jsdelivr.net" />
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
     <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Caveat:wght@500;600&display=swap"
+    />
     <link rel="stylesheet" href="/oat.min.css" />
     <script src="/oat.min.js" defer></script>
     <link rel="stylesheet" href="/styles.css" />
@@ -81,12 +87,6 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/styles/atom-one-light.min.css"
       id="hljs-theme-light"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/styles/atom-one-dark.min.css"
-      id="hljs-theme-dark"
-      disabled
     />
     <!-- KaTeX for Math Rendering -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
@@ -108,6 +108,12 @@
     <script src="/site.js" defer></script>
   </head>
   <body>
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+      <filter id="sketchy">
+        <feTurbulence type="fractalNoise" baseFrequency="0.045 0.06" numOctaves="2" seed="4" result="noise" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.4" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+    </svg>
     <header class="site-header">
       <div class="surface header-row">
         <a class="brand" href="/index.html" aria-label="Go to homepage">
@@ -120,12 +126,6 @@
             decoding="async"
           />
         </a>
-        <button
-          type="button"
-          class="theme-toggle theme-toggle-mobile"
-          data-theme-toggle
-          aria-label="Toggle dark mode"
-        ></button>
         <button
           type="button"
           class="nav-toggle"
@@ -146,14 +146,6 @@
             <li><a href="/blogs.html" data-page="blogs.html">Blogs</a></li>
             <li>
               <a href="/contact.html" data-page="contact.html">Contact</a>
-            </li>
-            <li>
-              <button
-                type="button"
-                class="theme-toggle theme-toggle-nav"
-                data-theme-toggle
-                aria-label="Toggle dark mode"
-              ></button>
             </li>
             <li>
               <a
