@@ -8,8 +8,24 @@ function normalizePath(pathname) {
   return lastSegment || "index.html";
 }
 
-function initializeMermaid(container) {
-  if (!window.mermaid) return;
+function waitForMermaid(retries = 40) {
+  return new Promise((resolve) => {
+    (function check(remaining) {
+      if (window.mermaid || remaining <= 0) {
+        resolve(Boolean(window.mermaid));
+        return;
+      }
+      setTimeout(() => check(remaining - 1), 75);
+    })(retries);
+  });
+}
+
+async function initializeMermaid(container) {
+  // On SPA navigation, syncHead() may have just injected mermaid.min.js
+  // asynchronously (posts pages load it, index/blogs pages don't), so it
+  // isn't executed yet by the time this runs. Wait briefly instead of
+  // silently skipping the render.
+  if (!(await waitForMermaid())) return;
 
   // Save original source before first render to allow re-renders
   container.querySelectorAll(".mermaid").forEach(el => {
@@ -1273,6 +1289,8 @@ const TECH_ICONS = {
   "OpenAI API": '<path d="M9 3v4M15 3v4M6 7h12v4a6 6 0 0 1-12 0Z"/><path d="M12 17v4"/>',
   "Agentic Workflows": '<path d="M4 18c4 0 4-12 8-12s4 12 8 12"/><circle cx="4" cy="18" r="1.4" fill="currentColor" stroke="none"/><circle cx="20" cy="18" r="1.4" fill="currentColor" stroke="none"/>',
   "REST / GraphQL": '<path d="M9 4 4 12l5 8"/><path d="M15 4l5 8-5 8"/>',
+  "Mastra": '<rect x="3" y="9" width="7" height="7" rx="1.5"/><rect x="14" y="9" width="7" height="7" rx="1.5"/><path d="M10 12.5h4"/><path d="m12 10 2 2.5-2 2.5"/>',
+  "Promptfoo": '<path d="M4 5h16v10H10l-3 3v-3H4Z"/><path d="m8 10 2 2 4-4"/>',
 };
 
 const TECH_MARQUEE_ORDER = [
