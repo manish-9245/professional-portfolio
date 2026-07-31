@@ -3,8 +3,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "node scripts/generate-blog-share-pages.mjs",
-    "generate:blogs": "node scripts/generate-blog-share-pages.mjs"
+    "build": "npm run generate:blogs && npm run generate:projects",
+    "generate:blogs": "node scripts/generate-blog-share-pages.mjs",
+    "generate:projects": "node scripts/generate-project-pages.mjs"
   },
   "devDependencies": {
     "highlight.js": "^11.11.1",

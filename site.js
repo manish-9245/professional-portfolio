@@ -931,10 +931,14 @@ function initializeBlogReader() {
   }
 }
 
-function renderShareActions({ url, title, description } = {}) {
+function renderShareActions({ url, title, description, noun } = {}) {
   const section = document.getElementById("blog-share");
   if (!section) return;
 
+  // Derive "post" vs "project" from the section's own aria-label rather than
+  // requiring every caller to pass it - initializeShareActions() calls this
+  // with no arguments at all, so the default has to come from the DOM.
+  const resolvedNoun = noun || (/project/i.test(section.getAttribute("aria-label") || "") ? "project" : "post");
   const pageUrl = url || window.location.href;
   const encodedUrl = encodeURIComponent(pageUrl);
   const encodedTitle = encodeURIComponent(title || document.title || "");
@@ -952,7 +956,7 @@ function renderShareActions({ url, title, description } = {}) {
   };
 
   section.innerHTML = `
-    <h2>Share this post</h2>
+    <h2>Share this ${resolvedNoun}</h2>
     <div class="blog-share-actions">
       <a class="blog-share-link share-linkedin" aria-label="Share on LinkedIn" title="Share on LinkedIn" target="_blank" rel="noopener noreferrer" href="https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}">${icons.linkedin}</a>
       <a class="blog-share-link share-x" aria-label="Share on X" title="Share on X" target="_blank" rel="noopener noreferrer" href="https://x.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}">${icons.x}</a>

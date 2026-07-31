@@ -1,0 +1,80 @@
+[
+  {
+    "slug": "ai-blogs",
+    "title": "AI Blogs SaaS",
+    "date": "2026-03-14",
+    "displayDate": "Mar 14, 2026",
+    "description": "An AI Director that watches a YouTube video, plans an outline, and drafts a full SEO-optimised blog post - with a human still steering the wheel.",
+    "tags": [
+      "SaaS",
+      "AI",
+      "Full-Stack"
+    ]
+  },
+  {
+    "slug": "programmerskool",
+    "title": "ProgrammerSkool",
+    "date": "2025-06-07",
+    "displayDate": "Jun 07, 2025",
+    "description": "A focused learning platform that puts a coding playlist and a live C++ editor side by side, compiling against a real online judge instead of just displaying code.",
+    "tags": [
+      "Frontend",
+      "Education"
+    ]
+  },
+  {
+    "slug": "codesnip",
+    "title": "CodeSnip",
+    "date": "2025-05-25",
+    "displayDate": "May 25, 2025",
+    "description": "A multi-language code editor that exports snippets as polished PNGs or animated GIFs - themes, gradients, and a typing animation built entirely client-side.",
+    "tags": [
+      "Frontend",
+      "Developer Tool"
+    ]
+  },
+  {
+    "slug": "purchasing-power-parity",
+    "title": "Purchasing Power Parity",
+    "date": "2025-05-19",
+    "displayDate": "May 19, 2025",
+    "description": "A Node.js module and CLI that converts an amount between countries using PPP rates instead of raw FX - so $100 in the US compares fairly to its equivalent in India.",
+    "tags": [
+      "Open Source",
+      "Backend"
+    ]
+  },
+  {
+    "slug": "orbit",
+    "title": "Orbit Video Chat",
+    "date": "2025-05-17",
+    "displayDate": "May 17, 2025",
+    "description": "A WebRTC-powered video conferencing app built for both quick 1:1 calls and full group meetings, with screen sharing and chat alongside the call.",
+    "tags": [
+      "Real-time",
+      "Full-Stack"
+    ]
+  },
+  {
+    "slug": "facial-emotion-recognition",
+    "title": "Facial Emotion Recognition",
+    "date": "2025-03-14",
+    "displayDate": "Mar 14, 2025",
+    "description": "A webcam-driven computer vision project that classifies facial expressions into emotions using a deep learning model, frame by frame, in under 50 lines of Python.",
+    "tags": [
+      "Computer Vision",
+      "Python"
+    ]
+  },
+  {
+    "slug": "collabcode",
+    "title": "CollabCode",
+    "date": "2025-01-11",
+    "displayDate": "Jan 11, 2025",
+    "description": "A real-time collaborative code editor where a shared room turns into a live pair-programming session for any number of developers - no signup, no merge step, just a link.",
+    "tags": [
+      "Real-time",
+      "Full-Stack"
+    ]
+  }
+]

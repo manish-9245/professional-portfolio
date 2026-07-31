@@ -776,6 +776,95 @@ body.is-navigating main {
   padding-top: 0.25rem;
 }
 
+/* ─── CTA / action link buttons ─────────────────────────── */
+/* Same recipe as .nav-cta: 2px ink border, pill radius, hard offset
+   shadow, lift on hover, press down on click. The first link in a row
+   is always the one the page wants clicked, so it gets the solid fill. */
+
+.cta-row a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  padding: 0.55rem 1.15rem;
+  font-weight: 700;
+  font-size: 0.92rem;
+  text-decoration: none;
+  color: var(--ink);
+  background: var(--paper);
+  box-shadow: var(--shadow-hard-sm);
+  transition: transform 0.14s ease, box-shadow 0.14s ease;
+}
+
+.cta-row a:first-child {
+  background: var(--accent-coral);
+}
+
+.cta-row a:hover {
+  text-decoration: none;
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--ink);
+}
+
+.cta-row a:active {
+  transform: translate(0, 0);
+  box-shadow: 1px 1px 0 var(--ink);
+}
+
+.cta-row a:focus-visible {
+  outline: 2px solid var(--accent-blue);
+  outline-offset: 2px;
+}
+
+/* Project card footers get a smaller, denser version of the same pill -
+   scoped to .project-card so blog cards' own .blog-read-more link
+   (a different, deliberately plain "read more" style) is untouched. */
+
+.project-card .actions-row a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  padding: 0.32rem 0.8rem;
+  font-weight: 650;
+  font-size: 0.8rem;
+  text-decoration: none;
+  color: var(--ink);
+  background: var(--paper);
+  box-shadow: 3px 3px 0 var(--ink);
+  transition: transform 0.14s ease, box-shadow 0.14s ease;
+}
+
+.project-card .actions-row a:first-child {
+  background: var(--accent-coral);
+}
+
+.project-card .actions-row a:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0 var(--ink);
+}
+
+.project-card .actions-row a:active {
+  transform: translate(0, 0);
+  box-shadow: 1px 1px 0 var(--ink);
+}
+
+.project-card .actions-row a:focus-visible {
+  outline: 2px solid var(--accent-blue);
+  outline-offset: 2px;
+}
+
+/* External destinations get a directional cue for free from the
+   target="_blank" attribute every off-site link already carries - no
+   per-link icon markup needed anywhere this pattern is reused. */
+.cta-row a[target="_blank"]::after,
+.project-card .actions-row a[target="_blank"]::after {
+  content: "↗";
+  font-size: 0.85em;
+}
+
 .contact-grid {
   align-items: start;
 }

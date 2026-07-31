@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Purchasing Power Parity · Project · Manish Tiwari</title>
+    <meta name="description" content="How the purchasing-power-parity-advanced npm package converts currency by purchasing power instead of spot exchange rate, fetching a live PPP-GDP dataset at runtime." />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://buildwithmanish.com/projects/purchasing-power-parity.html" />
+    <meta property="og:site_name" content="Manish Tiwari" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Purchasing Power Parity · Manish Tiwari" />
+    <meta property="og:description" content="How the purchasing-power-parity-advanced npm package converts currency by purchasing power instead of spot exchange rate, fetching a live PPP-GDP dataset at runtime." />
+    <meta property="og:url" content="https://buildwithmanish.com/projects/purchasing-power-parity.html" />
+    <meta property="og:image" content="https://buildwithmanish.com/image/optimized/project-ppp.webp" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Purchasing Power Parity · Manish Tiwari" />
+    <meta name="twitter:description" content="How the purchasing-power-parity-advanced npm package converts currency by purchasing power instead of spot exchange rate, fetching a live PPP-GDP dataset at runtime." />
+    <meta name="twitter:image" content="https://buildwithmanish.com/image/optimized/project-ppp.webp" />
+    <link rel="icon" type="image/webp" href="/image/optimized/favicon-64.webp" />
+    <script id="project-schema" type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Purchasing Power Parity",
+  "description": "How the purchasing-power-parity-advanced npm package converts currency by purchasing power instead of spot exchange rate, fetching a live PPP-GDP dataset at runtime.",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "url": "https://www.npmjs.com/package/purchasing-power-parity-advanced",
+  "author": {
+    "@type": "Person",
+    "name": "Manish Tiwari",
+    "url": "https://buildwithmanish.com/about.html"
+  }
+}</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Caveat:wght@500;600&display=swap"
+    />
+    <link rel="stylesheet" href="/oat.min.css" />
+    <script src="/oat.min.js" defer></script>
+    <link rel="stylesheet" href="/styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/styles/atom-one-light.min.css"
+      id="hljs-theme-light"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js"></script>
+    <script src="/site.js" defer></script>
+  </head>
+  <body>
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+      <filter id="sketchy">
+        <feTurbulence type="fractalNoise" baseFrequency="0.045 0.06" numOctaves="2" seed="4" result="noise" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.4" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+    </svg>
+    <header class="site-header">
+      <div class="surface header-row">
+        <a class="brand" href="/index.html" aria-label="Go to homepage">
+          <img
+            class="brand-logo"
+            src="/image/optimized/brand-logo.webp"
+            alt="Manish Tiwari Brand Logo"
+            aria-hidden="true"
+            loading="eager"
+            decoding="async"
+            width="38"
+            height="38"
+          />
+        </a>
+        <button type="button" class="nav-toggle" data-nav-toggle aria-controls="primary-nav-list" aria-expanded="false" aria-label="Toggle navigation menu">
+          <span></span><span></span><span></span>
+        </button>
+        <nav aria-label="Primary">
+          <ul id="primary-nav-list">
+            <li><a href="/index.html" data-page="index.html">Home</a></li>
+            <li><a href="/about.html" data-page="about.html">About</a></li>
+            <li><a href="/projects.html" data-page="projects.html">Projects</a></li>
+            <li><a href="/blogs.html" data-page="blogs.html">Blogs</a></li>
+            <li><a href="/contact.html" data-page="contact.html">Contact</a></li>
+            <li>
+              <a class="nav-cta" href="https://cal.com/manishtiwari/" data-schedule-open target="_blank" rel="noreferrer">Schedule a Meeting</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main data-router-view>
+      <section class="surface">
+        <p class="muted kicker">Project · Open Source</p>
+        <h1 class="hero-title">Purchasing Power <span class="script-accent">Parity</span></h1>
+        <p class="hero-subtitle">A Node.js module and CLI that converts an amount between countries using PPP rates instead of raw FX - so $100 in the US compares fairly to its equivalent in India.</p>
+        <div class="contact-meta-row"><span>Solo maintainer</span><span aria-hidden="true">•</span><span>Published on npm</span><span aria-hidden="true">•</span><span>Open-source package</span></div>
+        <div class="cta-row">
+          <a href="https://www.npmjs.com/package/purchasing-power-parity-advanced" target="_blank" rel="noreferrer">npm package</a>
+          <a href="https://github.com/manish-9245/purchasing-power-parity-advanced" target="_blank" rel="noreferrer">View repo</a>
+          <a href="/projects.html">&#8249; All projects</a>
+        </div>
+      </section>
+      <hr class="divider" aria-hidden="true" />
+
+      <section class="surface" aria-label="Screenshot">
+        <div style="max-width: 640px; margin: 0 auto">
+          <figure class="project-card">
+            <img class="project-thumb" src="/image/optimized/project-ppp.webp" width="960" height="536" alt="Purchasing Power Parity project screenshot" loading="eager" decoding="async" />
+          </figure>
+        </div>
+      </section>
+      <hr class="divider" aria-hidden="true" />
+
+      <section class="surface" style="padding-bottom:0">
+        <p class="muted kicker">Deep dive</p>
+        <h2 class="section-title">How it's built</h2>
+      </section>
+      <div class="blog-post-layout">
+        <nav class="blog-toc" id="blog-toc" aria-label="Table of contents"><p class="blog-toc-title">Contents</p><ol><li><a href="#the-conversion-in-five-lines">The conversion, in five lines</a></li><li><a href="#where-the-numbers-actually-come-from">Where the numbers actually come from</a></li><li><a href="#api-and-cli-from-the-same-file">API and CLI from the same file</a></li><li><a href="#small-honest-inefficiencies">Small honest inefficiencies</a></li><li><a href="#installing-it">Installing it</a></li></ol></nav>
+        <article class="blog-prose" id="blog-prose"><p>A currency converter that only knows the spot exchange rate answers the wrong question. It'll tell you $100 is about 8,300 rupees, but not what $100 actually <em>buys</em> in each place - which is almost always what you're really trying to compare, whether that's a salary offer or the cost of living somewhere new. Purchasing power parity fixes that by converting through "international dollars" instead of the raw FX rate.</p>
+<h2 id="the-conversion-in-five-lines">The conversion, in five lines</h2>
+<p>The entire package is one file, <code>index.js</code>, and the core of it is genuinely just two lines of math once you have PPP conversion factors for both countries:</p>
+
+        <div class="code-block-shell">
+          <div class="code-window-bar">
+            <div class="code-window-controls">
+              <span class="code-window-dot close" aria-hidden="true"></span>
+              <span class="code-window-dot minimize" aria-hidden="true"></span>
+              <span class="code-window-dot maximize" aria-hidden="true"></span>
+            </div>
+            <div class="code-window-center">
+              <span class="code-lang-icon"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="#F7DF1E" d="M0 0h24v24H0z"></path><path d="M7.89 19c-.66 0-1.18-.2-1.55-.61-.37-.41-.56-1-.56-1.78h2.02c0 .28.08.5.23.67.15.17.38.25.68.25.32 0 .54-.08.68-.24.14-.16.21-.39.21-.69 0-.25-.08-.45-.23-.6-.15-.15-.39-.26-.74-.34l-1.09-.25c-.78-.18-1.38-.46-1.8-.83s-.63-.88-.63-1.53c0-.51.12-.95.37-1.32.25-.37.61-.66 1.07-.86.46-.21 1.02-.31 1.68-.31.62 0 1.15.1 1.59.31.44.21.79.5 1.05.88.26.38.39.84.39 1.39h-2.02c0-.29-.07-.51-.21-.66-.14-.15-.35-.22-.64-.22-.28 0-.49.07-.63.22-.14.15-.21.36-.21.63 0 .23.08.41.23.55.15.14.38.24.7.31l1.09.25c.8.19 1.39.48 1.78.86.39.38.59.9.59 1.56 0 .64-.2 1.16-.6 1.56-.4.4-.92.6-1.56.6zm7.25 0c-.82 0-1.47-.2-1.95-.6-.48-.4-.72-1.02-.72-1.85V11.2h2.02v5.3c0 .51.2.76.61.76.4 0 .61-.25.61-.76V11.2h2.02v5.35c0 .83-.24 1.45-.72 1.85-.48.4-1.13.6-1.95.6z"></path></svg></span>
+              <span class="code-window-lang">js</span>
+            </div>
+            <button type="button" class="code-copy-button" onclick="copyCode(this)" aria-label="Copy code">
+              <svg class="icon-copy" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-js" data-lang="js"><span class="hljs-comment">// index.js</span>
+<span class="hljs-keyword">const</span> intlDollars = amount / origin.<span class="hljs-property">ppp</span>;
+<span class="hljs-keyword">const</span> converted = intlDollars * target.<span class="hljs-property">ppp</span>;</code></pre>
+        </div>
+      <p>Divide by the origin country's PPP factor to get a currency-neutral "international dollar" amount, then multiply by the target country's factor to land in its local terms. Everything else in the package - flag emoji, currency symbols, country names, the CLI wrapper - is convenience built around those two lines.</p>
+<h2 id="where-the-numbers-actually-come-from">Where the numbers actually come from</h2>
+<p>The one architectural decision worth calling out, because it's easy to miss from the README alone: this package doesn't ship any PPP data. <code>loadPPPData()</code> fetches a CSV of PPP-to-GDP figures live from a public GitHub-hosted dataset (<code>datasets/ppp</code> on GitHub) every time the process needs it, parses it with <code>csv-parse</code>, and keeps only the most recent year per country:</p>
+
+        <div class="code-block-shell">
+          <div class="code-window-bar">
+            <div class="code-window-controls">
+              <span class="code-window-dot close" aria-hidden="true"></span>
+              <span class="code-window-dot minimize" aria-hidden="true"></span>
+              <span class="code-window-dot maximize" aria-hidden="true"></span>
+            </div>
+            <div class="code-window-center">
+              <span class="code-lang-icon"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="#F7DF1E" d="M0 0h24v24H0z"></path><path d="M7.89 19c-.66 0-1.18-.2-1.55-.61-.37-.41-.56-1-.56-1.78h2.02c0 .28.08.5.23.67.15.17.38.25.68.25.32 0 .54-.08.68-.24.14-.16.21-.39.21-.69 0-.25-.08-.45-.23-.6-.15-.15-.39-.26-.74-.34l-1.09-.25c-.78-.18-1.38-.46-1.8-.83s-.63-.88-.63-1.53c0-.51.12-.95.37-1.32.25-.37.61-.66 1.07-.86.46-.21 1.02-.31 1.68-.31.62 0 1.15.1 1.59.31.44.21.79.5 1.05.88.26.38.39.84.39 1.39h-2.02c0-.29-.07-.51-.21-.66-.14-.15-.35-.22-.64-.22-.28 0-.49.07-.63.22-.14.15-.21.36-.21.63 0 .23.08.41.23.55.15.14.38.24.7.31l1.09.25c.8.19 1.39.48 1.78.86.39.38.59.9.59 1.56 0 .64-.2 1.16-.6 1.56-.4.4-.92.6-1.56.6zm7.25 0c-.82 0-1.47-.2-1.95-.6-.48-.4-.72-1.02-.72-1.85V11.2h2.02v5.3c0 .51.2.76.61.76.4 0 .61-.25.61-.76V11.2h2.02v5.35c0 .83-.24 1.45-.72 1.85-.48.4-1.13.6-1.95.6z"></path></svg></span>
+              <span class="code-window-lang">js</span>
+            </div>
+            <button type="button" class="code-copy-button" onclick="copyCode(this)" aria-label="Copy code">
+              <svg class="icon-copy" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-js" data-lang="js"><span class="hljs-keyword">if</span> (!map[code] || year &gt; map[code].<span class="hljs-property">date</span>) {
+  map[code] = { <span class="hljs-attr">date</span>: year, <span class="hljs-attr">ppp</span>: pppValue };
+}</code></pre>
+        </div>
+      <p>That result is memoized for the lifetime of the process (<code>if (cachedPPP) return cachedPPP;</code>), but never written to disk - so every fresh CLI invocation makes a live network call out to GitHub's raw content CDN before it can convert anything. It's a deliberate trade: no bundled dataset to go stale, at the cost of a hard runtime dependency on a URL the package doesn't control. If that CSV's format or location ever changes, every install breaks at once, with no local fallback.</p>
+<h2 id="api-and-cli-from-the-same-file">API and CLI from the same file</h2>
+<p><code>index.js</code> does double duty as both a library and a command-line tool, gated on the classic <code>require.main === module</code> check:</p>
+
+        <div class="code-block-shell">
+          <div class="code-window-bar">
+            <div class="code-window-controls">
+              <span class="code-window-dot close" aria-hidden="true"></span>
+              <span class="code-window-dot minimize" aria-hidden="true"></span>
+              <span class="code-window-dot maximize" aria-hidden="true"></span>
+            </div>
+            <div class="code-window-center">
+              <span class="code-lang-icon"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="#F7DF1E" d="M0 0h24v24H0z"></path><path d="M7.89 19c-.66 0-1.18-.2-1.55-.61-.37-.41-.56-1-.56-1.78h2.02c0 .28.08.5.23.67.15.17.38.25.68.25.32 0 .54-.08.68-.24.14-.16.21-.39.21-.69 0-.25-.08-.45-.23-.6-.15-.15-.39-.26-.74-.34l-1.09-.25c-.78-.18-1.38-.46-1.8-.83s-.63-.88-.63-1.53c0-.51.12-.95.37-1.32.25-.37.61-.66 1.07-.86.46-.21 1.02-.31 1.68-.31.62 0 1.15.1 1.59.31.44.21.79.5 1.05.88.26.38.39.84.39 1.39h-2.02c0-.29-.07-.51-.21-.66-.14-.15-.35-.22-.64-.22-.28 0-.49.07-.63.22-.14.15-.21.36-.21.63 0 .23.08.41.23.55.15.14.38.24.7.31l1.09.25c.8.19 1.39.48 1.78.86.39.38.59.9.59 1.56 0 .64-.2 1.16-.6 1.56-.4.4-.92.6-1.56.6zm7.25 0c-.82 0-1.47-.2-1.95-.6-.48-.4-.72-1.02-.72-1.85V11.2h2.02v5.3c0 .51.2.76.61.76.4 0 .61-.25.61-.76V11.2h2.02v5.35c0 .83-.24 1.45-.72 1.85-.48.4-1.13.6-1.95.6z"></path></svg></span>
+              <span class="code-window-lang">js</span>
+            </div>
+            <button type="button" class="code-copy-button" onclick="copyCode(this)" aria-label="Copy code">
+              <svg class="icon-copy" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-js" data-lang="js"><span class="hljs-keyword">if</span> (<span class="hljs-built_in">require</span>.<span class="hljs-property">main</span> === <span class="hljs-variable language_">module</span>) {
+  <span class="hljs-comment">// parse process.argv, call convertPPP(), print the result</span>
+}</code></pre>
+        </div>
+      <p>Installed globally, that same file becomes the <code>ppp-calculator</code> binary via the <code>bin</code> field in <code>package.json</code> and a <code>#!/usr/bin/env node</code> shebang on line one:</p>
+
+        <div class="code-block-shell">
+          <div class="code-window-bar">
+            <div class="code-window-controls">
+              <span class="code-window-dot close" aria-hidden="true"></span>
+              <span class="code-window-dot minimize" aria-hidden="true"></span>
+              <span class="code-window-dot maximize" aria-hidden="true"></span>
+            </div>
+            <div class="code-window-center">
+              <span class="code-lang-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg></span>
+              <span class="code-window-lang">bash</span>
+            </div>
+            <button type="button" class="code-copy-button" onclick="copyCode(this)" aria-label="Copy code">
+              <svg class="icon-copy" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-bash" data-lang="bash">ppp-calculator USA 100 CAN,GBR,IND</code></pre>
+        </div>
+      <p>Required locally instead, <code>convertPPP()</code>, <code>listCountries()</code>, and <code>listCountryCodes()</code> are just plain exports - <code>listCountries()</code> returns only the countries the live PPP dataset actually covers, while <code>listCountryCodes()</code> returns everything <code>country-data</code> knows about regardless of whether PPP figures exist for it yet. That distinction matters if you're building a country picker: showing every ISO code and then failing silently on half of them is worse than filtering up front.</p>
+<h2 id="small-honest-inefficiencies">Small honest inefficiencies</h2>
+<p>Nothing here is broken, but a couple of things are worth naming plainly. The alpha-2-to-alpha-3 country code map gets rebuilt from scratch inside <code>loadPPPData()</code> on every cache miss, duplicating work already done once at module load for the general <code>countryMap</code> - harmless at this scale, wasteful if this were ever called at high frequency. And because everything hinges on one unversioned CSV, there's no schema check between "the file we expect" and "the file GitHub is currently serving" - a silent column reorder upstream would silently corrupt every conversion rather than throwing.</p>
+<h2 id="installing-it">Installing it</h2>
+
+        <div class="code-block-shell">
+          <div class="code-window-bar">
+            <div class="code-window-controls">
+              <span class="code-window-dot close" aria-hidden="true"></span>
+              <span class="code-window-dot minimize" aria-hidden="true"></span>
+              <span class="code-window-dot maximize" aria-hidden="true"></span>
+            </div>
+            <div class="code-window-center">
+              <span class="code-lang-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg></span>
+              <span class="code-window-lang">bash</span>
+            </div>
+            <button type="button" class="code-copy-button" onclick="copyCode(this)" aria-label="Copy code">
+              <svg class="icon-copy" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre><code class="hljs language-bash" data-lang="bash">npm install -g purchasing-power-parity-advanced
+ppp-calculator USA 100 CAN,GBR,IND</code></pre>
+        </div>
+      <p>Or as a dependency: <code>npm install purchasing-power-parity-advanced</code> and <code>require()</code> the same <code>convertPPP</code> function directly. <code>engines.node &gt;= 14</code> is the only real constraint, and there are no dev dependencies - the placeholder <code>"test": "node index.js"</code> script is exactly that, a placeholder, not a real test suite.</p>
+</article>
+        <aside class="blog-meta-col"><section class="blog-meta-card" aria-label="Role"><p class="blog-meta-label">Role</p><p class="blog-meta-value">Solo maintainer</p></section><section class="blog-meta-card" aria-label="Status"><p class="blog-meta-label">Status</p><p class="blog-meta-value">Published on npm</p></section><section class="blog-meta-card" aria-label="Source code"><p class="blog-meta-label">Source</p><a class="blog-meta-link" href="https://github.com/manish-9245/purchasing-power-parity-advanced" target="_blank" rel="noreferrer">View on GitHub</a></section><section class="blog-meta-card" aria-label="Project navigation"><p class="blog-meta-label">Navigate</p><a class="blog-meta-link" href="/projects.html">← All projects</a></section></aside>
+      </div>
+      <hr class="divider" aria-hidden="true" />
+
+      <section class="surface" aria-label="Tech stack">
+        <p class="muted kicker">Under the hood</p>
+        <h2 class="section-title">Tech stack</h2>
+        <div class="grid grid-2">
+          <div class="panel stack-group">
+            <h3 class="stack-group-label">Language</h3>
+            <div class="stack">
+              <span role="status">Node.js</span>
+              <span role="status">JavaScript</span>
+            </div>
+          </div>
+          <div class="panel stack-group">
+            <h3 class="stack-group-label">Distribution</h3>
+            <div class="stack">
+              <span role="status">npm</span>
+              <span role="status">CLI (ppp-calculator)</span>
+            </div>
+          </div></div>
+      </section>
+      <hr class="divider" aria-hidden="true" />
+
+      <section class="surface related-posts" aria-label="More projects">
+        <h2>More projects</h2>
+        <div class="related-posts-grid">
+          
+            <article class="panel related-card">
+              <p class="related-meta">SaaS · AI</p>
+              <p class="related-title"><a href="/projects/ai-blogs.html">AI Blogs SaaS</a></p>
+              <p class="related-desc muted">An AI Director that watches a YouTube video, plans an outline, and drafts a full SEO-optimised blog post - with a human still steering the wheel.</p>
+            </article>
+            <article class="panel related-card">
+              <p class="related-meta">Frontend · Education</p>
+              <p class="related-title"><a href="/projects/programmerskool.html">ProgrammerSkool</a></p>
+              <p class="related-desc muted">A focused learning platform that puts a coding playlist and a live C++ editor side by side, compiling against a real online judge instead of just displaying code.</p>
+            </article>
+            <article class="panel related-card">
+              <p class="related-meta">Frontend · Developer Tool</p>
+              <p class="related-title"><a href="/projects/codesnip.html">CodeSnip</a></p>
+              <p class="related-desc muted">A multi-language code editor that exports snippets as polished PNGs or animated GIFs - themes, gradients, and a typing animation built entirely client-side.</p>
+            </article>
+        </div>
+      </section>
+      <hr class="divider" aria-hidden="true" />
+
+      <section class="surface blog-share" id="blog-share" aria-label="Share this project">
+      <h2>Share this project</h2>
+      <div class="blog-share-actions">
+        <a class="blog-share-link share-linkedin" aria-label="Share on LinkedIn" title="Share on LinkedIn" target="_blank" rel="noopener noreferrer" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fbuildwithmanish.com%2Fprojects%2Fpurchasing-power-parity.html">
+          <svg class="blog-share-icon" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+          <span>LinkedIn</span>
+        </a>
+        <a class="blog-share-link share-x" aria-label="Share on X" title="Share on X" target="_blank" rel="noopener noreferrer" href="https://x.com/intent/tweet?url=https%3A%2F%2Fbuildwithmanish.com%2Fprojects%2Fpurchasing-power-parity.html&text=Purchasing%20Power%20Parity">
+          <svg class="blog-share-icon" viewBox="0 0 24 24"><path d="M18.9 2H22l-6.77 7.74L23 22h-6.1l-4.78-6.24L6.66 22H3.55l7.24-8.27L1 2h6.25l4.32 5.7L18.9 2zm-1.07 18h1.69L6.33 3.9H4.52L17.83 20z"/></svg>
+          <span>X</span>
+        </a>
+        <a class="blog-share-link share-whatsapp" aria-label="Share on WhatsApp" title="Share on WhatsApp" target="_blank" rel="noopener noreferrer" href="https://api.whatsapp.com/send?text=Purchasing%20Power%20Parity%20https%3A%2F%2Fbuildwithmanish.com%2Fprojects%2Fpurchasing-power-parity.html">
+          <svg class="blog-share-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.187-1.622c1.763.961 3.746 1.469 5.758 1.471h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          <span>WhatsApp</span>
+        </a>
+        <a class="blog-share-link share-reddit" aria-label="Share on Reddit" title="Share on Reddit" target="_blank" rel="noopener noreferrer" href="https://www.reddit.com/submit?url=https%3A%2F%2Fbuildwithmanish.com%2Fprojects%2Fpurchasing-power-parity.html&title=Purchasing%20Power%20Parity">
+          <svg class="blog-share-icon" viewBox="0 0 24 24"><path d="M24 11.5c0-1.65-1.35-3-3-3-.41 0-.79.08-1.14.24-1.64-1.14-3.85-1.88-6.28-1.97l1.08-5.08 3.53.75c.05.83.74 1.5 1.57 1.5 0.86 0 1.56-.7 1.56-1.56s-.7-1.56-1.56-1.56c-.63 0-1.18.38-1.42.92l-3.92-.83c-.19-.04-.38.07-.44.26l-1.21 5.7c-2.43.09-4.64.83-6.28 1.97-.35-.16-.73-.24-1.14-.24-1.65 0-3 1.35-3 3 0 1.25.77 2.32 1.86 2.77-.04.24-.06.48-.06.73 0 3.31 3.58 6 8 6s8-2.69 8-6c0-.25-.02-.49-.06-.73 1.09-.45 1.86-1.52 1.86-2.77zm-18 0c0-.83.67-1.5 1.5-1.5.31 0 .59.1.82.26-1.04.77-1.74 1.83-2.02 3.01-.18-.08-.3-.26-.3-.45v-1.32zm10 5.5c-1.3 1.3-3.7 1.3-5 0-.15-.15-.15-.39 0-.54s.39-.15.54 0c1 1 3.2 1 4.2 0 .15-.15.39-.15.54 0s.15.39 0 .54zm.32-2.23c-.28-1.18-.98-2.24-2.02-3.01.23-.16.51-.26.82-.26 0.83 0 1.5.67 1.5 1.5 0 .19-.12.37-.3.45v1.32zm3.32-3.27c0 .19-.12.37-.3.45v-1.32c0-.83.67-1.5 1.5-1.5.83 0 1.5.67 1.5 1.5s-1.35 3-3 3c-.41 0-.79-.08-1.14-.24z"/></svg>
+          <span>Reddit</span>
+        </a>
+        <button type="button" class="blog-share-copy share-copy" aria-label="Copy link" title="Copy link" data-share-copy data-url="https://buildwithmanish.com/projects/purchasing-power-parity.html">
+          <svg class="blog-share-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+          <span>Copy Link</span>
+        </button>
+      </div></section>
+      <hr class="divider" aria-hidden="true" />
+
+      <section class="surface bottom-cta" aria-label="Hire me">
+        <div class="panel bottom-cta-card">
+          <div class="availability-badge" style="justify-content: center; margin-bottom: 1rem">
+            <span class="availability-dot" aria-hidden="true"></span>
+            Open to new projects
+          </div>
+          <h2 class="section-title" style="margin-top: 0">Want something like this built?</h2>
+          <p class="muted" style="max-width: 56ch; margin: 0 auto 1.6rem">
+            I build full-stack products and AI tooling end-to-end - from the first line of
+            code to a production deployment.
+          </p>
+          <div class="cta-row" style="justify-content: center">
+            <a role="button" href="https://cal.com/manishtiwari/" data-schedule-open target="_blank" rel="noreferrer">Book a free intro call</a>
+            <a href="/projects.html">See more projects</a>
+          </div>
+        </div>
+      </section>
+      <div class="floating-share" id="floating-share">
+        <div class="floating-share-menu">
+          <a class="floating-share-item share-linkedin" title="LinkedIn" target="_blank" rel="noopener noreferrer" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fbuildwithmanish.com%2Fprojects%2Fpurchasing-power-parity.html">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+          </a>
+          <a class="floating-share-item share-x" title="X" target="_blank" rel="noopener noreferrer" href="https://x.com/intent/tweet?url=https%3A%2F%2Fbuildwithmanish.com%2Fprojects%2Fpurchasing-power-parity.html&text=Purchasing%20Power%20Parity">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-6.77 7.74L23 22h-6.1l-4.78-6.24L6.66 22H3.55l7.24-8.27L1 2h6.25l4.32 5.7L18.9 2zm-1.07 18h1.69L6.33 3.9H4.52L17.83 20z"/></svg>
+          </a>
+          <a class="floating-share-item share-whatsapp" title="WhatsApp" target="_blank" rel="noopener noreferrer" href="https://api.whatsapp.com/send?text=Purchasing%20Power%20Parity%20https%3A%2F%2Fbuildwithmanish.com%2Fprojects%2Fpurchasing-power-parity.html">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.187-1.622c1.763.961 3.746 1.469 5.758 1.471h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          </a>
+          <button type="button" class="floating-share-item share-copy" title="Copy Link" data-share-copy data-url="https://buildwithmanish.com/projects/purchasing-power-parity.html">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+          </button>
+        </div>
+        <button type="button" class="floating-share-trigger" aria-label="Share project">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+        </button>
+      </div></main>
+
+    <footer class="site-footer">
+      <div class="surface footer-row">
+        <small>© <span data-year></span> Manish Tiwari</small>
+        <nav class="footer-social" aria-label="Social links">
+          <a href="https://github.com/manish-9245" target="_blank" rel="noreferrer" aria-label="GitHub">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M12 2C6.48 2 2 6.59 2 12.24c0 4.51 2.87 8.34 6.84 9.69.5.1.68-.22.68-.49 0-.24-.01-.88-.01-1.72-2.78.62-3.37-1.37-3.37-1.37-.45-1.18-1.11-1.49-1.11-1.49-.91-.64.07-.63.07-.63 1 .07 1.53 1.06 1.53 1.06.9 1.57 2.35 1.12 2.92.85.09-.67.35-1.12.63-1.37-2.22-.26-4.56-1.14-4.56-5.09 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.31.1-2.73 0 0 .84-.27 2.75 1.05A9.3 9.3 0 0 1 12 6.84c.85 0 1.71.12 2.51.35 1.9-1.32 2.74-1.05 2.74-1.05.55 1.42.2 2.47.1 2.73.64.72 1.03 1.63 1.03 2.75 0 3.96-2.34 4.82-4.57 5.08.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.8 0 .27.18.6.69.49A10.26 10.26 0 0 0 22 12.24C22 6.59 17.52 2 12 2z" />
+            </svg>
+          </a>
+          <a href="https://www.linkedin.com/in/manishtiwari13/" target="_blank" rel="noreferrer" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M6.94 8.5H3.56V20h3.38V8.5zM5.25 3C4.14 3 3.2 3.94 3.2 5.05c0 1.1.9 2.05 2.01 2.05h.02c1.12 0 2.02-.95 2.02-2.05C7.25 3.94 6.36 3 5.25 3zM20.8 13.4c0-3.13-1.67-5.15-4.66-5.15-2.15 0-3.11 1.2-3.65 2.03V8.5H9.1c.04 1.17 0 11.5 0 11.5h3.38v-6.42c0-.34.03-.68.12-.92.27-.68.88-1.4 1.9-1.4 1.34 0 1.88 1.05 1.88 2.58V20h3.38v-6.6z" />
+            </svg>
+          </a>
+          <a href="mailto:manishdoestech@gmail.com?subject=Project%20inquiry%20from%20buildwithmanish.com&body=Hi%20Manish%2C%0A%0AI%E2%80%99d%20like%20to%20discuss%20a%20project.%20Here%20are%20the%20details%3A%0A-%20Project%20goal%3A%0A-%20Current%20stage%3A%0A-%20Tech%20stack%20(or%20preference)%3A%0A-%20Timeline%3A%0A-%20Budget%20range%3A%0A%0AThanks%2C" aria-label="Email">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M3 6.75A1.75 1.75 0 0 1 4.75 5h14.5A1.75 1.75 0 0 1 21 6.75v10.5A1.75 1.75 0 0 1 19.25 19H4.75A1.75 1.75 0 0 1 3 17.25V6.75zm1.9.24 7.1 5.53 7.1-5.53H4.9zm14.6 10.01V8.2l-6.96 5.42a.9.9 0 0 1-1.08 0L4.5 8.2V17c0 .28.22.5.5.5h14c.28 0 .5-.22.5-.5z" />
+            </svg>
+          </a>
+        </nav>
+      </div>
+    </footer>
+
+    <dialog id="scheduler-modal" class="scheduler-modal" aria-label="Schedule a meeting">
+      <article class="scheduler-shell">
+        <header class="scheduler-header">
+          <strong>Schedule a Meeting</strong>
+          <button type="button" data-schedule-close aria-label="Close scheduler">Close</button>
+        </header>
+        <iframe
+          class="scheduler-iframe"
+          data-scheduler-frame
+          title="Schedule a meeting with Manish Tiwari"
+          loading="lazy"
+          referrerpolicy="strict-origin-when-cross-origin"
+        ></iframe>
+      </article>
+    </dialog>
+
+    <dialog id="blog-image-modal" class="blog-image-modal" aria-label="Expanded image">
+      <article class="blog-image-modal-shell">
+        <header class="blog-image-modal-header">
+          <strong>Image preview</strong>
+          <button type="button" id="blog-image-modal-close" data-blog-image-close aria-label="Close image preview">Close</button>
+        </header>
+        <div class="blog-image-modal-body">
+          <div id="blog-image-modal-loader" class="blog-image-loader skeleton box" role="status" aria-label="Loading image"></div>
+          <img id="blog-image-modal-img" alt="" />
+          <p class="blog-image-caption" id="blog-image-modal-caption"></p>
+        </div>
+      </article>
+    </dialog>
+  </body>
+</html>

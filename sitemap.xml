@@ -31,6 +31,41 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://buildwithmanish.com/projects/ai-blogs.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://buildwithmanish.com/projects/codesnip.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://buildwithmanish.com/projects/collabcode.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://buildwithmanish.com/projects/facial-emotion-recognition.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://buildwithmanish.com/projects/orbit.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://buildwithmanish.com/projects/programmerskool.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://buildwithmanish.com/projects/purchasing-power-parity.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://buildwithmanish.com/posts/beyond-get-and-set-architecting-resilient-distributed-caching-patterns-for-microservices.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
