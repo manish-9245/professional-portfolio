@@ -192,7 +192,6 @@ function renderHero({ meta, title, slug }) {
   if (meta.repo) {
     ctas.push(`<a href="${meta.repo}" target="_blank" rel="noreferrer">View repo</a>`);
   }
-  ctas.push(`<a href="/projects.html">&#8249; All projects</a>`);
 
   return `
       <section class="surface">
@@ -261,6 +260,13 @@ function renderRelatedSection(current, allEntries, limit = 3) {
             </article>`).join("")}
         </div>
       </section>`;
+}
+
+function renderBackLink() {
+  return `
+      <div class="surface" style="padding-top:0">
+        <a href="/projects.html">← Back to all projects</a>
+      </div>`;
 }
 
 function renderBottomCta() {
@@ -374,6 +380,7 @@ function renderProjectPage(template, { meta, slug, title, contentHtml, tocHtml, 
     renderStackSection(meta),
     renderRelatedSection({ slug, tags: parseTags(meta.tags || "") }, allEntries),
     renderShareSection(shareActionsHtml),
+    renderBackLink(),
     renderBottomCta(),
   ].filter(Boolean).join("\n      <hr class=\"divider\" aria-hidden=\"true\" />\n") + floatingShareHtml;
 
