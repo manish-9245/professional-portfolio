@@ -47,6 +47,7 @@
       id="hljs-theme-light"
     />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.min.js"></script>
     <script src="/site.js" defer></script>
   </head>
   <body>
@@ -115,8 +116,99 @@
         <h2 class="section-title">How it's built</h2>
       </section>
       <div class="blog-post-layout">
-        <nav class="blog-toc" id="blog-toc" aria-label="Table of contents"><p class="blog-toc-title">Contents</p><ol><li><a href="#the-compile-step-is-real">The compile step is real</a></li><li><a href="#two-implementations-of-the-same-idea">Two implementations of the same idea</a></li><li><a href="#extracting-a-playlist-id-two-different-ways">Extracting a playlist ID two different ways</a></li><li><a href="#running-it">Running it</a></li></ol></nav>
+        <nav class="blog-toc" id="blog-toc" aria-label="Table of contents"><p class="blog-toc-title">Contents</p><ol><li><a href="#architecture">Architecture</a></li><li><a href="#the-compile-step-is-real">The compile step is real</a></li><li><a href="#two-implementations-of-the-same-idea">Two implementations of the same idea</a></li><li><a href="#extracting-a-playlist-id-two-different-ways">Extracting a playlist ID two different ways</a></li><li><a href="#running-it">Running it</a></li></ol></nav>
         <article class="blog-prose" id="blog-prose"><p>Following a coding tutorial usually means two windows and constant alt-tabbing: the video in one, the editor in the other, losing your place in both every time you switch. ProgrammerSkool's whole premise is refusing that trade - a YouTube playlist and a real, compiling C++ editor live in the same view, and neither one is a toy.</p>
+<h2 id="architecture">Architecture</h2>
+<pre class="mermaid">flowchart TD
+
+subgraph group_legacy["Legacy static site"]
+  node_legacy_index["Legacy page<br>static HTML<br>[index.html]"]
+  node_legacy_script["Legacy script<br>JavaScript<br>[script.js]"]
+  node_legacy_style["Legacy styles<br>CSS<br>[style.css]"]
+end
+
+subgraph group_client["Vite React client"]
+  node_vite_entry["Vite HTML entry<br>[index.html]"]
+  node_react_entry["React mount<br>React entry<br>[main.jsx]"]
+  node_app["App composition<br>React screen<br>[App.jsx]"]
+  node_assets["Static assets<br>asset source"]
+end
+
+subgraph group_ui["UI primitives"]
+  node_button["Button<br>UI primitive<br>[button.jsx]"]
+  node_card["Card<br>UI primitive<br>[card.jsx]"]
+  node_slider["Slider<br>UI primitive<br>[slider.jsx]"]
+end
+
+subgraph group_styling["Styling and build"]
+  node_app_css["App styles<br>CSS<br>[App.css]"]
+  node_global_css["Global styles<br>CSS<br>[index.css]"]
+  node_vite_config["Vite config<br>build config<br>[vite.config.js]"]
+  node_package["Dependencies<br>package manifest<br>[package.json]"]
+  node_tailwind["Tailwind config<br>style config<br>[tailwind.config.js]"]
+  node_postcss["PostCSS config<br>style config<br>[postcss.config.js]"]
+  node_components_config["Component convention<br>UI config<br>[components.json]"]
+end
+
+node_browser(("Browser<br>runtime"))
+node_youtube{{"YouTube iframe embed<br>playlist video, external"}}
+node_wandbox{{"wandbox.org/api/compile.json<br>external - no code execution owned by this project"}}
+
+node_browser -.-&gt;|"can load separately"| node_legacy_index
+node_legacy_index --&gt;|"loads"| node_legacy_script
+node_legacy_index --&gt;|"styles with"| node_legacy_style
+node_legacy_index --&gt;|"embeds playlist"| node_youtube
+node_legacy_script --&gt;|"POST code, gcc-head, C++17"| node_wandbox
+node_browser --&gt;|"loads Vite output"| node_vite_entry
+node_vite_entry --&gt;|"loads"| node_react_entry
+node_react_entry --&gt;|"mounts"| node_app
+node_app --&gt;|"embeds playlist"| node_youtube
+node_app --&gt;|"fetch() POST code"| node_wandbox
+node_app --&gt;|"composes"| node_button
+node_app --&gt;|"composes"| node_card
+node_app --&gt;|"composes"| node_slider
+node_app --&gt;|"uses"| node_app_css
+node_react_entry --&gt;|"uses"| node_global_css
+node_app --&gt;|"uses"| node_assets
+node_vite_config --&gt;|"builds and serves"| node_vite_entry
+node_package --&gt;|"defines tooling"| node_vite_config
+node_tailwind --&gt;|"drives utility styling"| node_global_css
+node_postcss --&gt;|"processes"| node_global_css
+node_components_config -.-&gt;|"guides convention"| node_button
+node_components_config -.-&gt;|"guides convention"| node_card
+node_components_config -.-&gt;|"guides convention"| node_slider
+
+click node_legacy_index "https://github.com/manish-9245/programmerskool.io/blob/main/index.html"
+click node_legacy_script "https://github.com/manish-9245/programmerskool.io/blob/main/script.js"
+click node_legacy_style "https://github.com/manish-9245/programmerskool.io/blob/main/style.css"
+click node_vite_entry "https://github.com/manish-9245/programmerskool.io/blob/main/programmerskool-vite/index.html"
+click node_react_entry "https://github.com/manish-9245/programmerskool.io/blob/main/programmerskool-vite/src/main.jsx"
+click node_app "https://github.com/manish-9245/programmerskool.io/blob/main/programmerskool-vite/src/App.jsx"
+click node_app_css "https://github.com/manish-9245/programmerskool.io/blob/main/programmerskool-vite/src/App.css"
+click node_global_css "https://github.com/manish-9245/programmerskool.io/blob/main/programmerskool-vite/src/index.css"
+click node_button "https://github.com/manish-9245/programmerskool.io/blob/main/programmerskool-vite/src/components/ui/button.jsx"
+click node_card "https://github.com/manish-9245/programmerskool.io/blob/main/programmerskool-vite/src/components/ui/card.jsx"
+click node_slider "https://github.com/manish-9245/programmerskool.io/blob/main/programmerskool-vite/src/components/ui/slider.jsx"
+click node_assets "https://github.com/manish-9245/programmerskool.io/tree/main/programmerskool-vite/public"
+click node_vite_config "https://github.com/manish-9245/programmerskool.io/blob/main/programmerskool-vite/vite.config.js"
+click node_package "https://github.com/manish-9245/programmerskool.io/blob/main/programmerskool-vite/package.json"
+click node_tailwind "https://github.com/manish-9245/programmerskool.io/blob/main/programmerskool-vite/tailwind.config.js"
+click node_postcss "https://github.com/manish-9245/programmerskool.io/blob/main/programmerskool-vite/postcss.config.js"
+click node_components_config "https://github.com/manish-9245/programmerskool.io/blob/main/programmerskool-vite/components.json"
+
+classDef toneNeutral fill:#f8fafc,stroke:#334155,stroke-width:1.5px,color:#0f172a
+classDef toneBlue fill:#dbeafe,stroke:#2563eb,stroke-width:1.5px,color:#172554
+classDef toneAmber fill:#fef3c7,stroke:#d97706,stroke-width:1.5px,color:#78350f
+classDef toneMint fill:#dcfce7,stroke:#16a34a,stroke-width:1.5px,color:#14532d
+classDef toneRose fill:#ffe4e6,stroke:#e11d48,stroke-width:1.5px,color:#881337
+classDef toneIndigo fill:#e0e7ff,stroke:#4f46e5,stroke-width:1.5px,color:#312e81
+classDef toneTeal fill:#ccfbf1,stroke:#0f766e,stroke-width:1.5px,color:#134e4a
+class node_legacy_index,node_legacy_script,node_legacy_style toneBlue
+class node_vite_entry,node_react_entry,node_app,node_assets toneAmber
+class node_button,node_card,node_slider toneMint
+class node_app_css,node_global_css,node_vite_config,node_package,node_tailwind,node_postcss,node_components_config toneRose
+class node_browser toneNeutral
+class node_youtube,node_wandbox toneIndigo</pre><p>Boxes are clickable and jump straight to the real source file on GitHub.</p>
 <h2 id="the-compile-step-is-real">The compile step is real</h2>
 <p>The editor isn't just a syntax-highlighted textarea - "Compile and Run" actually sends your code to <a href="https://wandbox.org">Wandbox</a>, a free public compilation API, and prints back whatever the compiler actually says:</p>
 
@@ -245,14 +337,14 @@ bar.<span class="hljs-title function_">addEventListener</span>(<span class="hljs
               <p class="related-desc muted">A multi-language code editor that exports snippets as polished PNGs or animated GIFs - themes, gradients, and a typing animation built entirely client-side.</p>
             </article>
             <article class="panel related-card">
-              <p class="related-meta">SaaS · AI</p>
-              <p class="related-title"><a href="/projects/ai-blogs.html">AI Blogs SaaS</a></p>
-              <p class="related-desc muted">An AI Director that watches a YouTube video, plans an outline, and drafts a full SEO-optimised blog post - with a human still steering the wheel.</p>
+              <p class="related-meta">CLI · Developer Tool</p>
+              <p class="related-title"><a href="/projects/hackpack.html">Hackpack</a></p>
+              <p class="related-desc muted">A CLI that scaffolds full-stack apps by composing prebuilt templates instead of prompting an LLM - a framework, a stack of features, and generated CRUD pages, wired together through anchor comments.</p>
             </article>
             <article class="panel related-card">
-              <p class="related-meta">Open Source · Backend</p>
-              <p class="related-title"><a href="/projects/purchasing-power-parity.html">Purchasing Power Parity</a></p>
-              <p class="related-desc muted">A Node.js module and CLI that converts an amount between countries using PPP rates instead of raw FX - so $100 in the US compares fairly to its equivalent in India.</p>
+              <p class="related-meta">Full-Stack · Real-time</p>
+              <p class="related-title"><a href="/projects/collabpro.html">CollabPro</a></p>
+              <p class="related-desc muted">A self-hosted team workspace pairing a block-based document editor with an infinite collaborative whiteboard - real-time sync, version history, and an MCP server so AI agents can read and write files too.</p>
             </article>
         </div>
       </section>
@@ -375,6 +467,44 @@ bar.<span class="hljs-title function_">addEventListener</span>(<span class="hljs
           <div id="blog-image-modal-loader" class="blog-image-loader skeleton box" role="status" aria-label="Loading image"></div>
           <img id="blog-image-modal-img" alt="" />
           <p class="blog-image-caption" id="blog-image-modal-caption"></p>
+        </div>
+      </article>
+    </dialog>
+
+    <!-- Mermaid Accessibility Modal -->
+    <dialog
+      id="blog-mermaid-modal"
+      class="blog-image-modal blog-mermaid-modal"
+      aria-labelledby="blog-mermaid-modal-title"
+    >
+      <article class="blog-image-modal-shell">
+        <header class="blog-image-modal-header">
+          <h3 class="blog-image-modal-title" id="blog-mermaid-modal-title">Diagram View</h3>
+          <div class="blog-mermaid-controls">
+            <button type="button" class="blog-image-modal-close" data-mermaid-zoom-out title="Zoom Out">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            </button>
+            <button type="button" class="blog-image-modal-close" data-mermaid-reset title="Reset View">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg>
+            </button>
+            <button type="button" class="blog-image-modal-close" data-mermaid-zoom-in title="Zoom In">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            </button>
+          </div>
+          <button
+            type="button"
+            class="blog-image-modal-close"
+            data-blog-mermaid-close
+            aria-label="Close modal"
+          >
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </header>
+        <div class="blog-image-modal-body blog-mermaid-modal-body">
+          <div class="mermaid-canvas-container" id="blog-mermaid-modal-container">
+            <!-- Canvas/SVG will be injected here -->
+          </div>
+          <p class="blog-image-caption">Diagram Accessibility View (Read-Only)</p>
         </div>
       </article>
     </dialog>

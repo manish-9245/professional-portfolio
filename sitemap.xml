@@ -46,7 +46,17 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://buildwithmanish.com/projects/collabpro.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://buildwithmanish.com/projects/facial-emotion-recognition.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://buildwithmanish.com/projects/hackpack.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>

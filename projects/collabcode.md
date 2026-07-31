@@ -17,6 +17,77 @@ application_category: "DeveloperApplication"
 ---
 Pairing on code remotely almost always collapses into one of two bad options: screen-share, where only one person's cursor actually moves, or a live-share plugin tied to a specific editor everyone has to install. I wanted the smallest possible version of "a room where everyone types into the same file" - open in any browser, joined with a link, gone the moment everyone leaves.
 
+## Architecture
+
+```mermaid
+flowchart TD
+
+subgraph group_client["Browser client"]
+  node_public["Browser document &amp; metadata<br/>static assets<br/>[index.html]"]
+  node_bootstrap["React bootstrap<br/>client entry<br/>[index.js]"]
+  node_app["Application shell &amp; routes<br/>React routing<br/>[App.js]"]
+  node_home["Room entry<br/>page<br/>[Home.js]"]
+  node_editor_page["Collaborative editor<br/>page orchestrator<br/>[EditorPage.js]"]
+  node_editor["CodeMirror editor<br/>editor adapter<br/>[Editor.js]"]
+  node_client_list["Participant list<br/>UI component<br/>[Client.js]"]
+  node_socket_client{{"Socket client<br/>Socket.IO boundary<br/>[socket.js]"}}
+  node_actions["Event contract<br/>shared event names<br/>[Actions.js]"]
+end
+
+subgraph group_server["Node service"]
+  node_server_entry{{"Express &amp; Socket.IO server<br/>runtime entry<br/>[server.js]"}}
+  node_room_relay["Room relay<br/>in-memory session layer<br/>[server.js]"]
+  node_production_build["Production client build<br/>static application<br/>[server.js]"]
+end
+
+node_dependencies["Runtime dependencies<br/>package manifest<br/>[package.json]"]
+
+node_public -->|"loads"| node_bootstrap
+node_bootstrap -->|"mounts"| node_app
+node_app -->|"room-entry route"| node_home
+node_app -->|"room editor route"| node_editor_page
+node_home -->|"navigates with room ID"| node_editor_page
+node_editor_page -->|"composes"| node_editor
+node_editor_page -->|"renders presence"| node_client_list
+node_editor -->|"local code changes"| node_editor_page
+node_editor_page -->|"uses"| node_socket_client
+node_actions -.->|"event names"| node_editor_page
+node_actions -.->|"event names"| node_server_entry
+node_socket_client -->|"Socket.IO connection"| node_server_entry
+node_server_entry -->|"delegates room events"| node_room_relay
+node_room_relay -->|"presence and code broadcasts"| node_socket_client
+node_server_entry -->|"serves"| node_production_build
+node_dependencies -.->|"provides client runtime"| node_bootstrap
+node_dependencies -.->|"provides server runtime"| node_server_entry
+
+click node_public "https://github.com/manish-9245/collabcode.io/blob/main/public/index.html"
+click node_bootstrap "https://github.com/manish-9245/collabcode.io/blob/main/src/index.js"
+click node_app "https://github.com/manish-9245/collabcode.io/blob/main/src/App.js"
+click node_home "https://github.com/manish-9245/collabcode.io/blob/main/src/pages/Home.js"
+click node_editor_page "https://github.com/manish-9245/collabcode.io/blob/main/src/pages/EditorPage.js"
+click node_editor "https://github.com/manish-9245/collabcode.io/blob/main/src/components/Editor.js"
+click node_client_list "https://github.com/manish-9245/collabcode.io/blob/main/src/components/Client.js"
+click node_socket_client "https://github.com/manish-9245/collabcode.io/blob/main/src/socket.js"
+click node_actions "https://github.com/manish-9245/collabcode.io/blob/main/src/Actions.js"
+click node_server_entry "https://github.com/manish-9245/collabcode.io/blob/main/server.js"
+click node_room_relay "https://github.com/manish-9245/collabcode.io/blob/main/server.js"
+click node_production_build "https://github.com/manish-9245/collabcode.io/blob/main/server.js"
+click node_dependencies "https://github.com/manish-9245/collabcode.io/blob/main/package.json"
+
+classDef toneNeutral fill:#f8fafc,stroke:#334155,stroke-width:1.5px,color:#0f172a
+classDef toneBlue fill:#dbeafe,stroke:#2563eb,stroke-width:1.5px,color:#172554
+classDef toneAmber fill:#fef3c7,stroke:#d97706,stroke-width:1.5px,color:#78350f
+classDef toneMint fill:#dcfce7,stroke:#16a34a,stroke-width:1.5px,color:#14532d
+classDef toneRose fill:#ffe4e6,stroke:#e11d48,stroke-width:1.5px,color:#881337
+classDef toneIndigo fill:#e0e7ff,stroke:#4f46e5,stroke-width:1.5px,color:#312e81
+classDef toneTeal fill:#ccfbf1,stroke:#0f766e,stroke-width:1.5px,color:#134e4a
+class node_public,node_bootstrap,node_app,node_home,node_editor_page,node_editor,node_client_list,node_socket_client,node_actions toneBlue
+class node_server_entry,node_room_relay,node_production_build toneAmber
+class node_dependencies toneNeutral
+```
+
+Boxes are clickable and jump straight to the real source file on GitHub.
+
 ## What it actually is
 
 CollabCode is a single-document editor, not a multi-file IDE. You land on a home screen, create a room (a `uuid.v4()` string) or paste one in, pick a username, and get dropped into `/editor/:roomId`. Every keystroke in that room's CodeMirror instance is broadcast over Socket.IO to everyone else connected - it's closer to a shared Etherpad for code than a real development environment, and that scope is deliberate. There's no file tree, no language server, no persistence. The document lives entirely in memory, split across whichever browser tabs are currently open.

@@ -47,6 +47,7 @@
       id="hljs-theme-light"
     />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.min.js"></script>
     <script src="/site.js" defer></script>
   </head>
   <body>
@@ -115,8 +116,75 @@
         <h2 class="section-title">How it's built</h2>
       </section>
       <div class="blog-post-layout">
-        <nav class="blog-toc" id="blog-toc" aria-label="Table of contents"><p class="blog-toc-title">Contents</p><ol><li><a href="#the-conversion-in-five-lines">The conversion, in five lines</a></li><li><a href="#where-the-numbers-actually-come-from">Where the numbers actually come from</a></li><li><a href="#api-and-cli-from-the-same-file">API and CLI from the same file</a></li><li><a href="#small-honest-inefficiencies">Small honest inefficiencies</a></li><li><a href="#installing-it">Installing it</a></li></ol></nav>
+        <nav class="blog-toc" id="blog-toc" aria-label="Table of contents"><p class="blog-toc-title">Contents</p><ol><li><a href="#architecture">Architecture</a></li><li><a href="#the-conversion-in-five-lines">The conversion, in five lines</a></li><li><a href="#where-the-numbers-actually-come-from">Where the numbers actually come from</a></li><li><a href="#api-and-cli-from-the-same-file">API and CLI from the same file</a></li><li><a href="#small-honest-inefficiencies">Small honest inefficiencies</a></li><li><a href="#installing-it">Installing it</a></li></ol></nav>
         <article class="blog-prose" id="blog-prose"><p>A currency converter that only knows the spot exchange rate answers the wrong question. It'll tell you $100 is about 8,300 rupees, but not what $100 actually <em>buys</em> in each place - which is almost always what you're really trying to compare, whether that's a salary offer or the cost of living somewhere new. Purchasing power parity fixes that by converting through "international dollars" instead of the raw FX rate.</p>
+<h2 id="architecture">Architecture</h2>
+<pre class="mermaid">flowchart TD
+
+subgraph group_consumers["Consumers"]
+  node_library_user(("CommonJS consumer"))
+  node_cli_user(("CLI user<br>consumer"))
+end
+
+subgraph group_package["npm Package"]
+  node_npm{{"npm distribution<br>registry"}}
+  node_package_manifest["Package manifest<br>npm manifest<br>[package.json]"]
+  node_lockfile["Dependency lockfile<br>npm lockfile<br>[package-lock.json]"]
+  node_cli_command["ppp-calculator<br>CLI command<br>[index.js]"]
+end
+
+subgraph group_conversion["Conversion Engine"]
+  node_module_api["Public CommonJS API<br>module exports<br>[index.js]"]
+  node_code_validation["ISO3 normalization<br>validation layer<br>[index.js]"]
+  node_ppp_resolution[("PPP data resolution<br>in-memory cache, no disk persistence<br>[index.js]")]
+  node_ppp_calculation["PPP calculation<br>calculation layer<br>[index.js]"]
+  node_metadata_lookup["Country &amp; currency metadata<br>metadata layer<br>[index.js]"]
+  node_conversion_response["Conversion response<br>API result<br>[index.js]"]
+  node_country_lists["Country lookup results<br>API result<br>[index.js]"]
+end
+
+subgraph group_external["External dependency"]
+  node_ppp_dataset{{"datasets/ppp CSV<br>raw.githubusercontent.com - fetched live, not bundled"}}
+end
+
+node_npm --&gt;|"publishes from"| node_package_manifest
+node_package_manifest --&gt;|"locks dependencies with"| node_lockfile
+node_package_manifest --&gt;|"registers bin"| node_cli_command
+node_library_user --&gt;|"require()"| node_module_api
+node_cli_user --&gt;|"invokes"| node_cli_command
+node_cli_command --&gt;|"uses conversion"| node_module_api
+node_module_api --&gt;|"convertPPP"| node_code_validation
+node_code_validation --&gt;|"valid codes"| node_ppp_resolution
+node_ppp_resolution --&gt;|"fetches fresh on cold start"| node_ppp_dataset
+node_ppp_resolution --&gt;|"PPP values"| node_ppp_calculation
+node_ppp_calculation --&gt;|"amount results"| node_metadata_lookup
+node_metadata_lookup --&gt;|"enriched records"| node_conversion_response
+node_module_api --&gt;|"listCountries / listCountryCodes"| node_country_lists
+node_metadata_lookup --&gt;|"country records"| node_country_lists
+node_cli_command --&gt;|"JSON with names and flags"| node_conversion_response
+
+click node_package_manifest "https://github.com/manish-9245/purchasing-power-parity-advanced/blob/main/package.json"
+click node_lockfile "https://github.com/manish-9245/purchasing-power-parity-advanced/blob/main/package-lock.json"
+click node_cli_command "https://github.com/manish-9245/purchasing-power-parity-advanced/blob/main/index.js"
+click node_module_api "https://github.com/manish-9245/purchasing-power-parity-advanced/blob/main/index.js"
+click node_code_validation "https://github.com/manish-9245/purchasing-power-parity-advanced/blob/main/index.js"
+click node_ppp_resolution "https://github.com/manish-9245/purchasing-power-parity-advanced/blob/main/index.js"
+click node_ppp_calculation "https://github.com/manish-9245/purchasing-power-parity-advanced/blob/main/index.js"
+click node_metadata_lookup "https://github.com/manish-9245/purchasing-power-parity-advanced/blob/main/index.js"
+click node_conversion_response "https://github.com/manish-9245/purchasing-power-parity-advanced/blob/main/index.js"
+click node_country_lists "https://github.com/manish-9245/purchasing-power-parity-advanced/blob/main/index.js"
+
+classDef toneNeutral fill:#f8fafc,stroke:#334155,stroke-width:1.5px,color:#0f172a
+classDef toneBlue fill:#dbeafe,stroke:#2563eb,stroke-width:1.5px,color:#172554
+classDef toneAmber fill:#fef3c7,stroke:#d97706,stroke-width:1.5px,color:#78350f
+classDef toneMint fill:#dcfce7,stroke:#16a34a,stroke-width:1.5px,color:#14532d
+classDef toneRose fill:#ffe4e6,stroke:#e11d48,stroke-width:1.5px,color:#881337
+classDef toneIndigo fill:#e0e7ff,stroke:#4f46e5,stroke-width:1.5px,color:#312e81
+classDef toneTeal fill:#ccfbf1,stroke:#0f766e,stroke-width:1.5px,color:#134e4a
+class node_library_user,node_cli_user toneBlue
+class node_npm,node_package_manifest,node_lockfile,node_cli_command toneAmber
+class node_module_api,node_code_validation,node_ppp_resolution,node_ppp_calculation,node_metadata_lookup,node_conversion_response,node_country_lists toneMint
+class node_ppp_dataset toneRose</pre><p>Boxes are clickable and jump straight to the real source file on GitHub.</p>
 <h2 id="the-conversion-in-five-lines">The conversion, in five lines</h2>
 <p>The entire package is one file, <code>index.js</code>, and the core of it is genuinely just two lines of math once you have PPP conversion factors for both countries:</p>
 
@@ -264,19 +332,19 @@ ppp-calculator USA 100 CAN,GBR,IND</code></pre>
         <div class="related-posts-grid">
           
             <article class="panel related-card">
+              <p class="related-meta">CLI · Developer Tool</p>
+              <p class="related-title"><a href="/projects/hackpack.html">Hackpack</a></p>
+              <p class="related-desc muted">A CLI that scaffolds full-stack apps by composing prebuilt templates instead of prompting an LLM - a framework, a stack of features, and generated CRUD pages, wired together through anchor comments.</p>
+            </article>
+            <article class="panel related-card">
+              <p class="related-meta">Full-Stack · Real-time</p>
+              <p class="related-title"><a href="/projects/collabpro.html">CollabPro</a></p>
+              <p class="related-desc muted">A self-hosted team workspace pairing a block-based document editor with an infinite collaborative whiteboard - real-time sync, version history, and an MCP server so AI agents can read and write files too.</p>
+            </article>
+            <article class="panel related-card">
               <p class="related-meta">SaaS · AI</p>
               <p class="related-title"><a href="/projects/ai-blogs.html">AI Blogs SaaS</a></p>
               <p class="related-desc muted">An AI Director that watches a YouTube video, plans an outline, and drafts a full SEO-optimised blog post - with a human still steering the wheel.</p>
-            </article>
-            <article class="panel related-card">
-              <p class="related-meta">Frontend · Education</p>
-              <p class="related-title"><a href="/projects/programmerskool.html">ProgrammerSkool</a></p>
-              <p class="related-desc muted">A focused learning platform that puts a coding playlist and a live C++ editor side by side, compiling against a real online judge instead of just displaying code.</p>
-            </article>
-            <article class="panel related-card">
-              <p class="related-meta">Frontend · Developer Tool</p>
-              <p class="related-title"><a href="/projects/codesnip.html">CodeSnip</a></p>
-              <p class="related-desc muted">A multi-language code editor that exports snippets as polished PNGs or animated GIFs - themes, gradients, and a typing animation built entirely client-side.</p>
             </article>
         </div>
       </section>
@@ -399,6 +467,44 @@ ppp-calculator USA 100 CAN,GBR,IND</code></pre>
           <div id="blog-image-modal-loader" class="blog-image-loader skeleton box" role="status" aria-label="Loading image"></div>
           <img id="blog-image-modal-img" alt="" />
           <p class="blog-image-caption" id="blog-image-modal-caption"></p>
+        </div>
+      </article>
+    </dialog>
+
+    <!-- Mermaid Accessibility Modal -->
+    <dialog
+      id="blog-mermaid-modal"
+      class="blog-image-modal blog-mermaid-modal"
+      aria-labelledby="blog-mermaid-modal-title"
+    >
+      <article class="blog-image-modal-shell">
+        <header class="blog-image-modal-header">
+          <h3 class="blog-image-modal-title" id="blog-mermaid-modal-title">Diagram View</h3>
+          <div class="blog-mermaid-controls">
+            <button type="button" class="blog-image-modal-close" data-mermaid-zoom-out title="Zoom Out">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            </button>
+            <button type="button" class="blog-image-modal-close" data-mermaid-reset title="Reset View">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg>
+            </button>
+            <button type="button" class="blog-image-modal-close" data-mermaid-zoom-in title="Zoom In">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            </button>
+          </div>
+          <button
+            type="button"
+            class="blog-image-modal-close"
+            data-blog-mermaid-close
+            aria-label="Close modal"
+          >
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </header>
+        <div class="blog-image-modal-body blog-mermaid-modal-body">
+          <div class="mermaid-canvas-container" id="blog-mermaid-modal-container">
+            <!-- Canvas/SVG will be injected here -->
+          </div>
+          <p class="blog-image-caption">Diagram Accessibility View (Read-Only)</p>
         </div>
       </article>
     </dialog>

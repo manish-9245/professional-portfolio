@@ -1,5 +1,29 @@
 [
   {
+    "slug": "hackpack",
+    "title": "Hackpack",
+    "date": "2026-07-27",
+    "displayDate": "Jul 27, 2026",
+    "description": "A CLI that scaffolds full-stack apps by composing prebuilt templates instead of prompting an LLM - a framework, a stack of features, and generated CRUD pages, wired together through anchor comments.",
+    "tags": [
+      "CLI",
+      "Developer Tool",
+      "Open Source"
+    ]
+  },
+  {
+    "slug": "collabpro",
+    "title": "CollabPro",
+    "date": "2026-07-25",
+    "displayDate": "Jul 25, 2026",
+    "description": "A self-hosted team workspace pairing a block-based document editor with an infinite collaborative whiteboard - real-time sync, version history, and an MCP server so AI agents can read and write files too.",
+    "tags": [
+      "Full-Stack",
+      "Real-time",
+      "Open Source"
+    ]
+  },
+  {
     "slug": "ai-blogs",
     "title": "AI Blogs SaaS",
     "date": "2026-03-14",
