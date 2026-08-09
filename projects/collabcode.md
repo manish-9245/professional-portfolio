@@ -15,7 +15,7 @@ links: "Live demo|https://collabcode-9axi.onrender.com/"
 tech: "Frontend|React 18, CodeMirror 5, Tailwind CSS, react-router-dom; Backend|Express, Socket.IO, Node.js, uuid"
 application_category: "DeveloperApplication"
 ---
-Pairing on code remotely almost always collapses into one of two bad options: screen-share, where only one person's cursor actually moves, or a live-share plugin tied to a specific editor everyone has to install. I wanted the smallest possible version of "a room where everyone types into the same file" - open in any browser, joined with a link, gone the moment everyone leaves.
+Pairing on code remotely almost always collapses into one of two bad options: screen-share, where only one person's cursor actually moves, or a live-share plugin tied to a specific editor everyone has to install. CollabCode is the smallest possible version of "a room where everyone types into the same file" - open in any browser, joined with a link, gone the moment everyone leaves.
 
 ## Architecture
 
@@ -88,46 +88,28 @@ class node_dependencies toneNeutral
 
 Boxes are clickable and jump straight to the real source file on GitHub.
 
-## What it actually is
+## What it does
 
-CollabCode is a single-document editor, not a multi-file IDE. You land on a home screen, create a room (a `uuid.v4()` string) or paste one in, pick a username, and get dropped into `/editor/:roomId`. Every keystroke in that room's CodeMirror instance is broadcast over Socket.IO to everyone else connected - it's closer to a shared Etherpad for code than a real development environment, and that scope is deliberate. There's no file tree, no language server, no persistence. The document lives entirely in memory, split across whichever browser tabs are currently open.
+- Create or paste in a room link, pick a username, and land in a shared CodeMirror editor - every keystroke broadcasts live to everyone else in the room.
+- Presence: a running list of who's currently in the room, updated the moment someone joins or leaves.
+- Nothing to install, nothing to sign up for, and no history to manage - a room is just a live document shared over a link.
 
-## The room protocol
+## System design
 
-The server and client share one small module, `src/Actions.js`, that defines the event vocabulary: `JOIN`, `JOINED`, `DISCONNECTED`, `CODE_CHANGE`, `SYNC_CODE`, `LEAVE`. Importing the same constants on both ends means the socket "API" is defined exactly once instead of drifting between two copies of a string.
+CollabCode is a single shared document, not a multi-file IDE - the scope is deliberate, closer to a live scratch pad for code than a development environment. There's no persisted document on the server at all: when someone joins a room already in progress, the current content is reconstructed on the spot from whichever existing participant answers first, rather than read from a canonical copy. That's a fine trade for a quick pairing session, but it also means a room's content really does vanish the instant the last tab closes.
 
-The interesting part is how a newcomer catches up to a room already in progress. There's no persisted document on the server - only the constant `userSocketMap` mapping `socket.id → username`. So when someone joins:
+Client and server share one small module that defines the realtime event vocabulary once, so the two sides can't quietly drift into using different names for the same event. Feedback loops are the classic bug in a broadcast editor like this - client A types, the server relays it to client B, B's editor applies it programmatically - and CollabCode avoids re-broadcasting that applied change back out by distinguishing a real keystroke from a programmatic sync update at the editor level.
 
-1. The server does `socket.join(roomId)`, then loops over every existing client in that room and emits `JOINED` to each of them (telling the room "someone new arrived") *and* to the new socket itself (telling it who's already there).
-2. The new client's `EditorPage` component, on receiving its own `JOINED` event, immediately emits `SYNC_CODE` back to the server with whatever the *most recent* editor content is on any existing client's `codeRef`.
-3. The server just re-broadcasts that as a `CODE_CHANGE` targeted at the one new socket.
+Conflict handling is intentionally simple: last-write-wins over the full document, not an operational-transform or CRDT layer. That's the right trade for a room you open for twenty minutes to debug something together with someone - not for serious concurrent multi-author editing, which would be the first thing to replace if this grew into a bigger product.
 
-In other words, the "document" is reconstructed on demand from whichever peer happens to answer first - there's no canonical copy anywhere, which is a fine trade for a scratch pad but means the room's content really can vanish the instant the last tab closes.
+## Infrastructure
 
-## Avoiding the echo loop
+One Node process does both jobs in production: an Express server serves the built React client as static files, and the same process runs the Socket.IO realtime layer - no separate API host, no reverse proxy to configure before it works. Everything lives in memory; there's no database, so the entire infrastructure footprint is "keep one process running."
 
-The trickiest bug in an app like this is the feedback loop: client A types, server broadcasts to client B, client B's editor calls `setValue()` to apply it, and if that update naively re-fires the "user typed something" handler, B immediately re-broadcasts A's own change back into the room. CodeMirror actually gives you a clean way out of this - every change event carries an `origin`, and a programmatic `setValue()` call is tagged `"setValue"` while real typing isn't:
+## What's next
 
-```js
-// src/components/Editor.js
-editorRef.current.on('change', (instance, changes) => {
-    const { origin } = changes;
-    const code = instance.getValue();
-    onCodeChange(code);
-    if (origin !== 'setValue') {
-        socketRef.current.emit(ACTIONS.CODE_CHANGE, { roomId, code });
-    }
-});
-```
-
-That one `if` is the entire safeguard against an infinite re-broadcast loop, and it's a good example of a library exposing exactly the metadata you need instead of forcing you to diff state yourself.
-
-## What it deliberately doesn't do
-
-There's no conflict resolution. This is last-write-wins over a full-document broadcast, not an operational-transform or CRDT layer - if two people edit the same line in the same instant, whoever's `CODE_CHANGE` event lands last wins, and the other person's keystroke is silently gone. For a quick "let's debug this together" session that's a fair trade against the complexity of a real OT engine; for anything resembling serious multi-author editing it's the first thing I'd replace.
-
-The editor is also still CodeMirror 5, and only the JavaScript mode is loaded - so pasting Python or Go works fine as plain text, but you lose syntax highlighting outside JS. It's a legacy choice at this point (CodeMirror 6 or Monaco would be the modern pick), but it's also proof the simplest tool that solves the actual problem - broadcasting a text buffer - doesn't need to be the newest one.
+- The editor is still on CodeMirror 5 with only JavaScript syntax highlighting wired up - other languages work as plain text without highlighting.
 
 ## Running it
 
-The server (`server.js`) is intentionally boring: one Express + `http` server wrapped in a Socket.IO `Server`, serving the built React app as static files with a catch-all route back to `index.html`. `npm start` runs the CRA build and then starts that same process on port 5000, so in production it's a single Node process doing both jobs - no separate API host, no reverse proxy config to get right before it works.
+Live demo linked above. `npm start` builds the React client and starts the combined Express + Socket.IO process on port 5000.

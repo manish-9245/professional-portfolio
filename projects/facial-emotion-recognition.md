@@ -92,32 +92,27 @@ class node_cascade,node_deepface,node_tensorflow toneMint
 
 Boxes are clickable and jump straight to the real source file on GitHub.
 
-## The whole program, in outline
+## What it does
 
-`emotion.py` is a single file. The loop is:
+Points at a live webcam feed, finds every face in the frame, and draws a bounding box with a predicted emotion label on each one - updated continuously as the video plays, with no setup step and nothing to train.
 
-1. Open the default webcam with `cv2.VideoCapture(0)`.
-2. Convert each frame to grayscale, then find faces with OpenCV's built-in Haar cascade: `cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')`.
-3. For every detected face box, crop it back out of a version of the frame converted to RGB (DeepFace expects three channels, so grayscale has to be expanded back out even though the actual detection ran on a single channel).
-4. Hand that crop to `DeepFace.analyze(...)` and draw whatever emotion comes back on top of the live video.
+## System design
 
-```python
-result = DeepFace.analyze(face_roi, actions=['emotion'], enforce_detection=False)
-emotion = result[0]['dominant_emotion']
-cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 2)
-cv2.putText(frame, emotion, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 0, 255), 2)
-```
+Two models split two different jobs instead of one model doing both: a fast classical face detector finds *where* faces are in each frame, and a deep learning model classifies *what expression* each one is making. That split - cheap localization, expensive classification - is what makes it possible to run live on a laptop webcam at all.
 
-## The one flag that makes this work
+The detector's output is trusted rather than re-verified. The emotion model would normally run its own, heavier face-detection pass before classifying anything; skipping that redundant second detection is what keeps the pipeline fast, at a real accuracy cost - the classical detector doing the trusted first pass is noticeably less robust to side angles, partial occlusion, and uneven lighting than the deep model's own detector would be on its own. That's the actual design trade behind "the shortest code path": pay for face detection once, not twice, and accept that the cheaper detector occasionally misses a face the more expensive one wouldn't have.
 
-`enforce_detection=False` is doing more work than its size suggests. DeepFace ships its own, heavier face detector as part of `analyze()`, and by default it raises an exception if it can't confirm a face in the image you hand it. Since the Haar cascade has *already* found and cropped a face by the time DeepFace sees it, re-running DeepFace's own detector on that crop would be redundant work - so the flag tells DeepFace "trust me, just classify this pixel patch." That's the actual design decision behind "the shortest code": use a cheap, fast classical detector to find *where* faces are, and skip straight to the expensive deep model for *what expression* they're making, rather than paying for detection twice.
+## Trade-offs
 
-It's a real accuracy trade, not a free lunch. Haar cascades are a 2001-era technique - much less robust to side angles, partial occlusion, and uneven lighting than the detector DeepFace would have used on its own. Bypassing it is what keeps this fast enough to run live on a laptop webcam, at the cost of missing faces the cascade itself can't find in the first place.
+Emotion inference runs synchronously, once per detected face, inside the main video loop. With one person on camera that's comfortable; with three or four people in frame, the loop has to run inference that many times before it can draw the next frame, with no batching or background threading to soften it. That's an acceptable ceiling for a demo script - the fix, if it needed to hold a steady frame rate with a crowd in view, would be batching all detected faces into a single inference call or moving inference to a background thread.
 
-## Where the frame budget actually goes
+## Infrastructure
 
-The obvious performance question for anything running per-frame is: what's the expensive part? Here it's unambiguous - `DeepFace.analyze()` is a full model inference, called synchronously, once per detected face, inside the main video loop. With one face in frame that's tolerable; with three or four people on camera, the loop has to run that inference three or four times before it can draw the next frame, and there's no batching, threading, or frame-skipping to soften it. For a demo script that's an acceptable ceiling. For anything meant to hold a steady frame rate with multiple people in view, the fix is the obvious one - batch all detected faces into a single `DeepFace.analyze()` call, or move inference to a background thread and let the video loop draw the last-known label while it catches up.
+A single Python script with no training step and no dataset to download - both models are pretrained and pulled in via pip - running entirely on-device against the default webcam, with no backend and no cloud dependency.
 
 ## Running it
 
-There's no training step and no dataset to download - `pip install -r requirements.txt` pulls `opencv-python`, `deepface`, and `tf_keras` (DeepFace's actual backend is TensorFlow, pulled in transitively). The one manual step is grabbing `haarcascade_frontalface_default.xml` from OpenCV's own GitHub, even though the code technically loads that same cascade from OpenCV's bundled data path (`cv2.data.haarcascades`) rather than the copy sitting in the repo - a small mismatch between what the README asks you to do and what the script actually reads, worth knowing if you go looking for where that XML file matters. From there it's `python emotion.py`, and `q` to quit.
+```bash
+pip install -r requirements.txt
+python emotion.py   # press q to quit
+```

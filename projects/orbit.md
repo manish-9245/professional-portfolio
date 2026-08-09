@@ -15,7 +15,7 @@ links: "Live demo|https://orbit.buildwithmanish.com/"
 tech: "Frontend|Next.js 14, TypeScript, Tailwind CSS, Radix UI; Real-time & Auth|Stream Video SDK, WebRTC, Clerk"
 application_category: "CommunicationApplication"
 ---
-Most side-project video call demos pick a lane - either a quick 1:1 call, or a group meeting room - and skip the parts that make it feel like a real product: authentication, screen sharing, a chat panel that survives the call. Orbit was an exercise in building the *product* around video calling rather than the video calling itself, by leaning on Stream's video SDK for the actual WebRTC plumbing.
+Most side-project video call demos pick a lane - either a quick 1:1 call, or a group meeting room - and skip the parts that make it feel like a real product: authentication, screen sharing, a chat panel that survives the call. Orbit was an exercise in building the *product* around video calling rather than the video calling itself, by leaning on a managed video SDK for the WebRTC plumbing and spending the engineering effort on everything around it.
 
 ## Architecture
 
@@ -104,49 +104,33 @@ class node_runtime,node_environment toneNeutral
 
 Boxes are clickable and jump straight to the real source file on GitHub.
 
-## Keeping the secret server-side
+## What it does
 
-The one piece you can't hand to the browser is the Stream API secret. Orbit's `actions/stream.actions.ts` is a Next.js Server Action - `"use server"` - that reads the signed-in user from Clerk and mints a short-lived Stream token entirely on the server:
+- 1:1 and group video calls with screen sharing and an in-call chat panel, joined straight from a URL.
+- A dashboard for starting an instant meeting or scheduling one for later, plus a history view split into upcoming and past calls.
+- A pre-join setup screen for checking camera and mic before entering the room, and prebuilt in-call controls (grid or speaker layout, participant list, stats).
 
-```ts
-// actions/stream.actions.ts
-const exp = Math.round(new Date().getTime() / 1000) + 60 * 60;
-const issued = Math.floor(Date.now() / 1000) - 60;
-const token = streamClient.createToken(user.id, exp, issued);
-```
+## System design
 
-That token is valid for exactly one hour, scoped to the current user's ID, and the `StreamClient` that signs it is constructed with a server-only secret that never ships to the client bundle. On the browser side, `providers/stream-client-provider.tsx` waits for Clerk's `useUser()` to resolve, then builds a `StreamVideoClient` and hands it the server action itself as a `tokenProvider` callback - the SDK calls back into that server action whenever it needs a fresh token, so the client never sees anything more sensitive than a public API key.
+Orbit is built on a managed video layer rather than a hand-rolled WebRTC stack, which is a deliberate scope decision: the app's own code focuses on authentication, routing, and the call experience around the video, not on media negotiation. That's also why the interesting engineering here is about state and auth rather than about codecs.
 
-Using a Server Action here instead of a hand-rolled API route is a small but real architectural choice: it's the same "keep the secret on the server" pattern you'd get from a REST endpoint, without needing to define and version one.
+The one secret that can never reach the browser is the video provider's API secret, so it doesn't: a Next.js Server Action mints a short-lived, user-scoped access token entirely server-side once a signed-in user is confirmed, and the client only ever holds a public key plus a callback that asks the server for a fresh token whenever the video SDK needs one. That's the same "keep the secret on the server" guarantee a REST endpoint would give, without needing to define and version one.
 
-## What's actually custom vs. what Stream provides
+Call history is shaped as one query instead of two: every call the current user created or was invited to comes back in a single request, then gets split client-side into "upcoming" and "past" views. That avoids maintaining two separate endpoints that would otherwise need to stay consistent with each other every time the call model changes.
 
-Once a call exists, `components/meeting-room.tsx` gates rendering on Stream's own `useCallCallingState()` hook until the state reaches `CallingState.JOINED`, then composes almost entirely out of Stream's prebuilt pieces - `PaginatedGridLayout` or `SpeakerLayout` for video, `CallControls`, `CallParticipantsList`, `CallStatsButton`. Creating a meeting is similarly thin: `meeting-type-list.tsx` calls `streamClient.call("default", crypto.randomUUID())` then `call.getOrCreate({ data: { starts_at, custom: { description } } })`, and Stream's backend owns the actual room. The honest way to describe Orbit's own code is: authentication, routing, and UI composition around a managed video layer - not a WebRTC stack built from scratch. That's the right call for a product that needs to *work*, and it's also exactly why the interesting bugs end up being about state and auth, not about media negotiation.
+## Infrastructure
 
-## Splitting "upcoming" from "past" without two API calls
+Authentication runs through Clerk, gating every route via middleware before it reaches the authenticated shell. Real-time media, room state, and call persistence are entirely owned by the managed video provider's backend - Orbit itself has no media server or call database to operate, which keeps the deployment surface to a standard Next.js app.
 
-`hooks/use-get-calls.ts` is a small example of doing less work by shaping one query correctly instead of firing two. It asks Stream for every call where the current user is either the creator or a member, sorted by start time, and then partitions that single result set client-side:
+## What's next
 
-```ts
-const endedCalls = calls.filter(({ state: { startsAt, endedAt } }) =>
-  (startsAt && new Date(startsAt) < now) || !!endedAt
-);
-const upcomingCalls = calls.filter(({ state: { startsAt } }) =>
-  startsAt && new Date(startsAt) > now
-);
-```
-
-One query, one round trip, two views of the same data - simpler than maintaining separate "upcoming" and "history" endpoints that would need to stay consistent with each other.
-
-## A gap worth naming honestly
-
-Not everything lines up between the README and the code. The middleware protects `/personal-room` as a route (`createRouteMatcher([..., "/personal-room", ...])`), but no page or sidebar link for it exists anywhere in the app - a feature that got scaffolded into the auth config and never built out. And the README's documented environment variable names (`STREAM_VIDEO_API_KEY` / `STREAM_VIDEO_API_SECRET`) don't match what the code and `.env.example` actually read (`NEXT_PUBLIC_STREAM_API_KEY` / `STREAM_SECRET_KEY`) - following the README literally leaves both variables `undefined` and trips the explicit `throw new Error("Stream api key missing.")` guard the code has in place for exactly that situation. Small things, but the kind that cost a new contributor twenty minutes if nobody writes them down.
+- A "personal room" route is already protected by the auth middleware but doesn't have a page built for it yet.
 
 ## Running it
 
 ```bash
 bun install   # or npm install
-# .env.local: NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY, CLERK_SECRET_KEY,
-#             NEXT_PUBLIC_STREAM_API_KEY, STREAM_SECRET_KEY
+# .env.local needs a Clerk key pair and a Stream Video key pair -
+# check .env.example for the exact variable names before copying from the README
 bun dev       # or npm run dev
 ```

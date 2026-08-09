@@ -116,7 +116,7 @@
         <h2 class="section-title">How it's built</h2>
       </section>
       <div class="blog-post-layout">
-        <nav class="blog-toc" id="blog-toc" aria-label="Table of contents"><p class="blog-toc-title">Contents</p><ol><li><a href="#architecture">Architecture</a></li><li><a href="#the-typing-animation-is-not-a-canned-effect">The typing animation is not a canned effect</a></li><li><a href="#a-state-machine-made-of-four-useeffects">A state machine made of four useEffects</a></li><li><a href="#the-real-cost-of-this-approach">The real cost of this approach</a></li><li><a href="#everything-else-is-dom-tricks-not-magic">Everything else is DOM tricks, not magic</a></li><li><a href="#running-it">Running it</a></li></ol></nav>
+        <nav class="blog-toc" id="blog-toc" aria-label="Table of contents"><p class="blog-toc-title">Contents</p><ol><li><a href="#architecture">Architecture</a></li><li><a href="#what-it-does">What it does</a></li><li><a href="#system-design">System design</a></li><li><a href="#trade-offs">Trade-offs</a></li><li><a href="#infrastructure">Infrastructure</a></li><li><a href="#running-it">Running it</a></li></ol></nav>
         <article class="blog-prose" id="blog-prose"><p>Sharing a code snippet on social media or in a slide deck usually means an ugly plain-text screenshot. Tools like carbon.now.sh solved that by rendering code into a styled "window" and exporting it as an image - CodeSnip is a from-scratch take on the same idea, plus an animated-GIF export that doesn't use a canned animation at all: it replays your actual typing, frame by frame.</p>
 <h2 id="architecture">Architecture</h2>
 <pre class="mermaid">flowchart TD
@@ -183,70 +183,20 @@ class node_background,node_window,node_editor,node_theme_css toneBlue
 class node_onrecord,node_frame_advance,node_frame_render,node_snapshot,node_pad toneAmber
 class node_prism,node_dom_to_image,node_gifshot toneIndigo
 class node_download toneMint</pre><p>Boxes are clickable and jump straight to the real source file on GitHub.</p>
-<h2 id="the-typing-animation-is-not-a-canned-effect">The typing animation is not a canned effect</h2>
-<p>The clever part of CodeSnip isn't the PNG export - that's a straightforward DOM-to-image capture. It's the GIF: instead of animating a pre-made effect over the finished code, it reconstructs the <em>history</em> of you typing it, one character at a time, and screenshots every step:</p>
-
-        <div class="code-block-shell">
-          <div class="code-window-bar">
-            <div class="code-window-controls">
-              <span class="code-window-dot close" aria-hidden="true"></span>
-              <span class="code-window-dot minimize" aria-hidden="true"></span>
-              <span class="code-window-dot maximize" aria-hidden="true"></span>
-            </div>
-            <div class="code-window-center">
-              <span class="code-lang-icon"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="#F7DF1E" d="M0 0h24v24H0z"></path><path d="M7.89 19c-.66 0-1.18-.2-1.55-.61-.37-.41-.56-1-.56-1.78h2.02c0 .28.08.5.23.67.15.17.38.25.68.25.32 0 .54-.08.68-.24.14-.16.21-.39.21-.69 0-.25-.08-.45-.23-.6-.15-.15-.39-.26-.74-.34l-1.09-.25c-.78-.18-1.38-.46-1.8-.83s-.63-.88-.63-1.53c0-.51.12-.95.37-1.32.25-.37.61-.66 1.07-.86.46-.21 1.02-.31 1.68-.31.62 0 1.15.1 1.59.31.44.21.79.5 1.05.88.26.38.39.84.39 1.39h-2.02c0-.29-.07-.51-.21-.66-.14-.15-.35-.22-.64-.22-.28 0-.49.07-.63.22-.14.15-.21.36-.21.63 0 .23.08.41.23.55.15.14.38.24.7.31l1.09.25c.8.19 1.39.48 1.78.86.39.38.59.9.59 1.56 0 .64-.2 1.16-.6 1.56-.4.4-.92.6-1.56.6zm7.25 0c-.82 0-1.47-.2-1.95-.6-.48-.4-.72-1.02-.72-1.85V11.2h2.02v5.3c0 .51.2.76.61.76.4 0 .61-.25.61-.76V11.2h2.02v5.35c0 .83-.24 1.45-.72 1.85-.48.4-1.13.6-1.95.6z"></path></svg></span>
-              <span class="code-window-lang">js</span>
-            </div>
-            <button type="button" class="code-copy-button" onclick="copyCode(this)" aria-label="Copy code">
-              <svg class="icon-copy" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-              <span>Copy</span>
-            </button>
-          </div>
-          <pre><code class="hljs language-js" data-lang="js"><span class="hljs-comment">// src/App.js - building one frame per character typed</span>
-<span class="hljs-keyword">const</span> <span class="hljs-title function_">onRecord</span> = (<span class="hljs-params"></span>) =&gt; {
-  <span class="hljs-keyword">const</span> totalLines = editorState.<span class="hljs-title function_">split</span>(<span class="hljs-string">''</span>).<span class="hljs-title function_">filter</span>(<span class="hljs-function">(<span class="hljs-params">c</span>) =&gt;</span> c === <span class="hljs-string">'\n'</span>).<span class="hljs-property">length</span>;
-  <span class="hljs-keyword">let</span> linesLeft = totalLines;
-  <span class="hljs-keyword">let</span> tempFrames = [];
-  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; editorState.<span class="hljs-property">length</span>; i++) {
-    <span class="hljs-keyword">if</span> (editorState[i] === <span class="hljs-string">'\n'</span>) linesLeft--;
-    <span class="hljs-keyword">let</span> currentFrame = editorState.<span class="hljs-title function_">slice</span>(<span class="hljs-number">0</span>, i + <span class="hljs-number">1</span>);
-    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> j = <span class="hljs-number">0</span>; j &lt; linesLeft; j++) currentFrame += <span class="hljs-string">'\n'</span>;
-    tempFrames.<span class="hljs-title function_">push</span>(currentFrame);
-  }
-  <span class="hljs-title function_">setFrames</span>(tempFrames);
-  <span class="hljs-title function_">setExportingGIF</span>(<span class="hljs-literal">true</span>);
-};</code></pre>
-        </div>
-      <p>Each entry in <code>tempFrames</code> is the snippet truncated to <code>i</code> characters, padded with the remaining newlines so the code block doesn't visually collapse as lines "disappear" mid-animation. For a 200-character snippet, that's 200 separate frames - and every one of them gets rendered and screenshotted before encoding even starts.</p>
-<h2 id="a-state-machine-made-of-four-useeffects">A state machine made of four <code>useEffect</code>s</h2>
-<p>Rather than one async function driving the export start-to-finish, GIF export is spread across four chained <code>useEffect</code> hooks in <code>App.js</code> - one advances <code>currentFrameToCapture</code>, one pushes each frame's text into <code>editorState</code> so it re-renders, one calls <code>takeSnapshot()</code> via <code>dom-to-image-more</code>'s <code>domtoimage.toPng</code> and accumulates results into <code>gifFrames</code>, and a final one fires once every frame is captured and hands the whole array to <code>gifshot.createGIF()</code>. It works, but the file's own top comment is disarmingly honest about it: <code>// This needs refactoring</code> and <code>// TODO: Refactor this to use context API</code> - a real admission of the tech debt sitting in the code, not something inferred from the outside.</p>
-<p>One deliberate finishing touch: before encoding, the frame list gets padded with nine repeated copies of the final frame:</p>
-
-        <div class="code-block-shell">
-          <div class="code-window-bar">
-            <div class="code-window-controls">
-              <span class="code-window-dot close" aria-hidden="true"></span>
-              <span class="code-window-dot minimize" aria-hidden="true"></span>
-              <span class="code-window-dot maximize" aria-hidden="true"></span>
-            </div>
-            <div class="code-window-center">
-              <span class="code-lang-icon"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="#F7DF1E" d="M0 0h24v24H0z"></path><path d="M7.89 19c-.66 0-1.18-.2-1.55-.61-.37-.41-.56-1-.56-1.78h2.02c0 .28.08.5.23.67.15.17.38.25.68.25.32 0 .54-.08.68-.24.14-.16.21-.39.21-.69 0-.25-.08-.45-.23-.6-.15-.15-.39-.26-.74-.34l-1.09-.25c-.78-.18-1.38-.46-1.8-.83s-.63-.88-.63-1.53c0-.51.12-.95.37-1.32.25-.37.61-.66 1.07-.86.46-.21 1.02-.31 1.68-.31.62 0 1.15.1 1.59.31.44.21.79.5 1.05.88.26.38.39.84.39 1.39h-2.02c0-.29-.07-.51-.21-.66-.14-.15-.35-.22-.64-.22-.28 0-.49.07-.63.22-.14.15-.21.36-.21.63 0 .23.08.41.23.55.15.14.38.24.7.31l1.09.25c.8.19 1.39.48 1.78.86.39.38.59.9.59 1.56 0 .64-.2 1.16-.6 1.56-.4.4-.92.6-1.56.6zm7.25 0c-.82 0-1.47-.2-1.95-.6-.48-.4-.72-1.02-.72-1.85V11.2h2.02v5.3c0 .51.2.76.61.76.4 0 .61-.25.61-.76V11.2h2.02v5.35c0 .83-.24 1.45-.72 1.85-.48.4-1.13.6-1.95.6z"></path></svg></span>
-              <span class="code-window-lang">js</span>
-            </div>
-            <button type="button" class="code-copy-button" onclick="copyCode(this)" aria-label="Copy code">
-              <svg class="icon-copy" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-              <span>Copy</span>
-            </button>
-          </div>
-          <pre><code class="hljs language-js" data-lang="js"><span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">9</span>; i++) {
-  framesToExport.<span class="hljs-title function_">push</span>(gifFrames[gifFrames.<span class="hljs-property">length</span> - <span class="hljs-number">1</span>]);
-}</code></pre>
-        </div>
-      <p>Without that, the GIF would loop back to frame one the instant typing finished. Nine extra identical frames buy a visible pause on the completed code before it loops - a small trick, but it's the difference between a GIF that reads as "here's the finished snippet" and one that just looks broken.</p>
-<h2 id="the-real-cost-of-this-approach">The real cost of this approach</h2>
-<p>Because export re-renders and screenshots the DOM once per character, the whole pipeline is inherently serial and slow for longer snippets - a 200-character example means 200 full <code>dom-to-image</code> captures (each scaled 1.9x for resolution) running one after another through those four effects before <code>gifshot</code> even starts encoding. That's a real, visible lag on anything beyond a short snippet, and it's the direct cost of the "replay real keystrokes" approach instead of a pre-baked animation. It's a legitimate trade for a hobby export tool: simpler to reason about than a proper animation timeline, at the cost of scaling linearly with snippet length.</p>
-<h2 id="everything-else-is-dom-tricks-not-magic">Everything else is DOM tricks, not magic</h2>
-<p>The theme system is refreshingly low-tech: <code>Window.jsx</code> swaps a <code>&lt;link href="/themes/${theme}.css"&gt;</code> tag's <code>href</code> rather than reaching for CSS-in-JS, so a "theme" is just a static stylesheet in <code>public/themes/</code> being hot-swapped. Downloading the final PNG is nine lines - build an off-DOM <code>&lt;a download&gt;</code>, click it, remove it. And the syntax highlighter (Prism, via <code>react-simple-code-editor</code>) supports nineteen languages, noticeably more than the five IDE color themes on offer - a small asymmetry worth knowing if "customization" is the feature you're evaluating it for.</p>
+<h2 id="what-it-does">What it does</h2>
+<ul>
+<li>Pick a language and a theme, paste or write a snippet, and export it as a styled PNG - the "window" chrome, gradient background, and syntax highlighting all render the way they look on screen.</li>
+<li>Export the same snippet as an animated GIF that replays the typing itself, rather than a generic fade-in or scroll effect.</li>
+<li>Runs entirely in the browser: no account, no upload, nothing about the snippet ever leaves the tab.</li>
+</ul>
+<h2 id="system-design">System design</h2>
+<p>The GIF export is the interesting piece, and it isn't a canned animation played over finished code - it reconstructs the actual <em>history</em> of typing the snippet, one character at a time, and captures a screenshot at every step before encoding those frames into a GIF client-side. For a 200-character snippet that's 200 individual frames, each one rendered and captured before encoding even starts.</p>
+<p>A small but deliberate finishing touch: the frame sequence is padded with several repeated copies of the final frame before encoding. Without that, the GIF would snap straight back to an empty editor the instant typing finished; the padding buys a visible pause on the completed snippet so it reads as "here's the finished code" instead of looping abruptly.</p>
+<p>Theming is intentionally low-tech - a theme is a swappable stylesheet, not a CSS-in-JS system - which keeps adding a new theme to a matter of dropping in a new stylesheet rather than touching component code.</p>
+<h2 id="trade-offs">Trade-offs</h2>
+<p>Because the GIF pipeline captures one DOM screenshot per character, export time scales directly with snippet length: a short snippet exports almost instantly, a long one visibly takes longer. That's the direct cost of prioritizing an authentic-looking typing replay over a pre-baked animation - a reasonable trade for a hobby export tool, less so if this needed to handle much longer snippets at speed. Syntax highlighting also currently covers more languages than the editor ships color themes for, worth knowing if theme variety is what you're evaluating it on.</p>
+<h2 id="infrastructure">Infrastructure</h2>
+<p>A static, client-only React app with no backend and no database - it's deployable anywhere that serves static files, and there's no server in the loop for either export path.</p>
 <h2 id="running-it">Running it</h2>
 
         <div class="code-block-shell">

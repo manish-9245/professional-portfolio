@@ -114,57 +114,27 @@ class node_youtube,node_wandbox toneIndigo
 
 Boxes are clickable and jump straight to the real source file on GitHub.
 
-## The compile step is real
+## What it does
 
-The editor isn't just a syntax-highlighted textarea - "Compile and Run" actually sends your code to [Wandbox](https://wandbox.org), a free public compilation API, and prints back whatever the compiler actually says:
+- A synced playlist-and-editor view: pick a YouTube coding playlist, follow along, and write real C++ in the same screen - no alt-tabbing between a video and an IDE.
+- "Compile and Run" sends your code to a real compiler and prints back the actual compiler output, not a simulated result.
+- A draggable split panel so you control how much screen the video versus the editor gets.
 
-```js
-// script.js (static version, via jQuery)
-$.ajax({
-  url: "https://wandbox.org/api/compile.json",
-  method: "POST",
-  data: JSON.stringify({
-    code, compiler: "gcc-head", stdin: "",
-    options: "-O2 -Wall -std=c++17 -pedantic-errors",
-  }),
-});
-```
+## System design
 
-That's a genuine limitation worth naming plainly: there's no backend of its own here, no sandboxed execution owned by this project - if Wandbox is down or rate-limits the request, compiling stops working, and neither version of the app has retry logic or a timeout beyond a generic `catch`. For a learning tool that's a reasonable trade against standing up and securing your own code-execution sandbox, but it's a real dependency, not an implementation detail.
+Compilation is real but not self-hosted: code is sent to a free public compilation API and the response is rendered as-is. That's a deliberate trade against standing up and securing an owned code-execution sandbox - the right call for a learning tool, at the cost of a hard dependency on a third party's uptime and rate limits, with no fallback if it's unavailable.
 
-## Two implementations of the same idea
+The repository actually holds two parallel builds of the same idea, and it's worth being upfront about that rather than only describing the polished half. A static original - no bundler, no build step - is what's live today. Sitting alongside it is a from-scratch React rewrite with a more capable UI: a resizable, draggable video window, a smoother touch-friendly divider between editor and output, and the same compile flow reimplemented independently rather than ported line-by-line. It goes further than the original in a few places, but it isn't wired into the live site yet.
 
-The repository is really two separate builds of the same concept sitting side by side, and it's worth being upfront about that rather than describing only the polished half. The root `index.html` is a plain static site - no bundler, no `package.json` - built on jQuery 3.6.0 and CodeMirror 5, with a hand-rolled draggable split panel:
+## Infrastructure
 
-```js
-// script.js
-const bar = document.querySelector(".split__bar");
-const left = document.querySelector(".split__left");
-let mouse_is_down = false;
-bar.addEventListener("mousedown", () => { mouse_is_down = true; });
-document.addEventListener("mousemove", (e) => {
-  if (!mouse_is_down) return;
-  left.style.width = `${e.clientX}px`;
-});
-document.addEventListener("mouseup", () => { mouse_is_down = false; });
-```
+The live site is a static build with no backend of its own - no server, no database, and no build step required to run it locally; open the HTML file and it works. The React rewrite has its own independent Vite toolchain, developed in parallel rather than replacing the static site.
 
-Sitting in `programmerskool-vite/` is a from-scratch React rewrite: Vite, React 19, CodeMirror 6 via `@uiw/react-codemirror`, Tailwind 4, shadcn-style Radix components. It goes further than the original - a resizable, draggable video window with viewport-boundary clamping, a `requestAnimationFrame`-throttled divider between editor and output with touch support for mobile, `fetch` instead of jQuery for the same Wandbox call. But it isn't wired into the root site at all; there's no build step that produces or links to it. It's an unfinished parallel version, not a refactor-in-progress with a clear migration path yet - the kind of honest, half-done state a lot of side projects actually live in.
+## What's next
 
-## Extracting a playlist ID two different ways
-
-Both versions solve the same small problem - pull a playlist ID out of a pasted YouTube URL - and solve it with two different regexes, which is itself a small tell that the React version was written independently rather than ported line-by-line from the original:
-
-```js
-// static version - lookbehind
-const id = url.match(/(?<=list=)[^&/?]+/)[0];
-
-// React version - capture group
-const id = url.match(/[?&]list=([^&]+)/)[1];
-```
-
-Same result, different style - a reminder that "rewrite this in React" rarely means "translate the same logic," it usually means someone re-derives the logic from scratch against the same requirement.
+- Wiring the React rewrite into the live site is the main open item - right now it's a fully separate, unfinished build sitting next to the original.
+- Compilation depends entirely on a third-party API with no fallback if it's unavailable.
 
 ## Running it
 
-The root site needs nothing beyond opening `index.html` - no build step, no dependencies to install. The in-progress rewrite has its own `package.json` and a standard Vite `dev` / `build` / `preview` set, runnable independently from `programmerskool-vite/`.
+The root site needs nothing beyond opening `index.html` - no build step, no dependencies to install. The in-progress rewrite has its own `package.json` and a standard Vite `dev` / `build` / `preview` set, runnable independently.

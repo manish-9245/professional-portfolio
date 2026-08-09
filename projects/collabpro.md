@@ -15,7 +15,7 @@ links: "Live site|https://collabpro.buildwithmanish.com/"
 tech: "Frontend|Next.js 15, React 19, Editor.js, Excalidraw; Backend|Postgres + Prisma, Redis, WebSocket gateway, MCP SDK"
 application_category: "BusinessApplication"
 ---
-CollabPro started on third-party SaaS infrastructure - the changelog calls it out directly - and has since been migrated to a fully self-hosted stack: Postgres, Redis, S3-compatible storage, and hand-rolled session auth the team refers to internally as "Sovereign Local Authentication." It's a workspace for teams that pairs a folder tree of Markdown-style documents (Editor.js) with an infinite collaborative whiteboard (Excalidraw) per file, plus shared links, version history, and an MCP server that lets AI agents read and write the same files a human would.
+CollabPro started on third-party SaaS infrastructure and has since been migrated to a fully self-hosted stack - Postgres, Redis, S3-compatible storage, and its own session auth. It's a workspace for teams that pairs a folder tree of documents (a block-based Editor.js surface) with an infinite collaborative whiteboard (Excalidraw) per file, plus shared links, version history, and an MCP server that lets AI agents read and write the same files a human would.
 
 ## Architecture
 
@@ -113,58 +113,29 @@ class node_share,node_share_verify,node_mcp toneRose
 
 Boxes are clickable and jump straight to the real source file on GitHub.
 
-## A hand-built client that mimics a SaaS API it no longer uses
+## What it does
 
-The most interesting architectural decision here is invisible from the outside: the frontend still calls `useQuery(api.files.getFileById, {...})` and `useMutation(api.files.updateDocument)` - the exact shape of a popular backend-as-a-service client - except there's no such service anymore. `lib/state-sync/react.tsx` implements a `Proxy`-based path builder (`makePathProxy`) that turns `api.files.updateDocument` into the string `"files:updateDocument"`, and routes it through a custom transport instead: WebSocket-first via `StateSyncWSClient`, falling back to an HTTP POST to `/api/state-sync` when the socket isn't open, with failed mutations queued in IndexedDB for replay once connectivity returns. Keeping that familiar call shape meant the entire frontend didn't need rewriting when the backend did - only the transport underneath it changed.
+- **A folder tree of team documents**, each pairing a block-based editor with its own infinite whiteboard - notes and diagrams live side by side instead of in separate tools.
+- **Real-time multiplayer editing**: everyone with a file open sees everyone else's changes as they happen, with version history to fall back on.
+- **Shareable links** that expose a single file to people outside the team, without giving them the workspace.
+- **An MCP server** that lets AI agents (Claude Desktop, Cursor, or anything else that speaks MCP) list, read, and write the same files a teammate would, through the same authorized path.
 
-Polling (the fallback path when a query isn't subscribed over the socket) backs off adaptively rather than on a fixed interval: 4 seconds normally, ramping to 60 seconds after a minute of inactivity, 5 minutes once the tab is hidden, and reset instantly on any real interaction. Cheap to write, and it means an idle tab in the background isn't quietly hammering the API every few seconds.
+## System design
 
-## Compare-and-swap writes, and the bug the CAS predicate had to fix
+Every client prefers a **live WebSocket connection** for sync and falls back to HTTP polling only when the socket isn't available, with mutations queued locally and replayed automatically once connectivity returns - so a flaky connection degrades gracefully instead of losing edits. The WebSocket gateway is a separate, horizontally scalable service: it fans broadcasts out through **Redis pub/sub across replicas**, tagging each message with its origin replica so a server never echoes a client's own edit back to it.
 
-Every write - from the WebSocket gateway, the HTTP route, and the MCP tools alike - goes through the same compare-and-swap function:
+Underneath both paths, every write - from the browser, the WebSocket gateway, or an MCP tool call - goes through the same **compare-and-swap function against Postgres**. That's the concurrency model in one sentence: a write only lands if the row hasn't changed since it was read, so two people editing the same file at once fail safe and retry instead of silently clobbering each other.
 
-```ts
-// lib/cas-writes.ts
-const file = await prismaClient.file.findUnique({ where: { id: targetFileId }, select: { document: true } });
-if (!file) throw new Error("File not found");
-const rawCurrentDocString = file.document ?? '';
-const updated = await prismaClient.file.updateMany({
-  where: { id: targetFileId, document: rawCurrentDocString },
-  data: { document: nextDocString },
-});
-if (updated.count === 1) { /* write won the race */ }
-// else: someone else wrote first - reload and retry
-```
+The **MCP integration is a real, authenticated tool server** (list files, read a file, update a document, update a whiteboard), not a demo - it writes through the exact same compare-and-swap path as the UI, so an AI agent and a human editing the same file are subject to the same conflict protection. A separate in-app "AI Co-Pilot" panel exists in the sidebar but isn't wired to a model yet; that's a real gap, called out here rather than left implicit.
 
-The comment sitting above this in the source is worth repeating because it documents a real bug that got fixed: the CAS predicate has to compare against the *raw* stored value - an empty string for a brand-new file - not a synthesized default object. Get that wrong and every save on a newly-created file conflicts with itself forever, since the "current" value the code assumes never matches what's actually in the row.
+## Infrastructure
 
-## Real-time sync without an audit trail masquerading as one
+CollabPro is **fully self-hosted** after an earlier migration off third-party SaaS: **Postgres** is the system of record, **Redis** handles caching and pub/sub fan-out for the realtime layer, and file uploads land in **S3-compatible object storage**. The web app and the WebSocket gateway are packaged as separate containers with their own **Kubernetes deployment**, so the realtime layer can scale independently of the request-serving app. Auth is self-issued rather than delegated to a third-party provider - **bcrypt-hashed credentials and HMAC-signed sessions**, hardened after an internal architecture review flagged weaker versions of both in an earlier snapshot.
 
-The WebSocket gateway (`ws-server/server.ts`) is a standalone Node process, authenticated on connect via the same JWT the HTTP side issues, tracking each connection's joined rooms and subscriptions with a short-TTL access cache. For horizontal scaling it publishes to Redis pub/sub with a per-replica ID stamped on every message, so a replica recognizes and skips echoes of its own broadcasts (`isSelfOriginatedMessage`) instead of relaying a client's own edit back to itself. A RabbitMQ connection also exists in this path - `docker-compose.yml` ships a `rabbitmq` service for it - but per the code's own inline comments it only drains and acknowledges messages *after* the authoritative Postgres write has already completed. It isn't acting as a durability or audit layer today, despite looking like the kind of infrastructure that would be; the comments flag it plainly as legacy plumbing worth reconsidering rather than something load-bearing.
+## What's next
 
-## The AI Co-Pilot is a mock, and it's worth saying so directly
-
-The workspace sidebar has an "AI Co-Pilot" panel, and there's a settings page where you can paste in an OpenAI, Anthropic, Gemini, or Ollama API key. Neither is wired to a model. `AiSidebar.tsx`'s send handler keyword-matches your message and returns a canned string after a fixed delay:
-
-```tsx
-setTimeout(() => {
-  let aiResponseText = "I've processed your request. Let me help you compile or expand your visual blueprints!";
-  if (lowerText.includes('diagram') || lowerText.includes('analyze')) {
-    aiResponseText = "📊 Workspace Whiteboard Analysis: ...";
-    // ...inserts a canned shape onto the canvas
-  }
-}, 1800);
-```
-
-There's no `/api/ai/*` route anywhere in the codebase that would actually consume the API key the settings page collects. It's a real, working MCP server for genuine AI-agent integration (see below) sitting right next to a feature that only looks like AI - and calling that out here is more useful than letting a screenshot imply otherwise.
-
-## An MCP server that isn't a demo
-
-Unlike the Co-Pilot panel, `/api/mcp` is a real Streamable-HTTP MCP server built on the official `@modelcontextprotocol/sdk`, authenticated by API key, exposing four Zod-validated tools (`collabpro_list_files`, `collabpro_get_file`, `collabpro_update_document`, `collabpro_update_whiteboard`) that write through the exact same compare-and-swap functions as every other path in the app. A small stdio-to-HTTP bridge script lets local MCP clients like Claude Desktop or Cursor talk to it without duplicating any tool logic. This is the part of "AI-native collaboration" that's actually shipped, as opposed to the sidebar mock above it.
-
-## What's still rough
-
-Worth listing plainly, since this project is explicitly in progress: an internal architecture review (dated mid-2026, sitting in the repo under `arch-review/`) flagged serious issues in an earlier snapshot - plaintext passwords, forgeable sessions, a single oversized routing function. The current code already contradicts all three (bcrypt hashing, HMAC-signed sessions, a router split into per-domain service modules), which reads as the audit having done its job rather than being ignored - but it's a live document worth re-running rather than trusting as settled. Separately: `yjs` is still a listed dependency but only used to *read* an old, pre-CAS encoding that turned out to never have merged correctly as a real CRDT (each save built a fresh document instead of merging into the existing one) - it's kept for backward-reads only, not for new writes. And the `package.json` name field is still `erasor_clone`, a leftover from before the rename.
+- Wiring the AI Co-Pilot panel to a real model - the settings page already collects API keys for it.
+- Retiring a legacy message-queue service left over from a pre-compare-and-swap design; it's no longer load-bearing.
 
 ## Running it
 
@@ -172,7 +143,7 @@ Worth listing plainly, since this project is explicitly in progress: an internal
 git clone https://github.com/manish-9245/collabpro && cd collabpro && npm install
 cp .env.example .env   # DATABASE_URL and a 32+ char SESSION_SECRET are required
 docker-compose up -d postgres redis
-npx prisma migrate dev   # not `db push` - the README is explicit about this
+npx prisma migrate dev
 npm run dev              # http://localhost:3000
 npm run ws:start         # separate terminal - the WebSocket gateway
 ```

@@ -527,6 +527,175 @@ body.is-navigating main {
   }
 }
 
+/* ─── Panda mascot ───────────────────────────────────────── */
+
+.panda-mascot {
+  position: fixed;
+  left: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 90;
+  animation: panda-idle-bob 4.5s ease-in-out infinite;
+}
+
+.panda-icon-btn {
+  display: block;
+  width: 64px;
+  height: 64px;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.panda-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.panda-ear,
+.panda-patch {
+  fill: var(--ink);
+}
+
+.panda-head {
+  fill: var(--paper);
+  stroke: var(--ink);
+  stroke-width: 2.5px;
+}
+
+.panda-eye-white {
+  fill: var(--paper);
+}
+
+.panda-eye-pupil {
+  fill: var(--ink);
+}
+
+.panda-nose {
+  fill: var(--ink);
+}
+
+.panda-blush {
+  fill: var(--accent-coral);
+  opacity: 0.45;
+}
+
+.panda-paw {
+  fill: var(--paper);
+  stroke: var(--ink);
+  stroke-width: 2.5px;
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+}
+
+.panda-eyes {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: panda-blink 5.5s ease-in-out infinite;
+}
+
+.panda-mascot:hover .panda-svg,
+.panda-mascot.is-waving .panda-svg {
+  animation: panda-bounce 0.7s ease-in-out;
+}
+
+.panda-mascot.is-waving .panda-paw {
+  animation: panda-wave 0.7s ease-in-out;
+}
+
+.panda-bubble {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 0.7rem);
+  transform: translateX(-50%) translateY(6px) rotate(-3deg) scale(0.85);
+  width: max-content;
+  padding: 0.55rem 1.15rem;
+  background: var(--accent-amber);
+  border: 2.5px solid var(--ink);
+  border-radius: 8px;
+  box-shadow: var(--shadow-hard-sm);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.05rem;
+  color: var(--ink);
+  text-decoration: none;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.panda-bubble::before {
+  content: "";
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  margin-left: -5px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent-coral);
+  border: 2px solid var(--ink);
+}
+
+.panda-bubble.is-active {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0) rotate(-3deg) scale(1);
+}
+
+.panda-bubble.is-active:hover {
+  transform: translateX(-50%) translateY(-2px) rotate(-3deg) scale(1);
+}
+
+@keyframes panda-idle-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+@keyframes panda-blink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  96% { transform: scaleY(0.1); }
+}
+
+@keyframes panda-bounce {
+  0%, 100% { transform: translateY(0) rotate(0); }
+  30% { transform: translateY(-10px) rotate(-4deg); }
+  60% { transform: translateY(0) rotate(3deg); }
+}
+
+@keyframes panda-wave {
+  0%, 100% { transform: rotate(0); }
+  25% { transform: rotate(-24deg); }
+  50% { transform: rotate(-8deg); }
+  75% { transform: rotate(-20deg); }
+}
+
+@media (max-width: 640px) {
+  .panda-mascot {
+    left: 0.85rem;
+    bottom: 0.85rem;
+  }
+
+  .panda-icon-btn {
+    width: 52px;
+    height: 52px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panda-mascot,
+  .panda-svg,
+  .panda-paw,
+  .panda-eyes,
+  .panda-mascot:hover .panda-svg {
+    animation: none;
+  }
+}
+
 @keyframes marquee-scroll {
   to {
     transform: translateX(-50%);
@@ -557,7 +726,8 @@ body.is-navigating main {
 .project-card,
 .service-card,
 .metric-card,
-.related-card {
+.related-card,
+.gear-card {
   position: relative;
   transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
   box-shadow: var(--shadow-hard-md);
@@ -566,7 +736,8 @@ body.is-navigating main {
 .project-card:hover,
 .service-card:hover,
 .metric-card:hover,
-.related-card:hover {
+.related-card:hover,
+.gear-card:hover {
   transform: translate(-4px, -4px);
   box-shadow: var(--shadow-hard-lg);
 }
@@ -575,7 +746,8 @@ body.is-navigating main {
 .project-card::after,
 .service-card::after,
 .metric-card::after,
-.related-card::after {
+.related-card::after,
+.gear-card::after {
   content: "";
   position: absolute;
   top: 0;
@@ -590,7 +762,8 @@ body.is-navigating main {
 .project-card::before,
 .service-card::before,
 .metric-card::before,
-.related-card::before {
+.related-card::before,
+.gear-card::before {
   content: "";
   position: absolute;
   top: 9px;
@@ -613,9 +786,51 @@ body.is-navigating main {
   .project-card,
   .service-card,
   .metric-card,
-  .related-card {
+  .related-card,
+  .gear-card {
     transition: none;
   }
+}
+
+/* ─── Gear / setup cards ────────────────────────────────── */
+
+.gear-card {
+  padding: 1.3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.gear-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 2px solid var(--ink);
+  background: color-mix(in srgb, var(--tape-color, var(--accent-amber)) 35%, var(--paper));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.gear-card:hover .gear-icon {
+  transform: rotate(-8deg) scale(1.08);
+}
+
+.gear-icon svg {
+  width: 26px;
+  height: 26px;
+  color: var(--ink);
+}
+
+.gear-card h3 {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.gear-card .muted {
+  font-size: 0.85rem;
+  line-height: 1.5;
 }
 
 .panel {

@@ -88,50 +88,27 @@ class node_download toneMint
 
 Boxes are clickable and jump straight to the real source file on GitHub.
 
-## The typing animation is not a canned effect
+## What it does
 
-The clever part of CodeSnip isn't the PNG export - that's a straightforward DOM-to-image capture. It's the GIF: instead of animating a pre-made effect over the finished code, it reconstructs the *history* of you typing it, one character at a time, and screenshots every step:
+- Pick a language and a theme, paste or write a snippet, and export it as a styled PNG - the "window" chrome, gradient background, and syntax highlighting all render the way they look on screen.
+- Export the same snippet as an animated GIF that replays the typing itself, rather than a generic fade-in or scroll effect.
+- Runs entirely in the browser: no account, no upload, nothing about the snippet ever leaves the tab.
 
-```js
-// src/App.js - building one frame per character typed
-const onRecord = () => {
-  const totalLines = editorState.split('').filter((c) => c === '\n').length;
-  let linesLeft = totalLines;
-  let tempFrames = [];
-  for (let i = 0; i < editorState.length; i++) {
-    if (editorState[i] === '\n') linesLeft--;
-    let currentFrame = editorState.slice(0, i + 1);
-    for (let j = 0; j < linesLeft; j++) currentFrame += '\n';
-    tempFrames.push(currentFrame);
-  }
-  setFrames(tempFrames);
-  setExportingGIF(true);
-};
-```
+## System design
 
-Each entry in `tempFrames` is the snippet truncated to `i` characters, padded with the remaining newlines so the code block doesn't visually collapse as lines "disappear" mid-animation. For a 200-character snippet, that's 200 separate frames - and every one of them gets rendered and screenshotted before encoding even starts.
+The GIF export is the interesting piece, and it isn't a canned animation played over finished code - it reconstructs the actual *history* of typing the snippet, one character at a time, and captures a screenshot at every step before encoding those frames into a GIF client-side. For a 200-character snippet that's 200 individual frames, each one rendered and captured before encoding even starts.
 
-## A state machine made of four `useEffect`s
+A small but deliberate finishing touch: the frame sequence is padded with several repeated copies of the final frame before encoding. Without that, the GIF would snap straight back to an empty editor the instant typing finished; the padding buys a visible pause on the completed snippet so it reads as "here's the finished code" instead of looping abruptly.
 
-Rather than one async function driving the export start-to-finish, GIF export is spread across four chained `useEffect` hooks in `App.js` - one advances `currentFrameToCapture`, one pushes each frame's text into `editorState` so it re-renders, one calls `takeSnapshot()` via `dom-to-image-more`'s `domtoimage.toPng` and accumulates results into `gifFrames`, and a final one fires once every frame is captured and hands the whole array to `gifshot.createGIF()`. It works, but the file's own top comment is disarmingly honest about it: `// This needs refactoring` and `// TODO: Refactor this to use context API` - a real admission of the tech debt sitting in the code, not something inferred from the outside.
+Theming is intentionally low-tech - a theme is a swappable stylesheet, not a CSS-in-JS system - which keeps adding a new theme to a matter of dropping in a new stylesheet rather than touching component code.
 
-One deliberate finishing touch: before encoding, the frame list gets padded with nine repeated copies of the final frame:
+## Trade-offs
 
-```js
-for (let i = 0; i < 9; i++) {
-  framesToExport.push(gifFrames[gifFrames.length - 1]);
-}
-```
+Because the GIF pipeline captures one DOM screenshot per character, export time scales directly with snippet length: a short snippet exports almost instantly, a long one visibly takes longer. That's the direct cost of prioritizing an authentic-looking typing replay over a pre-baked animation - a reasonable trade for a hobby export tool, less so if this needed to handle much longer snippets at speed. Syntax highlighting also currently covers more languages than the editor ships color themes for, worth knowing if theme variety is what you're evaluating it on.
 
-Without that, the GIF would loop back to frame one the instant typing finished. Nine extra identical frames buy a visible pause on the completed code before it loops - a small trick, but it's the difference between a GIF that reads as "here's the finished snippet" and one that just looks broken.
+## Infrastructure
 
-## The real cost of this approach
-
-Because export re-renders and screenshots the DOM once per character, the whole pipeline is inherently serial and slow for longer snippets - a 200-character example means 200 full `dom-to-image` captures (each scaled 1.9x for resolution) running one after another through those four effects before `gifshot` even starts encoding. That's a real, visible lag on anything beyond a short snippet, and it's the direct cost of the "replay real keystrokes" approach instead of a pre-baked animation. It's a legitimate trade for a hobby export tool: simpler to reason about than a proper animation timeline, at the cost of scaling linearly with snippet length.
-
-## Everything else is DOM tricks, not magic
-
-The theme system is refreshingly low-tech: `Window.jsx` swaps a `<link href="/themes/${theme}.css">` tag's `href` rather than reaching for CSS-in-JS, so a "theme" is just a static stylesheet in `public/themes/` being hot-swapped. Downloading the final PNG is nine lines - build an off-DOM `<a download>`, click it, remove it. And the syntax highlighter (Prism, via `react-simple-code-editor`) supports nineteen languages, noticeably more than the five IDE color themes on offer - a small asymmetry worth knowing if "customization" is the feature you're evaluating it for.
+A static, client-only React app with no backend and no database - it's deployable anywhere that serves static files, and there's no server in the loop for either export path.
 
 ## Running it
 

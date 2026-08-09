@@ -116,7 +116,7 @@
         <h2 class="section-title">How it's built</h2>
       </section>
       <div class="blog-post-layout">
-        <nav class="blog-toc" id="blog-toc" aria-label="Table of contents"><p class="blog-toc-title">Contents</p><ol><li><a href="#architecture">Architecture</a></li><li><a href="#the-whole-program-in-outline">The whole program, in outline</a></li><li><a href="#the-one-flag-that-makes-this-work">The one flag that makes this work</a></li><li><a href="#where-the-frame-budget-actually-goes">Where the frame budget actually goes</a></li><li><a href="#running-it">Running it</a></li></ol></nav>
+        <nav class="blog-toc" id="blog-toc" aria-label="Table of contents"><p class="blog-toc-title">Contents</p><ol><li><a href="#architecture">Architecture</a></li><li><a href="#what-it-does">What it does</a></li><li><a href="#system-design">System design</a></li><li><a href="#trade-offs">Trade-offs</a></li><li><a href="#infrastructure">Infrastructure</a></li><li><a href="#running-it">Running it</a></li></ol></nav>
         <article class="blog-prose" id="blog-prose"><p>Most "emotion recognition" repos are really two projects stapled together: a face detector, and a classifier that only works on a perfectly cropped face. The interesting engineering question isn't "can a model tell happy from sad" - that part is a solved, importable problem - it's how little code it takes to wire the detector and the classifier together into something that runs live off a webcam.</p>
 <h2 id="architecture">Architecture</h2>
 <pre class="mermaid">flowchart TD
@@ -187,14 +187,16 @@ classDef toneTeal fill:#ccfbf1,stroke:#0f766e,stroke-width:1.5px,color:#134e4a
 class node_entry,node_deps,node_webcam,node_display,node_cleanup toneBlue
 class node_capture,node_frame,node_grayscale,node_boxes,node_roi,node_emotion,node_annotate toneAmber
 class node_cascade,node_deepface,node_tensorflow toneMint</pre><p>Boxes are clickable and jump straight to the real source file on GitHub.</p>
-<h2 id="the-whole-program-in-outline">The whole program, in outline</h2>
-<p><code>emotion.py</code> is a single file. The loop is:</p>
-<ol>
-<li>Open the default webcam with <code>cv2.VideoCapture(0)</code>.</li>
-<li>Convert each frame to grayscale, then find faces with OpenCV's built-in Haar cascade: <code>cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')</code>.</li>
-<li>For every detected face box, crop it back out of a version of the frame converted to RGB (DeepFace expects three channels, so grayscale has to be expanded back out even though the actual detection ran on a single channel).</li>
-<li>Hand that crop to <code>DeepFace.analyze(...)</code> and draw whatever emotion comes back on top of the live video.</li>
-</ol>
+<h2 id="what-it-does">What it does</h2>
+<p>Points at a live webcam feed, finds every face in the frame, and draws a bounding box with a predicted emotion label on each one - updated continuously as the video plays, with no setup step and nothing to train.</p>
+<h2 id="system-design">System design</h2>
+<p>Two models split two different jobs instead of one model doing both: a fast classical face detector finds <em>where</em> faces are in each frame, and a deep learning model classifies <em>what expression</em> each one is making. That split - cheap localization, expensive classification - is what makes it possible to run live on a laptop webcam at all.</p>
+<p>The detector's output is trusted rather than re-verified. The emotion model would normally run its own, heavier face-detection pass before classifying anything; skipping that redundant second detection is what keeps the pipeline fast, at a real accuracy cost - the classical detector doing the trusted first pass is noticeably less robust to side angles, partial occlusion, and uneven lighting than the deep model's own detector would be on its own. That's the actual design trade behind "the shortest code path": pay for face detection once, not twice, and accept that the cheaper detector occasionally misses a face the more expensive one wouldn't have.</p>
+<h2 id="trade-offs">Trade-offs</h2>
+<p>Emotion inference runs synchronously, once per detected face, inside the main video loop. With one person on camera that's comfortable; with three or four people in frame, the loop has to run inference that many times before it can draw the next frame, with no batching or background threading to soften it. That's an acceptable ceiling for a demo script - the fix, if it needed to hold a steady frame rate with a crowd in view, would be batching all detected faces into a single inference call or moving inference to a background thread.</p>
+<h2 id="infrastructure">Infrastructure</h2>
+<p>A single Python script with no training step and no dataset to download - both models are pretrained and pulled in via pip - running entirely on-device against the default webcam, with no backend and no cloud dependency.</p>
+<h2 id="running-it">Running it</h2>
 
         <div class="code-block-shell">
           <div class="code-window-bar">
@@ -204,27 +206,18 @@ class node_cascade,node_deepface,node_tensorflow toneMint</pre><p>Boxes are clic
               <span class="code-window-dot maximize" aria-hidden="true"></span>
             </div>
             <div class="code-window-center">
-              <span class="code-lang-icon"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="#3776AB" d="M11.9 0C8.9 0 7 1.3 7 3.8v2.5h5v.7H5V3.3C5 .8 6.9 0 9.4 0h2.5zm5.1 24c3 0 4.9-1.3 4.9-3.8v-2.5h-5v-.7h7v3.7c0 2.5-1.9 3.3-4.4 3.3H17z"></path><path fill="#FFD43B" d="M12.1 10.3v-.7H19v3.7c0 2.5-1.9 3.3-4.4 3.3H12.1v-2.5h5v-.7h-5v-3.1zm-5.1 3.4c-3 0-4.9 1.3-4.9 3.8v2.5h5v.7H5v-3.7C5 14.5 6.9 13.7 9.4 13.7h2.6v2.5h-5v.7h5v-3.2z"></path></svg></span>
-              <span class="code-window-lang">python</span>
+              <span class="code-lang-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg></span>
+              <span class="code-window-lang">bash</span>
             </div>
             <button type="button" class="code-copy-button" onclick="copyCode(this)" aria-label="Copy code">
               <svg class="icon-copy" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
               <span>Copy</span>
             </button>
           </div>
-          <pre><code class="hljs language-python" data-lang="python">result = DeepFace.analyze(face_roi, actions=[<span class="hljs-string">'emotion'</span>], enforce_detection=<span class="hljs-literal">False</span>)
-emotion = result[<span class="hljs-number">0</span>][<span class="hljs-string">'dominant_emotion'</span>]
-cv2.rectangle(frame, (x, y), (x + w, y + h), (<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">255</span>), <span class="hljs-number">2</span>)
-cv2.putText(frame, emotion, (x, y - <span class="hljs-number">10</span>), cv2.FONT_HERSHEY_SIMPLEX, <span class="hljs-number">0.9</span>, (<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">255</span>), <span class="hljs-number">2</span>)</code></pre>
+          <pre><code class="hljs language-bash" data-lang="bash">pip install -r requirements.txt
+python emotion.py   <span class="hljs-comment"># press q to quit</span></code></pre>
         </div>
-      <h2 id="the-one-flag-that-makes-this-work">The one flag that makes this work</h2>
-<p><code>enforce_detection=False</code> is doing more work than its size suggests. DeepFace ships its own, heavier face detector as part of <code>analyze()</code>, and by default it raises an exception if it can't confirm a face in the image you hand it. Since the Haar cascade has <em>already</em> found and cropped a face by the time DeepFace sees it, re-running DeepFace's own detector on that crop would be redundant work - so the flag tells DeepFace "trust me, just classify this pixel patch." That's the actual design decision behind "the shortest code": use a cheap, fast classical detector to find <em>where</em> faces are, and skip straight to the expensive deep model for <em>what expression</em> they're making, rather than paying for detection twice.</p>
-<p>It's a real accuracy trade, not a free lunch. Haar cascades are a 2001-era technique - much less robust to side angles, partial occlusion, and uneven lighting than the detector DeepFace would have used on its own. Bypassing it is what keeps this fast enough to run live on a laptop webcam, at the cost of missing faces the cascade itself can't find in the first place.</p>
-<h2 id="where-the-frame-budget-actually-goes">Where the frame budget actually goes</h2>
-<p>The obvious performance question for anything running per-frame is: what's the expensive part? Here it's unambiguous - <code>DeepFace.analyze()</code> is a full model inference, called synchronously, once per detected face, inside the main video loop. With one face in frame that's tolerable; with three or four people on camera, the loop has to run that inference three or four times before it can draw the next frame, and there's no batching, threading, or frame-skipping to soften it. For a demo script that's an acceptable ceiling. For anything meant to hold a steady frame rate with multiple people in view, the fix is the obvious one - batch all detected faces into a single <code>DeepFace.analyze()</code> call, or move inference to a background thread and let the video loop draw the last-known label while it catches up.</p>
-<h2 id="running-it">Running it</h2>
-<p>There's no training step and no dataset to download - <code>pip install -r requirements.txt</code> pulls <code>opencv-python</code>, <code>deepface</code>, and <code>tf_keras</code> (DeepFace's actual backend is TensorFlow, pulled in transitively). The one manual step is grabbing <code>haarcascade_frontalface_default.xml</code> from OpenCV's own GitHub, even though the code technically loads that same cascade from OpenCV's bundled data path (<code>cv2.data.haarcascades</code>) rather than the copy sitting in the repo - a small mismatch between what the README asks you to do and what the script actually reads, worth knowing if you go looking for where that XML file matters. From there it's <code>python emotion.py</code>, and <code>q</code> to quit.</p>
-</article>
+      </article>
         <aside class="blog-meta-col"><section class="blog-meta-card" aria-label="Role"><p class="blog-meta-label">Role</p><p class="blog-meta-value">Solo builder</p></section><section class="blog-meta-card" aria-label="Status"><p class="blog-meta-label">Status</p><p class="blog-meta-value">Open source</p></section><section class="blog-meta-card" aria-label="Source code"><p class="blog-meta-label">Source</p><a class="blog-meta-link" href="https://github.com/manish-9245/Facial-Emotion-Recognition-using-OpenCV-and-Deepface" target="_blank" rel="noreferrer">View on GitHub</a></section><section class="blog-meta-card" aria-label="Project navigation"><p class="blog-meta-label">Navigate</p><a class="blog-meta-link" href="/projects.html">← All projects</a></section></aside>
       </div>
       <hr class="divider" aria-hidden="true" />

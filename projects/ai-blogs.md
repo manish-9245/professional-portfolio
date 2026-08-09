@@ -14,23 +14,38 @@ links: "Live site|https://aiblogs.buildwithmanish.com/; View blogs|https://aiblo
 tech: "Frontend|Next.js, TypeScript, Tailwind CSS; AI & Backend|OpenAI API, Agentic Workflows, Node.js"
 application_category: "BusinessApplication"
 ---
-This is the one project on this page without a public repo to link to - it's a closed-source, production SaaS product I run, not an open-source demo. What follows is the design thinking behind it rather than a code walkthrough, because that's the honest version of "how it's built" for something that isn't open for anyone to read.
+This is the one project on this page without a public repo to link to - it's a closed-source, production SaaS product I run, not an open-source demo. What follows is the design thinking and system shape behind it rather than a code walkthrough, because that's the honest version of "how it's built" for something that isn't open for anyone to read.
 
-## The actual problem
+## Product pipeline
 
-Creators sit on hours of long-form video that could become SEO-friendly articles, but the manual path - transcribe, outline, write, format, publish - takes almost as long as making the original video did. Most "AI blog generator" tools skip straight from transcript to draft, which produces exactly what you'd expect: a wall of text that reads like a transcript with the timestamps removed, because a summarizer was never asked to *structure* anything, only to shorten it.
+```mermaid
+flowchart LR
+  video["YouTube video"] --> director["AI Director<br/>plans the outline"]
+  director --> approve{{"Human review<br/>outline approval"}}
+  approve --> drafting["Section-by-section drafting"]
+  drafting --> edit{{"Human review<br/>edit pass"}}
+  edit --> publish["Publish to connected blog"]
+  dashboard["Admin dashboard"] -.->|"steers every stage"| director
+  dashboard -.-> approve
+  dashboard -.-> edit
+```
 
-## Why an outline comes before a single sentence of prose
+## What it does
 
-The core design decision in AI Blogs is refusing that shortcut. Before anything gets written, an "AI Director" step plans the actual shape of the article - what sections it needs, what order they go in, where a screenshot or generated image earns its place - and that outline is something a human can review and adjust before a single paragraph gets drafted. Writing section-by-section against an approved outline, instead of asking a model to produce a finished article in one pass, is what keeps the output readable as an edited piece rather than a raw model dump. It's a slower pipeline than "one big prompt," and that's deliberate: the extra step is what the quality difference actually comes from.
+- Turns a long-form YouTube video into a structured, SEO-optimised blog post - not a transcript with the timestamps stripped out.
+- Plans the article's outline before writing a single sentence: which sections it needs, what order they go in, where a screenshot or generated image earns its place.
+- Gives a human a review checkpoint at the outline stage and again after drafting, before anything publishes to the connected blog.
+- Ships with an admin dashboard covering the whole pipeline - queued videos, in-progress drafts, and published posts in one place.
 
-## Keeping a human in the loop, on purpose
+## System design
 
-The product resists being a black box that pops out a finished post on its own. The dashboard exists specifically so a draft is something you steer, not something you accept sight-unseen - outline first, then drafted sections, then a review pass before anything goes live on the connected blog. That's slower than a fully automated pipeline, and it's the trade I'd make again: the moment a tool writes and publishes without anyone looking, the failure mode stops being "not quite right" and starts being "wrong in public."
+The core design decision is refusing the obvious shortcut. Most "AI blog generator" tools go straight from transcript to draft, which produces exactly what you'd expect - a wall of text that reads like a transcript with the timestamps removed, because a summarizer was never asked to *structure* anything, only to shorten it. AI Blogs inserts a planning step first: an "AI Director" stage produces the article's shape - sections, ordering, where visuals belong - and that outline is something a person reviews and adjusts before a word of the article gets drafted. Writing section-by-section against an approved outline, instead of asking a model to produce a finished piece in one pass, is where the quality difference actually comes from. It's a slower pipeline than one big prompt, and that's deliberate.
 
-## What "SaaS" actually means here
+The product is built around staying out of "fully automatic" territory on purpose. Outline, then drafted sections, then a review pass - each stage is something you steer from the dashboard, not something you accept sight-unseen. The moment a tool writes and publishes without anyone looking, the failure mode stops being "not quite right" and starts being "wrong in public," and that's the trade the whole review flow exists to avoid.
 
-Being a hosted product rather than a script you run locally means the boring infrastructure work - auth, a persistent content pipeline, an admin surface, keeping generated posts and their metadata consistent across drafts and publishes - has to exist and stay reliable for more than one user at a time. That's a different set of problems than getting a single generation pipeline to work once in a notebook, and it's most of where the actual engineering time goes: not the prompt, but everything around making the prompt's output trustworthy enough to publish from a dashboard instead of a terminal.
+## Infrastructure
+
+Being a hosted product rather than a script run locally means the unglamorous infrastructure work has to hold up for more than one user at a time: auth, a persistent content pipeline that survives between the outline stage and the drafting stage, an admin surface, and keeping generated posts and their metadata consistent across drafts and publishes. That's most of where the actual engineering time goes - not the prompt itself, but everything around making the prompt's output trustworthy enough to publish from a dashboard instead of a terminal. The stack is a Next.js/TypeScript frontend and dashboard over a Node.js backend, with the drafting pipeline calling out to the OpenAI API at each agentic step.
 
 ## Where you can see it working
 

@@ -117,8 +117,8 @@
         <h2 class="section-title">How it's built</h2>
       </section>
       <div class="blog-post-layout">
-        <nav class="blog-toc" id="blog-toc" aria-label="Table of contents"><p class="blog-toc-title">Contents</p><ol><li><a href="#architecture">Architecture</a></li><li><a href="#composing-a-project-without-a-model-in-the-loop">Composing a project without a model in the loop</a></li><li><a href="#pages-that-know-what-s-actually-installed">Pages that know what's actually installed</a></li><li><a href="#turning-a-sentence-into-a-database-schema">Turning a sentence into a database schema</a></li><li><a href="#the-only-test-is-an-end-to-end-one">The only test is an end-to-end one</a></li><li><a href="#what-s-still-rough">What's still rough</a></li><li><a href="#running-it">Running it</a></li></ol></nav>
-        <article class="blog-prose" id="blog-prose"><p>Most "AI app generators" scaffold a project by asking a model to write it from scratch, which means every generated app is a little different and a little wrong in its own way. Hackpack takes the opposite bet: <code>npx create-hackpack new my-app --base=ts-nextjs --features=auth-better-auth,db-d1-drizzle</code> produces a working app in about 90 seconds by <em>composing</em> hand-written templates - a base framework, a stack of optional features, and prebuilt page variants - never by generating code with an LLM. The generation step is 100% deterministic file operations and Handlebars rendering, which is also why it's fast enough to demo live.</p>
+        <nav class="blog-toc" id="blog-toc" aria-label="Table of contents"><p class="blog-toc-title">Contents</p><ol><li><a href="#architecture">Architecture</a></li><li><a href="#what-it-does">What it does</a></li><li><a href="#system-design">System design</a></li><li><a href="#infrastructure">Infrastructure</a></li><li><a href="#what-s-next">What's next</a></li><li><a href="#running-it">Running it</a></li></ol></nav>
+        <article class="blog-prose" id="blog-prose"><p>Most "AI app generators" scaffold a project by asking a model to write it from scratch, which means every generated app is a little different and a little wrong in its own way. Hackpack takes the opposite bet: <code>npx create-hackpack new my-app --base=ts-nextjs --features=auth-better-auth,db-d1-drizzle</code> produces a working app in about 90 seconds by <em>composing</em> hand-written templates - a base framework, a stack of optional features, and prebuilt page variants - never by generating code with an LLM. The generation step is 100% deterministic file operations, which is also why it's fast enough to demo live.</p>
 <h2 id="architecture">Architecture</h2>
 <pre class="mermaid">flowchart TD
 
@@ -210,69 +210,25 @@ class node_template_contract,node_bases,node_features,node_pages toneAmber
 class node_go_entry,node_go_compose toneMint
 class node_generated_project,node_cloudflare,node_d1 toneRose
 class node_landing toneNeutral</pre><p>Boxes are clickable and jump straight to the real source file on GitHub.</p>
-<h2 id="composing-a-project-without-a-model-in-the-loop">Composing a project without a model in the loop</h2>
-<p>The entry point (<code>cli/src/commands/new.ts</code>) collects a base, a list of features, and a list of pages - either interactively via <code>@clack/prompts</code> or straight from flags - and hands them to <code>compose()</code> in <code>cli/src/compose.ts</code>. That function layers three things onto the target directory in order: a <code>_common/</code> hygiene layer (gitignore, editor config), the chosen base's template directory, and then each feature in turn. Every feature copies its own <code>templates/features/&lt;name&gt;/files/</code>, optionally overlays a <code>files-&lt;base&gt;/</code> variant for that specific framework, merges its <code>package.json</code> or <code>pyproject.toml</code> dependencies into the project's manifest, and appends any environment variables it needs.</p>
-<p>The part that keeps this from turning into a pile of merge conflicts is anchor-based wiring instead of AST manipulation:</p>
-
-        <div class="code-block-shell">
-          <div class="code-window-bar">
-            <div class="code-window-controls">
-              <span class="code-window-dot close" aria-hidden="true"></span>
-              <span class="code-window-dot minimize" aria-hidden="true"></span>
-              <span class="code-window-dot maximize" aria-hidden="true"></span>
-            </div>
-            <div class="code-window-center">
-              <span class="code-lang-icon"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="#3178C6" d="M0 0h24v24H0z"></path><path d="M21.6 2.4v19.2H2.4V2.4h19.2zM8.8 17.6c.4 0 .7-.1.9-.3.2-.2.3-.5.3-.9v-5.2H7.4v1.6h1.2v3.6c0 .2 0 .3-.1.4-.1.1-.2.1-.4.1-.2 0-.3 0-.4-.1l-.2-.2-.9 1.2c.2.2.4.3.7.4.3.1.5.1.8.1zm6.2 0c.6 0 1.1-.1 1.5-.4.4-.3.7-.7.9-1.2.2-.5.3-1 .3-1.6 0-.6-.1-1.1-.3-1.6-.2-.5-.5-.9-.9-1.2-.4-.3-.9-.4-1.5-.4s-1.1.1-1.5.4c-.4.3-.7.7-.9 1.2-.2.5-.3 1-.3 1.6 0 .6.1 1.1.3 1.6.2.5.5.9.9 1.2.4.3.9.4 1.5.4zm0-1.6c-.3 0-.5-.1-.7-.2-.2-.1-.3-.3-.4-.6-.1-.3-.1-.6-.1-1s0-.7.1-1c.1-.3.2-.5.4-.6.2-.1.4-.2.7-.2s.5.1.7.2c.2.1.3.3.4.6.1.3.1.6.1 1s0 .7-.1 1c-.1.3-.2.5-.4.6-.2.1-.4.2-.7.2z" fill="#FFF"></path></svg></span>
-              <span class="code-window-lang">ts</span>
-            </div>
-            <button type="button" class="code-copy-button" onclick="copyCode(this)" aria-label="Copy code">
-              <svg class="icon-copy" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-              <span>Copy</span>
-            </button>
-          </div>
-          <pre><code class="hljs language-ts" data-lang="ts"><span class="hljs-comment">// cli/src/compose.ts</span>
-<span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> w <span class="hljs-keyword">of</span> manifest.<span class="hljs-property">wiring</span> ?? []) {
-  <span class="hljs-keyword">await</span> <span class="hljs-title function_">insertAtAnchor</span>(path.<span class="hljs-title function_">join</span>(targetDir, w.<span class="hljs-property">file</span>), w.<span class="hljs-property">anchor</span>, w.<span class="hljs-property">insert</span>);
-}</code></pre>
-        </div>
-      <p>Each feature declares the exact comment anchor it needs to splice into - <code>// hackpack:dashboard-nav</code>, say - and <code>insertAtAnchor</code> finds that line in the already-copied base file and inserts the feature's snippet right after it. No parsing, no codemod, just a known marker and a known insertion point. It's a simpler mechanism than a real code-generation tool would use, and that simplicity is exactly why it's reliable enough to run unattended in CI.</p>
-<h2 id="pages-that-know-what-s-actually-installed">Pages that know what's actually installed</h2>
-<p>The generated pages aren't static copies either. A login page needs to render real <code>authClient.signIn.email()</code> calls if <code>auth-better-auth</code> was installed, or a "no auth provider configured" placeholder if it wasn't - and <code>compose()</code> picks between those by checking <code>installedCategories</code> and selecting the matching <code>variants/&lt;category&gt;</code> subfolder (<code>variants/auth-better-auth</code> vs. <code>variants/none</code>) before copying. It's a small mechanism, but it's the difference between a scaffolded page that actually works and one that silently references a client that was never installed.</p>
-<h2 id="turning-a-sentence-into-a-database-schema">Turning a sentence into a database schema</h2>
-<p><code>hackpack page add orders --describe "a list of orders with title, price, and user, behind login"</code> skips the interactive prompts entirely. <code>cli/src/nlp.ts</code> runs the description through <code>compromise</code> (a local NLP library) and a set of hand-written regexes - <code>parseEntity()</code> for the resource name, <code>parseFields()</code> for the field list, <code>parseAuth()</code> for the <code>--auth=protected</code> equivalent - and if confidence comes back low (no entity found, zero fields parsed), it falls back to the interactive wizard rather than guessing wrong silently. Worth saying plainly: <code>compromise</code>'s actual parse tree isn't used yet - the file computes it and then discards it (<code>void doc; // reserved for future noun-phrase disambiguation</code>), so today's "NLP" parsing is entirely regex-driven, with the NLP library sitting in as a dependency for planned work rather than doing the job itself right now.</p>
-<p>Once fields are known, <code>cli/src/generate.ts</code> maps each one to the right type for whatever stack is installed:</p>
-
-        <div class="code-block-shell">
-          <div class="code-window-bar">
-            <div class="code-window-controls">
-              <span class="code-window-dot close" aria-hidden="true"></span>
-              <span class="code-window-dot minimize" aria-hidden="true"></span>
-              <span class="code-window-dot maximize" aria-hidden="true"></span>
-            </div>
-            <div class="code-window-center">
-              <span class="code-lang-icon"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="#3178C6" d="M0 0h24v24H0z"></path><path d="M21.6 2.4v19.2H2.4V2.4h19.2zM8.8 17.6c.4 0 .7-.1.9-.3.2-.2.3-.5.3-.9v-5.2H7.4v1.6h1.2v3.6c0 .2 0 .3-.1.4-.1.1-.2.1-.4.1-.2 0-.3 0-.4-.1l-.2-.2-.9 1.2c.2.2.4.3.7.4.3.1.5.1.8.1zm6.2 0c.6 0 1.1-.1 1.5-.4.4-.3.7-.7.9-1.2.2-.5.3-1 .3-1.6 0-.6-.1-1.1-.3-1.6-.2-.5-.5-.9-.9-1.2-.4-.3-.9-.4-1.5-.4s-1.1.1-1.5.4c-.4.3-.7.7-.9 1.2-.2.5-.3 1-.3 1.6 0 .6.1 1.1.3 1.6.2.5.5.9.9 1.2.4.3.9.4 1.5.4zm0-1.6c-.3 0-.5-.1-.7-.2-.2-.1-.3-.3-.4-.6-.1-.3-.1-.6-.1-1s0-.7.1-1c.1-.3.2-.5.4-.6.2-.1.4-.2.7-.2s.5.1.7.2c.2.1.3.3.4.6.1.3.1.6.1 1s0 .7-.1 1c-.1.3-.2.5-.4.6-.2.1-.4.2-.7.2z" fill="#FFF"></path></svg></span>
-              <span class="code-window-lang">ts</span>
-            </div>
-            <button type="button" class="code-copy-button" onclick="copyCode(this)" aria-label="Copy code">
-              <svg class="icon-copy" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-              <span>Copy</span>
-            </button>
-          </div>
-          <pre><code class="hljs language-ts" data-lang="ts"><span class="hljs-comment">// cli/src/generate.ts</span>
-<span class="hljs-keyword">function</span> <span class="hljs-title function_">drizzleColumn</span>(<span class="hljs-params"><span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>, <span class="hljs-attr">type</span>: <span class="hljs-title class_">FieldType</span></span>): <span class="hljs-built_in">string</span> {
-  <span class="hljs-keyword">switch</span> (<span class="hljs-keyword">type</span>) {
-    <span class="hljs-keyword">case</span> <span class="hljs-string">"number"</span>: <span class="hljs-keyword">return</span> <span class="hljs-string">`<span class="hljs-subst">${name}</span>: real("<span class="hljs-subst">${name}</span>")`</span>;
-    <span class="hljs-keyword">case</span> <span class="hljs-string">"boolean"</span>: <span class="hljs-keyword">return</span> <span class="hljs-string">`<span class="hljs-subst">${name}</span>: integer("<span class="hljs-subst">${name}</span>", { mode: "boolean" })`</span>;
-    <span class="hljs-keyword">case</span> <span class="hljs-string">"date"</span>: <span class="hljs-keyword">return</span> <span class="hljs-string">`<span class="hljs-subst">${name}</span>: integer("<span class="hljs-subst">${name}</span>", { mode: "timestamp" })`</span>;
-    <span class="hljs-attr">default</span>: <span class="hljs-keyword">return</span> <span class="hljs-string">`<span class="hljs-subst">${name}</span>: text("<span class="hljs-subst">${name}</span>")`</span>;
-  }
-}</code></pre>
-        </div>
-      <p>The same field list drives a TypeScript/Zod type, a Drizzle column, or a Python/SQL type depending on which base and DB feature are installed, then the resulting schema, API route, and list/detail pages get written and spliced in through the same anchor mechanism as <code>compose()</code>.</p>
-<h2 id="the-only-test-is-an-end-to-end-one">The only test is an end-to-end one</h2>
-<p><code>cli/test/self-check.ts</code> - run in CI as <code>npm run selfcheck</code> - doesn't unit-test individual functions. It actually calls <code>compose()</code> for a <code>ts-nextjs</code> project and a <code>py-fastapi</code> project into temp directories, then asserts on the real generated output: dependency merges landed, the Cloudflare D1 binding shows up in <code>wrangler.jsonc</code>, the login page renders the better-auth variant, the generated CRUD schema and routes exist. One test, but it's a genuine integration test covering the compose-and-generate pipeline across two languages, which catches the failure mode that actually matters here - "did the generated project come out broken" - more directly than a pile of unit tests would.</p>
-<h2 id="what-s-still-rough">What's still rough</h2>
-<p>This is very much a working-on-it project, and it's more honest to say so than to paper over it. The Go CLI in <code>go-cli/</code> is explicitly marked experimental in the README and doesn't support the <code>--describe</code> flag at all - only explicit <code>--fields</code>. The <code>ts-vite-react</code> base is flagged in the README's own compatibility matrix as a stub for auth, since a frontend-only base has nowhere server-side to wire real authentication into. And the repo is really three loosely-connected projects sharing one Git history - the TypeScript CLI, the Go rewrite, and a separate Next.js marketing site in <code>landing/</code> - each with its own package manager and no unifying root build.</p>
+<h2 id="what-it-does">What it does</h2>
+<ul>
+<li>Scaffolds a working full-stack app in about 90 seconds from a framework base, a set of optional features (auth, database, UI kit), and prebuilt pages - one command, no prompts required.</li>
+<li>Adds features to a project after the fact (<code>hackpack add</code>), the same composition pipeline running against an existing directory instead of an empty one.</li>
+<li>Generates new CRUD pages from a plain-English description - <code>hackpack page add orders --describe "a list of orders with title, price, and user, behind login"</code> - producing a schema, API routes, and list/detail pages without a form to fill in.</li>
+<li>Ships generated Next.js apps straight to Cloudflare Workers, with an optional Cloudflare D1 database wired in automatically.</li>
+</ul>
+<h2 id="system-design">System design</h2>
+<p>Composition, not generation, is the core bet: every project is built by layering a common hygiene baseline, then a chosen framework base, then each selected feature on top, in order. Each feature merges its own dependencies into the project's manifest and appends its own environment variables - the output is assembled from known-good pieces, not written token by token.</p>
+<p>The mechanism that keeps that layering from turning into constant merge conflicts is anchor-based wiring: features splice their code into comment markers already present in the base templates, rather than parsing and rewriting the target file's AST. It's a simpler mechanism than a real codemod, and that simplicity is exactly why it's reliable enough to run unattended in CI.</p>
+<p>Generated pages are stack-aware rather than static copies: a login page renders real calls against whichever auth provider was actually installed, or a clear placeholder if none was - so a scaffolded page never silently references a client that isn't there. The natural-language page generator follows the same principle in reverse - a plain-English resource description gets parsed into an entity name, a field list, and an auth requirement, then each field is mapped to the right type for whatever stack and database are installed (a Drizzle column, a SQL type, a Zod schema) before the schema, routes, and pages get written through the same anchor mechanism. If the parse comes back low-confidence, it falls back to an interactive wizard rather than guessing.</p>
+<h2 id="infrastructure">Infrastructure</h2>
+<p>Hackpack ships as an npm package (<code>create-hackpack</code>), alongside an experimental standalone Go rewrite of the CLI. Generated applications target Cloudflare Workers, with Cloudflare D1 + Drizzle as the optional managed database for stacks that need one. CI doesn't just unit-test individual functions - it runs a real end-to-end check that composes an actual Next.js project and an actual FastAPI project into temp directories and asserts on the generated output: dependencies merged correctly, the database binding is present, the right auth variant rendered, the CRUD files exist. That's a more direct test of "did the generated project come out broken" than a pile of isolated unit tests would give.</p>
+<h2 id="what-s-next">What's next</h2>
+<ul>
+<li>The Go CLI is explicitly experimental and doesn't support natural-language page generation yet - only explicit field flags.</li>
+<li>A frontend-only Vite + React base has nowhere server-side to wire real authentication into, so it's a stub for that feature today.</li>
+<li>The TypeScript CLI, the Go rewrite, and the Next.js marketing site are three separate builds sharing one repository, each with its own package manager and no unifying root build yet.</li>
+</ul>
 <h2 id="running-it">Running it</h2>
 
         <div class="code-block-shell">

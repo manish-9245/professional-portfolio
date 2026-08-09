@@ -116,8 +116,8 @@
         <h2 class="section-title">How it's built</h2>
       </section>
       <div class="blog-post-layout">
-        <nav class="blog-toc" id="blog-toc" aria-label="Table of contents"><p class="blog-toc-title">Contents</p><ol><li><a href="#architecture">Architecture</a></li><li><a href="#keeping-the-secret-server-side">Keeping the secret server-side</a></li><li><a href="#what-s-actually-custom-vs-what-stream-provides">What's actually custom vs. what Stream provides</a></li><li><a href="#splitting-upcoming-from-past-without-two-api-calls">Splitting "upcoming" from "past" without two API calls</a></li><li><a href="#a-gap-worth-naming-honestly">A gap worth naming honestly</a></li><li><a href="#running-it">Running it</a></li></ol></nav>
-        <article class="blog-prose" id="blog-prose"><p>Most side-project video call demos pick a lane - either a quick 1:1 call, or a group meeting room - and skip the parts that make it feel like a real product: authentication, screen sharing, a chat panel that survives the call. Orbit was an exercise in building the <em>product</em> around video calling rather than the video calling itself, by leaning on Stream's video SDK for the actual WebRTC plumbing.</p>
+        <nav class="blog-toc" id="blog-toc" aria-label="Table of contents"><p class="blog-toc-title">Contents</p><ol><li><a href="#architecture">Architecture</a></li><li><a href="#what-it-does">What it does</a></li><li><a href="#system-design">System design</a></li><li><a href="#infrastructure">Infrastructure</a></li><li><a href="#what-s-next">What's next</a></li><li><a href="#running-it">Running it</a></li></ol></nav>
+        <article class="blog-prose" id="blog-prose"><p>Most side-project video call demos pick a lane - either a quick 1:1 call, or a group meeting room - and skip the parts that make it feel like a real product: authentication, screen sharing, a chat panel that survives the call. Orbit was an exercise in building the <em>product</em> around video calling rather than the video calling itself, by leaning on a managed video SDK for the WebRTC plumbing and spending the engineering effort on everything around it.</p>
 <h2 id="architecture">Architecture</h2>
 <pre class="mermaid">flowchart TD
 
@@ -199,63 +199,22 @@ class node_root_layout,node_authenticated_layout,node_product_shell,node_dashboa
 class node_auth_screens,node_middleware toneAmber
 class node_call_actions,node_history_queries,node_call_lookup,node_stream_provider,node_stream_service toneMint
 class node_runtime,node_environment toneNeutral</pre><p>Boxes are clickable and jump straight to the real source file on GitHub.</p>
-<h2 id="keeping-the-secret-server-side">Keeping the secret server-side</h2>
-<p>The one piece you can't hand to the browser is the Stream API secret. Orbit's <code>actions/stream.actions.ts</code> is a Next.js Server Action - <code>"use server"</code> - that reads the signed-in user from Clerk and mints a short-lived Stream token entirely on the server:</p>
-
-        <div class="code-block-shell">
-          <div class="code-window-bar">
-            <div class="code-window-controls">
-              <span class="code-window-dot close" aria-hidden="true"></span>
-              <span class="code-window-dot minimize" aria-hidden="true"></span>
-              <span class="code-window-dot maximize" aria-hidden="true"></span>
-            </div>
-            <div class="code-window-center">
-              <span class="code-lang-icon"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="#3178C6" d="M0 0h24v24H0z"></path><path d="M21.6 2.4v19.2H2.4V2.4h19.2zM8.8 17.6c.4 0 .7-.1.9-.3.2-.2.3-.5.3-.9v-5.2H7.4v1.6h1.2v3.6c0 .2 0 .3-.1.4-.1.1-.2.1-.4.1-.2 0-.3 0-.4-.1l-.2-.2-.9 1.2c.2.2.4.3.7.4.3.1.5.1.8.1zm6.2 0c.6 0 1.1-.1 1.5-.4.4-.3.7-.7.9-1.2.2-.5.3-1 .3-1.6 0-.6-.1-1.1-.3-1.6-.2-.5-.5-.9-.9-1.2-.4-.3-.9-.4-1.5-.4s-1.1.1-1.5.4c-.4.3-.7.7-.9 1.2-.2.5-.3 1-.3 1.6 0 .6.1 1.1.3 1.6.2.5.5.9.9 1.2.4.3.9.4 1.5.4zm0-1.6c-.3 0-.5-.1-.7-.2-.2-.1-.3-.3-.4-.6-.1-.3-.1-.6-.1-1s0-.7.1-1c.1-.3.2-.5.4-.6.2-.1.4-.2.7-.2s.5.1.7.2c.2.1.3.3.4.6.1.3.1.6.1 1s0 .7-.1 1c-.1.3-.2.5-.4.6-.2.1-.4.2-.7.2z" fill="#FFF"></path></svg></span>
-              <span class="code-window-lang">ts</span>
-            </div>
-            <button type="button" class="code-copy-button" onclick="copyCode(this)" aria-label="Copy code">
-              <svg class="icon-copy" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-              <span>Copy</span>
-            </button>
-          </div>
-          <pre><code class="hljs language-ts" data-lang="ts"><span class="hljs-comment">// actions/stream.actions.ts</span>
-<span class="hljs-keyword">const</span> exp = <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">round</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>().<span class="hljs-title function_">getTime</span>() / <span class="hljs-number">1000</span>) + <span class="hljs-number">60</span> * <span class="hljs-number">60</span>;
-<span class="hljs-keyword">const</span> issued = <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">floor</span>(<span class="hljs-title class_">Date</span>.<span class="hljs-title function_">now</span>() / <span class="hljs-number">1000</span>) - <span class="hljs-number">60</span>;
-<span class="hljs-keyword">const</span> token = streamClient.<span class="hljs-title function_">createToken</span>(user.<span class="hljs-property">id</span>, exp, issued);</code></pre>
-        </div>
-      <p>That token is valid for exactly one hour, scoped to the current user's ID, and the <code>StreamClient</code> that signs it is constructed with a server-only secret that never ships to the client bundle. On the browser side, <code>providers/stream-client-provider.tsx</code> waits for Clerk's <code>useUser()</code> to resolve, then builds a <code>StreamVideoClient</code> and hands it the server action itself as a <code>tokenProvider</code> callback - the SDK calls back into that server action whenever it needs a fresh token, so the client never sees anything more sensitive than a public API key.</p>
-<p>Using a Server Action here instead of a hand-rolled API route is a small but real architectural choice: it's the same "keep the secret on the server" pattern you'd get from a REST endpoint, without needing to define and version one.</p>
-<h2 id="what-s-actually-custom-vs-what-stream-provides">What's actually custom vs. what Stream provides</h2>
-<p>Once a call exists, <code>components/meeting-room.tsx</code> gates rendering on Stream's own <code>useCallCallingState()</code> hook until the state reaches <code>CallingState.JOINED</code>, then composes almost entirely out of Stream's prebuilt pieces - <code>PaginatedGridLayout</code> or <code>SpeakerLayout</code> for video, <code>CallControls</code>, <code>CallParticipantsList</code>, <code>CallStatsButton</code>. Creating a meeting is similarly thin: <code>meeting-type-list.tsx</code> calls <code>streamClient.call("default", crypto.randomUUID())</code> then <code>call.getOrCreate({ data: { starts_at, custom: { description } } })</code>, and Stream's backend owns the actual room. The honest way to describe Orbit's own code is: authentication, routing, and UI composition around a managed video layer - not a WebRTC stack built from scratch. That's the right call for a product that needs to <em>work</em>, and it's also exactly why the interesting bugs end up being about state and auth, not about media negotiation.</p>
-<h2 id="splitting-upcoming-from-past-without-two-api-calls">Splitting "upcoming" from "past" without two API calls</h2>
-<p><code>hooks/use-get-calls.ts</code> is a small example of doing less work by shaping one query correctly instead of firing two. It asks Stream for every call where the current user is either the creator or a member, sorted by start time, and then partitions that single result set client-side:</p>
-
-        <div class="code-block-shell">
-          <div class="code-window-bar">
-            <div class="code-window-controls">
-              <span class="code-window-dot close" aria-hidden="true"></span>
-              <span class="code-window-dot minimize" aria-hidden="true"></span>
-              <span class="code-window-dot maximize" aria-hidden="true"></span>
-            </div>
-            <div class="code-window-center">
-              <span class="code-lang-icon"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="#3178C6" d="M0 0h24v24H0z"></path><path d="M21.6 2.4v19.2H2.4V2.4h19.2zM8.8 17.6c.4 0 .7-.1.9-.3.2-.2.3-.5.3-.9v-5.2H7.4v1.6h1.2v3.6c0 .2 0 .3-.1.4-.1.1-.2.1-.4.1-.2 0-.3 0-.4-.1l-.2-.2-.9 1.2c.2.2.4.3.7.4.3.1.5.1.8.1zm6.2 0c.6 0 1.1-.1 1.5-.4.4-.3.7-.7.9-1.2.2-.5.3-1 .3-1.6 0-.6-.1-1.1-.3-1.6-.2-.5-.5-.9-.9-1.2-.4-.3-.9-.4-1.5-.4s-1.1.1-1.5.4c-.4.3-.7.7-.9 1.2-.2.5-.3 1-.3 1.6 0 .6.1 1.1.3 1.6.2.5.5.9.9 1.2.4.3.9.4 1.5.4zm0-1.6c-.3 0-.5-.1-.7-.2-.2-.1-.3-.3-.4-.6-.1-.3-.1-.6-.1-1s0-.7.1-1c.1-.3.2-.5.4-.6.2-.1.4-.2.7-.2s.5.1.7.2c.2.1.3.3.4.6.1.3.1.6.1 1s0 .7-.1 1c-.1.3-.2.5-.4.6-.2.1-.4.2-.7.2z" fill="#FFF"></path></svg></span>
-              <span class="code-window-lang">ts</span>
-            </div>
-            <button type="button" class="code-copy-button" onclick="copyCode(this)" aria-label="Copy code">
-              <svg class="icon-copy" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-              <span>Copy</span>
-            </button>
-          </div>
-          <pre><code class="hljs language-ts" data-lang="ts"><span class="hljs-keyword">const</span> endedCalls = calls.<span class="hljs-title function_">filter</span>(<span class="hljs-function">(<span class="hljs-params">{ state: { startsAt, endedAt } }</span>) =&gt;</span>
-  (startsAt &amp;&amp; <span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>(startsAt) &lt; now) || !!endedAt
-);
-<span class="hljs-keyword">const</span> upcomingCalls = calls.<span class="hljs-title function_">filter</span>(<span class="hljs-function">(<span class="hljs-params">{ state: { startsAt } }</span>) =&gt;</span>
-  startsAt &amp;&amp; <span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>(startsAt) &gt; now
-);</code></pre>
-        </div>
-      <p>One query, one round trip, two views of the same data - simpler than maintaining separate "upcoming" and "history" endpoints that would need to stay consistent with each other.</p>
-<h2 id="a-gap-worth-naming-honestly">A gap worth naming honestly</h2>
-<p>Not everything lines up between the README and the code. The middleware protects <code>/personal-room</code> as a route (<code>createRouteMatcher([..., "/personal-room", ...])</code>), but no page or sidebar link for it exists anywhere in the app - a feature that got scaffolded into the auth config and never built out. And the README's documented environment variable names (<code>STREAM_VIDEO_API_KEY</code> / <code>STREAM_VIDEO_API_SECRET</code>) don't match what the code and <code>.env.example</code> actually read (<code>NEXT_PUBLIC_STREAM_API_KEY</code> / <code>STREAM_SECRET_KEY</code>) - following the README literally leaves both variables <code>undefined</code> and trips the explicit <code>throw new Error("Stream api key missing.")</code> guard the code has in place for exactly that situation. Small things, but the kind that cost a new contributor twenty minutes if nobody writes them down.</p>
+<h2 id="what-it-does">What it does</h2>
+<ul>
+<li>1:1 and group video calls with screen sharing and an in-call chat panel, joined straight from a URL.</li>
+<li>A dashboard for starting an instant meeting or scheduling one for later, plus a history view split into upcoming and past calls.</li>
+<li>A pre-join setup screen for checking camera and mic before entering the room, and prebuilt in-call controls (grid or speaker layout, participant list, stats).</li>
+</ul>
+<h2 id="system-design">System design</h2>
+<p>Orbit is built on a managed video layer rather than a hand-rolled WebRTC stack, which is a deliberate scope decision: the app's own code focuses on authentication, routing, and the call experience around the video, not on media negotiation. That's also why the interesting engineering here is about state and auth rather than about codecs.</p>
+<p>The one secret that can never reach the browser is the video provider's API secret, so it doesn't: a Next.js Server Action mints a short-lived, user-scoped access token entirely server-side once a signed-in user is confirmed, and the client only ever holds a public key plus a callback that asks the server for a fresh token whenever the video SDK needs one. That's the same "keep the secret on the server" guarantee a REST endpoint would give, without needing to define and version one.</p>
+<p>Call history is shaped as one query instead of two: every call the current user created or was invited to comes back in a single request, then gets split client-side into "upcoming" and "past" views. That avoids maintaining two separate endpoints that would otherwise need to stay consistent with each other every time the call model changes.</p>
+<h2 id="infrastructure">Infrastructure</h2>
+<p>Authentication runs through Clerk, gating every route via middleware before it reaches the authenticated shell. Real-time media, room state, and call persistence are entirely owned by the managed video provider's backend - Orbit itself has no media server or call database to operate, which keeps the deployment surface to a standard Next.js app.</p>
+<h2 id="what-s-next">What's next</h2>
+<ul>
+<li>A "personal room" route is already protected by the auth middleware but doesn't have a page built for it yet.</li>
+</ul>
 <h2 id="running-it">Running it</h2>
 
         <div class="code-block-shell">
@@ -275,8 +234,8 @@ class node_runtime,node_environment toneNeutral</pre><p>Boxes are clickable and 
             </button>
           </div>
           <pre><code class="hljs language-bash" data-lang="bash">bun install   <span class="hljs-comment"># or npm install</span>
-<span class="hljs-comment"># .env.local: NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY, CLERK_SECRET_KEY,</span>
-<span class="hljs-comment">#             NEXT_PUBLIC_STREAM_API_KEY, STREAM_SECRET_KEY</span>
+<span class="hljs-comment"># .env.local needs a Clerk key pair and a Stream Video key pair -</span>
+<span class="hljs-comment"># check .env.example for the exact variable names before copying from the README</span>
 bun dev       <span class="hljs-comment"># or npm run dev</span></code></pre>
         </div>
       </article>

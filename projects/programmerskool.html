@@ -116,7 +116,7 @@
         <h2 class="section-title">How it's built</h2>
       </section>
       <div class="blog-post-layout">
-        <nav class="blog-toc" id="blog-toc" aria-label="Table of contents"><p class="blog-toc-title">Contents</p><ol><li><a href="#architecture">Architecture</a></li><li><a href="#the-compile-step-is-real">The compile step is real</a></li><li><a href="#two-implementations-of-the-same-idea">Two implementations of the same idea</a></li><li><a href="#extracting-a-playlist-id-two-different-ways">Extracting a playlist ID two different ways</a></li><li><a href="#running-it">Running it</a></li></ol></nav>
+        <nav class="blog-toc" id="blog-toc" aria-label="Table of contents"><p class="blog-toc-title">Contents</p><ol><li><a href="#architecture">Architecture</a></li><li><a href="#what-it-does">What it does</a></li><li><a href="#system-design">System design</a></li><li><a href="#infrastructure">Infrastructure</a></li><li><a href="#what-s-next">What's next</a></li><li><a href="#running-it">Running it</a></li></ol></nav>
         <article class="blog-prose" id="blog-prose"><p>Following a coding tutorial usually means two windows and constant alt-tabbing: the video in one, the editor in the other, losing your place in both every time you switch. ProgrammerSkool's whole premise is refusing that trade - a YouTube playlist and a real, compiling C++ editor live in the same view, and neither one is a toy.</p>
 <h2 id="architecture">Architecture</h2>
 <pre class="mermaid">flowchart TD
@@ -209,95 +209,24 @@ class node_button,node_card,node_slider toneMint
 class node_app_css,node_global_css,node_vite_config,node_package,node_tailwind,node_postcss,node_components_config toneRose
 class node_browser toneNeutral
 class node_youtube,node_wandbox toneIndigo</pre><p>Boxes are clickable and jump straight to the real source file on GitHub.</p>
-<h2 id="the-compile-step-is-real">The compile step is real</h2>
-<p>The editor isn't just a syntax-highlighted textarea - "Compile and Run" actually sends your code to <a href="https://wandbox.org">Wandbox</a>, a free public compilation API, and prints back whatever the compiler actually says:</p>
-
-        <div class="code-block-shell">
-          <div class="code-window-bar">
-            <div class="code-window-controls">
-              <span class="code-window-dot close" aria-hidden="true"></span>
-              <span class="code-window-dot minimize" aria-hidden="true"></span>
-              <span class="code-window-dot maximize" aria-hidden="true"></span>
-            </div>
-            <div class="code-window-center">
-              <span class="code-lang-icon"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="#F7DF1E" d="M0 0h24v24H0z"></path><path d="M7.89 19c-.66 0-1.18-.2-1.55-.61-.37-.41-.56-1-.56-1.78h2.02c0 .28.08.5.23.67.15.17.38.25.68.25.32 0 .54-.08.68-.24.14-.16.21-.39.21-.69 0-.25-.08-.45-.23-.6-.15-.15-.39-.26-.74-.34l-1.09-.25c-.78-.18-1.38-.46-1.8-.83s-.63-.88-.63-1.53c0-.51.12-.95.37-1.32.25-.37.61-.66 1.07-.86.46-.21 1.02-.31 1.68-.31.62 0 1.15.1 1.59.31.44.21.79.5 1.05.88.26.38.39.84.39 1.39h-2.02c0-.29-.07-.51-.21-.66-.14-.15-.35-.22-.64-.22-.28 0-.49.07-.63.22-.14.15-.21.36-.21.63 0 .23.08.41.23.55.15.14.38.24.7.31l1.09.25c.8.19 1.39.48 1.78.86.39.38.59.9.59 1.56 0 .64-.2 1.16-.6 1.56-.4.4-.92.6-1.56.6zm7.25 0c-.82 0-1.47-.2-1.95-.6-.48-.4-.72-1.02-.72-1.85V11.2h2.02v5.3c0 .51.2.76.61.76.4 0 .61-.25.61-.76V11.2h2.02v5.35c0 .83-.24 1.45-.72 1.85-.48.4-1.13.6-1.95.6z"></path></svg></span>
-              <span class="code-window-lang">js</span>
-            </div>
-            <button type="button" class="code-copy-button" onclick="copyCode(this)" aria-label="Copy code">
-              <svg class="icon-copy" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-              <span>Copy</span>
-            </button>
-          </div>
-          <pre><code class="hljs language-js" data-lang="js"><span class="hljs-comment">// script.js (static version, via jQuery)</span>
-$.<span class="hljs-title function_">ajax</span>({
-  <span class="hljs-attr">url</span>: <span class="hljs-string">"https://wandbox.org/api/compile.json"</span>,
-  <span class="hljs-attr">method</span>: <span class="hljs-string">"POST"</span>,
-  <span class="hljs-attr">data</span>: <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>({
-    code, <span class="hljs-attr">compiler</span>: <span class="hljs-string">"gcc-head"</span>, <span class="hljs-attr">stdin</span>: <span class="hljs-string">""</span>,
-    <span class="hljs-attr">options</span>: <span class="hljs-string">"-O2 -Wall -std=c++17 -pedantic-errors"</span>,
-  }),
-});</code></pre>
-        </div>
-      <p>That's a genuine limitation worth naming plainly: there's no backend of its own here, no sandboxed execution owned by this project - if Wandbox is down or rate-limits the request, compiling stops working, and neither version of the app has retry logic or a timeout beyond a generic <code>catch</code>. For a learning tool that's a reasonable trade against standing up and securing your own code-execution sandbox, but it's a real dependency, not an implementation detail.</p>
-<h2 id="two-implementations-of-the-same-idea">Two implementations of the same idea</h2>
-<p>The repository is really two separate builds of the same concept sitting side by side, and it's worth being upfront about that rather than describing only the polished half. The root <code>index.html</code> is a plain static site - no bundler, no <code>package.json</code> - built on jQuery 3.6.0 and CodeMirror 5, with a hand-rolled draggable split panel:</p>
-
-        <div class="code-block-shell">
-          <div class="code-window-bar">
-            <div class="code-window-controls">
-              <span class="code-window-dot close" aria-hidden="true"></span>
-              <span class="code-window-dot minimize" aria-hidden="true"></span>
-              <span class="code-window-dot maximize" aria-hidden="true"></span>
-            </div>
-            <div class="code-window-center">
-              <span class="code-lang-icon"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="#F7DF1E" d="M0 0h24v24H0z"></path><path d="M7.89 19c-.66 0-1.18-.2-1.55-.61-.37-.41-.56-1-.56-1.78h2.02c0 .28.08.5.23.67.15.17.38.25.68.25.32 0 .54-.08.68-.24.14-.16.21-.39.21-.69 0-.25-.08-.45-.23-.6-.15-.15-.39-.26-.74-.34l-1.09-.25c-.78-.18-1.38-.46-1.8-.83s-.63-.88-.63-1.53c0-.51.12-.95.37-1.32.25-.37.61-.66 1.07-.86.46-.21 1.02-.31 1.68-.31.62 0 1.15.1 1.59.31.44.21.79.5 1.05.88.26.38.39.84.39 1.39h-2.02c0-.29-.07-.51-.21-.66-.14-.15-.35-.22-.64-.22-.28 0-.49.07-.63.22-.14.15-.21.36-.21.63 0 .23.08.41.23.55.15.14.38.24.7.31l1.09.25c.8.19 1.39.48 1.78.86.39.38.59.9.59 1.56 0 .64-.2 1.16-.6 1.56-.4.4-.92.6-1.56.6zm7.25 0c-.82 0-1.47-.2-1.95-.6-.48-.4-.72-1.02-.72-1.85V11.2h2.02v5.3c0 .51.2.76.61.76.4 0 .61-.25.61-.76V11.2h2.02v5.35c0 .83-.24 1.45-.72 1.85-.48.4-1.13.6-1.95.6z"></path></svg></span>
-              <span class="code-window-lang">js</span>
-            </div>
-            <button type="button" class="code-copy-button" onclick="copyCode(this)" aria-label="Copy code">
-              <svg class="icon-copy" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-              <span>Copy</span>
-            </button>
-          </div>
-          <pre><code class="hljs language-js" data-lang="js"><span class="hljs-comment">// script.js</span>
-<span class="hljs-keyword">const</span> bar = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">".split__bar"</span>);
-<span class="hljs-keyword">const</span> left = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">".split__left"</span>);
-<span class="hljs-keyword">let</span> mouse_is_down = <span class="hljs-literal">false</span>;
-bar.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">"mousedown"</span>, <span class="hljs-function">() =&gt;</span> { mouse_is_down = <span class="hljs-literal">true</span>; });
-<span class="hljs-variable language_">document</span>.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">"mousemove"</span>, <span class="hljs-function">(<span class="hljs-params">e</span>) =&gt;</span> {
-  <span class="hljs-keyword">if</span> (!mouse_is_down) <span class="hljs-keyword">return</span>;
-  left.<span class="hljs-property">style</span>.<span class="hljs-property">width</span> = <span class="hljs-string">`<span class="hljs-subst">${e.clientX}</span>px`</span>;
-});
-<span class="hljs-variable language_">document</span>.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">"mouseup"</span>, <span class="hljs-function">() =&gt;</span> { mouse_is_down = <span class="hljs-literal">false</span>; });</code></pre>
-        </div>
-      <p>Sitting in <code>programmerskool-vite/</code> is a from-scratch React rewrite: Vite, React 19, CodeMirror 6 via <code>@uiw/react-codemirror</code>, Tailwind 4, shadcn-style Radix components. It goes further than the original - a resizable, draggable video window with viewport-boundary clamping, a <code>requestAnimationFrame</code>-throttled divider between editor and output with touch support for mobile, <code>fetch</code> instead of jQuery for the same Wandbox call. But it isn't wired into the root site at all; there's no build step that produces or links to it. It's an unfinished parallel version, not a refactor-in-progress with a clear migration path yet - the kind of honest, half-done state a lot of side projects actually live in.</p>
-<h2 id="extracting-a-playlist-id-two-different-ways">Extracting a playlist ID two different ways</h2>
-<p>Both versions solve the same small problem - pull a playlist ID out of a pasted YouTube URL - and solve it with two different regexes, which is itself a small tell that the React version was written independently rather than ported line-by-line from the original:</p>
-
-        <div class="code-block-shell">
-          <div class="code-window-bar">
-            <div class="code-window-controls">
-              <span class="code-window-dot close" aria-hidden="true"></span>
-              <span class="code-window-dot minimize" aria-hidden="true"></span>
-              <span class="code-window-dot maximize" aria-hidden="true"></span>
-            </div>
-            <div class="code-window-center">
-              <span class="code-lang-icon"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="#F7DF1E" d="M0 0h24v24H0z"></path><path d="M7.89 19c-.66 0-1.18-.2-1.55-.61-.37-.41-.56-1-.56-1.78h2.02c0 .28.08.5.23.67.15.17.38.25.68.25.32 0 .54-.08.68-.24.14-.16.21-.39.21-.69 0-.25-.08-.45-.23-.6-.15-.15-.39-.26-.74-.34l-1.09-.25c-.78-.18-1.38-.46-1.8-.83s-.63-.88-.63-1.53c0-.51.12-.95.37-1.32.25-.37.61-.66 1.07-.86.46-.21 1.02-.31 1.68-.31.62 0 1.15.1 1.59.31.44.21.79.5 1.05.88.26.38.39.84.39 1.39h-2.02c0-.29-.07-.51-.21-.66-.14-.15-.35-.22-.64-.22-.28 0-.49.07-.63.22-.14.15-.21.36-.21.63 0 .23.08.41.23.55.15.14.38.24.7.31l1.09.25c.8.19 1.39.48 1.78.86.39.38.59.9.59 1.56 0 .64-.2 1.16-.6 1.56-.4.4-.92.6-1.56.6zm7.25 0c-.82 0-1.47-.2-1.95-.6-.48-.4-.72-1.02-.72-1.85V11.2h2.02v5.3c0 .51.2.76.61.76.4 0 .61-.25.61-.76V11.2h2.02v5.35c0 .83-.24 1.45-.72 1.85-.48.4-1.13.6-1.95.6z"></path></svg></span>
-              <span class="code-window-lang">js</span>
-            </div>
-            <button type="button" class="code-copy-button" onclick="copyCode(this)" aria-label="Copy code">
-              <svg class="icon-copy" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-              <span>Copy</span>
-            </button>
-          </div>
-          <pre><code class="hljs language-js" data-lang="js"><span class="hljs-comment">// static version - lookbehind</span>
-<span class="hljs-keyword">const</span> id = url.<span class="hljs-title function_">match</span>(<span class="hljs-regexp">/(?&lt;=list=)[^&amp;/?]+/</span>)[<span class="hljs-number">0</span>];
-
-<span class="hljs-comment">// React version - capture group</span>
-<span class="hljs-keyword">const</span> id = url.<span class="hljs-title function_">match</span>(<span class="hljs-regexp">/[?&amp;]list=([^&amp;]+)/</span>)[<span class="hljs-number">1</span>];</code></pre>
-        </div>
-      <p>Same result, different style - a reminder that "rewrite this in React" rarely means "translate the same logic," it usually means someone re-derives the logic from scratch against the same requirement.</p>
+<h2 id="what-it-does">What it does</h2>
+<ul>
+<li>A synced playlist-and-editor view: pick a YouTube coding playlist, follow along, and write real C++ in the same screen - no alt-tabbing between a video and an IDE.</li>
+<li>"Compile and Run" sends your code to a real compiler and prints back the actual compiler output, not a simulated result.</li>
+<li>A draggable split panel so you control how much screen the video versus the editor gets.</li>
+</ul>
+<h2 id="system-design">System design</h2>
+<p>Compilation is real but not self-hosted: code is sent to a free public compilation API and the response is rendered as-is. That's a deliberate trade against standing up and securing an owned code-execution sandbox - the right call for a learning tool, at the cost of a hard dependency on a third party's uptime and rate limits, with no fallback if it's unavailable.</p>
+<p>The repository actually holds two parallel builds of the same idea, and it's worth being upfront about that rather than only describing the polished half. A static original - no bundler, no build step - is what's live today. Sitting alongside it is a from-scratch React rewrite with a more capable UI: a resizable, draggable video window, a smoother touch-friendly divider between editor and output, and the same compile flow reimplemented independently rather than ported line-by-line. It goes further than the original in a few places, but it isn't wired into the live site yet.</p>
+<h2 id="infrastructure">Infrastructure</h2>
+<p>The live site is a static build with no backend of its own - no server, no database, and no build step required to run it locally; open the HTML file and it works. The React rewrite has its own independent Vite toolchain, developed in parallel rather than replacing the static site.</p>
+<h2 id="what-s-next">What's next</h2>
+<ul>
+<li>Wiring the React rewrite into the live site is the main open item - right now it's a fully separate, unfinished build sitting next to the original.</li>
+<li>Compilation depends entirely on a third-party API with no fallback if it's unavailable.</li>
+</ul>
 <h2 id="running-it">Running it</h2>
-<p>The root site needs nothing beyond opening <code>index.html</code> - no build step, no dependencies to install. The in-progress rewrite has its own <code>package.json</code> and a standard Vite <code>dev</code> / <code>build</code> / <code>preview</code> set, runnable independently from <code>programmerskool-vite/</code>.</p>
+<p>The root site needs nothing beyond opening <code>index.html</code> - no build step, no dependencies to install. The in-progress rewrite has its own <code>package.json</code> and a standard Vite <code>dev</code> / <code>build</code> / <code>preview</code> set, runnable independently.</p>
 </article>
         <aside class="blog-meta-col"><section class="blog-meta-card" aria-label="Role"><p class="blog-meta-label">Role</p><p class="blog-meta-value">Solo builder</p></section><section class="blog-meta-card" aria-label="Status"><p class="blog-meta-label">Status</p><p class="blog-meta-value">Live demo</p></section><section class="blog-meta-card" aria-label="Source code"><p class="blog-meta-label">Source</p><a class="blog-meta-link" href="https://github.com/manish-9245/Programmerskool.io" target="_blank" rel="noreferrer">View on GitHub</a></section><section class="blog-meta-card" aria-label="Project navigation"><p class="blog-meta-label">Navigate</p><a class="blog-meta-link" href="/projects.html">← All projects</a></section></aside>
       </div>

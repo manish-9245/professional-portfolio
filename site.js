@@ -1360,16 +1360,83 @@ function initializeScrollReveal() {
   });
 }
 
+function isProjectsRoute(pathname = window.location.pathname) {
+  return pathname === "/projects.html" || pathname.startsWith("/projects/");
+}
+
+function initializePandaMascot() {
+  const existing = document.getElementById("panda-mascot");
+
+  if (!isProjectsRoute()) {
+    existing?.remove();
+    return;
+  }
+  if (existing) return;
+
+  const mascot = document.createElement("div");
+  mascot.id = "panda-mascot";
+  mascot.className = "panda-mascot";
+  mascot.innerHTML = `
+    <a class="panda-bubble" id="panda-bubble" href="https://cal.com/manishtiwari/" data-schedule-open target="_blank" rel="noreferrer">Hire me!</a>
+    <button type="button" class="panda-icon-btn" aria-label="Show hire-me sign" aria-expanded="false">
+      <svg class="panda-svg" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+        <circle class="panda-ear" cx="26" cy="24" r="14" />
+        <circle class="panda-ear" cx="74" cy="24" r="14" />
+        <circle class="panda-head" cx="50" cy="52" r="38" />
+        <ellipse class="panda-patch" cx="33" cy="50" rx="13" ry="16" transform="rotate(-18 33 50)" />
+        <ellipse class="panda-patch" cx="67" cy="50" rx="13" ry="16" transform="rotate(18 67 50)" />
+        <g class="panda-eyes">
+          <circle class="panda-eye-white" cx="35" cy="52" r="7" />
+          <circle class="panda-eye-pupil" cx="35" cy="52" r="3.2" />
+          <circle class="panda-eye-white" cx="65" cy="52" r="7" />
+          <circle class="panda-eye-pupil" cx="65" cy="52" r="3.2" />
+        </g>
+        <ellipse class="panda-nose" cx="50" cy="66" rx="6" ry="4" />
+        <ellipse class="panda-blush" cx="24" cy="64" rx="6" ry="3.5" />
+        <ellipse class="panda-blush" cx="76" cy="64" rx="6" ry="3.5" />
+        <circle class="panda-paw" cx="73" cy="80" r="8" />
+      </svg>
+    </button>`;
+  document.body.appendChild(mascot);
+
+  const bubble = mascot.querySelector("#panda-bubble");
+  const iconBtn = mascot.querySelector(".panda-icon-btn");
+  let waveTimer = null;
+
+  iconBtn.addEventListener("click", () => {
+    const isActive = bubble.classList.toggle("is-active");
+    iconBtn.setAttribute("aria-expanded", String(isActive));
+
+    mascot.classList.remove("is-waving");
+    void mascot.offsetWidth; // restart the wave/bounce animation on repeat clicks
+    mascot.classList.add("is-waving");
+    clearTimeout(waveTimer);
+    waveTimer = setTimeout(() => mascot.classList.remove("is-waving"), 750);
+  });
+}
+
+function safeCall(fn) {
+  try {
+    fn();
+  } catch (err) {
+    console.error(`${fn.name || "feature"} init failed:`, err);
+  }
+}
+
 function initializePageFeatures() {
-  initializeMobileNavigation();
-  initializeMarquee();
-  initializeToolIcons();
-  initializeHomepageRecentBlogs();
-  initializeBlogsPage();
-  initializeProjectCarousels();
-  initializePredictivePrefetch();
-  initializeBlogPostFeatures();
-  initializeScrollReveal();
+  // Mascot goes first: it has no dependency on the rest of this list, and a
+  // failure below (e.g. a blog/project-only feature erroring on unexpected
+  // markup) must not be able to take it down with it.
+  safeCall(initializePandaMascot);
+  safeCall(initializeMobileNavigation);
+  safeCall(initializeMarquee);
+  safeCall(initializeToolIcons);
+  safeCall(initializeHomepageRecentBlogs);
+  safeCall(initializeBlogsPage);
+  safeCall(initializeProjectCarousels);
+  safeCall(initializePredictivePrefetch);
+  safeCall(initializeBlogPostFeatures);
+  safeCall(initializeScrollReveal);
 }
 
 const PREFETCH_CACHE = new Set();
@@ -1586,6 +1653,11 @@ async function navigateTo(url, options = {}) {
 }
 
 document.addEventListener("click", (event) => {
+  const pandaMascot = document.getElementById("panda-mascot");
+  if (pandaMascot && !pandaMascot.contains(event.target)) {
+    pandaMascot.querySelector("#panda-bubble")?.classList.remove("is-active");
+  }
+
   const scheduleTrigger = event.target.closest("[data-schedule-open]");
   if (scheduleTrigger) {
     event.preventDefault();

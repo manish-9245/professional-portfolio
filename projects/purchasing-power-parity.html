@@ -116,7 +116,7 @@
         <h2 class="section-title">How it's built</h2>
       </section>
       <div class="blog-post-layout">
-        <nav class="blog-toc" id="blog-toc" aria-label="Table of contents"><p class="blog-toc-title">Contents</p><ol><li><a href="#architecture">Architecture</a></li><li><a href="#the-conversion-in-five-lines">The conversion, in five lines</a></li><li><a href="#where-the-numbers-actually-come-from">Where the numbers actually come from</a></li><li><a href="#api-and-cli-from-the-same-file">API and CLI from the same file</a></li><li><a href="#small-honest-inefficiencies">Small honest inefficiencies</a></li><li><a href="#installing-it">Installing it</a></li></ol></nav>
+        <nav class="blog-toc" id="blog-toc" aria-label="Table of contents"><p class="blog-toc-title">Contents</p><ol><li><a href="#architecture">Architecture</a></li><li><a href="#what-it-does">What it does</a></li><li><a href="#system-design">System design</a></li><li><a href="#infrastructure">Infrastructure</a></li><li><a href="#installing-it">Installing it</a></li></ol></nav>
         <article class="blog-prose" id="blog-prose"><p>A currency converter that only knows the spot exchange rate answers the wrong question. It'll tell you $100 is about 8,300 rupees, but not what $100 actually <em>buys</em> in each place - which is almost always what you're really trying to compare, whether that's a salary offer or the cost of living somewhere new. Purchasing power parity fixes that by converting through "international dollars" instead of the raw FX rate.</p>
 <h2 id="architecture">Architecture</h2>
 <pre class="mermaid">flowchart TD
@@ -185,100 +185,17 @@ class node_library_user,node_cli_user toneBlue
 class node_npm,node_package_manifest,node_lockfile,node_cli_command toneAmber
 class node_module_api,node_code_validation,node_ppp_resolution,node_ppp_calculation,node_metadata_lookup,node_conversion_response,node_country_lists toneMint
 class node_ppp_dataset toneRose</pre><p>Boxes are clickable and jump straight to the real source file on GitHub.</p>
-<h2 id="the-conversion-in-five-lines">The conversion, in five lines</h2>
-<p>The entire package is one file, <code>index.js</code>, and the core of it is genuinely just two lines of math once you have PPP conversion factors for both countries:</p>
-
-        <div class="code-block-shell">
-          <div class="code-window-bar">
-            <div class="code-window-controls">
-              <span class="code-window-dot close" aria-hidden="true"></span>
-              <span class="code-window-dot minimize" aria-hidden="true"></span>
-              <span class="code-window-dot maximize" aria-hidden="true"></span>
-            </div>
-            <div class="code-window-center">
-              <span class="code-lang-icon"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="#F7DF1E" d="M0 0h24v24H0z"></path><path d="M7.89 19c-.66 0-1.18-.2-1.55-.61-.37-.41-.56-1-.56-1.78h2.02c0 .28.08.5.23.67.15.17.38.25.68.25.32 0 .54-.08.68-.24.14-.16.21-.39.21-.69 0-.25-.08-.45-.23-.6-.15-.15-.39-.26-.74-.34l-1.09-.25c-.78-.18-1.38-.46-1.8-.83s-.63-.88-.63-1.53c0-.51.12-.95.37-1.32.25-.37.61-.66 1.07-.86.46-.21 1.02-.31 1.68-.31.62 0 1.15.1 1.59.31.44.21.79.5 1.05.88.26.38.39.84.39 1.39h-2.02c0-.29-.07-.51-.21-.66-.14-.15-.35-.22-.64-.22-.28 0-.49.07-.63.22-.14.15-.21.36-.21.63 0 .23.08.41.23.55.15.14.38.24.7.31l1.09.25c.8.19 1.39.48 1.78.86.39.38.59.9.59 1.56 0 .64-.2 1.16-.6 1.56-.4.4-.92.6-1.56.6zm7.25 0c-.82 0-1.47-.2-1.95-.6-.48-.4-.72-1.02-.72-1.85V11.2h2.02v5.3c0 .51.2.76.61.76.4 0 .61-.25.61-.76V11.2h2.02v5.35c0 .83-.24 1.45-.72 1.85-.48.4-1.13.6-1.95.6z"></path></svg></span>
-              <span class="code-window-lang">js</span>
-            </div>
-            <button type="button" class="code-copy-button" onclick="copyCode(this)" aria-label="Copy code">
-              <svg class="icon-copy" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-              <span>Copy</span>
-            </button>
-          </div>
-          <pre><code class="hljs language-js" data-lang="js"><span class="hljs-comment">// index.js</span>
-<span class="hljs-keyword">const</span> intlDollars = amount / origin.<span class="hljs-property">ppp</span>;
-<span class="hljs-keyword">const</span> converted = intlDollars * target.<span class="hljs-property">ppp</span>;</code></pre>
-        </div>
-      <p>Divide by the origin country's PPP factor to get a currency-neutral "international dollar" amount, then multiply by the target country's factor to land in its local terms. Everything else in the package - flag emoji, currency symbols, country names, the CLI wrapper - is convenience built around those two lines.</p>
-<h2 id="where-the-numbers-actually-come-from">Where the numbers actually come from</h2>
-<p>The one architectural decision worth calling out, because it's easy to miss from the README alone: this package doesn't ship any PPP data. <code>loadPPPData()</code> fetches a CSV of PPP-to-GDP figures live from a public GitHub-hosted dataset (<code>datasets/ppp</code> on GitHub) every time the process needs it, parses it with <code>csv-parse</code>, and keeps only the most recent year per country:</p>
-
-        <div class="code-block-shell">
-          <div class="code-window-bar">
-            <div class="code-window-controls">
-              <span class="code-window-dot close" aria-hidden="true"></span>
-              <span class="code-window-dot minimize" aria-hidden="true"></span>
-              <span class="code-window-dot maximize" aria-hidden="true"></span>
-            </div>
-            <div class="code-window-center">
-              <span class="code-lang-icon"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="#F7DF1E" d="M0 0h24v24H0z"></path><path d="M7.89 19c-.66 0-1.18-.2-1.55-.61-.37-.41-.56-1-.56-1.78h2.02c0 .28.08.5.23.67.15.17.38.25.68.25.32 0 .54-.08.68-.24.14-.16.21-.39.21-.69 0-.25-.08-.45-.23-.6-.15-.15-.39-.26-.74-.34l-1.09-.25c-.78-.18-1.38-.46-1.8-.83s-.63-.88-.63-1.53c0-.51.12-.95.37-1.32.25-.37.61-.66 1.07-.86.46-.21 1.02-.31 1.68-.31.62 0 1.15.1 1.59.31.44.21.79.5 1.05.88.26.38.39.84.39 1.39h-2.02c0-.29-.07-.51-.21-.66-.14-.15-.35-.22-.64-.22-.28 0-.49.07-.63.22-.14.15-.21.36-.21.63 0 .23.08.41.23.55.15.14.38.24.7.31l1.09.25c.8.19 1.39.48 1.78.86.39.38.59.9.59 1.56 0 .64-.2 1.16-.6 1.56-.4.4-.92.6-1.56.6zm7.25 0c-.82 0-1.47-.2-1.95-.6-.48-.4-.72-1.02-.72-1.85V11.2h2.02v5.3c0 .51.2.76.61.76.4 0 .61-.25.61-.76V11.2h2.02v5.35c0 .83-.24 1.45-.72 1.85-.48.4-1.13.6-1.95.6z"></path></svg></span>
-              <span class="code-window-lang">js</span>
-            </div>
-            <button type="button" class="code-copy-button" onclick="copyCode(this)" aria-label="Copy code">
-              <svg class="icon-copy" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-              <span>Copy</span>
-            </button>
-          </div>
-          <pre><code class="hljs language-js" data-lang="js"><span class="hljs-keyword">if</span> (!map[code] || year &gt; map[code].<span class="hljs-property">date</span>) {
-  map[code] = { <span class="hljs-attr">date</span>: year, <span class="hljs-attr">ppp</span>: pppValue };
-}</code></pre>
-        </div>
-      <p>That result is memoized for the lifetime of the process (<code>if (cachedPPP) return cachedPPP;</code>), but never written to disk - so every fresh CLI invocation makes a live network call out to GitHub's raw content CDN before it can convert anything. It's a deliberate trade: no bundled dataset to go stale, at the cost of a hard runtime dependency on a URL the package doesn't control. If that CSV's format or location ever changes, every install breaks at once, with no local fallback.</p>
-<h2 id="api-and-cli-from-the-same-file">API and CLI from the same file</h2>
-<p><code>index.js</code> does double duty as both a library and a command-line tool, gated on the classic <code>require.main === module</code> check:</p>
-
-        <div class="code-block-shell">
-          <div class="code-window-bar">
-            <div class="code-window-controls">
-              <span class="code-window-dot close" aria-hidden="true"></span>
-              <span class="code-window-dot minimize" aria-hidden="true"></span>
-              <span class="code-window-dot maximize" aria-hidden="true"></span>
-            </div>
-            <div class="code-window-center">
-              <span class="code-lang-icon"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="#F7DF1E" d="M0 0h24v24H0z"></path><path d="M7.89 19c-.66 0-1.18-.2-1.55-.61-.37-.41-.56-1-.56-1.78h2.02c0 .28.08.5.23.67.15.17.38.25.68.25.32 0 .54-.08.68-.24.14-.16.21-.39.21-.69 0-.25-.08-.45-.23-.6-.15-.15-.39-.26-.74-.34l-1.09-.25c-.78-.18-1.38-.46-1.8-.83s-.63-.88-.63-1.53c0-.51.12-.95.37-1.32.25-.37.61-.66 1.07-.86.46-.21 1.02-.31 1.68-.31.62 0 1.15.1 1.59.31.44.21.79.5 1.05.88.26.38.39.84.39 1.39h-2.02c0-.29-.07-.51-.21-.66-.14-.15-.35-.22-.64-.22-.28 0-.49.07-.63.22-.14.15-.21.36-.21.63 0 .23.08.41.23.55.15.14.38.24.7.31l1.09.25c.8.19 1.39.48 1.78.86.39.38.59.9.59 1.56 0 .64-.2 1.16-.6 1.56-.4.4-.92.6-1.56.6zm7.25 0c-.82 0-1.47-.2-1.95-.6-.48-.4-.72-1.02-.72-1.85V11.2h2.02v5.3c0 .51.2.76.61.76.4 0 .61-.25.61-.76V11.2h2.02v5.35c0 .83-.24 1.45-.72 1.85-.48.4-1.13.6-1.95.6z"></path></svg></span>
-              <span class="code-window-lang">js</span>
-            </div>
-            <button type="button" class="code-copy-button" onclick="copyCode(this)" aria-label="Copy code">
-              <svg class="icon-copy" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-              <span>Copy</span>
-            </button>
-          </div>
-          <pre><code class="hljs language-js" data-lang="js"><span class="hljs-keyword">if</span> (<span class="hljs-built_in">require</span>.<span class="hljs-property">main</span> === <span class="hljs-variable language_">module</span>) {
-  <span class="hljs-comment">// parse process.argv, call convertPPP(), print the result</span>
-}</code></pre>
-        </div>
-      <p>Installed globally, that same file becomes the <code>ppp-calculator</code> binary via the <code>bin</code> field in <code>package.json</code> and a <code>#!/usr/bin/env node</code> shebang on line one:</p>
-
-        <div class="code-block-shell">
-          <div class="code-window-bar">
-            <div class="code-window-controls">
-              <span class="code-window-dot close" aria-hidden="true"></span>
-              <span class="code-window-dot minimize" aria-hidden="true"></span>
-              <span class="code-window-dot maximize" aria-hidden="true"></span>
-            </div>
-            <div class="code-window-center">
-              <span class="code-lang-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg></span>
-              <span class="code-window-lang">bash</span>
-            </div>
-            <button type="button" class="code-copy-button" onclick="copyCode(this)" aria-label="Copy code">
-              <svg class="icon-copy" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-              <span>Copy</span>
-            </button>
-          </div>
-          <pre><code class="hljs language-bash" data-lang="bash">ppp-calculator USA 100 CAN,GBR,IND</code></pre>
-        </div>
-      <p>Required locally instead, <code>convertPPP()</code>, <code>listCountries()</code>, and <code>listCountryCodes()</code> are just plain exports - <code>listCountries()</code> returns only the countries the live PPP dataset actually covers, while <code>listCountryCodes()</code> returns everything <code>country-data</code> knows about regardless of whether PPP figures exist for it yet. That distinction matters if you're building a country picker: showing every ISO code and then failing silently on half of them is worse than filtering up front.</p>
-<h2 id="small-honest-inefficiencies">Small honest inefficiencies</h2>
-<p>Nothing here is broken, but a couple of things are worth naming plainly. The alpha-2-to-alpha-3 country code map gets rebuilt from scratch inside <code>loadPPPData()</code> on every cache miss, duplicating work already done once at module load for the general <code>countryMap</code> - harmless at this scale, wasteful if this were ever called at high frequency. And because everything hinges on one unversioned CSV, there's no schema check between "the file we expect" and "the file GitHub is currently serving" - a silent column reorder upstream would silently corrupt every conversion rather than throwing.</p>
+<h2 id="what-it-does">What it does</h2>
+<ul>
+<li>Converts an amount from one country's currency into another's, adjusted for purchasing power rather than the spot exchange rate - so a salary or cost-of-living comparison reflects what money actually buys locally, not just what it trades for.</li>
+<li>Works both ways from the same package: <code>require()</code> it as a library (<code>convertPPP</code>, <code>listCountries</code>, <code>listCountryCodes</code>) or install it globally and use the <code>ppp-calculator</code> CLI directly.</li>
+<li>Looks up country and currency metadata - names, flags, currency symbols - alongside the converted figures, so a result is ready to display without a second lookup.</li>
+</ul>
+<h2 id="system-design">System design</h2>
+<p>The conversion itself goes through a currency-neutral "international dollar": divide by the origin country's PPP factor, then multiply by the target country's - the same two-step math regardless of which countries are involved, with country and currency metadata layered on around it.</p>
+<p>The one decision worth calling out is where the numbers come from: no PPP data ships inside the package. It fetches a live PPP-to-GDP dataset from a public, GitHub-hosted CSV on first use each run, keeps only the most recent year per country, and memoizes that result for the life of the process. That's a deliberate trade - the figures can never go stale from an outdated bundled copy - at the cost of a hard runtime dependency on a URL the package doesn't control, with no offline fallback if that dataset ever moves or changes shape.</p>
+<h2 id="infrastructure">Infrastructure</h2>
+<p>Published on npm with zero required configuration - install and go, no API keys, no server to run, no database. The only external dependency at runtime is the one dataset fetch; <code>engines.node &gt;= 14</code> is the sole version constraint.</p>
 <h2 id="installing-it">Installing it</h2>
 
         <div class="code-block-shell">
@@ -300,7 +217,7 @@ class node_ppp_dataset toneRose</pre><p>Boxes are clickable and jump straight to
           <pre><code class="hljs language-bash" data-lang="bash">npm install -g purchasing-power-parity-advanced
 ppp-calculator USA 100 CAN,GBR,IND</code></pre>
         </div>
-      <p>Or as a dependency: <code>npm install purchasing-power-parity-advanced</code> and <code>require()</code> the same <code>convertPPP</code> function directly. <code>engines.node &gt;= 14</code> is the only real constraint, and there are no dev dependencies - the placeholder <code>"test": "node index.js"</code> script is exactly that, a placeholder, not a real test suite.</p>
+      <p>Or as a dependency: <code>npm install purchasing-power-parity-advanced</code> and <code>require()</code> the same <code>convertPPP</code> function directly.</p>
 </article>
         <aside class="blog-meta-col"><section class="blog-meta-card" aria-label="Role"><p class="blog-meta-label">Role</p><p class="blog-meta-value">Solo maintainer</p></section><section class="blog-meta-card" aria-label="Status"><p class="blog-meta-label">Status</p><p class="blog-meta-value">Published on npm</p></section><section class="blog-meta-card" aria-label="Source code"><p class="blog-meta-label">Source</p><a class="blog-meta-link" href="https://github.com/manish-9245/purchasing-power-parity-advanced" target="_blank" rel="noreferrer">View on GitHub</a></section><section class="blog-meta-card" aria-label="Project navigation"><p class="blog-meta-label">Navigate</p><a class="blog-meta-link" href="/projects.html">← All projects</a></section></aside>
       </div>

@@ -90,51 +90,21 @@ class node_ppp_dataset toneRose
 
 Boxes are clickable and jump straight to the real source file on GitHub.
 
-## The conversion, in five lines
+## What it does
 
-The entire package is one file, `index.js`, and the core of it is genuinely just two lines of math once you have PPP conversion factors for both countries:
+- Converts an amount from one country's currency into another's, adjusted for purchasing power rather than the spot exchange rate - so a salary or cost-of-living comparison reflects what money actually buys locally, not just what it trades for.
+- Works both ways from the same package: `require()` it as a library (`convertPPP`, `listCountries`, `listCountryCodes`) or install it globally and use the `ppp-calculator` CLI directly.
+- Looks up country and currency metadata - names, flags, currency symbols - alongside the converted figures, so a result is ready to display without a second lookup.
 
-```js
-// index.js
-const intlDollars = amount / origin.ppp;
-const converted = intlDollars * target.ppp;
-```
+## System design
 
-Divide by the origin country's PPP factor to get a currency-neutral "international dollar" amount, then multiply by the target country's factor to land in its local terms. Everything else in the package - flag emoji, currency symbols, country names, the CLI wrapper - is convenience built around those two lines.
+The conversion itself goes through a currency-neutral "international dollar": divide by the origin country's PPP factor, then multiply by the target country's - the same two-step math regardless of which countries are involved, with country and currency metadata layered on around it.
 
-## Where the numbers actually come from
+The one decision worth calling out is where the numbers come from: no PPP data ships inside the package. It fetches a live PPP-to-GDP dataset from a public, GitHub-hosted CSV on first use each run, keeps only the most recent year per country, and memoizes that result for the life of the process. That's a deliberate trade - the figures can never go stale from an outdated bundled copy - at the cost of a hard runtime dependency on a URL the package doesn't control, with no offline fallback if that dataset ever moves or changes shape.
 
-The one architectural decision worth calling out, because it's easy to miss from the README alone: this package doesn't ship any PPP data. `loadPPPData()` fetches a CSV of PPP-to-GDP figures live from a public GitHub-hosted dataset (`datasets/ppp` on GitHub) every time the process needs it, parses it with `csv-parse`, and keeps only the most recent year per country:
+## Infrastructure
 
-```js
-if (!map[code] || year > map[code].date) {
-  map[code] = { date: year, ppp: pppValue };
-}
-```
-
-That result is memoized for the lifetime of the process (`if (cachedPPP) return cachedPPP;`), but never written to disk - so every fresh CLI invocation makes a live network call out to GitHub's raw content CDN before it can convert anything. It's a deliberate trade: no bundled dataset to go stale, at the cost of a hard runtime dependency on a URL the package doesn't control. If that CSV's format or location ever changes, every install breaks at once, with no local fallback.
-
-## API and CLI from the same file
-
-`index.js` does double duty as both a library and a command-line tool, gated on the classic `require.main === module` check:
-
-```js
-if (require.main === module) {
-  // parse process.argv, call convertPPP(), print the result
-}
-```
-
-Installed globally, that same file becomes the `ppp-calculator` binary via the `bin` field in `package.json` and a `#!/usr/bin/env node` shebang on line one:
-
-```bash
-ppp-calculator USA 100 CAN,GBR,IND
-```
-
-Required locally instead, `convertPPP()`, `listCountries()`, and `listCountryCodes()` are just plain exports - `listCountries()` returns only the countries the live PPP dataset actually covers, while `listCountryCodes()` returns everything `country-data` knows about regardless of whether PPP figures exist for it yet. That distinction matters if you're building a country picker: showing every ISO code and then failing silently on half of them is worse than filtering up front.
-
-## Small honest inefficiencies
-
-Nothing here is broken, but a couple of things are worth naming plainly. The alpha-2-to-alpha-3 country code map gets rebuilt from scratch inside `loadPPPData()` on every cache miss, duplicating work already done once at module load for the general `countryMap` - harmless at this scale, wasteful if this were ever called at high frequency. And because everything hinges on one unversioned CSV, there's no schema check between "the file we expect" and "the file GitHub is currently serving" - a silent column reorder upstream would silently corrupt every conversion rather than throwing.
+Published on npm with zero required configuration - install and go, no API keys, no server to run, no database. The only external dependency at runtime is the one dataset fetch; `engines.node >= 14` is the sole version constraint.
 
 ## Installing it
 
@@ -143,4 +113,4 @@ npm install -g purchasing-power-parity-advanced
 ppp-calculator USA 100 CAN,GBR,IND
 ```
 
-Or as a dependency: `npm install purchasing-power-parity-advanced` and `require()` the same `convertPPP` function directly. `engines.node >= 14` is the only real constraint, and there are no dev dependencies - the placeholder `"test": "node index.js"` script is exactly that, a placeholder, not a real test suite.
+Or as a dependency: `npm install purchasing-power-parity-advanced` and `require()` the same `convertPPP` function directly.
