@@ -1,5 +1,17 @@
 [
   {
+    "slug": "collabpro",
+    "title": "CollabPro",
+    "date": "2026-08-16",
+    "displayDate": "Aug 16, 2026",
+    "description": "A self-hosted team workspace pairing a block-based document editor with an infinite collaborative whiteboard - real-time sync, a multi-provider AI Co-Pilot, and an MCP server built around how an AI agent actually calls tools.",
+    "tags": [
+      "Full-Stack",
+      "Real-time",
+      "Open Source"
+    ]
+  },
+  {
     "slug": "hackpack",
     "title": "Hackpack",
     "date": "2026-07-27",
@@ -8,18 +20,6 @@
     "tags": [
       "CLI",
       "Developer Tool",
-      "Open Source"
-    ]
-  },
-  {
-    "slug": "collabpro",
-    "title": "CollabPro",
-    "date": "2026-07-25",
-    "displayDate": "Jul 25, 2026",
-    "description": "A self-hosted team workspace pairing a block-based document editor with an infinite collaborative whiteboard - real-time sync, version history, and an MCP server so AI agents can read and write files too.",
-    "tags": [
-      "Full-Stack",
-      "Real-time",
       "Open Source"
     ]
   },
