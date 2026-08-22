@@ -91,23 +91,61 @@ async function initializeMermaid(container) {
   });
 }
 
-function getSchedulerUrl() {
-  return `https://cal.com/manishtiwari/?embed=true&theme=light`;
-}
+(function (C, A, L) {
+  let p = function (a, ar) { a.q.push(ar); };
+  let d = C.document;
+  C.Cal = C.Cal || function () {
+    let cal = C.Cal;
+    let ar = arguments;
+    if (!cal.loaded) {
+      cal.ns = {};
+      cal.q = cal.q || [];
+      d.head.appendChild(d.createElement("script")).src = A;
+      cal.loaded = true;
+    }
+    if (ar[0] === L) {
+      const api = function () { p(api, arguments); };
+      const namespace = ar[1];
+      api.q = api.q || [];
+      if (typeof namespace === "string") {
+        cal.ns[namespace] = cal.ns[namespace] || api;
+        p(cal.ns[namespace], ar);
+        p(cal, ["initNamespace", namespace]);
+      } else p(cal, ar);
+      return;
+    }
+    p(cal, ar);
+  };
+})(window, "https://app.cal.com/embed/embed.js", "init");
 
 function getSchedulerModal() {
   return document.getElementById("scheduler-modal");
 }
 
 function ensureSchedulerFrame() {
-  const frame = document.querySelector("[data-scheduler-frame]");
-  if (frame) {
-    const nextSrc = getSchedulerUrl();
-    if (frame.getAttribute("src") !== nextSrc) {
-      frame.setAttribute("src", nextSrc);
-    }
+  const container = document.querySelector("[data-scheduler-frame]");
+  if (container && !container.dataset.calInitialized) {
+    container.dataset.calInitialized = "true";
+    Cal("init");
+    Cal("inline", {
+      elementOrSelector: container,
+      calLink: "manishtiwari",
+      config: { theme: "light" },
+    });
+    Cal("ui", {
+      theme: "light",
+      cssVarsPerTheme: {
+        light: {
+          "cal-bg": "#fbf6ec",
+          "cal-bg-emphasis": "#f3ead9",
+          "cal-bg-subtle": "#f3ead9",
+          "cal-border": "#e4d9c4",
+          "cal-brand": "#ff6b4a",
+        },
+      },
+    });
   }
-  return frame;
+  return container;
 }
 
 function openSchedulerModal() {
@@ -346,15 +384,32 @@ function matchesBlogTagSelection(post, selectedTags) {
   return selectedTags.has(getBlogTag(post.title));
 }
 
+function escapeHtml(str) {
+  return str.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+
 function renderBlogGrid(grid, posts, query = "", selectedTags = new Set()) {
   const filteredPosts = posts.filter(
     (post) => matchesBlogQuery(post, query) && matchesBlogTagSelection(post, selectedTags)
   );
 
   if (!filteredPosts.length) {
-    const safeQuery = (query || "").trim();
+    const safeQuery = escapeHtml((query || "").trim());
     const tagText = selectedTags.size ? ` in ${Array.from(selectedTags).join(", ")}` : "";
-    grid.innerHTML = `<article class="panel"><p class="muted">No posts found${safeQuery ? ` for “${safeQuery}”` : ""}${tagText}. Try another keyword or tag.</p></article>`;
+    grid.innerHTML = `
+      <article class="panel" style="text-align: center; padding: 2.5rem 1.5rem;">
+        <img
+          src="/image/optimized/illo-blog-empty.svg"
+          alt=""
+          aria-hidden="true"
+          loading="lazy"
+          decoding="async"
+          width="180"
+          height="188"
+          style="display: block; margin: 0 auto 0.8rem; width: min(180px, 50%); height: auto;"
+        />
+        <p class="muted">No posts found${safeQuery ? ` for “${safeQuery}”` : ""}${tagText}. Try another keyword or tag.</p>
+      </article>`;
     return;
   }
 
@@ -1328,6 +1383,81 @@ function initializeToolIcons() {
   });
 }
 
+// Each icon lands on the tower block (same index) representing the domain it belongs to.
+const NINJA_SIEGE_SEQUENCE = ["React", "Spring Boot", "MongoDB", "AWS", "LangChain"];
+const NINJA_SIEGE_FLIGHT_MS = 850;
+const NINJA_SIEGE_GAP_MS = 2100;
+const NINJA_SIEGE_PAUSE_MS = 3000;
+const ninjaSiegeTimeouts = new Set();
+
+function clearNinjaSiegeTimeouts() {
+  ninjaSiegeTimeouts.forEach((id) => window.clearTimeout(id));
+  ninjaSiegeTimeouts.clear();
+}
+
+function initNinjaSiege() {
+  clearNinjaSiegeTimeouts();
+
+  const root = document.querySelector(".ninja-siege");
+  if (!root || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    return;
+  }
+
+  const blade = root.querySelector("[data-blade]");
+  const arm = root.querySelector(".ninja-arm");
+  const blocks = Array.from(root.querySelectorAll("[data-block]"));
+  const done = root.querySelector("[data-done]");
+  if (!blade || !arm || blocks.length !== NINJA_SIEGE_SEQUENCE.length) {
+    return;
+  }
+
+  let i = 0;
+  const throwNext = () => {
+    if (i === 0) {
+      blocks.forEach((block) => block.classList.remove("is-broken"));
+      done?.classList.remove("is-visible");
+    }
+
+    const target = blocks[i];
+    blade.innerHTML = techIconSvg(NINJA_SIEGE_SEQUENCE[i]);
+    blade.classList.remove("is-flying");
+    blade.style.left = "";
+    blade.style.top = "";
+    void blade.offsetWidth; // reflow so re-adding the class retriggers the flight transition
+
+    // Aim at the real position of this throw's block, not a guessed constant -
+    // targets stay correct however the tower's text wraps or the panel resizes.
+    const containerRect = root.getBoundingClientRect();
+    const targetRect = target.getBoundingClientRect();
+    const bladeRect = blade.getBoundingClientRect();
+    blade.style.left = `${targetRect.left - containerRect.left + targetRect.width / 2 - bladeRect.width / 2}px`;
+    blade.style.top = `${targetRect.top - containerRect.top + targetRect.height / 2 - bladeRect.height / 2}px`;
+
+    arm.classList.add("is-throwing");
+    blade.classList.add("is-flying");
+
+    const hitIndex = i;
+    const isLastHit = hitIndex === NINJA_SIEGE_SEQUENCE.length - 1;
+    const hitId = window.setTimeout(() => {
+      arm.classList.remove("is-throwing");
+      blocks[hitIndex]?.classList.add("is-broken");
+      blade.classList.remove("is-flying");
+      if (isLastHit) {
+        done?.classList.add("is-visible");
+      }
+      ninjaSiegeTimeouts.delete(hitId);
+    }, NINJA_SIEGE_FLIGHT_MS);
+    ninjaSiegeTimeouts.add(hitId);
+
+    i = (i + 1) % NINJA_SIEGE_SEQUENCE.length;
+    const nextId = window.setTimeout(throwNext, i === 0 ? NINJA_SIEGE_PAUSE_MS : NINJA_SIEGE_GAP_MS);
+    ninjaSiegeTimeouts.add(nextId);
+  };
+
+  const firstId = window.setTimeout(throwNext, 1200);
+  ninjaSiegeTimeouts.add(firstId);
+}
+
 function initializeScrollReveal() {
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (prefersReducedMotion || !("IntersectionObserver" in window)) {
@@ -1364,6 +1494,7 @@ function initializePageFeatures() {
   initializeMobileNavigation();
   initializeMarquee();
   initializeToolIcons();
+  initNinjaSiege();
   initializeHomepageRecentBlogs();
   initializeBlogsPage();
   initializeProjectCarousels();

@@ -156,9 +156,42 @@
     </header>
 
     <main data-router-view>
-      <section class="surface">
-        <p class="muted kicker">Projects</p>
-        <h1 class="hero-title"><span class="script-accent">Selected</span> projects</h1>
+      <section class="surface hero" aria-label="Projects intro">
+        <article class="hero-content">
+          <p class="muted kicker">Projects</p>
+          <h1 class="hero-title"><span class="script-accent">Selected</span> projects</h1>
+          <p class="hero-subtitle">
+            A collection of full-stack, AI, and cloud products I've shipped -
+            from CLI tools to real-time collaborative apps.
+          </p>
+        </article>
+        <aside class="hero-aside">
+          <figure class="media-card project-hero-scene" aria-hidden="true">
+            <span class="phs-star phs-star--1">✦</span>
+            <span class="phs-star phs-star--2">✦</span>
+            <span class="phs-star phs-star--3">✦</span>
+            <span class="phs-tape"></span>
+            <div class="phs-screen">
+              <div class="phs-dots">
+                <span class="phs-dot" style="background: #ff6b4a;"></span>
+                <span class="phs-dot" style="background: #ffb020;"></span>
+                <span class="phs-dot" style="background: #3fb86b;"></span>
+              </div>
+              <span class="phs-line" style="width: 72%;"></span>
+              <span class="phs-line" style="width: 48%;"></span>
+              <span class="phs-line" style="width: 60%;"></span>
+            </div>
+            <div class="droid phs-droid" style="--dc: #8b6fe8;">
+              <span class="beep">shipping it!</span>
+              <div class="bod">
+                <span class="eye"></span>
+                <span class="ant"><i style="background: #ffb020;"></i></span>
+                <span class="wheel wl"></span>
+                <span class="wheel wr"></span>
+              </div>
+            </div>
+          </figure>
+        </aside>
       </section>
 
       <hr class="divider" aria-hidden="true" />
@@ -166,7 +199,41 @@
       <section class="surface grid grid-2">
         <!--PROJECTS_GRID_START-->
 
-        <article class="project-card project-card--hero">
+        <article class="project-card">
+          <img class="project-thumb" src="/image/optimized/project-scalable-api.png" alt="Scalable API project screenshot" loading="lazy" width="960" height="536" />
+          <div class="project-body">
+            <h2>Scalable <span class="script-accent">API</span></h2>
+            <p>Two Spring Boot services built to prove opposite engineering claims - one chases raw WebFlux throughput, the other spends its CPU budget on airtight auth and distributed rate limiting - backed by real k6 numbers run against the actual Railway deployment, not just localhost.</p>
+            <ul class="stack">
+              <li>Tech: Spring WebFlux, Netty, Jackson Afterburner, Spring Security, JWT, Bucket4j, Redis, PostgreSQL, Flyway, Virtual Threads, Next.js, shadcn/ui, Docker, Prometheus, Grafana, Railway</li>
+            </ul>
+            <div class="actions-row">
+              <a href="/projects/scalable-api.html">View project</a>
+              <a href="https://web-production-ab143.up.railway.app" target="_blank" rel="noreferrer">Playground</a>
+              <a href="https://perf-api-production-0534.up.railway.app/swagger-ui.html" target="_blank" rel="noreferrer">perf-api docs</a>
+              <a href="https://secure-api-production-3428.up.railway.app/swagger-ui.html" target="_blank" rel="noreferrer">secure-api docs</a>
+              <a href="https://github.com/manish-9245/scalable-api" target="_blank" rel="noreferrer">View repo</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-card">
+          <img class="project-thumb" src="/image/optimized/project-collabpro.webp" alt="CollabPro project screenshot" loading="lazy" width="960" height="536" />
+          <div class="project-body">
+            <h2>Collab<span class="script-accent">Pro</span></h2>
+            <p>A self-hosted team workspace pairing a block-based document editor with an infinite collaborative whiteboard - real-time sync, a multi-provider AI Co-Pilot, and an MCP server built around how an AI agent actually calls tools.</p>
+            <ul class="stack">
+              <li>Tech: Next.js 15, React 19, Editor.js, Excalidraw, Postgres + Prisma, Redis, RabbitMQ, WebSocket gateway, MCP SDK, OpenAI, Anthropic, Gemini, NVIDIA NIM</li>
+            </ul>
+            <div class="actions-row">
+              <a href="/projects/collabpro.html">View project</a>
+              <a href="https://collabpro.buildwithmanish.com/" target="_blank" rel="noreferrer">Live site</a>
+              <a href="https://github.com/manish-9245/collabpro" target="_blank" rel="noreferrer">View repo</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-card">
           <img class="project-thumb" src="/image/optimized/project-hackpack.webp" alt="Hackpack project screenshot" loading="lazy" width="960" height="536" />
           <div class="project-body">
             <h2>Hack<span class="script-accent">pack</span></h2>
@@ -179,22 +246,6 @@
               <a href="https://hackpack-five.vercel.app/" target="_blank" rel="noreferrer">Live site</a>
               <a href="https://www.npmjs.com/package/create-hackpack" target="_blank" rel="noreferrer">npm package</a>
               <a href="https://github.com/manish-9245/hackpack" target="_blank" rel="noreferrer">View repo</a>
-            </div>
-          </div>
-        </article>
-
-        <article class="project-card">
-          <img class="project-thumb" src="/image/optimized/project-collabpro.webp" alt="CollabPro project screenshot" loading="lazy" width="960" height="536" />
-          <div class="project-body">
-            <h2>Collab<span class="script-accent">Pro</span></h2>
-            <p>A self-hosted team workspace pairing a block-based document editor with an infinite collaborative whiteboard - real-time sync, version history, and an MCP server so AI agents can read and write files too.</p>
-            <ul class="stack">
-              <li>Tech: Next.js 15, React 19, Editor.js, Excalidraw, Postgres + Prisma, Redis, WebSocket gateway, MCP SDK</li>
-            </ul>
-            <div class="actions-row">
-              <a href="/projects/collabpro.html">View project</a>
-              <a href="https://collabpro.buildwithmanish.com/" target="_blank" rel="noreferrer">Live site</a>
-              <a href="https://github.com/manish-9245/collabpro" target="_blank" rel="noreferrer">View repo</a>
             </div>
           </div>
         </article>
@@ -395,13 +446,10 @@
             Close
           </button>
         </header>
-        <iframe
+        <div
           class="scheduler-iframe"
           data-scheduler-frame
-          title="Schedule a meeting with Manish Tiwari"
-          loading="lazy"
-          referrerpolicy="strict-origin-when-cross-origin"
-        ></iframe>
+        ></div>
       </article>
     </dialog>
   </body>

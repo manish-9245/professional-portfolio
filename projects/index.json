@@ -1,5 +1,17 @@
 [
   {
+    "slug": "scalable-api",
+    "title": "Scalable API",
+    "date": "2026-08-20",
+    "displayDate": "Aug 20, 2026",
+    "description": "Two Spring Boot services built to prove opposite engineering claims - one chases raw WebFlux throughput, the other spends its CPU budget on airtight auth and distributed rate limiting - backed by real k6 numbers run against the actual Railway deployment, not just localhost.",
+    "tags": [
+      "Backend",
+      "Performance",
+      "Security"
+    ]
+  },
+  {
     "slug": "collabpro",
     "title": "CollabPro",
     "date": "2026-08-16",

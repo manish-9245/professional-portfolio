@@ -76,6 +76,11 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://buildwithmanish.com/projects/scalable-api.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://buildwithmanish.com/posts/beyond-get-and-set-architecting-resilient-distributed-caching-patterns-for-microservices.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>

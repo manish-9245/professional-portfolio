@@ -8,6 +8,11 @@ __pycache__/
 # Node/NPM
 node_modules/
 
+# Local editor/tooling config
+.claude/
+.vscode/
+*.code-workspace
+
 # Ignore the heavy source images directly,
 # so only the web-ready lightweight versions are tracked.
 image/source/*.jpg

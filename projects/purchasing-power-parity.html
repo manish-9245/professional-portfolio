@@ -332,6 +332,11 @@ ppp-calculator USA 100 CAN,GBR,IND</code></pre>
         <div class="related-posts-grid">
           
             <article class="panel related-card">
+              <p class="related-meta">Backend · Performance</p>
+              <p class="related-title"><a href="/projects/scalable-api.html">Scalable API</a></p>
+              <p class="related-desc muted">Two Spring Boot services built to prove opposite engineering claims - one chases raw WebFlux throughput, the other spends its CPU budget on airtight auth and distributed rate limiting - backed by real k6 numbers run against the actual Railway deployment, not just localhost.</p>
+            </article>
+            <article class="panel related-card">
               <p class="related-meta">Full-Stack · Real-time</p>
               <p class="related-title"><a href="/projects/collabpro.html">CollabPro</a></p>
               <p class="related-desc muted">A self-hosted team workspace pairing a block-based document editor with an infinite collaborative whiteboard - real-time sync, a multi-provider AI Co-Pilot, and an MCP server built around how an AI agent actually calls tools.</p>
@@ -340,11 +345,6 @@ ppp-calculator USA 100 CAN,GBR,IND</code></pre>
               <p class="related-meta">CLI · Developer Tool</p>
               <p class="related-title"><a href="/projects/hackpack.html">Hackpack</a></p>
               <p class="related-desc muted">A CLI that scaffolds full-stack apps by composing prebuilt templates instead of prompting an LLM - a framework, a stack of features, and generated CRUD pages, wired together through anchor comments.</p>
-            </article>
-            <article class="panel related-card">
-              <p class="related-meta">SaaS · AI</p>
-              <p class="related-title"><a href="/projects/ai-blogs.html">AI Blogs SaaS</a></p>
-              <p class="related-desc muted">An AI Director that watches a YouTube video, plans an outline, and drafts a full SEO-optimised blog post - with a human still steering the wheel.</p>
             </article>
         </div>
       </section>
@@ -447,13 +447,10 @@ ppp-calculator USA 100 CAN,GBR,IND</code></pre>
           <strong>Schedule a Meeting</strong>
           <button type="button" data-schedule-close aria-label="Close scheduler">Close</button>
         </header>
-        <iframe
+        <div
           class="scheduler-iframe"
           data-scheduler-frame
-          title="Schedule a meeting with Manish Tiwari"
-          loading="lazy"
-          referrerpolicy="strict-origin-when-cross-origin"
-        ></iframe>
+        ></div>
       </article>
     </dialog>
 

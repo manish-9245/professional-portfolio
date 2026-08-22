@@ -387,11 +387,10 @@ function renderProjectPage(template, { meta, slug, title, contentHtml, tocHtml, 
   return html.replace("<!--PROJECT_MAIN-->", mainContent);
 }
 
-function renderListingCard(entry, index) {
+function renderListingCard(entry) {
   const { meta, slug, title } = entry;
   const gallery = parseGallery(meta.gallery || "");
   const image = gallery[0] || meta.image || "";
-  const isHero = index === 0;
   const links = parseLinks(meta.links || "");
   const techFlat = parseTechGroups(meta.tech || "").flatMap((g) => g.items).join(", ");
 
@@ -408,7 +407,7 @@ function renderListingCard(entry, index) {
       : "";
 
   return `
-        <article class="project-card${isHero ? " project-card--hero" : ""}">
+        <article class="project-card">
           ${media}
           <div class="project-body">
             <h2>${titleHtml(meta, slug)}</h2>
