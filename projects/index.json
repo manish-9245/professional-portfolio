@@ -1,5 +1,17 @@
 [
   {
+    "slug": "wayfinder",
+    "title": "Wayfinder",
+    "date": "2026-09-27",
+    "displayDate": "Sep 27, 2026",
+    "description": "Self-hosted doubt as a service - one HTTP call turns any text in 100 plus languages into a calibrated act review escalate block verdict in about 33 ms with zero cost and nothing to parse",
+    "tags": [
+      "AI",
+      "Backend",
+      "Open Source"
+    ]
+  },
+  {
     "slug": "scalable-api",
     "title": "Scalable API",
     "date": "2026-08-20",
