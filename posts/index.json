@@ -1,5 +1,12 @@
 [
   {
+    "slug": "jev-decision-making-model-typed-judgments-for-ai-agents",
+    "title": "Jev Decision Making Model: Typed Judgments for AI Agents at Machine Speed",
+    "date": "2026-09-27",
+    "displayDate": "Sep 27, 2026",
+    "description": "Jev is TypeSafe AI System One model that turns messy state into typed Choice Score and Noul decisions with calibrated confidence for fast software control"
+  },
+  {
     "slug": "http-query-method",
     "title": "Stop Abusing POST: Why You Need the New HTTP QUERY Method",
     "date": "2026-07-03",
