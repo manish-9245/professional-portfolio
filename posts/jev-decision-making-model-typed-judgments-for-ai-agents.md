@@ -5,6 +5,8 @@ slug: "jev-decision-making-model-typed-judgments-for-ai-agents"
 description: "Jev is TypeSafe AI System One model that turns messy state into typed Choice Score and Noul decisions with calibrated confidence for fast software control"
 ---
 
+![Jev System One decision model turning state into typed Choice Score and Noul outputs](https://miro.medium.com/v2/resize:fit:1400/1*y_QphCaTsLYUqiEhl8rt8g.png)
+
 Software does not need another chatbot. It needs a judge.
 
 That is the bet behind Jev. It was launched on September 15 2026 by TypeSafe AI as the first public System One model. Instead of writing paragraphs it reads messy state and returns typed decisions that code can branch on directly. No parsing. No schema repair. No free form prose to validate.
