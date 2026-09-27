@@ -13,6 +13,9 @@ node_modules/
 .vscode/
 *.code-workspace
 
+# Railway video-host deploy staging (mp4s live in each project's brag-output/)
+video-host/*.mp4
+
 # Ignore the heavy source images directly,
 # so only the web-ready lightweight versions are tracked.
 image/source/*.jpg

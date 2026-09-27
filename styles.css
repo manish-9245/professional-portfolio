@@ -1121,6 +1121,29 @@ body.is-navigating main {
   transform: scale(1.06);
 }
 
+.project-video {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  display: block;
+  background: #000;
+  border-bottom: 2px solid var(--ink);
+}
+
+.project-video-embed {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  border-bottom: 2px solid var(--ink);
+}
+
+.project-video-embed iframe {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border: 0;
+}
+
 .actions-row {
   display: flex;
   flex-wrap: wrap;

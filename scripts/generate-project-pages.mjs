@@ -135,9 +135,38 @@ function carouselMarkup(gallery, title) {
 function renderMediaSection(meta, title) {
   const gallery = parseGallery(meta.gallery || "");
   const image = (meta.image || "").trim();
+  const video = (meta.video || "").trim();
+  const videoEmbed = (meta.video_embed || "").trim();
+  const videoPoster = (meta.video_poster || "").trim();
+
+  const videoSection = videoEmbed
+    ? `
+      <section class="surface" aria-label="Project video">
+        <div style="max-width: 760px; margin: 0 auto">
+          <figure class="project-card project-card--hero">
+            <div class="project-video-embed">
+              <iframe src="${videoEmbed}" title="${escapeHtml(title)} launch video" frameborder="0" scrolling="no" allow="fullscreen" allowfullscreen loading="lazy"></iframe>
+            </div>
+          </figure>
+        </div>
+      </section>`
+    : video
+      ? `
+      <section class="surface" aria-label="Project video">
+        <div style="max-width: 760px; margin: 0 auto">
+          <figure class="project-card project-card--hero">
+            <video class="project-video" controls preload="metadata"${
+              videoPoster ? ` poster="${videoPoster}"` : ""
+            } aria-label="${escapeHtml(title)} launch video">
+              <source src="${video}" type="video/mp4" />
+            </video>
+          </figure>
+        </div>
+      </section>`
+      : "";
 
   if (gallery.length > 1) {
-    return `
+    return `${videoSection}
       <section class="surface" aria-label="Screenshots">
         <div style="max-width: 760px; margin: 0 auto">
           <article class="project-card project-card--hero">
@@ -149,7 +178,7 @@ function renderMediaSection(meta, title) {
 
   const singleSrc = gallery[0] || image;
   if (!singleSrc) {
-    return "";
+    return videoSection;
   }
 
   const isExternal = /^https?:\/\//i.test(singleSrc);
@@ -161,7 +190,7 @@ function renderMediaSection(meta, title) {
     ? `<img ${attrs} />`
     : imageTag({ src: singleSrc, alt: `${title} project screenshot`, className: "project-thumb", active: false, eager: true });
 
-  return `
+  return `${videoSection}
       <section class="surface" aria-label="Screenshot">
         <div style="max-width: 640px; margin: 0 auto">
           <figure class="project-card">
@@ -345,7 +374,7 @@ function renderProjectPage(template, { meta, slug, title, contentHtml, tocHtml, 
   const description = (meta.description || meta.tagline || `${title} - a project by Manish Tiwari`).trim();
   const links = parseLinks(meta.links || "");
   const primaryUrl = links[0]?.url || meta.repo || pageUrl;
-  const pageImage = toAbsoluteUrl(parseGallery(meta.gallery || "")[0] || meta.image || "") || `${BASE_URL}/image/optimized/brand-logo.webp`;
+  const pageImage = toAbsoluteUrl((meta.video_poster || "").trim() || parseGallery(meta.gallery || "")[0] || meta.image || "") || `${BASE_URL}/image/optimized/brand-logo.webp`;
 
   let html = template
     .replace(/<title[^>]*?>.*?<\/title>/si, `<title>${escapeHtml(title)} · Project · Manish Tiwari</title>`)
@@ -358,6 +387,15 @@ function renderProjectPage(template, { meta, slug, title, contentHtml, tocHtml, 
     .replace(/<meta[^>]*?name="twitter:title"[^>]*?>/si, `<meta name="twitter:title" content="${escapeHtml(title)} · Manish Tiwari" />`)
     .replace(/<meta[^>]*?name="twitter:description"[^>]*?>/si, `<meta name="twitter:description" content="${escapeHtml(description)}" />`)
     .replace(/<meta[^>]*?name="twitter:image"[^>]*?>/si, `<meta name="twitter:image" content="${escapeHtml(pageImage)}" />`);
+
+  const videoUrl = (meta.video || "").trim();
+  if (videoUrl) {
+    const absoluteVideo = toAbsoluteUrl(videoUrl) || videoUrl;
+    html = html.replace(
+      /<meta[^>]*?property="og:image"[^>]*?>/si,
+      `$&\n    <meta property="og:video" content="${escapeHtml(absoluteVideo)}" />\n    <meta property="og:video:type" content="video/mp4" />\n    <meta property="og:video:width" content="1920" />\n    <meta property="og:video:height" content="1080" />`
+    );
+  }
 
   const schema = {
     "@context": "https://schema.org",
