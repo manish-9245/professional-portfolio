@@ -19,5 +19,10 @@ image/source/*.jpg
 image/source/*.jpeg
 image/source/*.png
 
+# Generated blog artifacts - built on Vercel via npm run build, do not commit
+posts/*.html
+posts/index.json
+sitemap.xml
+
 # Except the original profile picture which is manually specified
 !image/source/profile.jpg
