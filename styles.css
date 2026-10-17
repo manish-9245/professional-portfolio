@@ -3356,3 +3356,35 @@ body.is-navigating main {
 .oss-state--open,
 .oss-state--draft { color: color-mix(in srgb, var(--accent-blue) 80%, var(--ink)); }
 .oss-state--closed { color: color-mix(in srgb, var(--ink) 60%, transparent); }
+
+/* Open Source Genie mascot */
+.oss-hero { position: relative; }
+.oss-genie { position: absolute; right: 1.5rem; top: 1rem; width: 150px; height: auto; cursor: pointer; overflow: visible; animation: genie-bob 3.4s ease-in-out infinite; }
+.oss-genie * { transform-box: fill-box; }
+.g-ink { stroke: var(--ink); } .g-inkfill { fill: var(--ink); } .g-paper { fill: var(--paper); }
+.g-sp { stroke: color-mix(in srgb, var(--ink) 45%, transparent); }
+.g-star, .g-blush { fill: var(--accent-coral); } .g-blush { opacity: 0.55; }
+.g-pen { stroke: var(--accent-coral); }
+.oss-genie .tn { transform-origin: 50% 0; animation: genie-wig 3.2s ease-in-out infinite; }
+.oss-genie .t2 { animation-delay: -0.8s; } .oss-genie .t3 { animation-delay: -1.6s; } .oss-genie .t4 { animation-delay: -2.4s; }
+.oss-genie .wave { transform-origin: 100% 100%; animation: genie-wave 2.6s ease-in-out infinite; }
+.oss-genie .eyes { transform-origin: 50% 55%; animation: genie-blink 5s infinite; }
+.oss-genie .pupils { transition: transform 0.12s ease-out; }
+.oss-genie .sp, .oss-genie .gem { transform-origin: 50% 50%; animation: genie-tw 2.4s ease-in-out infinite; }
+.oss-genie .s2 { animation-delay: -0.8s; } .oss-genie .s3 { animation-delay: -1.6s; }
+.oss-genie .gem { animation-name: genie-gem; animation-duration: 3s; }
+.oss-genie .pal { transform-origin: 50% 100%; }
+.oss-genie:hover .pal { animation: genie-hop 0.55s cubic-bezier(0.3, 0.7, 0.4, 1); }
+.oss-genie.wish .pal { animation: genie-spin 0.8s cubic-bezier(0.3, 0.7, 0.4, 1); }
+.oss-genie.wish .sp, .oss-genie.wish .gem { animation: genie-pop 0.8s ease-out; }
+@keyframes genie-bob { 50% { transform: translateY(-4px) rotate(-1.5deg); } }
+@keyframes genie-wig { 50% { transform: rotate(7deg); } }
+@keyframes genie-wave { 50% { transform: rotate(-14deg); } }
+@keyframes genie-blink { 0%, 92%, 100% { transform: scaleY(1); } 95% { transform: scaleY(0.08); } }
+@keyframes genie-tw { 50% { transform: scale(0.35) rotate(40deg); opacity: 0.4; } }
+@keyframes genie-gem { 50% { transform: scale(1.25) rotate(8deg); } }
+@keyframes genie-hop { 30% { transform: translateY(-9px) scale(0.96, 1.05); } 60% { transform: translateY(0) scale(1.05, 0.93); } 100% { transform: none; } }
+@keyframes genie-spin { 40% { transform: translateY(-14px) rotate(14deg); } 70% { transform: translateY(0) rotate(-5deg); } 100% { transform: none; } }
+@keyframes genie-pop { 40% { transform: scale(2.2) rotate(90deg); } 100% { transform: scale(1); } }
+@media (max-width: 760px) { .oss-genie { position: static; display: block; margin: 0 0 0.5rem auto; width: 110px; } }
+@media (prefers-reduced-motion: reduce) { .oss-genie, .oss-genie * { animation: none !important; transition: none !important; } }

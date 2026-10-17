@@ -482,6 +482,31 @@ function createHomepageBlogCard(post) {
     </a>`;
 }
 
+function initializeGenie() {
+  const genie = document.querySelector(".oss-genie");
+  if (!genie || genie.dataset.ready === "true" || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    return;
+  }
+  genie.dataset.ready = "true";
+
+  const pupils = genie.querySelector(".pupils");
+  document.addEventListener("pointermove", (e) => {
+    if (!genie.isConnected) return;
+    const r = genie.getBoundingClientRect();
+    const dx = e.clientX - (r.left + r.width / 2);
+    const dy = e.clientY - (r.top + r.height / 2);
+    const d = Math.hypot(dx, dy) || 1;
+    const k = Math.min(d / 80, 1) * 3.5;
+    pupils.style.transform = `translate(${((dx / d) * k).toFixed(1)}px, ${((dy / d) * k).toFixed(1)}px)`;
+  });
+  genie.addEventListener("click", () => {
+    genie.classList.remove("wish");
+    void genie.getBoundingClientRect();
+    genie.classList.add("wish");
+    setTimeout(() => genie.classList.remove("wish"), 850);
+  });
+}
+
 const OSS_BASE = "https://oss-progress.manishdoestech.workers.dev/";
 
 function ossFormat(n) {
@@ -1578,6 +1603,7 @@ function initializePageFeatures() {
   initializeHomepageRecentBlogs();
   initializeBlogsPage();
   initializeOpenSourcePage();
+  initializeGenie();
   initializeProjectCarousels();
   initializePredictivePrefetch();
   initializeBlogPostFeatures();
