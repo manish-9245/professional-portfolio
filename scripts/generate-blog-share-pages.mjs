@@ -13,6 +13,7 @@ import {
   titleFromSlug,
   formatDisplayDate,
   renderContentWithToc,
+  seoDescription,
 } from "./lib/markdown.mjs";
 import { writeSitemap, readSlugsFrom } from "./lib/sitemap.mjs";
 import { buildShareBlocks } from "./lib/share.mjs";
@@ -73,8 +74,8 @@ function renderPostHtml(template, {
 
   // Update meta tags and title
   let html = template
-    .replace(/<title[^>]*?>.*?<\/title>/si, `<title>${escapeHtml(title)} · Manish Tiwari</title>`)
-    .replace(/<meta[^>]*?name="description"[^>]*?>/si, `<meta name="description" content="${escapeHtml(description)}" />`)
+    .replace(/<title[^>]*?>.*?<\/title>/si, `<title>${escapeHtml(title.length > 55 ? title : `${title} · Manish Tiwari`)}</title>`)
+    .replace(/<meta[^>]*?name="description"[^>]*?>/si, `<meta name="description" content="${escapeHtml(seoDescription(description))}" />`)
     .replace(/<link[^>]*?rel="canonical"[^>]*?>/si, `<link rel="canonical" href="${pageUrl}" />`)
     .replace(/<meta[^>]*?property="og:title"[^>]*?>/si, `<meta property="og:title" content="${escapeHtml(socialTitle)}" />`)
     .replace(/<meta[^>]*?property="og:description"[^>]*?>/si, `<meta property="og:description" content="${escapeHtml(socialDescription)}" />`)
@@ -87,24 +88,30 @@ function renderPostHtml(template, {
   // Update Schema.org
   const schema = {
     "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    "headline": title,
-    "description": description,
-    "datePublished": publishedDate || undefined,
-    "author": {
-      "@type": "Person",
-      "name": "Manish Tiwari",
-      "url": "https://buildwithmanish.com/about.html"
-    },
-    "publisher": {
-      "@type": "Person",
-      "name": "Manish Tiwari"
-    },
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id": pageUrl
-    },
-    "image": pageImage
+    "@graph": [
+      {
+        "@type": "BlogPosting",
+        "@id": `${pageUrl}#article`,
+        "headline": title,
+        "description": description,
+        "datePublished": publishedDate || undefined,
+        "dateModified": publishedDate || undefined,
+        "inLanguage": "en",
+        "author": { "@type": "Person", "@id": "https://www.buildwithmanish.com/#person", "name": "Manish Tiwari", "url": "https://www.buildwithmanish.com/about.html" },
+        "publisher": { "@id": "https://www.buildwithmanish.com/#person" },
+        "mainEntityOfPage": { "@type": "WebPage", "@id": pageUrl },
+        "isPartOf": { "@id": "https://www.buildwithmanish.com/#website" },
+        "image": pageImage,
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.buildwithmanish.com/" },
+          { "@type": "ListItem", "position": 2, "name": "Blogs", "item": "https://www.buildwithmanish.com/blogs.html" },
+          { "@type": "ListItem", "position": 3, "name": title, "item": pageUrl },
+        ],
+      },
+    ],
   };
   html = html.replace(/<script id="post-schema".*?>.*?<\/script>/s, `<script id="post-schema" type="application/ld+json">${JSON.stringify(schema, null, 2)}</script>`);
 

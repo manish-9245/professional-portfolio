@@ -12,6 +12,7 @@ import {
   titleFromSlug,
   formatDisplayDate,
   renderContentWithToc,
+  seoDescription,
 } from "./lib/markdown.mjs";
 import { writeSitemap, readSlugsFrom } from "./lib/sitemap.mjs";
 import { buildShareBlocks } from "./lib/share.mjs";
@@ -26,6 +27,44 @@ const PROJECTS_INDEX_PATH = path.join(PROJECTS_DIR, "index.json");
 const POSTS_INDEX_PATH = path.join(ROOT, "posts", "index.json");
 const TEMPLATE_PATH = path.join(__dirname, "project-template.html");
 const PROJECTS_LISTING_PATH = path.join(ROOT, "projects.html");
+
+function updateProjectsSchema(entries) {
+  const pagePath = path.join(ROOT, "projects.html");
+  const schema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "CollectionPage",
+        "@id": "https://www.buildwithmanish.com/projects.html#page",
+        url: "https://www.buildwithmanish.com/projects.html",
+        name: "Projects by Manish Tiwari",
+        isPartOf: { "@id": "https://www.buildwithmanish.com/#website" },
+        author: { "@id": "https://www.buildwithmanish.com/#person" },
+        mainEntity: {
+          "@type": "ItemList",
+          itemListElement: entries.map((e, i) => ({
+            "@type": "ListItem",
+            position: i + 1,
+            name: e.title,
+            url: `https://www.buildwithmanish.com/projects/${e.slug}.html`,
+          })),
+        },
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://www.buildwithmanish.com/" },
+          { "@type": "ListItem", position: 2, name: "Projects", item: "https://www.buildwithmanish.com/projects.html" },
+        ],
+      },
+    ],
+  };
+  const html = fs.readFileSync(pagePath, "utf8").replace(
+    /<script id="projects-schema".*?>.*?<\/script>/s,
+    `<script id="projects-schema" type="application/ld+json">${JSON.stringify(schema, null, 2)}</script>`,
+  );
+  fs.writeFileSync(pagePath, html, "utf8");
+}
 
 const GRID_START = "<!--PROJECTS_GRID_START-->";
 const GRID_END = "<!--PROJECTS_GRID_END-->";
@@ -378,7 +417,7 @@ function renderProjectPage(template, { meta, slug, title, contentHtml, tocHtml, 
 
   let html = template
     .replace(/<title[^>]*?>.*?<\/title>/si, `<title>${escapeHtml(title)} · Project · Manish Tiwari</title>`)
-    .replace(/<meta[^>]*?name="description"[^>]*?>/si, `<meta name="description" content="${escapeHtml(description)}" />`)
+    .replace(/<meta[^>]*?name="description"[^>]*?>/si, `<meta name="description" content="${escapeHtml(seoDescription(description))}" />`)
     .replace(/<link[^>]*?rel="canonical"[^>]*?>/si, `<link rel="canonical" href="${pageUrl}" />`)
     .replace(/<meta[^>]*?property="og:title"[^>]*?>/si, `<meta property="og:title" content="${escapeHtml(title)} · Manish Tiwari" />`)
     .replace(/<meta[^>]*?property="og:description"[^>]*?>/si, `<meta property="og:description" content="${escapeHtml(description)}" />`)
@@ -399,13 +438,31 @@ function renderProjectPage(template, { meta, slug, title, contentHtml, tocHtml, 
 
   const schema = {
     "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    name: title,
-    description,
-    applicationCategory: meta.application_category || "DeveloperApplication",
-    operatingSystem: "Web",
-    url: primaryUrl,
-    author: { "@type": "Person", name: "Manish Tiwari", url: "https://buildwithmanish.com/about.html" },
+    "@graph": [
+      {
+        "@type": "SoftwareApplication",
+        "@id": `${pageUrl}#software`,
+        name: title,
+        description,
+        applicationCategory: meta.application_category || "DeveloperApplication",
+        operatingSystem: "Web",
+        url: primaryUrl,
+        mainEntityOfPage: pageUrl,
+        image: pageImage,
+        datePublished: meta.date || undefined,
+        keywords: meta.tags || undefined,
+        codeRepository: meta.repo || undefined,
+        author: { "@type": "Person", "@id": "https://www.buildwithmanish.com/#person", name: "Manish Tiwari", url: "https://www.buildwithmanish.com/about.html" },
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://www.buildwithmanish.com/" },
+          { "@type": "ListItem", position: 2, name: "Projects", item: "https://www.buildwithmanish.com/projects.html" },
+          { "@type": "ListItem", position: 3, name: title, item: pageUrl },
+        ],
+      },
+    ],
   };
   html = html.replace(/<script id="project-schema".*?>.*?<\/script>/s, `<script id="project-schema" type="application/ld+json">${JSON.stringify(schema, null, 2)}</script>`);
 
@@ -537,6 +594,7 @@ function run() {
   fs.writeFileSync(PROJECTS_INDEX_PATH, `${JSON.stringify(indexEntries, null, 2)}\n`, "utf8");
 
   updateProjectsListing(entries);
+  updateProjectsSchema(entries);
 
   writeSitemap(SITEMAP_PATH, {
     postSlugs: readSlugsFrom(POSTS_INDEX_PATH),

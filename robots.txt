@@ -1,6 +1,18 @@
 User-agent: *
 Allow: /
 
-Host: www.buildwithmanish.com
+# AI answer engines and training crawlers are welcome: this is a public portfolio.
+User-agent: GPTBot
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: ClaudeBot
+User-agent: Claude-User
+User-agent: Claude-SearchBot
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: Google-Extended
+User-agent: Applebot-Extended
+User-agent: CCBot
+Allow: /
+
 Sitemap: https://www.buildwithmanish.com/sitemap.xml
-Sitemap: https://buildwithmanish.com/sitemap.xml

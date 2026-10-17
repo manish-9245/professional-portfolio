@@ -1,0 +1,43 @@
+# Manish Tiwari
+
+> Manish Tiwari is a Software Engineer-2 at JPMorgan Chase (CIB Markets) in Bangalore, India. He builds resilient high-scale backend systems (Java, Spring Boot), cloud modernization on AWS and Terraform, and AI agent tooling (MCP servers, LangChain, n8n). He also contributes bug fixes and docs to open source projects and writes engineering deep dives.
+
+Contact: manishdoestech@gmail.com. Profiles: https://github.com/manish-9245 and https://www.linkedin.com/in/manishtiwari13/
+
+## Pages
+- [About](https://www.buildwithmanish.com/about.html): experience, awards, certifications (AWS Developer Associate, Terraform Associate, FinOps Practitioner), education and skills
+- [Projects](https://www.buildwithmanish.com/projects.html): full-stack, AI and cloud products shipped
+- [Open Source](https://www.buildwithmanish.com/open-source.html): live log of pull requests sent to other open source projects and their outcomes
+- [Blogs](https://www.buildwithmanish.com/blogs.html): engineering notes on distributed systems, cloud, AI and backend
+- [Contact](https://www.buildwithmanish.com/contact.html)
+
+## Projects
+- [Wayfinder](https://www.buildwithmanish.com/projects/wayfinder.html): Self-hosted doubt as a service - one HTTP call turns any text in 100 plus languages into a calibrated act review escalate block verdict in about 33 ms with zero cost and nothing to parse
+- [Scalable API](https://www.buildwithmanish.com/projects/scalable-api.html): Two Spring Boot services built to prove opposite engineering claims - one chases raw WebFlux throughput, the other spends its CPU budget on airtight auth and distributed rate limiting - backed by real k6 numbers run against the actual Railway deployment, not just localhost.
+- [CollabPro](https://www.buildwithmanish.com/projects/collabpro.html): A self-hosted team workspace pairing a block-based document editor with an infinite collaborative whiteboard - real-time sync, a multi-provider AI Co-Pilot, and an MCP server built around how an AI agent actually calls tools.
+- [Hackpack](https://www.buildwithmanish.com/projects/hackpack.html): A CLI that scaffolds full-stack apps by composing prebuilt templates instead of prompting an LLM - a framework, a stack of features, and generated CRUD pages, wired together through anchor comments.
+- [AI Blogs SaaS](https://www.buildwithmanish.com/projects/ai-blogs.html): An AI Director that watches a YouTube video, plans an outline, and drafts a full SEO-optimised blog post - with a human still steering the wheel.
+- [ProgrammerSkool](https://www.buildwithmanish.com/projects/programmerskool.html): A focused learning platform that puts a coding playlist and a live C++ editor side by side, compiling against a real online judge instead of just displaying code.
+- [CodeSnip](https://www.buildwithmanish.com/projects/codesnip.html): A multi-language code editor that exports snippets as polished PNGs or animated GIFs - themes, gradients, and a typing animation built entirely client-side.
+- [Purchasing Power Parity](https://www.buildwithmanish.com/projects/purchasing-power-parity.html): A Node.js module and CLI that converts an amount between countries using PPP rates instead of raw FX - so $100 in the US compares fairly to its equivalent in India.
+- [Orbit Video Chat](https://www.buildwithmanish.com/projects/orbit.html): A WebRTC-powered video conferencing app built for both quick 1:1 calls and full group meetings, with screen sharing and chat alongside the call.
+- [Facial Emotion Recognition](https://www.buildwithmanish.com/projects/facial-emotion-recognition.html): A webcam-driven computer vision project that classifies facial expressions into emotions using a deep learning model, frame by frame, in under 50 lines of Python.
+- [CollabCode](https://www.buildwithmanish.com/projects/collabcode.html): A real-time collaborative code editor where a shared room turns into a live pair-programming session for any number of developers - no signup, no merge step, just a link.
+
+## Blog posts
+- [Jev Decision Making Model: Typed Judgments for AI Agents at Machine Speed](https://www.buildwithmanish.com/posts/jev-decision-making-model-typed-judgments-for-ai-agents.html)
+- [Stop Abusing POST: Why You Need the New HTTP QUERY Method](https://www.buildwithmanish.com/posts/http-query-method.html)
+- [How I Built My Portfolio Website and Achieved a Perfect Lighthouse Score](https://www.buildwithmanish.com/posts/how-i-built-my-portfolio-website-and-achieved-a-perfect-lighthouse-score.html)
+- [Top 5 Programming Languages to learn in 2026](https://www.buildwithmanish.com/posts/top-5-programming-languages-to-learn-in-2026.html)
+- [Relational Database Management System: An Engineering Deep-Dive](https://www.buildwithmanish.com/posts/relational-database-management-system.html)
+- [Textbook for Excel Exam](https://www.buildwithmanish.com/posts/textbook-for-excel-exam.html)
+- [How I built an AI blogger Agent using N8N and Jekyll](https://www.buildwithmanish.com/posts/how-i-built-an-ai-blogger-agent-using-n8n-and-jekyll.html)
+- [How I built an AI blogger Agent using N8N,Github and Jekyll](https://www.buildwithmanish.com/posts/how-i-built-an-ai-blogger-agent-using-n8ngithub-and-jekyll.html)
+- [Implementing Agentic Workflows for Java-to-Node.js Migration](https://www.buildwithmanish.com/posts/implementing-agentic-workflows-for-javatonodejs-migration.html)
+- [Reactive Architecture in Flutter: Mastering BLoC for Scalable State Management](https://www.buildwithmanish.com/posts/reactive-architecture-in-flutter-mastering-bloc-for-scalable-state-management.html)
+- [Beyond GET and SET: Architecting Resilient Distributed Caching Patterns for Microservices](https://www.buildwithmanish.com/posts/beyond-get-and-set-architecting-resilient-distributed-caching-patterns-for-microservices.html)
+- [Beyond the Happy Path: Architecting Fault-Tolerant Recurring Payments with Razorpay](https://www.buildwithmanish.com/posts/beyond-the-happy-path-architecting-faulttolerant-recurring-payments-with-razorpay.html)
+- [Building a Virtual Data Analyst: Architecting Agentic AI Workflows over Power BI](https://www.buildwithmanish.com/posts/building-a-virtual-data-analyst-architecting-agentic-ai-workflows-over-power-bi.html)
+- [Escaping the if (isAdmin) Trap: Implementing Scalable RBAC and ABAC in Node.js](https://www.buildwithmanish.com/posts/escaping-the-if-isadmin-trap-implementing-scalable-rbac-and-abac-in-nodejs.html)
+- [Java Concurrency at Scale: Migrating from Thread Pools to Virtual Threads](https://www.buildwithmanish.com/posts/java-concurrency-at-scale-migrating-from-thread-pools-to-virtual-threads.html)
+- [Mastering Razorpay Webhooks: Architecting an Idempotent, Event-Driven Ingestion Engine](https://www.buildwithmanish.com/posts/mastering-razorpay-webhooks-architecting-an-idempotent-eventdriven-ingestion-engine.html)

@@ -2344,6 +2344,11 @@ body.is-navigating main {
   border-bottom: 2px solid var(--o-border, color-mix(in srgb, currentColor 8%, transparent));
   padding-bottom: 0.5rem;
 }
+.blog-prose h2.prose-h1 {
+  font-size: 2rem;
+  border-bottom: 0;
+  padding-bottom: 0;
+}
 .blog-prose h3 {
   font-size: 1.3rem;
 }

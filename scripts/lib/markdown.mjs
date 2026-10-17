@@ -2,7 +2,7 @@ import { marked } from "marked";
 import hljs from "highlight.js";
 import { JSDOM } from "jsdom";
 
-export const BASE_URL = "https://buildwithmanish.com";
+export const BASE_URL = "https://www.buildwithmanish.com";
 
 const FRONTMATTER_PATTERN = /^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/m;
 const MARKDOWN_IMAGE_PATTERN = /!\[[^\]]*\]\(([^)\s]+)(?:\s+"[^"]*")?\)/;
@@ -176,6 +176,15 @@ export function renderContentWithToc(body) {
   const doc = dom.window.document;
   const contentDiv = doc.getElementById("content");
 
+  // The page template already owns the single <h1>; body h1s become styled h2s.
+  contentDiv.querySelectorAll("h1").forEach((h1) => {
+    const h2 = doc.createElement("h2");
+    h2.className = "prose-h1";
+    h2.innerHTML = h1.innerHTML;
+    if (h1.id) h2.id = h1.id;
+    h1.replaceWith(h2);
+  });
+
   const headings = [...contentDiv.querySelectorAll("h2, h3")];
   let tocHtml = "";
   if (headings.length >= 2) {
@@ -189,4 +198,12 @@ export function renderContentWithToc(body) {
   }
 
   return { contentHtml: contentDiv.innerHTML, tocHtml };
+}
+
+/** Meta descriptions read best at 70-160 characters; cut long ones at a word boundary. */
+export function seoDescription(text, max = 160) {
+  const clean = String(text || "").replace(/\s+/g, " ").trim();
+  if (clean.length <= max) return clean;
+  const cut = clean.slice(0, max - 1);
+  return `${cut.slice(0, cut.lastIndexOf(" "))}…`;
 }
