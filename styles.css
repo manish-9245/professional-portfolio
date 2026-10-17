@@ -3329,3 +3329,30 @@ body.is-navigating main {
   box-shadow: 0 8px 30px -5px color-mix(in srgb, currentColor 15%, transparent);
   border-color: var(--o-accent, currentColor);
 }
+
+/* ─── Open source page */
+.oss-prs {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.45rem;
+  font-size: 0.88rem;
+  line-height: 1.4;
+}
+
+.oss-prs a {
+  overflow-wrap: anywhere;
+}
+
+.oss-state {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.oss-state--merged { color: color-mix(in srgb, var(--accent-green) 80%, var(--ink)); }
+.oss-state--open,
+.oss-state--draft { color: color-mix(in srgb, var(--accent-blue) 80%, var(--ink)); }
+.oss-state--closed { color: color-mix(in srgb, var(--ink) 60%, transparent); }

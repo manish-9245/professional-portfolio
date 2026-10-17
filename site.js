@@ -482,6 +482,86 @@ function createHomepageBlogCard(post) {
     </a>`;
 }
 
+const OSS_BASE = "https://oss-progress.manishdoestech.workers.dev/";
+
+function ossFormat(n) {
+  if (n >= 1e6) return `${(n / 1e6).toFixed(1)}M`;
+  if (n >= 1e3) return `${(n / 1e3).toFixed(n >= 1e4 ? 0 : 1)}k`;
+  return String(n);
+}
+
+async function initializeOpenSourcePage() {
+  const grid = document.querySelector("[data-oss]");
+  const statsEl = document.querySelector("[data-oss-stats]");
+  if (!grid || grid.dataset.loaded === "true") {
+    return;
+  }
+
+  const esc = (t) =>
+    String(t ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+
+  try {
+    const [data, stars] = await Promise.all([
+      fetch(`${OSS_BASE}data.json`).then((r) => r.json()),
+      fetch(`${OSS_BASE}stars.json`).then((r) => r.json()).catch(() => null),
+    ]);
+
+    const by = {};
+    data.rows
+      .filter((r) => !r.repo.startsWith("manish-9245/"))
+      .forEach((r) => {
+        (by[r.repo] ||= { repo: r.repo, prs: [], merged: 0, open: 0, closed: 0 });
+        const p = by[r.repo];
+        p.prs.push(r);
+        if (r.state === "MERGED") p.merged++;
+        else if (r.state === "CLOSED") p.closed++;
+        else p.open++;
+      });
+    const projects = Object.values(by).sort(
+      (a, b) =>
+        b.merged - a.merged ||
+        b.open - a.open ||
+        (stars?.repos[b.repo] || 0) - (stars?.repos[a.repo] || 0),
+    );
+
+    const c = data.counts;
+    const pills = [
+      `${projects.length} projects`,
+      `${c.MERGED} merged`,
+      `${c.OPEN + c.DRAFT} open`,
+      `${c.CLOSED} closed`,
+    ];
+    if (stars) pills.push(`★ ${ossFormat(stars.total)} stars combined`);
+    statsEl.innerHTML = pills.map((t) => `<span role="status">${esc(t)}</span>`).join("");
+
+    const WORD = { MERGED: "Merged", OPEN: "Open", DRAFT: "Draft", CLOSED: "Closed" };
+    grid.innerHTML = projects
+      .map((p) => {
+        const tag = p.merged ? "data" : p.open ? "cloud" : "engineering";
+        const label = p.merged ? `${p.merged} merged` : p.open ? `${p.open} open` : "closed";
+        const star = stars?.repos[p.repo] != null ? ` · ★ ${ossFormat(stars.repos[p.repo])}` : "";
+        const prs = p.prs
+          .slice(0, 3)
+          .map(
+            (r) =>
+              `<li><span class="oss-state oss-state--${r.state.toLowerCase()}">${WORD[r.state]}</span> <a href="${esc(r.url)}" target="_blank" rel="noreferrer">${esc(r.title)}</a></li>`,
+          )
+          .join("");
+        const more = p.prs.length > 3 ? `<li class="muted">+ ${p.prs.length - 3} more</li>` : "";
+        return `
+    <article class="panel blog-card blog-card--compact oss-card">
+      <span class="blog-tag blog-tag--${tag}">${esc(label)}${esc(star)}</span>
+      <h3 class="blog-title"><a href="https://github.com/${esc(p.repo)}" target="_blank" rel="noreferrer">${esc(p.repo)}</a></h3>
+      <ul class="oss-prs">${prs}${more}</ul>
+    </article>`;
+      })
+      .join("");
+    grid.dataset.loaded = "true";
+  } catch {
+    grid.innerHTML = `<article class="panel"><p>Couldn't load the live data. <a href="${OSS_BASE}" target="_blank" rel="noreferrer">See the full logbook</a>.</p></article>`;
+  }
+}
+
 async function initializeHomepageRecentBlogs() {
   const container = document.getElementById("home-recent-blogs");
   if (!container || container.dataset.loaded === "true") {
@@ -1497,6 +1577,7 @@ function initializePageFeatures() {
   initNinjaSiege();
   initializeHomepageRecentBlogs();
   initializeBlogsPage();
+  initializeOpenSourcePage();
   initializeProjectCarousels();
   initializePredictivePrefetch();
   initializeBlogPostFeatures();
