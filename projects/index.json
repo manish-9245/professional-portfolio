@@ -1,5 +1,29 @@
 [
   {
+    "slug": "netflix-blog",
+    "title": "Write Like Netflix",
+    "date": "2026-10-17",
+    "displayDate": "Oct 17, 2026",
+    "description": "Thirteen AI skills that draft an engineering blog post from measurements of 388 Netflix TechBlog posts, then grade it like an editor with a pass mark of 48 out of 70",
+    "tags": [
+      "AI",
+      "Open Source",
+      "Developer Tools"
+    ]
+  },
+  {
+    "slug": "os-genie",
+    "title": "OS Genie",
+    "date": "2026-10-17",
+    "displayDate": "Oct 17, 2026",
+    "description": "Four portable AI skills that take you from where to contribute to a merged pull request, with a numeric gate at every stage and a scorer you can run offline",
+    "tags": [
+      "AI",
+      "Open Source",
+      "Developer Tools"
+    ]
+  },
+  {
     "slug": "wayfinder",
     "title": "Wayfinder",
     "date": "2026-09-27",

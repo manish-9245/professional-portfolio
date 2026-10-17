@@ -12,6 +12,8 @@ Contact: manishdoestech@gmail.com. Profiles: https://github.com/manish-9245 and 
 - [Contact](https://www.buildwithmanish.com/contact.html)
 
 ## Projects
+- [Write Like Netflix](https://www.buildwithmanish.com/projects/netflix-blog.html): Thirteen AI skills that draft an engineering blog post from measurements of 388 Netflix TechBlog posts, then grade it like an editor with a pass mark of 48 out of 70
+- [OS Genie](https://www.buildwithmanish.com/projects/os-genie.html): Four portable AI skills that take you from where to contribute to a merged pull request, with a numeric gate at every stage and a scorer you can run offline
 - [Wayfinder](https://www.buildwithmanish.com/projects/wayfinder.html): Self-hosted doubt as a service - one HTTP call turns any text in 100 plus languages into a calibrated act review escalate block verdict in about 33 ms with zero cost and nothing to parse
 - [Scalable API](https://www.buildwithmanish.com/projects/scalable-api.html): Two Spring Boot services built to prove opposite engineering claims - one chases raw WebFlux throughput, the other spends its CPU budget on airtight auth and distributed rate limiting - backed by real k6 numbers run against the actual Railway deployment, not just localhost.
 - [CollabPro](https://www.buildwithmanish.com/projects/collabpro.html): A self-hosted team workspace pairing a block-based document editor with an infinite collaborative whiteboard - real-time sync, a multi-provider AI Co-Pilot, and an MCP server built around how an AI agent actually calls tools.

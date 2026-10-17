@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 340" role="img" aria-label="OS Genie pipeline: discover, triage, implement, communicate, merged">
+<title>OS Genie pipeline: from where to contribute to merged pull request</title>
+<defs>
+<linearGradient id="panel" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#14203A"/>
+<stop offset="1" stop-color="#0F172A"/>
+</linearGradient>
+</defs>
+<rect width="1024" height="340" rx="24" fill="url(#panel)" stroke="#263354" stroke-width="1.5"/>
+<!-- Stage 0 -->
+<g>
+<rect x="32" y="36" width="196" height="220" rx="16" fill="#1B2542" stroke="#8B5CF6" stroke-opacity="0.45" stroke-width="1.5"/>
+<circle cx="130" cy="66" r="16" fill="#8B5CF6"/>
+<text x="130" y="72" font-family="Helvetica, Arial, sans-serif" font-weight="700" font-size="16" text-anchor="middle" fill="#0F172A">0</text>
+<text x="130" y="100" font-family="Helvetica, Arial, sans-serif" font-size="10.5" letter-spacing="2.5" text-anchor="middle" fill="#7C8DB0">STEP 0</text>
+<text x="130" y="126" font-family="Helvetica, Arial, sans-serif" font-weight="700" font-size="20" letter-spacing="1" text-anchor="middle" fill="#F1F5F9">DISCOVER</text>
+<text x="130" y="146" font-family="SFMono-Regular, Menlo, Consolas, monospace" font-size="10.5" text-anchor="middle" fill="#9FB0CC">os-genie-repo-finder</text>
+<rect x="112" y="156" width="36" height="3" rx="1.5" fill="#8B5CF6"/>
+<text x="130" y="178" font-family="Helvetica, Arial, sans-serif" font-size="12.5" text-anchor="middle" fill="#8EA0C0">repos that</text>
+<text x="130" y="196" font-family="Helvetica, Arial, sans-serif" font-size="12.5" text-anchor="middle" fill="#8EA0C0">still merge</text>
+<rect x="55" y="210" width="150" height="24" rx="12" fill="#8B5CF6" fill-opacity="0.13"/>
+<text x="130" y="226" font-family="Helvetica, Arial, sans-serif" font-weight="700" font-size="11" text-anchor="middle" fill="#8B5CF6">health ≥ 60</text>
+</g>
+<polyline points="236,134 248,146 236,158" fill="none" stroke="#3E4F73" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+<!-- Stage 1 -->
+<g>
+<rect x="256" y="36" width="196" height="220" rx="16" fill="#1B2542" stroke="#38BDF8" stroke-opacity="0.45" stroke-width="1.5"/>
+<circle cx="354" cy="66" r="16" fill="#38BDF8"/>
+<text x="354" y="72" font-family="Helvetica, Arial, sans-serif" font-weight="700" font-size="16" text-anchor="middle" fill="#0F172A">1</text>
+<text x="354" y="100" font-family="Helvetica, Arial, sans-serif" font-size="10.5" letter-spacing="2.5" text-anchor="middle" fill="#7C8DB0">STEP 1</text>
+<text x="354" y="126" font-family="Helvetica, Arial, sans-serif" font-weight="700" font-size="20" letter-spacing="1" text-anchor="middle" fill="#F1F5F9">TRIAGE</text>
+<text x="354" y="146" font-family="SFMono-Regular, Menlo, Consolas, monospace" font-size="10.5" text-anchor="middle" fill="#9FB0CC">os-genie-issue-triage</text>
+<rect x="336" y="156" width="36" height="3" rx="1.5" fill="#38BDF8"/>
+<text x="354" y="178" font-family="Helvetica, Arial, sans-serif" font-size="12.5" text-anchor="middle" fill="#8EA0C0">ONE approved</text>
+<text x="354" y="196" font-family="Helvetica, Arial, sans-serif" font-size="12.5" text-anchor="middle" fill="#8EA0C0">issue</text>
+<rect x="279" y="210" width="150" height="24" rx="12" fill="#38BDF8" fill-opacity="0.13"/>
+<text x="354" y="226" font-family="Helvetica, Arial, sans-serif" font-weight="700" font-size="11" text-anchor="middle" fill="#38BDF8">score ≥ 60</text>
+</g>
+<polyline points="458,134 470,146 458,158" fill="none" stroke="#3E4F73" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+<!-- Stage 2 -->
+<g>
+<rect x="480" y="36" width="196" height="220" rx="16" fill="#1B2542" stroke="#10B981" stroke-opacity="0.45" stroke-width="1.5"/>
+<circle cx="578" cy="66" r="16" fill="#10B981"/>
+<text x="578" y="72" font-family="Helvetica, Arial, sans-serif" font-weight="700" font-size="16" text-anchor="middle" fill="#0F172A">2</text>
+<text x="578" y="100" font-family="Helvetica, Arial, sans-serif" font-size="10.5" letter-spacing="2.5" text-anchor="middle" fill="#7C8DB0">STEP 2</text>
+<text x="578" y="126" font-family="Helvetica, Arial, sans-serif" font-weight="700" font-size="20" letter-spacing="1" text-anchor="middle" fill="#F1F5F9">IMPLEMENT</text>
+<text x="578" y="146" font-family="SFMono-Regular, Menlo, Consolas, monospace" font-size="10.5" text-anchor="middle" fill="#9FB0CC">os-genie-fix-pr</text>
+<rect x="560" y="156" width="36" height="3" rx="1.5" fill="#10B981"/>
+<text x="578" y="178" font-family="Helvetica, Arial, sans-serif" font-size="12.5" text-anchor="middle" fill="#8EA0C0">smallest green</text>
+<text x="578" y="196" font-family="Helvetica, Arial, sans-serif" font-size="12.5" text-anchor="middle" fill="#8EA0C0">PR + proof</text>
+<rect x="503" y="210" width="150" height="24" rx="12" fill="#10B981" fill-opacity="0.13"/>
+<text x="578" y="226" font-family="Helvetica, Arial, sans-serif" font-weight="700" font-size="11" text-anchor="middle" fill="#10B981">green CI · &lt;200</text>
+</g>
+<polyline points="682,134 694,146 682,158" fill="none" stroke="#3E4F73" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+<!-- Stage 3 -->
+<g>
+<rect x="704" y="36" width="196" height="220" rx="16" fill="#1B2542" stroke="#F59E0B" stroke-opacity="0.45" stroke-width="1.5"/>
+<circle cx="802" cy="66" r="16" fill="#F59E0B"/>
+<text x="802" y="72" font-family="Helvetica, Arial, sans-serif" font-weight="700" font-size="16" text-anchor="middle" fill="#0F172A">3</text>
+<text x="802" y="100" font-family="Helvetica, Arial, sans-serif" font-size="10.5" letter-spacing="2.5" text-anchor="middle" fill="#7C8DB0">STEP 3</text>
+<text x="802" y="126" font-family="Helvetica, Arial, sans-serif" font-weight="700" font-size="20" letter-spacing="1" text-anchor="middle" fill="#F1F5F9">COMMUNICATE</text>
+<text x="802" y="146" font-family="SFMono-Regular, Menlo, Consolas, monospace" font-size="10.5" text-anchor="middle" fill="#9FB0CC">os-genie-maintainer-comms</text>
+<rect x="784" y="156" width="36" height="3" rx="1.5" fill="#F59E0B"/>
+<text x="802" y="178" font-family="Helvetica, Arial, sans-serif" font-size="12.5" text-anchor="middle" fill="#8EA0C0">doubts, reviews,</text>
+<text x="802" y="196" font-family="Helvetica, Arial, sans-serif" font-size="12.5" text-anchor="middle" fill="#8EA0C0">bumps, follow-ups</text>
+<rect x="727" y="210" width="150" height="24" rx="12" fill="#F59E0B" fill-opacity="0.13"/>
+<text x="802" y="226" font-family="Helvetica, Arial, sans-serif" font-weight="700" font-size="11" text-anchor="middle" fill="#F59E0B">reply &lt; 48h</text>
+</g>
+<polyline points="903,136 915,146 903,156" fill="none" stroke="#3E4F73" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+<!-- Merged -->
+<g>
+<circle cx="954" cy="146" r="33" fill="#10B981"/>
+<polyline points="941,146 951,157 968,133" fill="none" stroke="#0F172A" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="954" y="202" font-family="Helvetica, Arial, sans-serif" font-weight="700" font-size="12.5" text-anchor="middle" fill="#34D399">merged</text>
+</g>
+<text x="512" y="306" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" fill="#5B6B8C">each stage gates the next · thresholds traced to published data</text>
+</svg>
